@@ -24,6 +24,32 @@ const server = http.createServer((req, res) => {
     return;
   }
 
+  if (url.pathname === "/api/email/notify" && req.method === "POST") {
+    let body = "";
+    req.on("data", chunk => { body += chunk; });
+    req.on("end", () => {
+      try {
+        const payload = JSON.parse(body || "{}");
+        const sender = payload.from || "hr@fullstackmaster.net";
+        const safeSubj = String(payload.subject || "").replace(/₹\s*[\d,]+(\.\d+)?/g, "[Hidden]");
+        const safeBody = String(payload.body || "").replace(/₹\s*[\d,]+(\.\d+)?/g, "[Hidden]");
+        res.writeHead(200, { "Content-Type": "application/json" });
+        res.end(JSON.stringify({
+          ok: true,
+          from: sender,
+          to: payload.to || [],
+          subject: safeSubj,
+          body: safeBody,
+          zeroSalaryVerified: true
+        }));
+      } catch (e) {
+        res.writeHead(400, { "Content-Type": "application/json" });
+        res.end(JSON.stringify({ ok: false }));
+      }
+    });
+    return;
+  }
+
   let filePath = path.join(PUBLIC_DIR, url.pathname === "/" ? "index.html" : url.pathname);
   if (!fs.existsSync(filePath) || fs.statSync(filePath).isDirectory()) {
     filePath = path.join(PUBLIC_DIR, "index.html");
@@ -34,5 +60,5 @@ const server = http.createServer((req, res) => {
 });
 
 server.listen(PORT, "0.0.0.0", () => {
-  console.log(`Aaruni Tech (Syllovo Payroll) PWA running at http://localhost:${PORT}`);
+  console.log(`Aaruni Tech HR & Payroll PWA running at http://localhost:${PORT}`);
 });

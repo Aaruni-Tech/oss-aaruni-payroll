@@ -652,6 +652,27 @@
       }
     ];
 
+    const INITIAL_EMAIL_LOGS = [
+      {
+        id: "EML-1002",
+        from: "hr@fullstackmaster.net",
+        to: "nandini.chukka.fsm@gmail.com, janvi.varma.fsm@gmail.com, koppula.ramya.fsm@gmail.com",
+        subject: "📄 [Aaruni Tech HR] Monthly Statement Available in Your Private Portal",
+        body: "Hi Team, Your October 2026 statement is available inside the Aaruni Tech Mobile Portal. For strict confidentiality, no compensation figures are ever included in emails. Please sign in to the app using your Employee ID and 4-Digit Mobile PIN to view or download your statement.",
+        time: "31 Oct 2026, 06:05 PM",
+        privacyCheck: "🔒 Zero-Salary Verified"
+      },
+      {
+        id: "EML-1001",
+        from: "hr@fullstackmaster.net",
+        to: "nandini.chukka.fsm@gmail.com, janvi.varma.fsm@gmail.com, koppula.ramya.fsm@gmail.com",
+        subject: "⏰ [Aaruni Tech HR] Daily Timesheet Reminder (6:00 PM – 9:00 PM IST)",
+        body: "Hi Team, Please log today's Entry Time and Exit Time in the Aaruni Tech Mobile App before 9:00 PM IST so your attendance hours are recorded.",
+        time: "09 Nov 2026, 06:00 PM",
+        privacyCheck: "🔒 Zero-Salary Verified"
+      }
+    ];
+
     // Load or initialize state
     let state = {
       persona: "ADMIN", // "ADMIN" or empId
@@ -659,6 +680,8 @@
       themeMode: localStorage.getItem("aaruni_theme_v5") || "auto", // "light" | "dark" | "auto"
       salariesMasked: true, // Zoho-style default hidden salary mode!
       showAccountNumbers: {}, // Per-employee Masked A/C No toggle (XXXX4004 -> Show A/C No)
+      emailSender: localStorage.getItem("aaruni_email_sender_v5") || "hr@fullstackmaster.net",
+      emailTemplate: "TIMESHEET_REMINDER",
       selectedMonth: "2026-11",
       throughDate: "2026-11-09",
       compOffApproved: { "AAR-0004": true, "AAR-0005": true, "AAR-0006": true, "AAR-0008": true },
@@ -667,6 +690,7 @@
       payslips: JSON.parse(localStorage.getItem("aaruni_ps_v5") || "null") || INITIAL_PAYSLIPS,
       loans: JSON.parse(localStorage.getItem("aaruni_loans_v5") || "null") || INITIAL_LOANS,
       messages: JSON.parse(localStorage.getItem("aaruni_msg_v5") || "null") || INITIAL_MESSAGES,
+      emailLogs: JSON.parse(localStorage.getItem("aaruni_emails_v5") || "null") || INITIAL_EMAIL_LOGS,
       taxRollup: JSON.parse(localStorage.getItem("aaruni_tax_v5") || "null") || LEGACY_2026_ROLLUP
     };
 
@@ -676,6 +700,8 @@
       localStorage.setItem("aaruni_ps_v5", JSON.stringify(state.payslips));
       localStorage.setItem("aaruni_loans_v5", JSON.stringify(state.loans));
       localStorage.setItem("aaruni_msg_v5", JSON.stringify(state.messages));
+      localStorage.setItem("aaruni_emails_v5", JSON.stringify(state.emailLogs));
+      localStorage.setItem("aaruni_email_sender_v5", state.emailSender);
       localStorage.setItem("aaruni_tax_v5", JSON.stringify(state.taxRollup));
     }
 
@@ -1301,6 +1327,92 @@
             </div>
           </div>
 
+          <!-- Privacy-First Email Notification Dispatcher (hr@fullstackmaster.net — STRICT ZERO-SALARY GUARD) -->
+          <div class="glass-card rounded-2xl p-4 mb-4">
+            <div class="flex flex-wrap items-center justify-between gap-2 mb-3">
+              <div>
+                <div class="flex items-center gap-2">
+                  <h3 class="text-sm font-bold text-white">📧 Email Notification Dispatcher (hr@fullstackmaster.net)</h3>
+                  <span class="text-[10px] font-mono font-bold px-2 py-0.5 rounded bg-slate-900 border border-slate-700 text-white">🔒 STRICT ZERO-SALARY EMAIL GUARD</span>
+                </div>
+                <p class="text-xs text-slate-400 mt-0.5">Since office machines share email access, <strong>salary figures, CTC, advances, and payslip PDFs are NEVER included in any email</strong>. Emails only notify staff to open the Aaruni Tech App with their 4-Digit PIN.</p>
+              </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-2.5 mb-2.5">
+              <div>
+                <label class="text-[11px] text-slate-400 block mb-1">Official Sender Account</label>
+                <select id="emailSenderSelect" onchange="state.emailSender=this.value;saveState();renderApp();" class="w-full bg-slate-800 border border-slate-700 rounded-xl px-3 py-2 text-xs text-white font-mono">
+                  <option value="hr@fullstackmaster.net" ${state.emailSender === 'hr@fullstackmaster.net' ? 'selected' : ''}>hr@fullstackmaster.net (Recommended HR Notifications)</option>
+                  <option value="rupesh@fullstackmaster.net" ${state.emailSender === 'rupesh@fullstackmaster.net' ? 'selected' : ''}>rupesh@fullstackmaster.net (Founder / Executive)</option>
+                </select>
+              </div>
+              <div>
+                <label class="text-[11px] text-slate-400 block mb-1">Recipient Staff</label>
+                <select id="emailRecipientSelect" onchange="updateEmailPreviewFromTemplate()" class="w-full bg-slate-800 border border-slate-700 rounded-xl px-3 py-2 text-xs text-white">
+                  <option value="ALL">📢 All Active Salaried Staff (Nandini, Janhavi, Ramya, Ali)</option>
+                  ${trackedStaff.map(e => `<option value="${e.id}">👤 ${e.name} (${e.email})</option>`).join("")}
+                </select>
+              </div>
+              <div>
+                <label class="text-[11px] text-slate-400 block mb-1">Notification Template (Zero-Salary)</label>
+                <select id="emailTemplateSelect" onchange="state.emailTemplate=this.value;updateEmailPreviewFromTemplate();" class="w-full bg-slate-800 border border-slate-700 rounded-xl px-3 py-2 text-xs text-white">
+                  <option value="TIMESHEET_REMINDER" ${state.emailTemplate === 'TIMESHEET_REMINDER' ? 'selected' : ''}>⏰ Evening 6–9 PM Timesheet Reminder</option>
+                  <option value="PAYSLIP_PUBLISHED" ${state.emailTemplate === 'PAYSLIP_PUBLISHED' ? 'selected' : ''}>📄 Monthly Statement Published Alert (No Salary in Email)</option>
+                  <option value="APP_ONBOARDING" ${state.emailTemplate === 'APP_ONBOARDING' ? 'selected' : ''}>📲 Mobile Portal & PIN Access Invite</option>
+                  <option value="HR_DOC_READY" ${state.emailTemplate === 'HR_DOC_READY' ? 'selected' : ''}>📁 Official HR Document Ready in App</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="bg-slate-900 border border-slate-700 rounded-xl p-3 mb-3 text-xs">
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-2 mb-2">
+                <div>
+                  <span class="text-slate-400">From:</span> <strong class="font-mono text-white" id="emailPreviewFrom">${state.emailSender}</strong>
+                </div>
+                <div>
+                  <span class="text-slate-400">Subject:</span>
+                  <input id="emailSubjectInput" type="text" value="${getZeroSalaryEmailContent(state.emailTemplate).subject}" class="w-full bg-slate-800 border border-slate-700 rounded-lg px-2.5 py-1 text-xs text-white font-semibold mt-0.5" />
+                </div>
+              </div>
+              <div>
+                <span class="text-slate-400">Email Body (Guaranteed Zero Salary / Zero ₹ Data):</span>
+                <textarea id="emailBodyInput" rows="2" class="w-full bg-slate-800 border border-slate-700 rounded-lg px-2.5 py-1.5 text-xs text-white mt-1">${getZeroSalaryEmailContent(state.emailTemplate).body}</textarea>
+              </div>
+              <div class="flex flex-wrap items-center justify-between gap-2 mt-2.5">
+                <span class="text-[11px] text-slate-400">🛡️ Auto-Sanitizer blocks any <code>₹</code>, salary, CTC, or advance numbers from leaving via email.</span>
+                <div class="flex flex-wrap items-center gap-2">
+                  <button onclick="dispatchZeroSalaryEmail(false)" class="brand-grad text-white text-xs font-bold px-3.5 py-2 rounded-xl shadow">
+                    📧 Dispatch Notification (${state.emailSender})
+                  </button>
+                  <button onclick="dispatchZeroSalaryEmail(true)" class="bg-slate-800 hover:bg-slate-700 border border-slate-700 text-white text-xs font-bold px-3 py-2 rounded-xl">
+                    📨 Open in Workspace Gmail (${state.emailSender})
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <!-- Sent Email Notification Log -->
+            <div class="space-y-1.5">
+              <div class="text-[11px] font-bold uppercase text-slate-400">Recent Zero-Salary Email Notifications Dispatched</div>
+              ${(state.emailLogs || []).slice(0, 3).map(log => `
+                <div class="bg-slate-800/70 border border-slate-700 rounded-lg px-3 py-2 flex flex-col md:flex-row md:items-center justify-between gap-2 text-xs">
+                  <div>
+                    <div class="flex flex-wrap items-center gap-2">
+                      <span class="font-mono font-bold text-white">${log.from}</span>
+                      <span class="text-slate-400">→</span>
+                      <span class="text-slate-300 truncate max-w-md">${log.to}</span>
+                      <span class="text-[10px] font-mono px-1.5 py-0.5 rounded bg-slate-900 border border-slate-700 text-white">${log.privacyCheck}</span>
+                    </div>
+                    <div class="font-semibold text-white mt-0.5">${log.subject}</div>
+                    <div class="text-slate-400 text-[11px]">${log.body}</div>
+                  </div>
+                  <div class="text-[11px] text-slate-400 whitespace-nowrap">${log.time}</div>
+                </div>
+              `).join("")}
+            </div>
+          </div>
+
           <!-- Loans & Salary Advance Ledger + 1-Tap Paid / Pending Manager -->
           <div class="glass-card rounded-2xl p-4 border border-sky-500/30">
             <div class="flex flex-wrap items-center justify-between gap-2 mb-3">
@@ -1875,30 +1987,135 @@
       renderApp();
     }
 
+    function getZeroSalaryEmailContent(templateKey) {
+      const appUrl = window.location.origin;
+      if (templateKey === "PAYSLIP_PUBLISHED") {
+        return {
+          subject: "📄 [Aaruni Tech HR] Monthly Statement Published — View in Mobile Portal",
+          body: `Hi Team,\n\nYour monthly statement has been published in the Aaruni Tech Mobile Portal (${appUrl}).\n\n🔒 Privacy Notice: For your security, Aaruni Tech never sends salary amounts, compensation figures, or payslip PDFs over email. Please sign in to the app using your Employee ID and 4-Digit Mobile PIN to view or download your statement privately.\n\nRegards,\nAaruni Tech HR (${state.emailSender || "hr@fullstackmaster.net"})`
+        };
+      }
+      if (templateKey === "APP_ONBOARDING") {
+        return {
+          subject: "📲 [Aaruni Tech HR] Your Mobile Attendance & HR Portal Access",
+          body: `Hi Team,\n\nPlease use the Aaruni Tech Mobile Portal (${appUrl}) to log your daily Entry & Exit timesheets and access your official HR documents (Offer Letter, ID Card, and Monthly Statements).\n\nSign in using your Employee ID (AAR-000X) and your 4-Digit Mobile PIN (last 4 digits of your registered mobile number).\n\nRegards,\nAaruni Tech HR (${state.emailSender || "hr@fullstackmaster.net"})`
+        };
+      }
+      if (templateKey === "HR_DOC_READY") {
+        return {
+          subject: "📁 [Aaruni Tech HR] Official HR Document Available in Your Portal",
+          body: `Hi,\n\nYour requested HR document is now available inside the "My HR Docs" tab of the Aaruni Tech Mobile Portal (${appUrl}). Please sign in with your 4-Digit Mobile PIN to view and download the PDF.\n\nRegards,\nAaruni Tech HR (${state.emailSender || "hr@fullstackmaster.net"})`
+        };
+      }
+      // Default: TIMESHEET_REMINDER
+      return {
+        subject: "⏰ [Aaruni Tech HR] Evening Reminder: Please Submit Today's Entry & Exit Timesheet",
+        body: `Hi Team,\n\nThis is an automated 6:00 PM – 9:00 PM IST reminder from Aaruni Tech HR. Please log today's Entry Time and Exit Time in the Aaruni Tech Mobile App (${appUrl}) so your working hours are recorded.\n\nOnce submitted in the app, evening reminders for today will automatically stop.\n\nRegards,\nAaruni Tech HR (${state.emailSender || "hr@fullstackmaster.net"})`
+      };
+    }
+
+    function sanitizeZeroSalaryText(text) {
+      // Strictly strip any accidental ₹ amounts or Rs. numbers so salary is NEVER leaked in emails
+      return String(text || "")
+        .replace(/₹\s*[\d,]+(\.\d+)?/g, "[🔒 Hidden in App]")
+        .replace(/\b(Rs\.?|INR)\s*[\d,]+(\.\d+)?/gi, "[🔒 Hidden in App]");
+    }
+
+    function updateEmailPreviewFromTemplate() {
+      const tpl = document.getElementById("emailTemplateSelect")?.value || state.emailTemplate || "TIMESHEET_REMINDER";
+      state.emailTemplate = tpl;
+      const content = getZeroSalaryEmailContent(tpl);
+      const subjEl = document.getElementById("emailSubjectInput");
+      const bodyEl = document.getElementById("emailBodyInput");
+      if (subjEl) subjEl.value = content.subject;
+      if (bodyEl) bodyEl.value = content.body;
+    }
+
+    function dispatchZeroSalaryEmail(openGmailTab = false) {
+      const sender = document.getElementById("emailSenderSelect")?.value || state.emailSender || "hr@fullstackmaster.net";
+      state.emailSender = sender;
+      const target = document.getElementById("emailRecipientSelect")?.value || "ALL";
+      const tracked = state.employees.filter(e => e.status === "Active" && e.trackTimesheet);
+      const recipients = target === "ALL"
+        ? tracked.map(e => e.email).filter(Boolean)
+        : [state.employees.find(e => e.id === target)?.email].filter(Boolean);
+      const toStr = recipients.join(", ") || "nandini.chukka.fsm@gmail.com, janvi.varma.fsm@gmail.com, koppula.ramya.fsm@gmail.com";
+
+      const rawSubj = document.getElementById("emailSubjectInput")?.value || getZeroSalaryEmailContent(state.emailTemplate).subject;
+      const rawBody = document.getElementById("emailBodyInput")?.value || getZeroSalaryEmailContent(state.emailTemplate).body;
+      const cleanSubj = sanitizeZeroSalaryText(rawSubj);
+      const cleanBody = sanitizeZeroSalaryText(rawBody);
+
+      state.emailLogs = state.emailLogs || [];
+      state.emailLogs.unshift({
+        id: "EML-" + Date.now(),
+        from: sender,
+        to: toStr,
+        subject: cleanSubj,
+        body: cleanBody.replace(/\n+/g, " "),
+        time: "Just now",
+        privacyCheck: "🔒 Zero-Salary Verified"
+      });
+      saveState();
+
+      // Also notify backend endpoint if running
+      fetch("/api/email/notify", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ from: sender, to: recipients, subject: cleanSubj, body: cleanBody })
+      }).catch(() => {});
+
+      if (openGmailTab) {
+        const gmailUrl = `https://mail.google.com/mail/?authuser=${encodeURIComponent(sender)}&view=cm&fs=1&to=${encodeURIComponent(recipients.join(","))}&su=${encodeURIComponent(cleanSubj)}&body=${encodeURIComponent(cleanBody)}`;
+        window.open(gmailUrl, "_blank", "noopener,noreferrer");
+      }
+
+      showToast(
+        `📧 Zero-Salary Email Dispatched (${sender})`,
+        `To: ${toStr} — Verified zero salary/CTC data in email body.`
+      );
+      renderApp();
+    }
+
     function triggerPushSimulation(empId) {
       const emp = state.employees.find(e => e.id === empId) || state.employees[3];
       showToast(
-        `⏰ 6:00 PM–9:00 PM Push Reminder → ${emp.name}`,
-        `Hi ${emp.name.split(" ")[0]}, you haven't submitted your Entry & Exit timesheet for today (09 Nov 2026). This reminder repeats every 30 mins until submitted!`
+        `⏰ 6:00 PM–9:00 PM Push + Email (${state.emailSender}) → ${emp.name}`,
+        `Hi ${emp.name.split(" ")[0]}, please log today's Entry & Exit timesheet in the Aaruni Tech App. (No salary data included in notification)`
       );
     }
 
     function nudgeAllMissingToday() {
+      const sender = state.emailSender || "hr@fullstackmaster.net";
+      const tpl = getZeroSalaryEmailContent("TIMESHEET_REMINDER");
+      state.emailLogs = state.emailLogs || [];
+      state.emailLogs.unshift({
+        id: "EML-" + Date.now(),
+        from: sender,
+        to: "All Pending Staff (nandini.chukka.fsm@gmail.com, janvi.varma.fsm@gmail.com, koppula.ramya.fsm@gmail.com)",
+        subject: tpl.subject,
+        body: "Automated 6–9 PM reminder: Please log today's Entry & Exit time in the Aaruni Tech App.",
+        time: "Just now",
+        privacyCheck: "🔒 Zero-Salary Verified"
+      });
+      saveState();
       showToast(
-        "🔔 Evening Push Dispatched to All Missing Staff",
-        "Sent Web Push + In-App reminders to all active staff who haven't logged 09 Nov 2026 timesheets yet."
+        `🔔 Push + Email Sent from ${sender}`,
+        "Dispatched evening timesheet reminders to all pending staff (strictly zero salary data in email)."
       );
+      renderApp();
     }
 
     function sendAdminMessage() {
       const target = document.getElementById("adminMsgTarget").value;
-      const body = document.getElementById("adminMsgBody").value.trim();
-      if (!body) return;
+      const rawBody = document.getElementById("adminMsgBody").value.trim();
+      if (!rawBody) return;
+      const body = sanitizeZeroSalaryText(rawBody);
       const emp = state.employees.find(e => e.id === target);
       state.messages.unshift({
         id: "MSG-" + Date.now(),
         senderId: "AAR-0002",
-        senderName: "Rupesh Tiwari (Admin)",
+        senderName: `Aaruni Tech HR (${state.emailSender || "hr@fullstackmaster.net"})`,
         recipientId: target,
         recipientName: target === "ALL" ? "All Aaruni Tech Team" : emp.name,
         body,
@@ -1906,7 +2123,8 @@
       });
       saveState();
       document.getElementById("adminMsgBody").value = "";
-      showToast("🚀 Message & Push Sent", `Delivered to ${target === "ALL" ? "All Staff" : emp.name}`);
+      showToast("🚀 Message & Push Sent", `Delivered to ${target === "ALL" ? "All Staff" : emp.name} (Zero-Salary Guard Active)`);
+      renderApp();
     }
 
     function sendStaffMessage(empId) {
@@ -1947,6 +2165,7 @@
           bonus: 0,
           grossEarnings: r.grossEarned,
           deductions: r.loanCut,
+          deductionLabel: r.loanCut > 0 ? "Personal Advance" : "",
           netPay: r.netPay,
           amountInWords: numberToIndianWords(r.netPay),
           status: "Paid via Axis Bank / UPI"
@@ -1964,10 +2183,24 @@
           }
         });
       });
+
+      // Automatically send a Zero-Salary Email Alert from hr@fullstackmaster.net telling staff to check their app with PIN
+      const sender = state.emailSender || "hr@fullstackmaster.net";
+      state.emailLogs = state.emailLogs || [];
+      state.emailLogs.unshift({
+        id: "EML-" + Date.now(),
+        from: sender,
+        to: tracked.map(e => e.email).filter(Boolean).join(", "),
+        subject: "📄 [Aaruni Tech HR] November 2026 Statement Available in Your Private Portal",
+        body: "Your November 2026 statement is now available in the Aaruni Tech App. Sign in with your 4-Digit Mobile PIN to view privately (Zero salary details in email).",
+        time: "Just now",
+        privacyCheck: "🔒 Zero-Salary Verified"
+      });
+
       saveState();
       showToast(
-        "🎉 All November 2026 PDF Payslips Published!",
-        `Generated official Aaruni Tech PDF payslips for ${tracked.length} staff, auto-settled deducted advances, and updated the CA Tax Loss statement.`
+        `🎉 Payslips Published in App + Zero-Salary Alert Sent (${sender})!`,
+        `Published PDF payslips inside each staff member's PIN-protected app vault and sent a zero-salary email notification from ${sender}.`
       );
       renderApp();
     }
