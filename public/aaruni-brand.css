@@ -8,20 +8,20 @@
 
 :root,
 [data-theme="light"] {
-  --at-bg: #fafafa;
+  --at-bg: #f8fafc;
   --at-surface: #ffffff;
-  --at-surface-muted: #f4f4f5;
-  --at-surface-hover: #e4e4e7;
-  --at-text: #09090b;
-  --at-text-secondary: #3f3f46;
-  --at-text-muted: #71717a;
-  --at-border: #e4e4e7;
-  --at-border-strong: #18181b;
-  --at-primary: #09090b;
+  --at-surface-muted: #f1f5f9;
+  --at-surface-hover: #e2e8f0;
+  --at-text: #0f172a;
+  --at-text-secondary: #334155;
+  --at-text-muted: #64748b;
+  --at-border: #e2e8f0;
+  --at-border-strong: #0f172a;
+  --at-primary: #2563eb;
   --at-primary-fg: #ffffff;
-  --at-badge-bg: #f4f4f5;
-  --at-badge-fg: #18181b;
-  --at-shadow: 0 1px 3px rgba(0, 0, 0, 0.06), 0 1px 2px rgba(0, 0, 0, 0.04);
+  --at-badge-bg: #f1f5f9;
+  --at-badge-fg: #0f172a;
+  --at-shadow: 0 1px 3px rgba(15, 23, 42, 0.06), 0 1px 2px rgba(15, 23, 42, 0.04);
   color-scheme: light;
 }
 
@@ -35,8 +35,8 @@
   --at-text-muted: #a1a1aa;
   --at-border: #27272a;
   --at-border-strong: #fafafa;
-  --at-primary: #fafafa;
-  --at-primary-fg: #09090b;
+  --at-primary: #3b82f6;
+  --at-primary-fg: #ffffff;
   --at-badge-bg: #27272a;
   --at-badge-fg: #fafafa;
   --at-shadow: 0 2px 8px rgba(0, 0, 0, 0.45);
@@ -58,7 +58,7 @@ body {
   transition: background-color 0.15s ease, color 0.15s ease;
 }
 
-/* Monochrome Surfaces & Cards */
+/* Surfaces & Cards */
 .glass-card,
 .at-card {
   background-color: var(--at-surface) !important;
@@ -68,22 +68,33 @@ body {
   backdrop-filter: none !important;
 }
 
-/* Primary Monochrome CTA Button (Black in Day mode, White in Night mode) */
+/* Primary CTA Button */
 .brand-grad,
-.at-btn-primary {
-  background: var(--at-primary) !important;
-  color: var(--at-primary-fg) !important;
+.at-btn-primary,
+[data-theme="light"] .brand-grad,
+[data-theme="dark"] .brand-grad,
+[data-theme="light"] .brand-grad.text-white,
+[data-theme="dark"] .brand-grad.text-white {
+  background-color: var(--at-primary) !important;
+  background-image: none !important;
+  color: #ffffff !important;
   border: 1px solid var(--at-primary) !important;
   font-weight: 700;
   transition: opacity 0.15s ease, transform 0.1s ease;
 }
 
-.brand-grad:hover,
-.at-btn-primary:hover {
-  opacity: 0.88;
+.brand-grad *,
+[data-theme="light"] .brand-grad *,
+[data-theme="dark"] .brand-grad * {
+  color: #ffffff !important;
 }
 
-/* Secondary Monochrome Button */
+.brand-grad:hover,
+.at-btn-primary:hover {
+  opacity: 0.9;
+}
+
+/* Secondary Button */
 .at-btn-secondary {
   background-color: var(--at-surface-muted) !important;
   color: var(--at-text) !important;
@@ -97,7 +108,7 @@ body {
 [data-theme="light"] .bg-slate-900\/70,
 [data-theme="light"] .bg-slate-900\/50 {
   background-color: #ffffff !important;
-  color: #09090b !important;
+  color: #0f172a !important;
 }
 
 [data-theme="light"] .bg-slate-800,
@@ -105,32 +116,32 @@ body {
 [data-theme="light"] .bg-slate-800\/80,
 [data-theme="light"] .bg-slate-800\/70,
 [data-theme="light"] .bg-slate-800\/60 {
-  background-color: #f4f4f5 !important;
-  color: #09090b !important;
+  background-color: #f1f5f9 !important;
+  color: #0f172a !important;
 }
 
 [data-theme="light"] .bg-slate-700 {
-  background-color: #e4e4e7 !important;
-  color: #09090b !important;
+  background-color: #e2e8f0 !important;
+  color: #0f172a !important;
 }
 
-[data-theme="light"] .text-white,
-[data-theme="light"] .text-slate-100,
-[data-theme="light"] .text-slate-200 {
-  color: #09090b !important;
+[data-theme="light"] .text-white:not(.brand-grad),
+[data-theme="light"] .text-slate-100:not(.brand-grad),
+[data-theme="light"] .text-slate-200:not(.brand-grad) {
+  color: #0f172a !important;
 }
 
 [data-theme="light"] .text-slate-300 {
-  color: #27272a !important;
+  color: #334155 !important;
 }
 
 [data-theme="light"] .text-slate-400 {
-  color: #52525b !important;
+  color: #64748b !important;
 }
 
 [data-theme="light"] .border-slate-800,
 [data-theme="light"] .border-slate-700 {
-  border-color: #e4e4e7 !important;
+  border-color: #cbd5e1 !important;
 }
 
 /* Monochrome accent overrides across both themes */
