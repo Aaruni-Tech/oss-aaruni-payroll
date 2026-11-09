@@ -1,0 +1,51 @@
+{
+  "packageId": "com.aarunitech.payroll",
+  "host": "aaruni-payroll.pages.dev",
+  "name": "Aaruni Tech Payroll & Attendance",
+  "launcherName": "Aaruni Payroll",
+  "display": "standalone",
+  "themeColor": "#0F172A",
+  "navigationColor": "#0F172A",
+  "navigationColorDark": "#0F172A",
+  "navigationDividerColor": "#1E293B",
+  "navigationDividerColorDark": "#1E293B",
+  "backgroundColor": "#0F172A",
+  "enableNotifications": true,
+  "startUrl": "/?source=android_twa",
+  "iconUrl": "https://aaruni-payroll.pages.dev/icon-512.png",
+  "maskableIconUrl": "https://aaruni-payroll.pages.dev/icon-512.png",
+  "appVersionName": "1.0.0",
+  "appVersionCode": 1,
+  "shortcuts": [
+    {
+      "name": "Clock In / Out",
+      "shortName": "Timesheet",
+      "url": "/?tab=clock"
+    },
+    {
+      "name": "Download Payslip PDF",
+      "shortName": "Payslips",
+      "url": "/?tab=payslips"
+    }
+  ],
+  "generatorApp": "bubblewrap-cli",
+  "webManifestUrl": "https://aaruni-payroll.pages.dev/manifest.json",
+  "fallbackType": "customtabs",
+  "features": {
+    "locationDelegation": {
+      "enabled": false
+    },
+    "playBilling": {
+      "enabled": false
+    }
+  },
+  "alphaDependencies": {
+    "enabled": false
+  },
+  "enableSiteSettingsShortcut": true,
+  "isChromeOSOnly": false,
+  "isMetaQuest": false,
+  "fullScopeUrl": "https://aaruni-payroll.pages.dev/",
+  "minSdkVersion": 21,
+  "orientation": "portrait"
+}
