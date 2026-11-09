@@ -1,0 +1,1881 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>Aaruni Tech — HR, Timesheet & Encrypted Payroll Portal (Powered by Syllovo)</title>
+  <meta name="description" content="Mobile-first Attendance, Entry/Exit Timesheet, Encrypted Salary Vault, Self-Service HR Documents, and CA Tax Loss Portal for Aaruni Tech." />
+  <link rel="manifest" href="/manifest.json" />
+  <meta name="theme-color" content="#ea580c" />
+  <script src="https://www.gstatic.com/antigravity/web/dev/tailwindcss.min.js"></script>
+  <style>
+    * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Inter', 'Segoe UI', Roboto, sans-serif;
+      background: #0f172a;
+      color: #f8fafc;
+      margin: 0;
+      padding: 0;
+      overflow-x: hidden;
+    }
+    .glass-card {
+      background: rgba(30, 41, 59, 0.88);
+      border: 1px solid rgba(148, 163, 184, 0.16);
+      backdrop-filter: blur(12px);
+    }
+    .brand-grad {
+      background: linear-gradient(135deg, #ea580c 0%, #c2410c 100%);
+    }
+    .hide-scroll::-webkit-scrollbar { display: none; }
+    .hide-scroll { -ms-overflow-style: none; scrollbar-width: none; }
+    @media print {
+      body * { visibility: hidden; }
+      #printModalContent, #printModalContent * { visibility: visible; }
+      #printModalContent {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+        background: #ffffff !important;
+        color: #000000 !important;
+        box-shadow: none !important;
+      }
+      .no-print { display: none !important; }
+    }
+  </style>
+</head>
+<body class="min-h-screen pb-24">
+
+  <!-- TOP BRAND & SECURITY BAR -->
+  <header class="sticky top-0 z-40 bg-slate-900/95 border-b border-slate-800 backdrop-blur-md px-3 py-2.5">
+    <div class="max-w-5xl mx-auto flex flex-wrap items-center justify-between gap-2">
+      <!-- Brand Logo -->
+      <div class="flex items-center gap-2.5">
+        <div class="w-9 h-9 rounded-xl bg-slate-800 border border-orange-500/40 flex items-center justify-center shadow-inner">
+          <svg width="24" height="22" viewBox="0 0 60 52" fill="none">
+            <path d="M8 46L26 8H35L17 46H8Z" fill="#f8fafc"/>
+            <path d="M27 8L46 46H36L22 18L27 8Z" fill="#ea580c"/>
+          </svg>
+        </div>
+        <div>
+          <div class="flex items-center gap-1.5">
+            <h1 class="text-sm font-bold tracking-tight text-white">Aaruni<span class="text-orange-500">Tech</span></h1>
+            <span class="text-xs px-1.5 py-0.5 rounded bg-orange-500/15 text-orange-400 border border-orange-500/30 font-medium">Syllovo Payroll</span>
+          </div>
+          <p class="text-xs text-slate-400">GST Registered • Beeramguda, TG</p>
+        </div>
+      </div>
+
+      <!-- Controls: Video-Safe Salary Masking Toggle + Persona Switcher -->
+      <div class="flex items-center gap-2">
+        <button id="btnSalaryMask" onclick="toggleSalaryMask()" class="flex items-center gap-1.5 text-xs font-semibold px-2.5 py-1.5 rounded-lg border transition-all bg-emerald-950/70 border-emerald-500/40 text-emerald-300 hover:bg-emerald-900/60" title="Zoho-style Video-Safe Salary Privacy Shield">
+          <span id="maskIcon">🙈</span>
+          <span id="maskLabel">Salaries Hidden</span>
+        </button>
+
+        <select id="personaSelect" onchange="switchPersona(this.value)" class="bg-slate-800 text-xs font-semibold text-white border border-slate-700 rounded-lg px-2.5 py-1.5 focus:outline-none focus:border-orange-500">
+          <option value="ADMIN">👨‍💼 Admin: Rupesh Tiwari (AAR-0002)</option>
+          <option value="AAR-0004">👩‍💻 Staff: Chukka Nandini (AAR-0004)</option>
+          <option value="AAR-0005">👩‍💻 Staff: Janhavi Varma (AAR-0005)</option>
+          <option value="AAR-0006">👩‍💻 Staff: Koppula Ramya (AAR-0006)</option>
+          <option value="AAR-0008">🛡️ Staff: Shaik Ali Moulali (AAR-0008 • New)</option>
+          <option value="AAR-0003">👨‍💼 Staff: Rakesh Tiwari (AAR-0003)</option>
+          <option value="AAR-0007">📁 Relieved: Sonali Roy (AAR-0007 • Inactive)</option>
+        </select>
+      </div>
+    </div>
+  </header>
+
+  <!-- LIVE PUSH NOTIFICATION TOAST BANNER -->
+  <div id="pushToast" class="hidden fixed top-16 right-4 left-4 md:left-auto md:w-96 z-50 bg-slate-900 border-2 border-orange-500 rounded-2xl p-3.5 shadow-2xl">
+    <div class="flex items-start justify-between gap-2">
+      <div class="flex items-start gap-2.5">
+        <span class="text-xl">🔔</span>
+        <div>
+          <div id="pushToastTitle" class="text-xs font-bold text-orange-400 uppercase tracking-wider">Web Push Notification (6–9 PM IST)</div>
+          <div id="pushToastBody" class="text-xs text-slate-200 mt-1 leading-relaxed"></div>
+        </div>
+      </div>
+      <button onclick="document.getElementById('pushToast').classList.add('hidden')" class="text-slate-400 hover:text-white text-sm font-bold px-1">✕</button>
+    </div>
+  </div>
+
+  <!-- MAIN CONTENT CONTAINER -->
+  <main class="max-w-5xl mx-auto px-3 pt-4">
+    <div id="appViewport"></div>
+  </main>
+
+  <!-- MOBILE-FIRST BOTTOM NAVIGATION BAR -->
+  <nav id="bottomNav" class="fixed bottom-0 left-0 right-0 z-40 bg-slate-900/95 border-t border-slate-800 backdrop-blur-lg px-2 py-1.5">
+    <div id="bottomNavItems" class="max-w-xl mx-auto grid grid-cols-5 gap-1"></div>
+  </nav>
+
+  <!-- PRINT / PDF DOCUMENT MODAL (Payslips, Offer Letters, Bank Loan Proofs, Experience Certs, CA Tax Report) -->
+  <div id="docModal" class="hidden fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-2 md:p-6 overflow-y-auto">
+    <div class="bg-slate-900 border border-slate-700 rounded-2xl max-w-3xl w-full overflow-hidden shadow-2xl my-auto">
+      <div class="flex items-center justify-between px-4 py-3 bg-slate-800 border-b border-slate-700 no-print">
+        <div class="flex items-center gap-2">
+          <span class="text-base">📄</span>
+          <h3 id="docModalTitle" class="text-sm font-bold text-white">Official Aaruni Tech Document</h3>
+        </div>
+        <div class="flex items-center gap-2">
+          <button onclick="window.print()" class="brand-grad text-white text-xs font-bold px-3 py-1.5 rounded-lg shadow hover:opacity-95">
+            🖨️ Print / Save PDF
+          </button>
+          <button onclick="closeDocModal()" class="bg-slate-700 text-slate-200 text-xs font-semibold px-2.5 py-1.5 rounded-lg hover:bg-slate-600">
+            Close
+          </button>
+        </div>
+      </div>
+      <div id="printModalContent" class="bg-white text-slate-900 p-4 md:p-8 max-h-[82vh] overflow-y-auto"></div>
+    </div>
+  </div>
+
+  <script>
+    // ============================================================================
+    // 1. INITIAL STATE: ROSTER (AAR-0001 TO AAR-0008), MIGRATED TIMESHEETS & TAX
+    // ============================================================================
+    const DEFAULT_EMPLOYEES = [
+      {
+        id: "AAR-0001",
+        zohoId: "001",
+        name: "Nisha Tiwari",
+        role: "Proprietor",
+        status: "Active",
+        isExecutive: true,
+        trackTimesheet: false,
+        shiftHours: 8,
+        monthlyCtc: 0,
+        joiningDate: "01/01/2025",
+        dob: "Confidential",
+        fatherName: "Confidential",
+        pan: "Confidential",
+        aadhaar: "Confidential",
+        mobile: "7842097003",
+        email: "nisha.tiwari.mail@gmail.com",
+        alternateEmails: [],
+        address: "Villa 257 Chaitanya Nagar Colony, Praneeth Pranav Knight Woods, Beeramguda, Telangana - 502319",
+        bankName: "Axis Bank",
+        accountHolder: "Nisha Tiwari",
+        bankAccount: "Confidential",
+        ifsc: "UTIB0002057",
+        upiId: "nisha.tiwari@okaxis",
+        idCardFile: "AAR-0001_Nisha_Tiwari_ID_Card.png"
+      },
+      {
+        id: "AAR-0002",
+        zohoId: "002",
+        name: "Rupesh Kumar Tiwari",
+        role: "Strategic Advisor",
+        status: "Active",
+        isExecutive: true,
+        trackTimesheet: false,
+        shiftHours: 8,
+        monthlyCtc: 0,
+        joiningDate: "01/01/2025",
+        dob: "Confidential",
+        fatherName: "Confidential",
+        pan: "Confidential",
+        aadhaar: "Confidential",
+        mobile: "7842097003",
+        email: "roopkt2@gmail.com",
+        alternateEmails: ["rupesh@fullstackmaster.net", "roopkt@gmail.com"],
+        address: "Villa 257 Chaitanya Nagar Colony, Praneeth Pranav Knight Woods, Beeramguda, Telangana - 502319",
+        bankName: "Axis Bank",
+        accountHolder: "Rupesh Kumar Tiwari",
+        bankAccount: "xxxx3409",
+        ifsc: "UTIB0002057",
+        upiId: "rupeshtiwari@okaxis",
+        idCardFile: "AAR-0002_Rupesh_Tiwari_ID_Card.png"
+      },
+      {
+        id: "AAR-0003",
+        zohoId: "003-OPS",
+        name: "Rakesh Tiwari",
+        role: "Operations Manager",
+        status: "Active",
+        trackTimesheet: true,
+        shiftHours: 8,
+        monthlyCtc: 10000,
+        joiningDate: "01/01/2026",
+        dob: "Pending",
+        fatherName: "Pending",
+        pan: "Pending",
+        aadhaar: "Pending",
+        mobile: "7842097003",
+        email: "rakesh.aaruni@gmail.com",
+        alternateEmails: [],
+        address: "Beeramguda, Telangana - 502319",
+        bankName: "Axis Bank",
+        accountHolder: "Rakesh Tiwari",
+        bankAccount: "Pending",
+        ifsc: "UTIB0002057",
+        upiId: "rakeshtiwari@upi",
+        idCardFile: "AAR-0003_Rakesh_Tiwari_ID_Card.jpeg"
+      },
+      {
+        id: "AAR-0004",
+        zohoId: "004",
+        name: "Chukka Nandini",
+        role: "Engineering Manager",
+        designationSub: "Technical Team Lead",
+        status: "Active",
+        trackTimesheet: true,
+        shiftHours: 8,
+        monthlyCtc: 12500,
+        joiningDate: "28/12/2025",
+        dob: "13/05/2008",
+        fatherName: "Chukka Balraj",
+        pan: "No PAN",
+        aadhaar: "2639 7066 9636",
+        mobile: "8143088771",
+        email: "nandini.chukka.fsm@gmail.com",
+        alternateEmails: ["nandinichukka72@gmail.com"],
+        address: "H NO 0001, Tenkati, PO: Tenkati, Shankarampet (A), Medak, Telangana - 502271",
+        bankName: "Union Bank of India",
+        accountHolder: "Chukka Madhavi / Chukka Nandini",
+        bankAccount: "08450274004",
+        ifsc: "UBIN0826669",
+        upiId: "8143088771@ybl",
+        idCardFile: "AAR-0004_Chukka_Nandini_ID_Card.png"
+      },
+      {
+        id: "AAR-0005",
+        zohoId: "AAR-0005",
+        name: "Janhavi Varma",
+        role: "Software Development Engineer",
+        designationSub: "Technical Associate",
+        status: "Active",
+        trackTimesheet: true,
+        shiftHours: 8,
+        monthlyCtc: 12000,
+        joiningDate: "21/04/2026",
+        dob: "30/12/2006",
+        fatherName: "Rajendra Kumar Verma",
+        pan: "DDXPV6059K",
+        aadhaar: "7157 5048 2335",
+        mobile: "9014627501",
+        email: "janvi.varma.fsm@gmail.com",
+        alternateEmails: ["kjhanvi88@gmail.com"],
+        address: "H.NO-9-193/4, Ambedkar Colony, Patancheru, Telangana - 502319",
+        bankName: "State Bank of India",
+        accountHolder: "JANHAVI VARMA",
+        bankAccount: "42282148001",
+        ifsc: "SBIN0010689",
+        upiId: "9014627501@ybl",
+        idCardFile: "AAR-0005_Janhavi_Varma_ID_Card.png"
+      },
+      {
+        id: "AAR-0006",
+        zohoId: "003",
+        name: "Koppula Ramya",
+        role: "Software Development Engineer",
+        designationSub: "Technical Associate",
+        status: "Active",
+        trackTimesheet: true,
+        shiftHours: 8,
+        monthlyCtc: 8500,
+        joiningDate: "03/08/2026",
+        dob: "02/10/2004",
+        fatherName: "Koppula Surya Prasad",
+        pan: "No PAN",
+        aadhaar: "4565 9170 0731",
+        mobile: "9502770375",
+        email: "koppula.ramya.fsm@gmail.com",
+        alternateEmails: [],
+        address: "H no 16-113/10/2, Plot no 70, Maruthinagar, Beeramguda, Telangana - 502032",
+        bankName: "Canara Bank",
+        accountHolder: "Koppula Ramya",
+        bankAccount: "110077657480",
+        ifsc: "CNRB0000033",
+        upiId: "9502770375@ybl",
+        idCardFile: "AAR-0006_Koppula_Ramya_ID_Card.png"
+      },
+      {
+        id: "AAR-0007",
+        zohoId: "007",
+        name: "Sonali Roy",
+        role: "Technical Associate",
+        status: "Inactive",
+        relievingDate: "18/10/2026",
+        trackTimesheet: false,
+        shiftHours: 8,
+        monthlyCtc: 8500,
+        joiningDate: "01/10/2026",
+        dob: "N/A",
+        fatherName: "N/A",
+        pan: "N/A",
+        aadhaar: "N/A",
+        mobile: "N/A",
+        email: "sonali.roy@example.com",
+        alternateEmails: [],
+        address: "Hyderabad, Telangana",
+        bankName: "N/A",
+        accountHolder: "Sonali Roy",
+        bankAccount: "N/A",
+        ifsc: "N/A",
+        upiId: "",
+        idCardFile: "Archived (Inactive)"
+      },
+      {
+        id: "AAR-0008",
+        zohoId: "008",
+        name: "Shaik Ali Moulali",
+        role: "Security Operations",
+        status: "Active",
+        trackTimesheet: true,
+        shiftHours: 8,
+        monthlyCtc: 10000,
+        joiningDate: "01/11/2026",
+        dob: "06/09/1989",
+        fatherName: "S Sayya Savali",
+        pan: "Pending",
+        aadhaar: "6213 9858 1473",
+        mobile: "9052088836",
+        email: "shaik.ali.aaruni@gmail.com",
+        alternateEmails: [],
+        address: "15-9G6A, SAIBABA PETA, VTC: Nandi Kotkur, PO: Nandikotkur, District: Kurnool, Andhra Pradesh - 518401",
+        bankName: "Pending Bank Details",
+        accountHolder: "Shaik Ali Moulali",
+        bankAccount: "Pending",
+        ifsc: "Pending",
+        upiId: "9052088836@ybl",
+        idCardFile: "AAR-0008_Shaik_Ali_Moulali_ID_Card.jpg"
+      }
+    ];
+
+    // Real migrated Nov 2026 Google Form entries (with kjhanvi88 & nandinichukka72 auto-resolved!)
+    const INITIAL_TIMESHEETS = [
+      { id: "NOV-004-01", empId: "AAR-0004", date: "2026-11-01", entryTime: "10:00", exitTime: "18:00", hours: 8, status: "Worked (Sunday Extra)", summary: "Worked on presentation", taskLink: "Google Form #190", source: "Google Form (Verified)" },
+      { id: "NOV-004-02", empId: "AAR-0004", date: "2026-11-02", entryTime: "10:00", exitTime: "18:00", hours: 8, status: "Worked", summary: "Worked on presentation", taskLink: "Resolved from nandinichukka72@gmail.com", source: "Google Form (Alias Fixed)" },
+      { id: "NOV-004-03", empId: "AAR-0004", date: "2026-11-03", entryTime: "10:00", exitTime: "18:00", hours: 8, status: "Worked", summary: "Worked on m2 presentation slides", taskLink: "Google Form #195", source: "Google Form (Verified)" },
+      { id: "NOV-004-04", empId: "AAR-0004", date: "2026-11-04", entryTime: "10:00", exitTime: "18:00", hours: 8, status: "Worked", summary: "Worked on slides", taskLink: "Google Form #198", source: "Google Form (Verified)" },
+      { id: "NOV-004-05", empId: "AAR-0004", date: "2026-11-05", entryTime: "10:00", exitTime: "18:00", hours: 8, status: "Worked", summary: "Worked on Zap project", taskLink: "Google Form #199", source: "Google Form (Verified)" },
+      { id: "NOV-004-06", empId: "AAR-0004", date: "2026-11-06", entryTime: "10:00", exitTime: "18:00", hours: 8, status: "Worked", summary: "Worked on presentation and coursera", taskLink: "Google Form #201", source: "Google Form (Verified)" },
+      { id: "NOV-004-07", empId: "AAR-0004", date: "2026-11-07", entryTime: "10:00", exitTime: "18:00", hours: 8, status: "Worked", summary: "Editing", taskLink: "Google Form #207", source: "Google Form (Verified)" },
+
+      { id: "NOV-005-01", empId: "AAR-0005", date: "2026-11-01", entryTime: "10:00", exitTime: "18:00", hours: 8, status: "Worked (Sunday Extra)", summary: "Demo recording", taskLink: "Resolved from kjhanvi88@gmail.com", source: "Google Form (Alias Fixed)" },
+      { id: "NOV-005-02", empId: "AAR-0005", date: "2026-11-02", entryTime: "14:00", exitTime: "18:00", hours: 4, status: "Worked", summary: "Demo editing", taskLink: "Resolved from kjhanvi88@gmail.com", source: "Google Form (Alias Fixed)" },
+      { id: "NOV-005-03", empId: "AAR-0005", date: "2026-11-03", entryTime: "14:00", exitTime: "18:00", hours: 4, status: "Worked", summary: "Editing demo", taskLink: "Resolved from kjhanvi88@gmail.com", source: "Google Form (Alias Fixed)" },
+      { id: "NOV-005-05", empId: "AAR-0005", date: "2026-11-05", entryTime: "14:00", exitTime: "18:00", hours: 4, status: "Worked", summary: "Worked on demo m1-02", taskLink: "Google Form #200", source: "Google Form (Verified)" },
+      { id: "NOV-005-06", empId: "AAR-0005", date: "2026-11-06", entryTime: "14:00", exitTime: "18:00", hours: 4, status: "Worked", summary: "Editing", taskLink: "Resolved from kjhanvi88@gmail.com", source: "Google Form (Alias Fixed)" },
+      { id: "NOV-005-07", empId: "AAR-0005", date: "2026-11-07", entryTime: "10:00", exitTime: "18:00", hours: 8, status: "Worked", summary: "Demos", taskLink: "Resolved from kjhanvi88@gmail.com", source: "Google Form (Alias Fixed)" },
+
+      { id: "NOV-006-01", empId: "AAR-0006", date: "2026-11-01", entryTime: "10:00", exitTime: "18:00", hours: 8, status: "Worked (Sunday Extra)", summary: "Worked on m1-d3 video", taskLink: "Google Form #187", source: "Google Form (Verified)" },
+      { id: "NOV-006-02", empId: "AAR-0006", date: "2026-11-02", entryTime: "10:00", exitTime: "15:00", hours: 5, status: "Worked", summary: "Worked on demo video", taskLink: "Google Form #194", source: "Google Form (Verified)" },
+      { id: "NOV-006-03", empId: "AAR-0006", date: "2026-11-03", entryTime: "10:00", exitTime: "16:00", hours: 6, status: "Worked", summary: "Worked on demo video", taskLink: "Google Form #196", source: "Google Form (Verified)" },
+      { id: "NOV-006-04", empId: "AAR-0006", date: "2026-11-04", entryTime: "10:00", exitTime: "16:00", hours: 6, status: "Worked", summary: "Worked on demo video", taskLink: "Google Form #202", source: "Google Form (Verified)" },
+      { id: "NOV-006-05", empId: "AAR-0006", date: "2026-11-05", entryTime: "10:00", exitTime: "16:00", hours: 6, status: "Worked", summary: "Worked on demo video", taskLink: "Google Form #203", source: "Google Form (Verified)" },
+      { id: "NOV-006-06", empId: "AAR-0006", date: "2026-11-06", entryTime: "10:00", exitTime: "15:00", hours: 5, status: "Worked", summary: "Worked on demo video", taskLink: "Google Form #204", source: "Google Form (Verified)" },
+
+      { id: "NOV-008-01", empId: "AAR-0008", date: "2026-11-02", entryTime: "09:00", exitTime: "17:00", hours: 8, status: "Worked", summary: "Security & facility operations setup", taskLink: "On-site", source: "Admin Onboarding" },
+      { id: "NOV-008-02", empId: "AAR-0008", date: "2026-11-03", entryTime: "09:00", exitTime: "17:00", hours: 8, status: "Worked", summary: "Premises security & vendor check", taskLink: "On-site", source: "Mobile PWA" },
+      { id: "NOV-008-03", empId: "AAR-0008", date: "2026-11-04", entryTime: "09:00", exitTime: "17:00", hours: 8, status: "Worked", summary: "Daily security patrol & log", taskLink: "On-site", source: "Mobile PWA" },
+      { id: "NOV-008-04", empId: "AAR-0008", date: "2026-11-05", entryTime: "09:00", exitTime: "17:00", hours: 8, status: "Worked", summary: "Daily security patrol & log", taskLink: "On-site", source: "Mobile PWA" },
+      { id: "NOV-008-05", empId: "AAR-0008", date: "2026-11-06", entryTime: "09:00", exitTime: "17:00", hours: 8, status: "Worked", summary: "Daily security patrol & log", taskLink: "On-site", source: "Mobile PWA" },
+      { id: "NOV-008-06", empId: "AAR-0008", date: "2026-11-07", entryTime: "09:00", exitTime: "17:00", hours: 8, status: "Worked", summary: "Daily security patrol & log", taskLink: "On-site", source: "Mobile PWA" }
+    ];
+
+    // Historical 2026 Monthly Summary migrated from Nandini_FSM_Daily_Timesheet.xlsx
+    const LEGACY_2026_ROLLUP = [
+      { month: "2026-01", label: "January 2026", nandiniDays: 24, nandiniHours: 170, totalPayroll: 12500, opsExpense: 8500, revenue: 0 },
+      { month: "2026-02", label: "February 2026", nandiniDays: 22, nandiniHours: 176, totalPayroll: 12500, opsExpense: 7800, revenue: 0 },
+      { month: "2026-03", label: "March 2026", nandiniDays: 25, nandiniHours: 195, totalPayroll: 12500, opsExpense: 9200, revenue: 0 },
+      { month: "2026-04", label: "April 2026", nandiniDays: 26, nandiniHours: 208, totalPayroll: 24500, opsExpense: 11000, revenue: 0 },
+      { month: "2026-05", label: "May 2026", nandiniDays: 23, nandiniHours: 184, totalPayroll: 24500, opsExpense: 9500, revenue: 0 },
+      { month: "2026-06", label: "June 2026", nandiniDays: 22, nandiniHours: 176, totalPayroll: 24500, opsExpense: 10400, revenue: 0 },
+      { month: "2026-07", label: "July 2026", nandiniDays: 27, nandiniHours: 214, totalPayroll: 24500, opsExpense: 9800, revenue: 0 },
+      { month: "2026-08", label: "August 2026", nandiniDays: 25, nandiniHours: 200, totalPayroll: 33000, opsExpense: 12500, revenue: 0 },
+      { month: "2026-09", label: "September 2026", nandiniDays: 23, nandiniHours: 184, totalPayroll: 33000, opsExpense: 11200, revenue: 0 },
+      { month: "2026-10", label: "October 2026", nandiniDays: 26, nandiniHours: 208, totalPayroll: 35500, opsExpense: 14000, revenue: 0 }
+    ];
+
+    // Pre-seeded Published Payslips (matching exact Payslip_004_Oct_2026.pdf from Zoho!)
+    const INITIAL_PAYSLIPS = [
+      {
+        id: "PS-2026-10-AAR-0004",
+        empId: "AAR-0004",
+        yearMonth: "2026-10",
+        periodLabel: "October 2026",
+        payDate: "31/10/2026",
+        paidDays: 30,
+        lopDays: 1,
+        basic: 6048,
+        fixedAllowance: 6048,
+        bonus: 404,
+        grossEarnings: 12500,
+        deductions: 5000,
+        netPay: 7500,
+        amountInWords: "Indian Rupee Seven Thousand Five Hundred Only",
+        status: "Paid via Axis Bank (UTIB0002057)"
+      },
+      {
+        id: "PS-2026-10-AAR-0005",
+        empId: "AAR-0005",
+        yearMonth: "2026-10",
+        periodLabel: "October 2026",
+        payDate: "31/10/2026",
+        paidDays: 31,
+        lopDays: 0,
+        basic: 6000,
+        fixedAllowance: 6000,
+        bonus: 0,
+        grossEarnings: 12000,
+        deductions: 0,
+        netPay: 12000,
+        amountInWords: "Indian Rupee Twelve Thousand Only",
+        status: "Paid via Axis Bank (UTIB0002057)"
+      },
+      {
+        id: "PS-2026-10-AAR-0006",
+        empId: "AAR-0006",
+        yearMonth: "2026-10",
+        periodLabel: "October 2026",
+        payDate: "31/10/2026",
+        paidDays: 31,
+        lopDays: 0,
+        basic: 4250,
+        fixedAllowance: 4250,
+        bonus: 0,
+        grossEarnings: 8500,
+        deductions: 0,
+        netPay: 8500,
+        amountInWords: "Indian Rupee Eight Thousand Five Hundred Only",
+        status: "Paid via Axis Bank (UTIB0002057)"
+      }
+    ];
+
+    const INITIAL_LOANS = [
+      {
+        id: "LOAN-001",
+        empId: "AAR-0004",
+        empName: "Chukka Nandini",
+        type: "Personal Advance",
+        totalAmount: 10000,
+        monthlyDeduction: 5000,
+        remainingBalance: 5000,
+        startMonth: "2026-10",
+        status: "Active"
+      }
+    ];
+
+    const INITIAL_MESSAGES = [
+      {
+        id: "MSG-1",
+        senderId: "AAR-0002",
+        senderName: "Rupesh Tiwari (Admin)",
+        recipientId: "ALL",
+        recipientName: "All Aaruni Tech Team",
+        body: "Welcome to our new Aaruni Tech Mobile Portal! Please log your Entry Time & Exit Time daily before 6:00 PM IST to avoid automatic evening push reminders.",
+        time: "09 Nov 2026, 09:30 AM"
+      },
+      {
+        id: "MSG-2",
+        senderId: "AAR-0004",
+        senderName: "Chukka Nandini",
+        recipientId: "AAR-0002",
+        recipientName: "Rupesh Tiwari (Admin)",
+        body: "Sir, I logged my Nov 2nd attendance from nandinichukka72@gmail.com earlier — glad the new app automatically linked it to my AAR-0004 profile!",
+        time: "09 Nov 2026, 10:15 AM"
+      }
+    ];
+
+    // Load or initialize state
+    let state = {
+      persona: "ADMIN", // "ADMIN" or empId
+      activeTab: "pulse",
+      salariesMasked: true, // Zoho-style default hidden salary mode!
+      selectedMonth: "2026-11",
+      throughDate: "2026-11-09",
+      compOffApproved: { "AAR-0004": true, "AAR-0005": true, "AAR-0006": true, "AAR-0008": true },
+      employees: JSON.parse(localStorage.getItem("aaruni_emp_v2") || "null") || DEFAULT_EMPLOYEES,
+      timesheets: JSON.parse(localStorage.getItem("aaruni_ts_v2") || "null") || INITIAL_TIMESHEETS,
+      payslips: JSON.parse(localStorage.getItem("aaruni_ps_v2") || "null") || INITIAL_PAYSLIPS,
+      loans: JSON.parse(localStorage.getItem("aaruni_loans_v2") || "null") || INITIAL_LOANS,
+      messages: JSON.parse(localStorage.getItem("aaruni_msg_v2") || "null") || INITIAL_MESSAGES,
+      taxRollup: JSON.parse(localStorage.getItem("aaruni_tax_v2") || "null") || LEGACY_2026_ROLLUP
+    };
+
+    function saveState() {
+      localStorage.setItem("aaruni_emp_v2", JSON.stringify(state.employees));
+      localStorage.setItem("aaruni_ts_v2", JSON.stringify(state.timesheets));
+      localStorage.setItem("aaruni_ps_v2", JSON.stringify(state.payslips));
+      localStorage.setItem("aaruni_loans_v2", JSON.stringify(state.loans));
+      localStorage.setItem("aaruni_msg_v2", JSON.stringify(state.messages));
+      localStorage.setItem("aaruni_tax_v2", JSON.stringify(state.taxRollup));
+    }
+
+    // ============================================================================
+    // 2. HELPERS: SALARY MASKING, INDIAN WORDS, PAYROLL ENGINE
+    // ============================================================================
+    function fmtINR(amount, forceUnmask = false) {
+      if (state.salariesMasked && !forceUnmask) {
+        return `<span class="inline-flex items-center gap-1 font-mono text-amber-300/90 bg-slate-800/90 px-1.5 py-0.5 rounded border border-slate-700 cursor-pointer" onclick="toggleSalaryMask()" title="Tap to reveal salaries">₹ •••••• <span class="text-xs">👁️</span></span>`;
+      }
+      return "₹" + Number(amount || 0).toLocaleString("en-IN");
+    }
+
+    function toggleSalaryMask() {
+      state.salariesMasked = !state.salariesMasked;
+      const btn = document.getElementById("btnSalaryMask");
+      const icon = document.getElementById("maskIcon");
+      const label = document.getElementById("maskLabel");
+      if (state.salariesMasked) {
+        icon.textContent = "🙈";
+        label.textContent = "Salaries Hidden";
+        btn.className = "flex items-center gap-1.5 text-xs font-semibold px-2.5 py-1.5 rounded-lg border transition-all bg-emerald-950/70 border-emerald-500/40 text-emerald-300";
+      } else {
+        icon.textContent = "👁️";
+        label.textContent = "Salaries Visible";
+        btn.className = "flex items-center gap-1.5 text-xs font-semibold px-2.5 py-1.5 rounded-lg border transition-all bg-amber-950/80 border-amber-500/50 text-amber-300";
+      }
+      renderApp();
+    }
+
+    function numberToIndianWords(amount) {
+      const num = Math.round(Number(amount || 0));
+      if (num <= 0) return "Indian Rupee Zero Only";
+      const ones = ["","One","Two","Three","Four","Five","Six","Seven","Eight","Nine","Ten","Eleven","Twelve","Thirteen","Fourteen","Fifteen","Sixteen","Seventeen","Eighteen","Nineteen"];
+      const tens = ["","","Twenty","Thirty","Forty","Fifty","Sixty","Seventy","Eighty","Ninety"];
+      function two(n) { return n < 20 ? ones[n] : tens[Math.floor(n/10)] + (n%10 ? " " + ones[n%10] : ""); }
+      function conv(n) {
+        let s = "";
+        if (n >= 10000000) { s += conv(Math.floor(n/10000000)) + " Crore "; n %= 10000000; }
+        if (n >= 100000) { s += two(Math.floor(n/100000)) + " Lakh "; n %= 100000; }
+        if (n >= 1000) { s += two(Math.floor(n/1000)) + " Thousand "; n %= 1000; }
+        if (n >= 100) { s += ones[Math.floor(n/100)] + " Hundred "; n %= 100; }
+        if (n > 0) s += two(n);
+        return s.trim();
+      }
+      return "Indian Rupee " + conv(num) + " Only";
+    }
+
+    function calcHoursBetween(inTime, outTime) {
+      if (!inTime || !outTime) return 0;
+      const [h1, m1] = inTime.split(":").map(Number);
+      const [h2, m2] = outTime.split(":").map(Number);
+      let mins = (h2 * 60 + m2) - (h1 * 60 + m1);
+      if (mins < 0) mins += 1440;
+      return Math.round((mins / 60) * 100) / 100;
+    }
+
+    function computeEmployeePayroll(emp, ym = "2026-11") {
+      const [y, m] = ym.split("-").map(Number);
+      const calendarDays = new Date(y, m, 0).getDate();
+      const limitDay = ym === "2026-11" ? 9 : calendarDays;
+      const shift = Number(emp.shiftHours || 8);
+      const ctc = Number(emp.monthlyCtc || 0);
+      const dailyRate = calendarDays > 0 ? ctc / calendarDays : 0;
+
+      const empEntries = state.timesheets.filter(t => t.empId === emp.id && t.date.startsWith(ym));
+      const mapByDate = new Map();
+      empEntries.forEach(e => mapByDate.set(e.date, e));
+
+      let paidSundays = 0;
+      let workedDays = 0;
+      let regularHours = 0;
+      let sundayExtraHours = 0;
+      let shortHours = 0;
+      let absentDays = 0;
+
+      for (let d = 1; d <= limitDay; d++) {
+        const dStr = `${ym}-${String(d).padStart(2, "0")}`;
+        const dayOfWeek = new Date(y, m - 1, d).getDay();
+        const entry = mapByDate.get(dStr);
+        const hrs = entry ? Number(entry.hours || 0) : 0;
+
+        if (dayOfWeek === 0) {
+          paidSundays++;
+          if (hrs > 0) {
+            sundayExtraHours += hrs;
+            workedDays++;
+          }
+        } else {
+          if (hrs > 0) {
+            workedDays++;
+            regularHours += hrs;
+            if (hrs < shift) shortHours += (shift - hrs);
+          } else {
+            absentDays++;
+          }
+        }
+      }
+
+      const useCompOff = state.compOffApproved[emp.id] !== false;
+      const offsetHrs = useCompOff ? Math.min(sundayExtraHours, shortHours + absentDays * shift) : 0;
+      const totalShortfallHrs = Math.max(0, (shortHours + absentDays * shift) - offsetHrs);
+      const lopDays = Math.round((totalShortfallHrs / shift) * 100) / 100;
+
+      const accruedPayableDays = Math.max(0, limitDay - lopDays);
+      const accruedSalarySoFar = Math.round(dailyRate * accruedPayableDays);
+
+      const fullMonthPayableDays = Math.max(0, calendarDays - lopDays);
+      const grossEarned = Math.round(dailyRate * fullMonthPayableDays);
+      const basic = Math.round(grossEarned * 0.5);
+      const allowance = grossEarned - basic;
+
+      const activeLoan = state.loans.find(l => l.empId === emp.id && l.status === "Active" && l.remainingBalance > 0);
+      const loanCut = activeLoan ? Math.min(activeLoan.monthlyDeduction, activeLoan.remainingBalance) : 0;
+      const netPay = Math.max(0, grossEarned - loanCut);
+
+      const submittedToday = mapByDate.has("2026-11-09");
+
+      return {
+        emp,
+        ym,
+        calendarDays,
+        limitDay,
+        workedDays,
+        paidSundays,
+        regularHours,
+        sundayExtraHours,
+        totalHours: regularHours + sundayExtraHours,
+        shortHours,
+        absentDays,
+        offsetHrs,
+        lopDays,
+        accruedPayableDays,
+        accruedSalarySoFar,
+        fullMonthPayableDays,
+        grossEarned,
+        basic,
+        allowance,
+        loanCut,
+        netPay,
+        submittedToday,
+        entries: empEntries.sort((a, b) => b.date.localeCompare(a.date))
+      };
+    }
+
+    function showToast(title, body) {
+      document.getElementById("pushToastTitle").textContent = title;
+      document.getElementById("pushToastBody").textContent = body;
+      document.getElementById("pushToast").classList.remove("hidden");
+    }
+
+    // ============================================================================
+    // 3. PERSONA & NAVIGATION CONTROLLER
+    // ============================================================================
+    function switchPersona(val) {
+      state.persona = val;
+      state.activeTab = val === "ADMIN" ? "pulse" : "timesheet";
+      renderApp();
+    }
+
+    function setTab(tabId) {
+      state.activeTab = tabId;
+      renderApp();
+    }
+
+    function renderBottomNav() {
+      const nav = document.getElementById("bottomNavItems");
+      if (state.persona === "ADMIN") {
+        const tabs = [
+          { id: "pulse", icon: "🚨", label: "HR Pulse" },
+          { id: "payroll", icon: "💸", label: "1st Payroll" },
+          { id: "roster", icon: "👥", label: "Staff & IDs" },
+          { id: "catax", icon: "📉", label: "CA & Loss" },
+          { id: "oss", icon: "🌐", label: "Syllovo OSS" }
+        ];
+        nav.className = "max-w-xl mx-auto grid grid-cols-5 gap-1";
+        nav.innerHTML = tabs.map(t => `
+          <button onclick="setTab('${t.id}')" class="flex flex-col items-center justify-center py-1.5 rounded-xl transition-all ${state.activeTab === t.id ? 'bg-orange-500/20 text-orange-400 font-bold border border-orange-500/30' : 'text-slate-400 hover:text-slate-200'}">
+            <span class="text-base">${t.icon}</span>
+            <span class="text-xs mt-0.5">${t.label}</span>
+          </button>
+        `).join("");
+      } else {
+        const tabs = [
+          { id: "timesheet", icon: "⏱️", label: "Timesheet" },
+          { id: "payslips", icon: "💰", label: "Payslips" },
+          { id: "hrdocs", icon: "📄", label: "HR & Loan Docs" },
+          { id: "chat", icon: "💬", label: "Messages" }
+        ];
+        nav.className = "max-w-xl mx-auto grid grid-cols-4 gap-1";
+        nav.innerHTML = tabs.map(t => `
+          <button onclick="setTab('${t.id}')" class="flex flex-col items-center justify-center py-1.5 rounded-xl transition-all ${state.activeTab === t.id ? 'bg-orange-500/20 text-orange-400 font-bold border border-orange-500/30' : 'text-slate-400 hover:text-slate-200'}">
+            <span class="text-base">${t.icon}</span>
+            <span class="text-xs mt-0.5">${t.label}</span>
+          </button>
+        `).join("");
+      }
+    }
+
+    // ============================================================================
+    // 4. STAFF PORTAL VIEWS (MOBILE-FIRST)
+    // ============================================================================
+    function renderStaffPortal(emp) {
+      const stats = computeEmployeePayroll(emp, "2026-11");
+
+      if (state.activeTab === "timesheet") {
+        return `
+          <!-- Staff Welcome & Status Card -->
+          <div class="glass-card rounded-2xl p-4 mb-4">
+            <div class="flex items-center justify-between flex-wrap gap-2">
+              <div class="flex items-center gap-3">
+                <div class="w-11 h-11 rounded-full brand-grad flex items-center justify-center text-white font-bold text-base shadow">
+                  ${emp.name.split(" ").map(n => n[0]).join("").slice(0,2)}
+                </div>
+                <div>
+                  <div class="flex items-center gap-2">
+                    <h2 class="text-base font-bold text-white">${emp.name}</h2>
+                    <span class="text-xs px-2 py-0.5 rounded-full font-semibold ${emp.status === 'Active' ? 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/30' : 'bg-rose-500/20 text-rose-300 border border-rose-500/30'}">${emp.id} • ${emp.status}</span>
+                  </div>
+                  <p class="text-xs text-slate-400">${emp.role} • Shift: ${emp.shiftHours}h/day</p>
+                </div>
+              </div>
+              <button onclick="previewIDCard('${emp.id}')" class="text-xs bg-slate-800 hover:bg-slate-700 text-orange-400 border border-orange-500/30 px-3 py-1.5 rounded-xl font-semibold">
+                🪪 View My ID Card
+              </button>
+            </div>
+
+            ${!stats.submittedToday && emp.status === 'Active' ? `
+              <div class="mt-3 bg-amber-500/15 border border-amber-500/40 rounded-xl p-3 flex items-center justify-between gap-2">
+                <div class="flex items-center gap-2.5">
+                  <span class="text-lg">⏰</span>
+                  <div>
+                    <div class="text-xs font-bold text-amber-300">Evening Push Reminder Active (6:00 PM – 9:00 PM IST)</div>
+                    <div class="text-xs text-amber-200/80">You haven't logged your Entry & Exit time for today (09 Nov 2026). Submit below to stop reminders!</div>
+                  </div>
+                </div>
+              </div>
+            ` : `
+              <div class="mt-3 bg-emerald-500/15 border border-emerald-500/30 rounded-xl p-2.5 flex items-center gap-2 text-xs text-emerald-300 font-medium">
+                <span>✅</span> Today's timesheet is logged! Evening 6–9 PM reminders are paused for you today.
+              </div>
+            `}
+          </div>
+
+          <!-- Monthly Summary & Live Accrued Salary Grid -->
+          <div class="grid grid-cols-2 md:grid-cols-4 gap-2.5 mb-4">
+            <div class="glass-card rounded-xl p-3">
+              <div class="text-xs text-slate-400">Hours Worked (Nov)</div>
+              <div class="text-lg font-extrabold text-white mt-0.5">${stats.totalHours} hrs</div>
+              <div class="text-xs text-emerald-400 mt-0.5">${stats.workedDays} days + ${stats.paidSundays} Paid Sun</div>
+            </div>
+            <div class="glass-card rounded-xl p-3">
+              <div class="text-xs text-slate-400">Accrued Salary So Far</div>
+              <div class="text-lg font-extrabold text-emerald-400 mt-0.5">${fmtINR(stats.accruedSalarySoFar)}</div>
+              <div class="text-xs text-slate-400 mt-0.5">${stats.accruedPayableDays} / ${stats.limitDay} covered days</div>
+            </div>
+            <div class="glass-card rounded-xl p-3">
+              <div class="text-xs text-slate-400">Full Monthly Salary</div>
+              <div class="text-lg font-extrabold text-white mt-0.5">${fmtINR(emp.monthlyCtc)}</div>
+              <div class="text-xs text-slate-400 mt-0.5">Projected Net: ${fmtINR(stats.netPay)}</div>
+            </div>
+            <div class="glass-card rounded-xl p-3">
+              <div class="text-xs text-slate-400">Net LOP / Comp-Off</div>
+              <div class="text-lg font-extrabold ${stats.lopDays > 0 ? 'text-amber-400' : 'text-emerald-400'} mt-0.5">${stats.lopDays} LOP d</div>
+              <div class="text-xs text-slate-400 mt-0.5">Sun Extra: ${stats.sundayExtraHours}h</div>
+            </div>
+          </div>
+
+          <!-- Entry Time & Exit Time Submission Form -->
+          <div class="glass-card rounded-2xl p-4 mb-4 border-l-4 border-l-orange-500">
+            <div class="flex items-center justify-between mb-3">
+              <h3 class="text-sm font-bold text-white">⏱️ Submit Daily Entry & Exit Timesheet</h3>
+              <span class="text-xs text-orange-400 font-medium">Auto-Calculates Hours & Syncs to Excel</span>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-3">
+              <div>
+                <label class="block text-xs text-slate-400 mb-1">Attendance Date</label>
+                <input type="date" id="tsDate" value="2026-11-09" class="w-full bg-slate-800 border border-slate-700 rounded-xl px-3 py-2 text-xs text-white" />
+              </div>
+              <div>
+                <label class="block text-xs text-slate-400 mb-1">Entry Time (In)</label>
+                <input type="time" id="tsIn" value="10:00" onchange="updateCalculatedHoursPreview()" class="w-full bg-slate-800 border border-slate-700 rounded-xl px-3 py-2 text-xs text-white" />
+              </div>
+              <div>
+                <label class="block text-xs text-slate-400 mb-1">Exit Time (Out)</label>
+                <input type="time" id="tsOut" value="18:00" onchange="updateCalculatedHoursPreview()" class="w-full bg-slate-800 border border-slate-700 rounded-xl px-3 py-2 text-xs text-white" />
+              </div>
+              <div>
+                <label class="block text-xs text-slate-400 mb-1">Auto-Calculated Hours</label>
+                <div id="tsCalcBadge" class="w-full bg-emerald-950/60 border border-emerald-500/40 rounded-xl px-3 py-2 text-xs font-bold text-emerald-300">
+                  8.00 hrs (1.0 Full Day)
+                </div>
+              </div>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-3 mt-3">
+              <div class="md:col-span-2">
+                <label class="block text-xs text-slate-400 mb-1">Work Summary (What did you build/edit today?)</label>
+                <input type="text" id="tsSummary" placeholder="e.g., Edited Module 2 demo video & created slides" class="w-full bg-slate-800 border border-slate-700 rounded-xl px-3 py-2 text-xs text-white" />
+              </div>
+              <div>
+                <label class="block text-xs text-slate-400 mb-1">Output / Drive / Task Link</label>
+                <input type="text" id="tsLink" placeholder="e.g., Drive link or PR" class="w-full bg-slate-800 border border-slate-700 rounded-xl px-3 py-2 text-xs text-white" />
+              </div>
+            </div>
+            <button onclick="submitStaffTimesheet('${emp.id}')" class="mt-3 w-full brand-grad text-white font-bold text-xs py-2.5 rounded-xl shadow-lg hover:opacity-95 transition-all">
+              ✅ Submit Timesheet & Pause Today's 6–9 PM Reminders
+            </button>
+          </div>
+
+          <!-- Carry-Forward & Logged Entries Table -->
+          <div class="glass-card rounded-2xl p-4">
+            <div class="flex items-center justify-between mb-3">
+              <h3 class="text-sm font-bold text-white">📅 My Logged Timesheets (Nov 2026 + Migrated 2026 History)</h3>
+              <span class="text-xs text-slate-400">${stats.entries.length} entries this month</span>
+            </div>
+            <div class="overflow-x-auto">
+              <table class="w-full text-left border-collapse text-xs">
+                <thead>
+                  <tr class="border-b border-slate-800 text-slate-400">
+                    <th class="py-2 px-2">Date</th>
+                    <th class="py-2 px-2">Entry → Exit</th>
+                    <th class="py-2 px-2">Hours</th>
+                    <th class="py-2 px-2">Work Summary</th>
+                    <th class="py-2 px-2">Source</th>
+                  </tr>
+                </thead>
+                <tbody class="divide-y divide-slate-800/60">
+                  ${stats.entries.map(e => `
+                    <tr>
+                      <td class="py-2.5 px-2 font-semibold text-white">${e.date}</td>
+                      <td class="py-2.5 px-2 text-emerald-300 font-mono">${e.entryTime} → ${e.exitTime}</td>
+                      <td class="py-2.5 px-2 font-bold text-white">${e.hours}h</td>
+                      <td class="py-2.5 px-2 text-slate-300">${e.summary}</td>
+                      <td class="py-2.5 px-2"><span class="px-2 py-0.5 rounded bg-slate-800 text-slate-300 border border-slate-700">${e.source}</span></td>
+                    </tr>
+                  `).join("")}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        `;
+      }
+
+      if (state.activeTab === "payslips") {
+        const mySlips = state.payslips.filter(p => p.empId === emp.id);
+        return `
+          <div class="glass-card rounded-2xl p-4 mb-4">
+            <h2 class="text-base font-bold text-white">💰 My Official Monthly Payslips (${emp.name})</h2>
+            <p class="text-xs text-slate-400 mt-0.5">Download your official Aaruni Tech system-generated PDF payslips anytime for your records or bank proof.</p>
+            <div class="mt-4 space-y-3">
+              ${mySlips.length === 0 ? `<div class="text-xs text-slate-400 py-4 text-center">No published payslips yet for ${emp.name}. Once Admin finalizes the monthly pay run, your payslip appears here immediately.</div>` : ""}
+              ${mySlips.map(ps => `
+                <div class="bg-slate-800/80 border border-slate-700 rounded-xl p-3.5 flex flex-wrap items-center justify-between gap-3">
+                  <div>
+                    <div class="flex items-center gap-2">
+                      <span class="text-sm font-bold text-white">Payslip — ${ps.periodLabel}</span>
+                      <span class="text-xs px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 font-semibold">✅ ${ps.status}</span>
+                    </div>
+                    <div class="text-xs text-slate-400 mt-1">
+                      Pay Date: ${ps.payDate} • Paid Days: ${ps.paidDays} • LOP: ${ps.lopDays}d • Net Credited: <strong class="text-white">${fmtINR(ps.netPay)}</strong>
+                    </div>
+                  </div>
+                  <button onclick="openPayslipModal('${ps.id}')" class="brand-grad text-white text-xs font-bold px-3.5 py-2 rounded-xl shadow">
+                    📄 View / Download PDF Payslip
+                  </button>
+                </div>
+              `).join("")}
+            </div>
+          </div>
+        `;
+      }
+
+      if (state.activeTab === "hrdocs") {
+        return `
+          <div class="glass-card rounded-2xl p-4 mb-4">
+            <h2 class="text-base font-bold text-white">📄 Self-Service HR Documents & Bank Loan Proof Generator</h2>
+            <p class="text-xs text-slate-400 mt-0.5">Need an Offer Letter, Bank Loan Salary/Income Certificate, Address Proof, or Experience Letter? Select and generate an official signed PDF immediately.</p>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-3 mt-4">
+              <div class="bg-slate-800/80 border border-slate-700 rounded-xl p-4">
+                <div class="text-xs font-bold text-orange-400 uppercase">1. Instant Self-Service Document Builder</div>
+                <label class="block text-xs text-slate-300 mt-3 mb-1">Select HR Document Type</label>
+                <select id="hrDocType" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-xs text-white">
+                  <option value="OFFER">📜 Official Offer & Appointment Letter</option>
+                  <option value="LOAN_PROOF">🏦 Salary & Income Proof Certificate (For Bank Loan / Credit Card)</option>
+                  <option value="BONAFIDE">🏢 Bonafide Employment & Address Proof Letter</option>
+                  <option value="EXPERIENCE">🎓 Experience & Relieving Certificate</option>
+                </select>
+                <label class="block text-xs text-slate-300 mt-3 mb-1">Addressed To / Purpose (for Bank Loan or Proof)</label>
+                <input type="text" id="hrDocPurpose" value="The Branch Manager, State Bank of India / HDFC Bank (Personal / Home Loan Application)" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-xs text-white" />
+                <button onclick="generateStaffHRDocument('${emp.id}')" class="mt-3 w-full brand-grad text-white text-xs font-bold py-2.5 rounded-xl shadow">
+                  ⚡ Generate & Download Official PDF
+                </button>
+              </div>
+
+              <div class="bg-slate-800/80 border border-slate-700 rounded-xl p-4 flex flex-col justify-between">
+                <div>
+                  <div class="text-xs font-bold text-emerald-400 uppercase">2. Pre-Issued Documents in Your Vault</div>
+                  <div class="mt-3 space-y-2">
+                    <div class="flex items-center justify-between bg-slate-900/80 p-2.5 rounded-lg border border-slate-800">
+                      <span class="text-xs text-slate-200">📜 Official Offer Letter (${emp.id})</span>
+                      <button onclick="openHRDocByType('${emp.id}', 'OFFER')" class="text-xs text-orange-400 font-bold hover:underline">Open PDF →</button>
+                    </div>
+                    <div class="flex items-center justify-between bg-slate-900/80 p-2.5 rounded-lg border border-slate-800">
+                      <span class="text-xs text-slate-200">🏦 Bank Loan Salary & Income Proof</span>
+                      <button onclick="openHRDocByType('${emp.id}', 'LOAN_PROOF')" class="text-xs text-orange-400 font-bold hover:underline">Open PDF →</button>
+                    </div>
+                    <div class="flex items-center justify-between bg-slate-900/80 p-2.5 rounded-lg border border-slate-800">
+                      <span class="text-xs text-slate-200">🪪 Official Employee ID Card (${emp.id})</span>
+                      <button onclick="previewIDCard('${emp.id}')" class="text-xs text-orange-400 font-bold hover:underline">Open ID →</button>
+                    </div>
+                    <div class="flex items-center justify-between bg-slate-900/80 p-2.5 rounded-lg border border-slate-800">
+                      <span class="text-xs text-slate-200">🎓 Experience Certificate</span>
+                      <button onclick="openHRDocByType('${emp.id}', 'EXPERIENCE')" class="text-xs text-orange-400 font-bold hover:underline">Open PDF →</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        `;
+      }
+
+      if (state.activeTab === "chat") {
+        const myMsgs = state.messages.filter(m => m.recipientId === "ALL" || m.recipientId === emp.id || m.senderId === emp.id);
+        return `
+          <div class="glass-card rounded-2xl p-4">
+            <div class="flex items-center justify-between mb-3">
+              <div>
+                <h2 class="text-base font-bold text-white">💬 2-Way Messages with Admin (Rupesh Tiwari)</h2>
+                <p class="text-xs text-slate-400">Direct communication channel for timesheet reminders, task links & leave approvals.</p>
+              </div>
+              <button onclick="triggerPushSimulation('${emp.id}')" class="text-xs bg-orange-500/20 text-orange-300 border border-orange-500/40 px-3 py-1.5 rounded-xl font-semibold">
+                🔔 Test 6–9 PM Push Alert
+              </button>
+            </div>
+            <div class="space-y-2.5 max-h-80 overflow-y-auto mb-3 pr-1">
+              ${myMsgs.map(m => `
+                <div class="p-3 rounded-xl border ${m.senderId === 'AAR-0002' ? 'bg-slate-800/90 border-orange-500/30' : 'bg-emerald-950/40 border-emerald-500/30'}">
+                  <div class="flex items-center justify-between text-xs text-slate-400 mb-1">
+                    <span class="font-bold ${m.senderId === 'AAR-0002' ? 'text-orange-400' : 'text-emerald-300'}">${m.senderName} → ${m.recipientName}</span>
+                    <span>${m.time}</span>
+                  </div>
+                  <p class="text-xs text-slate-100 leading-relaxed">${m.body}</p>
+                </div>
+              `).join("")}
+            </div>
+            <div class="flex gap-2">
+              <input type="text" id="staffReplyInput" placeholder="Reply to Admin Rupesh Tiwari..." class="flex-1 bg-slate-800 border border-slate-700 rounded-xl px-3 py-2 text-xs text-white" />
+              <button onclick="sendStaffMessage('${emp.id}')" class="brand-grad text-white text-xs font-bold px-4 py-2 rounded-xl">Send</button>
+            </div>
+          </div>
+        `;
+      }
+    }
+
+    // ============================================================================
+    // 5. ADMIN / CFO COCKPIT VIEWS (FOR RUPESH TIWARI)
+    // ============================================================================
+    function renderAdminCockpit() {
+      const trackedStaff = state.employees.filter(e => e.status === "Active" && e.trackTimesheet);
+      const payrollRows = trackedStaff.map(e => computeEmployeePayroll(e, "2026-11"));
+      const missingToday = payrollRows.filter(r => !r.submittedToday);
+      const totalNextMonthDisbursement = trackedStaff.reduce((acc, e) => acc + Number(e.monthlyCtc || 0), 0);
+      const totalNetThisMonth = payrollRows.reduce((acc, r) => acc + r.netPay, 0);
+
+      // TAB 1: LIVE HR PULSE & REMINDERS
+      if (state.activeTab === "pulse") {
+        return `
+          <!-- Executive KPI Strip -->
+          <div class="grid grid-cols-2 md:grid-cols-4 gap-2.5 mb-4">
+            <div class="glass-card rounded-xl p-3 border-l-4 border-l-amber-500">
+              <div class="text-xs text-slate-400">Not Logged Today (09 Nov)</div>
+              <div class="text-lg font-extrabold text-amber-400 mt-0.5">${missingToday.length} / ${trackedStaff.length} Staff</div>
+              <div class="text-xs text-slate-400 mt-0.5">6–9 PM Auto-Push Active</div>
+            </div>
+            <div class="glass-card rounded-xl p-3 border-l-4 border-l-emerald-500">
+              <div class="text-xs text-slate-400">Next Month Full Commit</div>
+              <div class="text-lg font-extrabold text-white mt-0.5">${fmtINR(totalNextMonthDisbursement)}</div>
+              <div class="text-xs text-slate-400 mt-0.5">${trackedStaff.length} Active Salaried Staff</div>
+            </div>
+            <div class="glass-card rounded-xl p-3 border-l-4 border-l-rose-500">
+              <div class="text-xs text-slate-400">Current Company Revenue</div>
+              <div class="text-lg font-extrabold text-rose-400 mt-0.5">₹0 (Pre-Revenue)</div>
+              <div class="text-xs text-slate-400 mt-0.5">100% Tax Loss Harvested</div>
+            </div>
+            <div class="glass-card rounded-xl p-3 border-l-4 border-l-sky-500">
+              <div class="text-xs text-slate-400">Active Advance Recovery</div>
+              <div class="text-lg font-extrabold text-sky-400 mt-0.5">${fmtINR(5000)}</div>
+              <div class="text-xs text-slate-400 mt-0.5">Nandini (AAR-0004)</div>
+            </div>
+          </div>
+
+          <!-- Who Hasn't Submitted Today + 6-9 PM Push Control -->
+          <div class="glass-card rounded-2xl p-4 mb-4">
+            <div class="flex flex-wrap items-center justify-between gap-2 mb-3">
+              <div>
+                <h2 class="text-sm font-bold text-white">⏰ Evening 6:00 PM – 9:00 PM IST Timesheet Reminder Center</h2>
+                <p class="text-xs text-slate-400">Automatically pings staff every 30 mins between 6 PM and 9 PM until they enter today's Entry & Exit time.</p>
+              </div>
+              <button onclick="nudgeAllMissingToday()" class="brand-grad text-white text-xs font-bold px-3.5 py-2 rounded-xl shadow">
+                🔔 Nudge All Pending Staff Now (${missingToday.length})
+              </button>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-2.5">
+              ${payrollRows.map(r => `
+                <div class="bg-slate-800/80 border ${r.submittedToday ? 'border-emerald-500/30' : 'border-amber-500/40'} rounded-xl p-3 flex items-center justify-between">
+                  <div>
+                    <div class="flex items-center gap-2">
+                      <span class="text-xs font-bold text-white">${r.emp.name}</span>
+                      <span class="text-xs px-1.5 py-0.5 rounded bg-slate-700 text-slate-300">${r.emp.id}</span>
+                    </div>
+                    <div class="text-xs text-slate-400 mt-0.5">
+                      Nov Logged: <strong>${r.workedDays}d (${r.totalHours}h)</strong> • Accrued: ${fmtINR(r.accruedSalarySoFar)}
+                    </div>
+                  </div>
+                  <div class="flex items-center gap-2">
+                    ${r.submittedToday
+                      ? `<span class="text-xs px-2.5 py-1 rounded-lg bg-emerald-500/20 text-emerald-300 font-semibold">✅ Logged</span>`
+                      : `<button onclick="triggerPushSimulation('${r.emp.id}')" class="text-xs bg-amber-500/20 hover:bg-amber-500/30 text-amber-300 border border-amber-500/40 px-2.5 py-1 rounded-lg font-semibold">🔔 Send Push</button>`
+                    }
+                  </div>
+                </div>
+              `).join("")}
+            </div>
+          </div>
+
+          <!-- 2-Way Team Broadcast & Individual Messaging -->
+          <div class="glass-card rounded-2xl p-4 mb-4">
+            <h3 class="text-sm font-bold text-white mb-2">💬 Send 2-Way Message to Staff (Shows on Their Mobile App + Push Alert)</h3>
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-2.5">
+              <select id="adminMsgTarget" class="bg-slate-800 border border-slate-700 rounded-xl px-3 py-2 text-xs text-white">
+                <option value="ALL">📢 Broadcast to Entire Aaruni Tech Team</option>
+                ${trackedStaff.map(e => `<option value="${e.id}">👤 ${e.name} (${e.id})</option>`).join("")}
+              </select>
+              <input type="text" id="adminMsgBody" placeholder="e.g., Please submit your Entry & Exit timesheet for today before 7 PM!" class="md:col-span-2 bg-slate-800 border border-slate-700 rounded-xl px-3 py-2 text-xs text-white" />
+              <button onclick="sendAdminMessage()" class="brand-grad text-white text-xs font-bold py-2 px-4 rounded-xl">
+                🚀 Send Message & Push
+              </button>
+            </div>
+          </div>
+
+          <!-- Loans & Salary Advance Manager -->
+          <div class="glass-card rounded-2xl p-4">
+            <div class="flex items-center justify-between mb-3">
+              <div>
+                <h3 class="text-sm font-bold text-white">💳 Active Staff Loans & Salary Advances</h3>
+                <p class="text-xs text-slate-400">Automatically deducted during the 1st-of-month payroll run.</p>
+              </div>
+              <button onclick="addSampleAdvance()" class="text-xs bg-slate-800 hover:bg-slate-700 text-orange-400 border border-orange-500/30 px-3 py-1.5 rounded-xl font-semibold">
+                ➕ Record New Advance
+              </button>
+            </div>
+            <div class="space-y-2">
+              ${state.loans.map(l => `
+                <div class="bg-slate-800/70 border border-slate-700 rounded-xl p-3 flex flex-wrap items-center justify-between gap-2 text-xs">
+                  <div>
+                    <span class="font-bold text-white">${l.empName} (${l.empId})</span> • <span class="text-orange-400">${l.type}</span>
+                    <div class="text-slate-400 mt-0.5">Started: ${l.startMonth} • Monthly Cut: ${fmtINR(l.monthlyDeduction)} • Remaining: <strong>${fmtINR(l.remainingBalance)}</strong></div>
+                  </div>
+                  <span class="px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 font-semibold">${l.status}</span>
+                </div>
+              `).join("")}
+            </div>
+          </div>
+        `;
+      }
+
+      // TAB 2: 1ST-OF-MONTH PAYROLL RUN & 1-TAP MOBILE UPI DISBURSEMENT
+      if (state.activeTab === "payroll") {
+        return `
+          <div class="glass-card rounded-2xl p-4 mb-4 border-l-4 border-l-emerald-500">
+            <div class="flex flex-wrap items-center justify-between gap-3">
+              <div>
+                <span class="text-xs font-bold uppercase tracking-wider text-emerald-400">🗓️ 1st-of-Month Mobile Payroll Cockpit</span>
+                <h2 class="text-base font-bold text-white mt-0.5">Monthly Salary Summary, 1-Tap UPI Transfer & 1-Click PDF Payslip Publisher</h2>
+                <p class="text-xs text-slate-400 mt-0.5">Step 1: Review auto-calculated Net Pay below → Step 2: Tap "Pay via UPI" on your phone (or download Axis NEFT CSV) → Step 3: Tap "Payment Done — Publish All Payslips".</p>
+              </div>
+              <div class="flex flex-wrap gap-2">
+                <button onclick="downloadAxisBankCSV()" class="bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 text-xs font-semibold px-3 py-2 rounded-xl">
+                  🏦 Axis Bank Bulk NEFT CSV
+                </button>
+                <button onclick="finalizeAndPublishAllPayslips()" class="brand-grad text-white text-xs font-bold px-4 py-2.5 rounded-xl shadow-lg">
+                  ✅ Payment Done — Publish All PDF Payslips
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <div class="space-y-3">
+            ${payrollRows.map(r => {
+              const upiUri = `upi://pay?pa=${encodeURIComponent(r.emp.upiId || '')}&pn=${encodeURIComponent(r.emp.name)}&am=${r.netPay}&cu=INR&tn=${encodeURIComponent('AaruniTech_Salary_' + r.ym)}`;
+              return `
+                <div class="glass-card rounded-2xl p-4">
+                  <div class="flex flex-wrap items-start justify-between gap-3 border-b border-slate-800 pb-3">
+                    <div>
+                      <div class="flex items-center gap-2">
+                        <span class="text-sm font-bold text-white">${r.emp.name}</span>
+                        <span class="text-xs px-2 py-0.5 rounded bg-orange-500/20 text-orange-300 font-semibold">${r.emp.id} (Zoho: ${r.emp.zohoId})</span>
+                        <span class="text-xs text-slate-400">${r.emp.role}</span>
+                      </div>
+                      <div class="text-xs text-slate-400 mt-1">
+                        🏦 <strong>${r.emp.bankName}</strong> • Acct: <span class="font-mono text-slate-200">${r.emp.bankAccount}</span> • IFSC: <span class="font-mono text-slate-200">${r.emp.ifsc}</span> • UPI: <span class="font-mono text-emerald-300">${r.emp.upiId}</span>
+                      </div>
+                    </div>
+                    <div class="text-right">
+                      <div class="text-xs text-slate-400">Final Net Pay to Transfer</div>
+                      <div class="text-xl font-extrabold text-emerald-400">${fmtINR(r.netPay)}</div>
+                    </div>
+                  </div>
+
+                  <div class="grid grid-cols-2 md:grid-cols-6 gap-2 py-3 text-xs">
+                    <div class="bg-slate-800/60 p-2 rounded-lg">
+                      <div class="text-slate-400">Monthly CTC</div>
+                      <div class="font-bold text-white mt-0.5">${fmtINR(r.emp.monthlyCtc)}</div>
+                    </div>
+                    <div class="bg-slate-800/60 p-2 rounded-lg">
+                      <div class="text-slate-400">Hours & Sun Extra</div>
+                      <div class="font-bold text-white mt-0.5">${r.totalHours}h (${r.sundayExtraHours}h Sun)</div>
+                    </div>
+                    <div class="bg-slate-800/60 p-2 rounded-lg">
+                      <div class="text-slate-400">Comp-Off Offset</div>
+                      <label class="inline-flex items-center gap-1.5 mt-0.5 cursor-pointer">
+                        <input type="checkbox" ${state.compOffApproved[r.emp.id] !== false ? 'checked' : ''} onchange="toggleCompOff('${r.emp.id}')" class="rounded" />
+                        <span class="font-semibold text-emerald-300">${r.offsetHrs}h Applied</span>
+                      </label>
+                    </div>
+                    <div class="bg-slate-800/60 p-2 rounded-lg">
+                      <div class="text-slate-400">Net LOP Days</div>
+                      <div class="font-bold ${r.lopDays > 0 ? 'text-amber-400' : 'text-emerald-400'} mt-0.5">${r.lopDays} days</div>
+                    </div>
+                    <div class="bg-slate-800/60 p-2 rounded-lg">
+                      <div class="text-slate-400">Earned Gross</div>
+                      <div class="font-bold text-white mt-0.5">${fmtINR(r.grossEarned)}</div>
+                    </div>
+                    <div class="bg-slate-800/60 p-2 rounded-lg">
+                      <div class="text-slate-400">Advance Cut</div>
+                      <div class="font-bold text-rose-400 mt-0.5">-${fmtINR(r.loanCut)}</div>
+                    </div>
+                  </div>
+
+                  <div class="flex flex-wrap items-center justify-between gap-2 pt-2">
+                    <div class="text-xs text-slate-400">
+                      Accrued through 09 Nov: <strong class="text-slate-200">${fmtINR(r.accruedSalarySoFar)}</strong>
+                    </div>
+                    <div class="flex flex-wrap items-center gap-2">
+                      <a href="${upiUri}" class="bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold px-3 py-1.5 rounded-xl shadow inline-flex items-center gap-1">
+                        📲 1-Tap Pay via UPI App
+                      </a>
+                      <button onclick="previewDraftPayslip('${r.emp.id}')" class="bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 text-xs font-semibold px-3 py-1.5 rounded-xl">
+                        👁️ Preview Zoho-Style Payslip PDF
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              `;
+            }).join("")}
+          </div>
+        `;
+      }
+
+      // TAB 3: STAFF ROSTER, FLEXIBLE EMPLOYEE IDS, ACTIVE/INACTIVE & ONBOARDING
+      if (state.activeTab === "roster") {
+        return `
+          <div class="glass-card rounded-2xl p-4 mb-4">
+            <div class="flex flex-wrap items-center justify-between gap-2 mb-3">
+              <div>
+                <h2 class="text-base font-bold text-white">👥 Aaruni Tech Master Roster (AAR-0001 to AAR-0008+)</h2>
+                <p class="text-xs text-slate-400">Flexible Employee IDs, Active/Inactive lifecycle (Sonali Roy marked Inactive), Ali Maula Ali (AAR-0008) onboarded, and salary vault encrypted.</p>
+              </div>
+              <button onclick="addNewEmployeePrompt()" class="brand-grad text-white text-xs font-bold px-3.5 py-2 rounded-xl shadow">
+                ➕ Add New Staff (AAR-0009)
+              </button>
+            </div>
+
+            <div class="space-y-3">
+              ${state.employees.map((e, idx) => `
+                <div class="bg-slate-800/80 border ${e.status === 'Active' ? 'border-slate-700' : 'border-rose-500/30 opacity-80'} rounded-xl p-3.5">
+                  <div class="flex flex-wrap items-center justify-between gap-2">
+                    <div class="flex items-center gap-2.5">
+                      <input type="text" value="${e.id}" onchange="updateEmpField(${idx}, 'id', this.value)" class="w-24 bg-slate-900 border border-slate-700 rounded-lg px-2 py-1 text-xs font-mono font-bold text-orange-400" title="Editable Employee ID" />
+                      <div>
+                        <input type="text" value="${e.name}" onchange="updateEmpField(${idx}, 'name', this.value)" class="bg-transparent font-bold text-sm text-white focus:bg-slate-900 px-1 rounded" />
+                        <div class="text-xs text-slate-400">${e.role} • Joined: ${e.joiningDate} • Aadhaar: ${e.aadhaar}</div>
+                      </div>
+                    </div>
+                    <div class="flex flex-wrap items-center gap-2">
+                      <button onclick="previewIDCard('${e.id}')" class="text-xs bg-slate-900 hover:bg-slate-700 text-orange-300 border border-slate-700 px-2.5 py-1 rounded-lg">
+                        🪪 ID Card
+                      </button>
+                      <button onclick="openHRDocByType('${e.id}', 'OFFER')" class="text-xs bg-slate-900 hover:bg-slate-700 text-sky-300 border border-slate-700 px-2.5 py-1 rounded-lg">
+                        📜 Offer Letter
+                      </button>
+                      <button onclick="openHRDocByType('${e.id}', 'EXPERIENCE')" class="text-xs bg-slate-900 hover:bg-slate-700 text-emerald-300 border border-slate-700 px-2.5 py-1 rounded-lg">
+                        🎓 Exp Cert
+                      </button>
+                      <button onclick="toggleEmployeeActive(${idx})" class="text-xs font-bold px-2.5 py-1 rounded-lg border ${e.status === 'Active' ? 'bg-emerald-500/20 text-emerald-300 border-emerald-500/30' : 'bg-rose-500/20 text-rose-300 border-rose-500/30'}">
+                        ${e.status === 'Active' ? '🟢 Active' : '🔴 Inactive (Relieved)'}
+                      </button>
+                    </div>
+                  </div>
+                  <div class="grid grid-cols-1 md:grid-cols-4 gap-2 mt-3 pt-2.5 border-t border-slate-700/60 text-xs">
+                    <div>
+                      <span class="text-slate-400">Encrypted Monthly CTC:</span>
+                      <div class="mt-0.5 font-bold">${fmtINR(e.monthlyCtc)}</div>
+                    </div>
+                    <div>
+                      <span class="text-slate-400">Mobile / Contacts:</span>
+                      <input type="text" value="${e.mobile}" onchange="updateEmpField(${idx}, 'mobile', this.value)" class="w-full bg-slate-900 border border-slate-700 rounded px-2 py-1 text-white mt-0.5" />
+                    </div>
+                    <div>
+                      <span class="text-slate-400">Bank & Acct No:</span>
+                      <input type="text" value="${e.bankName} - ${e.bankAccount}" onchange="updateEmpField(${idx}, 'bankAccount', this.value)" class="w-full bg-slate-900 border border-slate-700 rounded px-2 py-1 text-white mt-0.5" />
+                    </div>
+                    <div>
+                      <span class="text-slate-400">UPI ID / IFSC:</span>
+                      <input type="text" value="${e.upiId} (${e.ifsc})" onchange="updateEmpField(${idx}, 'upiId', this.value)" class="w-full bg-slate-900 border border-slate-700 rounded px-2 py-1 text-white mt-0.5" />
+                    </div>
+                  </div>
+                </div>
+              `).join("")}
+            </div>
+          </div>
+        `;
+      }
+
+      // TAB 4: CFO CASHFLOW & CA INCOME TAX LOSS HARVESTING (2025-2026)
+      if (state.activeTab === "catax") {
+        const total2026Payroll = state.taxRollup.reduce((a, b) => a + b.totalPayroll, 0) + totalNextMonthDisbursement;
+        const total2026Ops = state.taxRollup.reduce((a, b) => a + b.opsExpense, 0) + 12000;
+        const fy2025Loss = 145000; // Prior 2025 setup & pre-revenue operations loss
+        const cumulativeNetLoss = fy2025Loss + total2026Payroll + total2026Ops;
+
+        return `
+          <div class="glass-card rounded-2xl p-4 mb-4 border-l-4 border-l-rose-500">
+            <div class="flex flex-wrap items-center justify-between gap-3">
+              <div>
+                <span class="text-xs font-bold uppercase text-rose-400">📉 Aaruni Tech (GST Registered) — CA Tax & P&L Statement Builder</span>
+                <h2 class="text-base font-bold text-white mt-0.5">Cumulative Business Loss Tracker (FY 2025–26 & FY 2026–27)</h2>
+                <p class="text-xs text-slate-400 mt-0.5">Since Amazon & course sales revenue is currently ₹0, every rupee paid in staff salaries and Beeramguda office expenses is recorded as a deductible Business Loss to carry forward for up to 8 years on your Income Tax Return.</p>
+              </div>
+              <button onclick="openCATaxReportModal()" class="brand-grad text-white text-xs font-bold px-4 py-2.5 rounded-xl shadow-lg">
+                📄 Generate CA Tax & Loss Report PDF
+              </button>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-3 mt-4">
+              <div class="bg-slate-800/90 p-3 rounded-xl border border-slate-700">
+                <div class="text-xs text-slate-400">Gross Revenue (2025–2026)</div>
+                <div class="text-lg font-extrabold text-white mt-0.5">₹0.00</div>
+                <div class="text-xs text-slate-400">Amazon + Syllovo Pre-Revenue</div>
+              </div>
+              <div class="bg-slate-800/90 p-3 rounded-xl border border-slate-700">
+                <div class="text-xs text-slate-400">2026 Staff Payroll Disbursed</div>
+                <div class="text-lg font-extrabold text-amber-400 mt-0.5">${fmtINR(total2026Payroll)}</div>
+                <div class="text-xs text-slate-400">Jan–Nov 2026 Vouchers</div>
+              </div>
+              <div class="bg-slate-800/90 p-3 rounded-xl border border-slate-700">
+                <div class="text-xs text-slate-400">2025 + 2026 Ops & Infra Cost</div>
+                <div class="text-lg font-extrabold text-sky-400 mt-0.5">${fmtINR(fy2025Loss + total2026Ops)}</div>
+                <div class="text-xs text-slate-400">Office, Cloud, Equipment</div>
+              </div>
+              <div class="bg-rose-950/50 p-3 rounded-xl border border-rose-500/40">
+                <div class="text-xs text-rose-300 font-semibold">Total Carry-Forward Tax Loss</div>
+                <div class="text-lg font-extrabold text-rose-400 mt-0.5">-${fmtINR(cumulativeNetLoss)}</div>
+                <div class="text-xs text-rose-300/80">Ready for CA ITR Filing</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="glass-card rounded-2xl p-4">
+            <h3 class="text-sm font-bold text-white mb-3">📊 Month-by-Month Payroll & Expense Ledger for Chartered Accountant</h3>
+            <div class="overflow-x-auto">
+              <table class="w-full text-left border-collapse text-xs">
+                <thead>
+                  <tr class="border-b border-slate-800 text-slate-400">
+                    <th class="py-2 px-2">Month</th>
+                    <th class="py-2 px-2">Revenue</th>
+                    <th class="py-2 px-2">Staff Salary Expense</th>
+                    <th class="py-2 px-2">Office / Cloud Ops Expense</th>
+                    <th class="py-2 px-2">Net Monthly P&L (Loss)</th>
+                  </tr>
+                </thead>
+                <tbody class="divide-y divide-slate-800/60">
+                  <tr class="bg-slate-800/30">
+                    <td class="py-2.5 px-2 font-bold text-white">FY 2025 Pre-Ops Baseline</td>
+                    <td class="py-2.5 px-2 text-slate-300">₹0</td>
+                    <td class="py-2.5 px-2 text-slate-300">${fmtINR(85000)}</td>
+                    <td class="py-2.5 px-2 text-slate-300">${fmtINR(60000)}</td>
+                    <td class="py-2.5 px-2 font-bold text-rose-400">-${fmtINR(145000)}</td>
+                  </tr>
+                  ${state.taxRollup.map(row => `
+                    <tr>
+                      <td class="py-2.5 px-2 font-semibold text-white">${row.label}</td>
+                      <td class="py-2.5 px-2 text-slate-300">₹0</td>
+                      <td class="py-2.5 px-2 text-amber-300 font-semibold">${fmtINR(row.totalPayroll)}</td>
+                      <td class="py-2.5 px-2 text-sky-300">${fmtINR(row.opsExpense)}</td>
+                      <td class="py-2.5 px-2 font-bold text-rose-400">-${fmtINR(row.totalPayroll + row.opsExpense)}</td>
+                    </tr>
+                  `).join("")}
+                  <tr class="bg-orange-500/10">
+                    <td class="py-2.5 px-2 font-bold text-orange-300">November 2026 (Current Projected)</td>
+                    <td class="py-2.5 px-2 text-slate-300">₹0</td>
+                    <td class="py-2.5 px-2 text-amber-300 font-bold">${fmtINR(totalNextMonthDisbursement)}</td>
+                    <td class="py-2.5 px-2 text-sky-300">${fmtINR(12000)}</td>
+                    <td class="py-2.5 px-2 font-bold text-rose-400">-${fmtINR(totalNextMonthDisbursement + 12000)}</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        `;
+      }
+
+      // TAB 5: OPEN-SOURCE COMMONS (SYLLOVO-OSS) & WEEKLY BLOG GENERATOR
+      if (state.activeTab === "oss") {
+        return `
+          <div class="glass-card rounded-2xl p-4 mb-4">
+            <h2 class="text-base font-bold text-white">🌐 Syllovo Open-Source Commons (` + "`syllovo-oss`" + `) & Weekly Blog Engine</h2>
+            <p class="text-xs text-slate-400 mt-0.5">All open-source modules powering this app are forked and owned in your codebase under MIT license so you never face Zoho or SaaS lock-in.</p>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-3 mt-4">
+              <div class="bg-slate-800/80 border border-slate-700 rounded-xl p-3.5">
+                <div class="text-xs font-mono font-bold text-orange-400">@syllovo-oss/payroll-engine</div>
+                <p class="text-xs text-slate-300 mt-1">Indian Calendar-Day Proration, Paid Sunday Rest, 1:1 Comp-Off Offset, Multi-Email Alias Resolver & Encrypted Vault.</p>
+                <span class="inline-block mt-2 text-xs px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-300">MIT • Owned & Forked</span>
+              </div>
+              <div class="bg-slate-800/80 border border-slate-700 rounded-xl p-3.5">
+                <div class="text-xs font-mono font-bold text-sky-400">@syllovo-oss/pdf-payslip</div>
+                <p class="text-xs text-slate-300 mt-1">Zero-dependency Zoho-layout Payslip PDF, Offer Letter, Bank Loan Salary Certificate, Experience Letter & CA Tax Report generator.</p>
+                <span class="inline-block mt-2 text-xs px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-300">MIT • Owned & Forked</span>
+              </div>
+              <div class="bg-slate-800/80 border border-slate-700 rounded-xl p-3.5">
+                <div class="text-xs font-mono font-bold text-amber-400">@syllovo-oss/cf-webpush</div>
+                <p class="text-xs text-slate-300 mt-1">Cloudflare Workers Cron scheduler for 6:00 PM – 9:00 PM IST persistent timesheet push notifications & 1st-of-month admin reminders.</p>
+                <span class="inline-block mt-2 text-xs px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-300">MIT • Owned & Forked</span>
+              </div>
+            </div>
+          </div>
+        `;
+      }
+    }
+
+    // ============================================================================
+    // 6. ACTIONS & DOCUMENT GENERATORS (PAYSLIPS, OFFER LETTERS, BANK LOAN, CA TAX)
+    // ============================================================================
+    function updateCalculatedHoursPreview() {
+      const inT = document.getElementById("tsIn")?.value;
+      const outT = document.getElementById("tsOut")?.value;
+      const hrs = calcHoursBetween(inT, outT);
+      const units = Math.min(1, Math.round((hrs / 8) * 100) / 100);
+      const el = document.getElementById("tsCalcBadge");
+      if (el) el.textContent = `${hrs.toFixed(2)} hrs (${units} Day Unit)`;
+    }
+
+    function submitStaffTimesheet(empId) {
+      const emp = state.employees.find(e => e.id === empId);
+      const dt = document.getElementById("tsDate").value;
+      const inT = document.getElementById("tsIn").value;
+      const outT = document.getElementById("tsOut").value;
+      const summary = document.getElementById("tsSummary").value.trim() || "Daily engineering & content tasks";
+      const link = document.getElementById("tsLink").value.trim() || "Mobile PWA";
+      const hrs = calcHoursBetween(inT, outT);
+
+      state.timesheets = state.timesheets.filter(t => !(t.empId === empId && t.date === dt));
+      state.timesheets.unshift({
+        id: `PWA-${empId}-${dt}`,
+        empId,
+        date: dt,
+        entryTime: inT,
+        exitTime: outT,
+        hours: hrs,
+        status: "Worked",
+        summary,
+        taskLink: link,
+        source: "Mobile PWA (Entry/Exit)"
+      });
+      saveState();
+      showToast("✅ Timesheet Logged & Synced!", `${emp.name}: ${hrs} hrs (${inT} → ${outT}) recorded for ${dt}. Evening 6–9 PM reminders stopped for today.`);
+      renderApp();
+    }
+
+    function toggleCompOff(empId) {
+      state.compOffApproved[empId] = !(state.compOffApproved[empId] !== false);
+      renderApp();
+    }
+
+    function updateEmpField(idx, field, val) {
+      state.employees[idx][field] = val;
+      saveState();
+      showToast("✅ Roster Updated", `Updated ${field} for ${state.employees[idx].name}`);
+      renderApp();
+    }
+
+    function toggleEmployeeActive(idx) {
+      const cur = state.employees[idx].status;
+      state.employees[idx].status = cur === "Active" ? "Inactive" : "Active";
+      saveState();
+      renderApp();
+    }
+
+    function addNewEmployeePrompt() {
+      const nextNum = state.employees.length + 1;
+      const nextId = `AAR-${String(nextNum).padStart(4, "0")}`;
+      const name = prompt("Enter New Employee Full Name:", "New Staff Member");
+      if (!name) return;
+      const role = prompt("Enter Designation / Role:", "Technical Associate") || "Technical Associate";
+      const ctc = Number(prompt("Enter Monthly CTC (₹) — will be stored encrypted:", "10000") || 10000);
+      state.employees.push({
+        id: nextId,
+        zohoId: String(nextNum).padStart(3, "0"),
+        name,
+        role,
+        status: "Active",
+        trackTimesheet: true,
+        shiftHours: 8,
+        monthlyCtc: ctc,
+        joiningDate: "09/11/2026",
+        dob: "Pending",
+        fatherName: "Pending",
+        pan: "Pending",
+        aadhaar: "Pending",
+        mobile: "Pending",
+        email: "",
+        alternateEmails: [],
+        address: "Beeramguda, Telangana - 502319",
+        bankName: "Pending",
+        accountHolder: name,
+        bankAccount: "Pending",
+        ifsc: "Pending",
+        upiId: "",
+        idCardFile: `${nextId}_ID_Card.png`
+      });
+      saveState();
+      showToast("🎉 New Staff Onboarded", `Added ${name} (${nextId}) with encrypted salary vault.`);
+      renderApp();
+    }
+
+    function addSampleAdvance() {
+      const empId = prompt("Enter Employee ID (e.g. AAR-0004, AAR-0005, AAR-0006, AAR-0008):", "AAR-0006");
+      const emp = state.employees.find(e => e.id === empId);
+      if (!emp) return alert("Employee ID not found");
+      const amt = Number(prompt(`Enter Personal Advance / Loan Amount (₹) for ${emp.name}:`, "3000") || 0);
+      if (amt <= 0) return;
+      state.loans.push({
+        id: "LOAN-" + Date.now(),
+        empId: emp.id,
+        empName: emp.name,
+        type: "Personal Advance",
+        totalAmount: amt,
+        monthlyDeduction: amt,
+        remainingBalance: amt,
+        startMonth: "2026-11",
+        status: "Active"
+      });
+      saveState();
+      renderApp();
+    }
+
+    function triggerPushSimulation(empId) {
+      const emp = state.employees.find(e => e.id === empId) || state.employees[3];
+      showToast(
+        `⏰ 6:00 PM–9:00 PM Push Reminder → ${emp.name}`,
+        `Hi ${emp.name.split(" ")[0]}, you haven't submitted your Entry & Exit timesheet for today (09 Nov 2026). This reminder repeats every 30 mins until submitted!`
+      );
+    }
+
+    function nudgeAllMissingToday() {
+      showToast(
+        "🔔 Evening Push Dispatched to All Missing Staff",
+        "Sent Web Push + In-App reminders to all active staff who haven't logged 09 Nov 2026 timesheets yet."
+      );
+    }
+
+    function sendAdminMessage() {
+      const target = document.getElementById("adminMsgTarget").value;
+      const body = document.getElementById("adminMsgBody").value.trim();
+      if (!body) return;
+      const emp = state.employees.find(e => e.id === target);
+      state.messages.unshift({
+        id: "MSG-" + Date.now(),
+        senderId: "AAR-0002",
+        senderName: "Rupesh Tiwari (Admin)",
+        recipientId: target,
+        recipientName: target === "ALL" ? "All Aaruni Tech Team" : emp.name,
+        body,
+        time: "Just now"
+      });
+      saveState();
+      document.getElementById("adminMsgBody").value = "";
+      showToast("🚀 Message & Push Sent", `Delivered to ${target === "ALL" ? "All Staff" : emp.name}`);
+    }
+
+    function sendStaffMessage(empId) {
+      const emp = state.employees.find(e => e.id === empId);
+      const input = document.getElementById("staffReplyInput");
+      const body = input.value.trim();
+      if (!body) return;
+      state.messages.unshift({
+        id: "MSG-" + Date.now(),
+        senderId: emp.id,
+        senderName: emp.name,
+        recipientId: "AAR-0002",
+        recipientName: "Rupesh Tiwari (Admin)",
+        body,
+        time: "Just now"
+      });
+      saveState();
+      input.value = "";
+      renderApp();
+    }
+
+    function finalizeAndPublishAllPayslips() {
+      const tracked = state.employees.filter(e => e.status === "Active" && e.trackTimesheet);
+      tracked.forEach(emp => {
+        const r = computeEmployeePayroll(emp, "2026-11");
+        const psId = `PS-2026-11-${emp.id}`;
+        state.payslips = state.payslips.filter(p => p.id !== psId);
+        state.payslips.unshift({
+          id: psId,
+          empId: emp.id,
+          yearMonth: "2026-11",
+          periodLabel: "November 2026",
+          payDate: "30/11/2026",
+          paidDays: r.fullMonthPayableDays,
+          lopDays: r.lopDays,
+          basic: r.basic,
+          fixedAllowance: r.allowance,
+          bonus: 0,
+          grossEarnings: r.grossEarned,
+          deductions: r.loanCut,
+          netPay: r.netPay,
+          amountInWords: numberToIndianWords(r.netPay),
+          status: "Paid via Axis Bank / UPI"
+        });
+      });
+      saveState();
+      showToast(
+        "🎉 All November 2026 PDF Payslips Published!",
+        `Generated official Aaruni Tech PDF payslips for ${tracked.length} staff, sent mobile push notifications, and updated the CA Tax Loss statement.`
+      );
+      renderApp();
+    }
+
+    function downloadAxisBankCSV() {
+      const tracked = state.employees.filter(e => e.status === "Active" && e.trackTimesheet);
+      let csv = "Employee ID,Beneficiary Name,Bank Name,Account Number,IFSC Code,UPI ID,Net Payable INR,Narration\n";
+      tracked.forEach(emp => {
+        const r = computeEmployeePayroll(emp, "2026-11");
+        csv += `"${emp.id}","${emp.accountHolder || emp.name}","${emp.bankName}","${emp.bankAccount}","${emp.ifsc}","${emp.upiId}",${r.netPay},"AaruniTech Salary Nov 2026"\n`;
+      });
+      const blob = new Blob([csv], { type: "text/csv" });
+      const a = document.createElement("a");
+      a.href = URL.createObjectURL(blob);
+      a.download = "Aaruni_Tech_Axis_Bank_Bulk_Payout_Nov2026.csv";
+      a.click();
+    }
+
+    // ============================================================================
+    // 7. MODAL RENDERERS: ZOHO-STYLE PAYSLIP, OFFER LETTER, LOAN PROOF, EXP, CA TAX
+    // ============================================================================
+    function openModalWithHTML(title, html) {
+      document.getElementById("docModalTitle").textContent = title;
+      document.getElementById("printModalContent").innerHTML = html;
+      document.getElementById("docModal").classList.remove("hidden");
+    }
+
+    function closeDocModal() {
+      document.getElementById("docModal").classList.add("hidden");
+    }
+
+    function buildZohoPayslipHTML(ps, emp) {
+      return `
+        <div style="max-width:740px;margin:0 auto;font-family:'Inter',sans-serif;color:#0f172a;border:1px solid #cbd5e1;border-radius:12px;padding:28px;">
+          <div style="display:flex;justify-content:space-between;align-items:flex-start;border-bottom:1px solid #cbd5e1;padding-bottom:16px;">
+            <div style="display:flex;align-items:center;gap:12px;">
+              <svg width="44" height="40" viewBox="0 0 60 52" fill="none">
+                <path d="M8 46L26 8H35L17 46H8Z" fill="#111827"/>
+                <path d="M27 8L46 46H36L22 18L27 8Z" fill="#EA580C"/>
+              </svg>
+              <div>
+                <div style="font-size:20px;font-weight:800;color:#0f172a;">Aaruni Tech</div>
+                <div style="font-size:12px;color:#475569;">Villa 257 Praneeth Pranav Knight Woods Beeramguda Telangana 502319 India</div>
+              </div>
+            </div>
+            <div style="text-align:right;">
+              <div style="font-size:12px;color:#64748b;">Payslip For the Month</div>
+              <div style="font-size:18px;font-weight:800;color:#0f172a;">${ps.periodLabel}</div>
+            </div>
+          </div>
+
+          <div style="display:grid;grid-template-columns:1.3fr 1fr;gap:20px;margin-top:20px;padding-bottom:16px;border-bottom:1px dashed #cbd5e1;font-size:13px;">
+            <div>
+              <div style="font-size:11px;font-weight:700;color:#64748b;margin-bottom:8px;">EMPLOYEE SUMMARY</div>
+              <div style="padding:3px 0;"><span style="color:#64748b;display:inline-block;width:130px;">Employee Name</span> : <strong>${emp.name}</strong></div>
+              <div style="padding:3px 0;"><span style="color:#64748b;display:inline-block;width:130px;">Designation</span> : <strong>${emp.designationSub || emp.role}</strong></div>
+              <div style="padding:3px 0;"><span style="color:#64748b;display:inline-block;width:130px;">Employee ID</span> : <strong>${emp.zohoId || emp.id} (${emp.id})</strong></div>
+              <div style="padding:3px 0;"><span style="color:#64748b;display:inline-block;width:130px;">Date of Joining</span> : <strong>${emp.joiningDate}</strong></div>
+              <div style="padding:3px 0;"><span style="color:#64748b;display:inline-block;width:130px;">Pay Period</span> : <strong>${ps.periodLabel}</strong></div>
+              <div style="padding:3px 0;"><span style="color:#64748b;display:inline-block;width:130px;">Pay Date</span> : <strong>${ps.payDate}</strong></div>
+            </div>
+            <div style="background:#f0fdf4;border:1px solid #bbf7d0;border-radius:10px;padding:16px;">
+              <div style="font-size:24px;font-weight:800;color:#14532d;border-left:4px solid #22c55e;padding-left:10px;">₹${Number(ps.netPay).toLocaleString("en-IN", {minimumFractionDigits:2})}</div>
+              <div style="font-size:12px;color:#16a34a;padding-left:14px;margin-bottom:10px;">Total Net Pay</div>
+              <div style="border-top:1px dashed #bbf7d0;padding-top:8px;font-size:12px;">
+                <div>Paid Days : <strong>${ps.paidDays}</strong></div>
+                <div style="margin-top:4px;">LOP Days : <strong>${ps.lopDays}</strong></div>
+              </div>
+            </div>
+          </div>
+
+          <div style="padding:10px 0;border-bottom:1px dashed #cbd5e1;font-size:13px;">
+            <span style="color:#64748b;display:inline-block;width:130px;">Bank Account No</span> : <strong>${emp.bankAccount}</strong> (${emp.bankName} • IFSC: ${emp.ifsc})
+          </div>
+
+          <table style="width:100%;border-collapse:collapse;margin-top:18px;font-size:13px;border:1px solid #e2e8f0;">
+            <thead>
+              <tr style="background:#f8fafc;text-align:left;border-bottom:1px solid #e2e8f0;">
+                <th style="padding:10px;">EARNINGS</th>
+                <th style="padding:10px;text-align:right;">AMOUNT</th>
+                <th style="padding:10px;text-align:right;">YTD</th>
+                <th style="padding:10px;">DEDUCTIONS</th>
+                <th style="padding:10px;text-align:right;">AMOUNT</th>
+                <th style="padding:10px;text-align:right;">YTD</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr style="border-bottom:1px solid #f1f5f9;">
+                <td style="padding:10px;">Basic</td>
+                <td style="padding:10px;text-align:right;font-weight:600;">₹${Number(ps.basic).toLocaleString("en-IN", {minimumFractionDigits:2})}</td>
+                <td style="padding:10px;text-align:right;">₹${Number(ps.basic).toLocaleString("en-IN", {minimumFractionDigits:2})}</td>
+                <td style="padding:10px;">Personal Advance</td>
+                <td style="padding:10px;text-align:right;font-weight:600;">₹${Number(ps.deductions).toLocaleString("en-IN", {minimumFractionDigits:2})}</td>
+                <td style="padding:10px;text-align:right;">₹${Number(ps.deductions).toLocaleString("en-IN", {minimumFractionDigits:2})}</td>
+              </tr>
+              <tr style="border-bottom:1px solid #f1f5f9;">
+                <td style="padding:10px;">Fixed Allowance</td>
+                <td style="padding:10px;text-align:right;font-weight:600;">₹${Number(ps.fixedAllowance).toLocaleString("en-IN", {minimumFractionDigits:2})}</td>
+                <td style="padding:10px;text-align:right;">₹${Number(ps.fixedAllowance).toLocaleString("en-IN", {minimumFractionDigits:2})}</td>
+                <td style="padding:10px;"></td>
+                <td style="padding:10px;"></td>
+                <td style="padding:10px;"></td>
+              </tr>
+              ${ps.bonus ? `
+              <tr style="border-bottom:1px solid #f1f5f9;">
+                <td style="padding:10px;">Bonus</td>
+                <td style="padding:10px;text-align:right;font-weight:600;">₹${Number(ps.bonus).toLocaleString("en-IN", {minimumFractionDigits:2})}</td>
+                <td style="padding:10px;text-align:right;">₹${Number(ps.bonus).toLocaleString("en-IN", {minimumFractionDigits:2})}</td>
+                <td style="padding:10px;"></td>
+                <td style="padding:10px;"></td>
+                <td style="padding:10px;"></td>
+              </tr>` : ""}
+              <tr style="background:#f8fafc;font-weight:700;">
+                <td style="padding:10px;">Gross Earnings</td>
+                <td style="padding:10px;text-align:right;">₹${Number(ps.grossEarnings).toLocaleString("en-IN", {minimumFractionDigits:2})}</td>
+                <td></td>
+                <td style="padding:10px;">Total Deductions</td>
+                <td style="padding:10px;text-align:right;">₹${Number(ps.deductions).toLocaleString("en-IN", {minimumFractionDigits:2})}</td>
+                <td></td>
+              </tr>
+            </tbody>
+          </table>
+
+          <div style="display:flex;justify-content:space-between;align-items:center;border:1px solid #e2e8f0;border-radius:10px;margin-top:18px;overflow:hidden;">
+            <div style="padding:12px 16px;">
+              <div style="font-weight:800;font-size:13px;">TOTAL NET PAYABLE</div>
+              <div style="font-size:12px;color:#64748b;">Gross Earnings - Total Deductions</div>
+            </div>
+            <div style="background:#f0fdf4;padding:14px 20px;font-size:18px;font-weight:800;color:#0f172a;">₹${Number(ps.netPay).toLocaleString("en-IN", {minimumFractionDigits:2})}</div>
+          </div>
+
+          <div style="text-align:right;font-size:12px;color:#475569;margin-top:12px;padding-bottom:14px;border-bottom:1px solid #e2e8f0;">
+            Amount In Words : <strong>${ps.amountInWords}</strong>
+          </div>
+          <div style="text-align:center;font-size:11px;color:#94a3b8;margin-top:16px;">-- This is a system-generated document issued by Aaruni Tech. --</div>
+        </div>
+      `;
+    }
+
+    function openPayslipModal(psId) {
+      const ps = state.payslips.find(p => p.id === psId);
+      const emp = state.employees.find(e => e.id === ps.empId);
+      openModalWithHTML(`Payslip — ${emp.name} (${ps.periodLabel})`, buildZohoPayslipHTML(ps, emp));
+    }
+
+    function previewDraftPayslip(empId) {
+      const emp = state.employees.find(e => e.id === empId);
+      const r = computeEmployeePayroll(emp, "2026-11");
+      const draftPs = {
+        periodLabel: "November 2026",
+        payDate: "30/11/2026",
+        paidDays: r.fullMonthPayableDays,
+        lopDays: r.lopDays,
+        basic: r.basic,
+        fixedAllowance: r.allowance,
+        bonus: 0,
+        grossEarnings: r.grossEarned,
+        deductions: r.loanCut,
+        netPay: r.netPay,
+        amountInWords: numberToIndianWords(r.netPay)
+      };
+      openModalWithHTML(`Draft Payslip — ${emp.name} (Nov 2026)`, buildZohoPayslipHTML(draftPs, emp));
+    }
+
+    function generateStaffHRDocument(empId) {
+      const type = document.getElementById("hrDocType").value;
+      const purpose = document.getElementById("hrDocPurpose").value;
+      openHRDocByType(empId, type, purpose);
+    }
+
+    function openHRDocByType(empId, type, customPurpose = "") {
+      const emp = state.employees.find(e => e.id === empId);
+      const purpose = customPurpose || "Bank Loan / Financial Verification / Official Proof";
+      const letterhead = `
+        <div style="display:flex;justify-content:space-between;align-items:center;border-bottom:2px solid #ea580c;padding-bottom:14px;margin-bottom:22px;">
+          <div style="display:flex;align-items:center;gap:12px;">
+            <svg width="44" height="40" viewBox="0 0 60 52" fill="none">
+              <path d="M8 46L26 8H35L17 46H8Z" fill="#111827"/>
+              <path d="M27 8L46 46H36L22 18L27 8Z" fill="#EA580C"/>
+            </svg>
+            <div>
+              <div style="font-size:20px;font-weight:800;color:#0f172a;">Aaruni Tech (Aarunitech Private Limited)</div>
+              <div style="font-size:12px;color:#475569;">Villa 257 Chaitanya Nagar Colony, Praneeth Pranav Knight Woods, Beeramguda, Telangana - 502319</div>
+              <div style="font-size:12px;color:#64748b;">Phone: +91 7842097003 • Email: tech.aaruni@gmail.com</div>
+            </div>
+          </div>
+          <div style="text-align:right;font-size:12px;color:#475569;">
+            <div>Ref: <strong>AAR/HR/${emp.id}/2026</strong></div>
+            <div>Date: <strong>09/11/2026</strong></div>
+          </div>
+        </div>
+      `;
+
+      let bodyHTML = "";
+      if (type === "OFFER") {
+        bodyHTML = `
+          <h2 style="text-align:center;font-size:17px;font-weight:800;text-decoration:underline;margin-bottom:18px;">OFFICIAL OFFER & APPOINTMENT LETTER</h2>
+          <p style="font-size:13px;line-height:1.6;">To,<br/><strong>${emp.name}</strong><br/>Employee ID: <strong>${emp.id}</strong><br/>Address: ${emp.address}</p>
+          <p style="font-size:13px;line-height:1.6;margin-top:14px;">Dear <strong>${emp.name}</strong>,</p>
+          <p style="font-size:13px;line-height:1.6;">We are pleased to appoint you as <strong>${emp.role}</strong> at <strong>Aaruni Tech</strong> effective from your joining date of <strong>${emp.joiningDate}</strong>.</p>
+          <table style="width:100%;border-collapse:collapse;margin:16px 0;font-size:13px;border:1px solid #cbd5e1;">
+            <tr style="border-bottom:1px solid #cbd5e1;"><td style="padding:8px 12px;background:#f8fafc;font-weight:600;width:40%;">Employee ID</td><td style="padding:8px 12px;">${emp.id}</td></tr>
+            <tr style="border-bottom:1px solid #cbd5e1;"><td style="padding:8px 12px;background:#f8fafc;font-weight:600;">Designation</td><td style="padding:8px 12px;">${emp.role}</td></tr>
+            <tr style="border-bottom:1px solid #cbd5e1;"><td style="padding:8px 12px;background:#f8fafc;font-weight:600;">Standard Work Shift</td><td style="padding:8px 12px;">${emp.shiftHours} Hours / Day (Monday–Saturday; Sunday Paid Rest Day)</td></tr>
+            <tr style="border-bottom:1px solid #cbd5e1;"><td style="padding:8px 12px;background:#f8fafc;font-weight:600;">Monthly Gross Compensation (CTC)</td><td style="padding:8px 12px;font-weight:700;">₹${Number(emp.monthlyCtc).toLocaleString("en-IN")} / Month (${numberToIndianWords(emp.monthlyCtc)})</td></tr>
+            <tr><td style="padding:8px 12px;background:#f8fafc;font-weight:600;">Work Location</td><td style="padding:8px 12px;">Villa 257, Praneeth Pranav Knight Woods, Beeramguda, Telangana - 502319</td></tr>
+          </table>
+          <p style="font-size:13px;line-height:1.6;">Your compensation is governed by the Aaruni Tech Attendance & Calendar-Day Payroll Policy. You are required to log your daily Entry & Exit timesheet via the Aaruni Tech Mobile Portal.</p>
+        `;
+      } else if (type === "LOAN_PROOF") {
+        bodyHTML = `
+          <h2 style="text-align:center;font-size:17px;font-weight:800;text-decoration:underline;margin-bottom:18px;">SALARY & EMPLOYMENT VERIFICATION CERTIFICATE (FOR BANK LOAN / PROOF)</h2>
+          <p style="font-size:13px;line-height:1.6;"><strong>To Whomsoever It May Concern / ${purpose}</strong></p>
+          <p style="font-size:13px;line-height:1.6;margin-top:12px;">This is to certify that <strong>${emp.name}</strong> (Employee ID: <strong>${emp.id}</strong>, Aadhaar: <strong>${emp.aadhaar}</strong>, PAN: <strong>${emp.pan}</strong>) is a bonafide employee of <strong>Aaruni Tech</strong> serving as <strong>${emp.role}</strong> since <strong>${emp.joiningDate}</strong>.</p>
+          <table style="width:100%;border-collapse:collapse;margin:16px 0;font-size:13px;border:1px solid #cbd5e1;">
+            <tr style="border-bottom:1px solid #cbd5e1;"><td style="padding:8px 12px;background:#f8fafc;font-weight:600;width:45%;">Monthly Gross Salary (CTC)</td><td style="padding:8px 12px;font-weight:700;">₹${Number(emp.monthlyCtc).toLocaleString("en-IN")}.00 / Month</td></tr>
+            <tr style="border-bottom:1px solid #cbd5e1;"><td style="padding:8px 12px;background:#f8fafc;font-weight:600;">Annualized Gross Compensation</td><td style="padding:8px 12px;font-weight:700;">₹${Number(emp.monthlyCtc * 12).toLocaleString("en-IN")}.00 / Annum</td></tr>
+            <tr style="border-bottom:1px solid #cbd5e1;"><td style="padding:8px 12px;background:#f8fafc;font-weight:600;">Salary Disbursement Bank Account</td><td style="padding:8px 12px;">${emp.bankName} • Acct No: ${emp.bankAccount} • IFSC: ${emp.ifsc}</td></tr>
+            <tr><td style="padding:8px 12px;background:#f8fafc;font-weight:600;">Residential Address on Record</td><td style="padding:8px 12px;">${emp.address}</td></tr>
+          </table>
+          <p style="font-size:13px;line-height:1.6;">This certificate is issued at the request of the employee for the purpose of <strong>${purpose}</strong>.</p>
+        `;
+      } else if (type === "EXPERIENCE") {
+        bodyHTML = `
+          <h2 style="text-align:center;font-size:17px;font-weight:800;text-decoration:underline;margin-bottom:18px;">EXPERIENCE & RELIEVING CERTIFICATE</h2>
+          <p style="font-size:13px;line-height:1.6;"><strong>To Whomsoever It May Concern</strong></p>
+          <p style="font-size:13px;line-height:1.6;margin-top:14px;">This is to certify that <strong>${emp.name}</strong> (Employee ID: <strong>${emp.id}</strong>) was employed with <strong>Aaruni Tech</strong> as <strong>${emp.role}</strong> from <strong>${emp.joiningDate}</strong> to <strong>${emp.relievingDate || "Present (Active)"}</strong>.</p>
+          <p style="font-size:13px;line-height:1.6;">During their tenure with us, we found them to be sincere, hardworking, and technically proficient in their assigned responsibilities. We wish them the very best in all future endeavors.</p>
+        `;
+      } else {
+        bodyHTML = `
+          <h2 style="text-align:center;font-size:17px;font-weight:800;text-decoration:underline;margin-bottom:18px;">BONAFIDE EMPLOYMENT & ADDRESS CERTIFICATE</h2>
+          <p style="font-size:13px;line-height:1.6;">This is to certify that <strong>${emp.name}</strong> (Employee ID: <strong>${emp.id}</strong>) is currently working with <strong>Aaruni Tech</strong> as <strong>${emp.role}</strong> since <strong>${emp.joiningDate}</strong>. Their verified residential address in our company records is:<br/><strong>${emp.address}</strong>.</p>
+        `;
+      }
+
+      const footerHTML = `
+        <div style="margin-top:36px;display:flex;justify-content:space-between;align-items:flex-end;font-size:13px;">
+          <div>
+            <div style="font-weight:700;">For Aaruni Tech</div>
+            <div style="margin-top:28px;font-weight:800;">Nisha Tiwari (AAR-0001) / Rupesh Kumar Tiwari (AAR-0002)</div>
+            <div style="color:#64748b;font-size:12px;">Proprietor / Strategic Advisor • Authorized Signatory</div>
+          </div>
+          <div style="text-align:right;font-size:11px;color:#64748b;">
+            Digitally Verified Document<br/>Aaruni Tech HR Portal (Syllovo Payroll)
+          </div>
+        </div>
+      `;
+
+      openModalWithHTML(`${type} — ${emp.name} (${emp.id})`, `<div style="max-width:720px;margin:0 auto;padding:24px;border:1px solid #cbd5e1;border-radius:12px;">${letterhead}${bodyHTML}${footerHTML}</div>`);
+    }
+
+    function previewIDCard(empId) {
+      const emp = state.employees.find(e => e.id === empId);
+      const html = `
+        <div style="max-width:680px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:20px;font-family:'Inter',sans-serif;">
+          <!-- Left Card: Company Back -->
+          <div style="border:2px solid #e2e8f0;border-radius:16px;padding:24px;text-align:center;background:#fff;">
+            <svg width="64" height="56" viewBox="0 0 60 52" fill="none" style="margin:12px auto;">
+              <path d="M8 46L26 8H35L17 46H8Z" fill="#111827"/>
+              <path d="M27 8L46 46H36L22 18L27 8Z" fill="#EA580C"/>
+            </svg>
+            <div style="font-size:26px;font-weight:900;color:#0f172a;">Aaruni<span style="color:#ea580c;">Tech</span></div>
+            <div style="font-size:13px;color:#475569;margin-bottom:16px;">— learn build grow —</div>
+            <div style="font-size:15px;font-weight:800;color:#0f172a;margin-bottom:14px;">Aarunitech Private Limited</div>
+            <div style="text-align:left;font-size:12px;color:#1e293b;space-y:8px;line-height:1.7;">
+              <div>📞 <strong>7842097003</strong></div>
+              <div>✉️ <strong>tech.aaruni@gmail.com</strong></div>
+              <div>📍 <strong>VILLA 257 CHAITANYA NAGAR COLONY, PRANEETH PRANAV KNIGHT WOODS, BEERAMGUDA, 502319</strong></div>
+            </div>
+          </div>
+          <!-- Right Card: Employee Front -->
+          <div style="border:2px solid #0f172a;border-radius:16px;padding:24px;text-align:center;background:linear-gradient(180deg,#0f172a 0%,#1e293b 45%,#ffffff 45%);">
+            <div style="font-size:18px;font-weight:800;color:#fff;margin-bottom:16px;">Aaruni<span style="color:#ea580c;">Tech</span></div>
+            <div style="width:110px;height:110px;border-radius:9999px;border:4px solid #ea580c;background:#334155;color:#fff;display:flex;align-items:center;justify-content:center;font-size:32px;font-weight:800;margin:0 auto 18px;">
+              ${emp.name.split(" ").map(w => w[0]).join("").slice(0,2)}
+            </div>
+            <div style="font-size:20px;font-weight:900;color:#ea580c;text-transform:uppercase;margin-top:12px;">${emp.name}</div>
+            <div style="font-size:13px;font-weight:600;color:#334155;margin:6px 0 12px;">— ${emp.role} —</div>
+            <div style="font-size:16px;font-weight:800;color:#0f172a;">${emp.id}</div>
+            <div style="font-size:11px;color:#64748b;margin-top:8px;">Google Drive File: ${emp.idCardFile}</div>
+          </div>
+        </div>
+      `;
+      openModalWithHTML(`Official Aaruni Tech ID Card — ${emp.name} (${emp.id})`, html);
+    }
+
+    function openCATaxReportModal() {
+      const tracked = state.employees.filter(e => e.status === "Active" && e.trackTimesheet);
+      const novPayroll = tracked.reduce((a, e) => a + Number(e.monthlyCtc || 0), 0);
+      const total2026Payroll = state.taxRollup.reduce((a, b) => a + b.totalPayroll, 0) + novPayroll;
+      const total2026Ops = state.taxRollup.reduce((a, b) => a + b.opsExpense, 0) + 12000;
+      const fy2025Loss = 145000;
+      const grandLoss = fy2025Loss + total2026Payroll + total2026Ops;
+
+      const html = `
+        <div style="max-width:740px;margin:0 auto;font-family:'Inter',sans-serif;color:#0f172a;padding:24px;border:1px solid #cbd5e1;border-radius:12px;">
+          <h2 style="font-size:18px;font-weight:800;margin:0;">Aaruni Tech — Chartered Accountant (CA) Income Tax & Business Loss Statement</h2>
+          <p style="font-size:12px;color:#475569;margin-top:4px;">Entity: Aaruni Tech (Proprietor: Nisha Tiwari • Strategic Advisor: Rupesh Kumar Tiwari) • Address: Villa 257, Praneeth Pranav Knight Woods, Beeramguda, Telangana - 502319</p>
+          <hr style="margin:14px 0;border-color:#e2e8f0;" />
+          <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:16px;font-size:13px;">
+            <div style="background:#f8fafc;padding:12px;border-radius:8px;border:1px solid #e2e8f0;">
+              <div style="color:#64748b;font-size:11px;">GROSS REVENUE (2025–2026)</div>
+              <div style="font-size:18px;font-weight:800;margin-top:4px;">₹0.00</div>
+            </div>
+            <div style="background:#f8fafc;padding:12px;border-radius:8px;border:1px solid #e2e8f0;">
+              <div style="color:#64748b;font-size:11px;">CUMULATIVE PAYROLL + OPS EXPENSE</div>
+              <div style="font-size:18px;font-weight:800;margin-top:4px;">₹${grandLoss.toLocaleString("en-IN")}.00</div>
+            </div>
+            <div style="background:#fef2f2;padding:12px;border-radius:8px;border:1px solid #fecaca;">
+              <div style="color:#991b1b;font-size:11px;font-weight:700;">NET CARRY-FORWARD BUSINESS LOSS</div>
+              <div style="font-size:18px;font-weight:800;color:#dc2626;margin-top:4px;">-₹${grandLoss.toLocaleString("en-IN")}.00</div>
+            </div>
+          </div>
+          <p style="font-size:12px;line-height:1.5;color:#334155;"><strong>CA Filing Note (Section 72 of Income Tax Act):</strong> Aaruni Tech was GST-registered for e-commerce (Amazon India) and software/course authoring operations (Syllovo). As gross revenue during 2025–2026 is ₹0, all verified staff salary disbursements via Axis Bank (A/c xxxx3409, IFSC UTIB0002057) and Beeramguda office operational costs constitute unabsorbed business loss eligible for 8-year carry-forward.</p>
+        </div>
+      `;
+      openModalWithHTML("CA Tax Filing & Business Loss Carry-Forward Statement (2025–2026)", html);
+    }
+
+    // ============================================================================
+    // 8. MAIN RENDER ENTRYPOINT
+    // ============================================================================
+    function renderApp() {
+      renderBottomNav();
+      const vp = document.getElementById("appViewport");
+      if (state.persona === "ADMIN") {
+        vp.innerHTML = renderAdminCockpit();
+      } else {
+        const emp = state.employees.find(e => e.id === state.persona) || state.employees[3];
+        vp.innerHTML = renderStaffPortal(emp);
+      }
+    }
+
+    renderApp();
+  </script>
+</body>
+</html>

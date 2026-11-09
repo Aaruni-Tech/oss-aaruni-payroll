@@ -1,0 +1,10 @@
+{
+  "name": "Aaruni Tech — Timesheet & Payroll (Syllovo)",
+  "short_name": "AaruniHR",
+  "description": "Mobile-First Attendance, Entry/Exit Timesheet, Encrypted Salary Vault & Self-Service HR Documents for Aaruni Tech.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0f172a",
+  "theme_color": "#ea580c",
+  "orientation": "portrait-primary"
+}
