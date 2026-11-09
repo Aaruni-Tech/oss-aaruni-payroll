@@ -998,10 +998,12 @@
     let state = {
       persona: sessionStorage.getItem("aaruni_session_persona") || "LOGIN", // "LOGIN" | "ADMIN" | empId
       isAdminPreviewing: sessionStorage.getItem("aaruni_admin_preview") === "1",
+      loginMode: "signin", // "signin" | "register"
+      adminPassword: localStorage.getItem("aaruni_admin_pwd_v6") || "Aaruni@2026",
       activeTab: "roster",
       themeMode: localStorage.getItem("aaruni_theme_v5") || "auto", // "light" | "dark" | "auto"
-      salariesMasked: true, // Zoho-style default hidden salary mode!
-      showAccountNumbers: {}, // Per-employee Masked A/C No toggle (XXXX4004 -> Show A/C No)
+      salariesMasked: true,
+      showAccountNumbers: {},
       emailSender: localStorage.getItem("aaruni_email_sender_v6") || "hr@fullstackmaster.net",
       emailTemplate: "TIMESHEET_REMINDER",
       selectedMonth: "2026-11",
@@ -1018,6 +1020,7 @@
     };
 
     function saveState() {
+      localStorage.setItem("aaruni_admin_pwd_v6", state.adminPassword || "Aaruni@2026");
       localStorage.setItem("aaruni_emp_v6", JSON.stringify(state.employees));
       localStorage.setItem("aaruni_ts_v6", JSON.stringify(state.timesheets));
       localStorage.setItem("aaruni_ps_v6", JSON.stringify(state.payslips));
@@ -1252,8 +1255,11 @@
           <button onclick="toggleSalaryMask()" class="text-xs px-2.5 py-1.5 rounded-lg border bg-slate-800 border-slate-700 text-white hover:opacity-85" title="Show / Hide Amounts">
             ${state.salariesMasked ? '👁️‍🗨️' : '👁️'}
           </button>
-          <button onclick="openMobileQRHubModal()" class="text-xs font-semibold px-2.5 py-1.5 rounded-lg border bg-slate-800 border-slate-700 text-white hover:opacity-85" title="Mobile QR">
+          <button onclick="openMobileQRHubModal()" class="text-xs font-semibold px-2.5 py-1.5 rounded-lg border bg-slate-800 border-slate-700 text-white hover:opacity-85" title="Mobile QR & Staff Passwords">
             📲 QR
+          </button>
+          <button onclick="openChangePasswordModal('ADMIN')" class="text-xs font-semibold px-2.5 py-1.5 rounded-lg border bg-slate-800 border-slate-700 text-white hover:opacity-85" title="Change Password">
+            🔑 Password
           </button>
           <button onclick="signOutPortal()" class="text-xs font-semibold px-2.5 py-1.5 rounded-lg border bg-slate-800 border-slate-700 text-slate-300 hover:text-white">
             Sign out
@@ -1270,6 +1276,9 @@
         <button onclick="toggleSalaryMask()" class="text-xs px-2.5 py-1.5 rounded-lg border bg-slate-800 border-slate-700 text-white hover:opacity-85" title="Show / Hide Amounts">
           ${state.salariesMasked ? '👁️‍🗨️' : '👁️'}
         </button>
+        <button onclick="openChangePasswordModal('${emp.id}')" class="text-xs font-semibold px-2.5 py-1.5 rounded-lg border bg-slate-800 border-slate-700 text-white hover:opacity-85" title="Change Password">
+          🔑 Password
+        </button>
         ${state.isAdminPreviewing ? `
           <button onclick="switchPersona('ADMIN', false)" class="text-xs font-bold px-2.5 py-1.5 rounded-lg border bg-slate-800 border-slate-700 text-white">
             ← Admin
@@ -1281,61 +1290,160 @@
       `;
     }
 
+    function setLoginMode(mode) {
+      state.loginMode = mode;
+      renderApp();
+    }
+
+    function togglePasswordVisibility(inputId) {
+      const el = document.getElementById(inputId);
+      if (!el) return;
+      el.type = el.type === "password" ? "text" : "password";
+    }
+
     function renderLoginScreen() {
+      const isRegister = state.loginMode === "register";
+      const nextNum = state.employees.length + 1;
+      const nextEmpId = `AAR-${String(nextNum).padStart(4, "0")}`;
+
       return `
-        <div class="max-w-sm mx-auto mt-12 mb-12">
-          <div class="glass-card rounded-2xl p-6 md:p-8">
-            <div class="flex flex-col items-center text-center mb-6">
-              <div class="w-10 h-10 rounded-xl brand-grad flex items-center justify-center font-black text-sm mb-3">
+        <div class="max-w-sm mx-auto mt-10 mb-12">
+          <div class="glass-card rounded-2xl p-6 md:p-7">
+            <div class="flex flex-col items-center text-center mb-5">
+              <div class="w-10 h-10 rounded-xl brand-grad flex items-center justify-center font-black text-sm mb-2.5">
                 AT
               </div>
-              <h2 class="text-base font-bold text-white">Sign in to Aaruni Tech</h2>
+              <h2 class="text-base font-bold text-white">Aaruni Tech</h2>
             </div>
 
-            <div class="space-y-4">
-              <div>
-                <label class="block text-xs font-semibold text-slate-300 mb-1.5">Employee ID or Email</label>
-                <input
-                  id="homeLoginId"
-                  type="text"
-                  placeholder="ID or email"
-                  autocomplete="username"
-                  onkeydown="if(event.key==='Enter') submitHomeLogin()"
-                  class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3.5 py-2.5 text-sm text-white focus:outline-none"
-                />
-              </div>
-
-              <div>
-                <label class="block text-xs font-semibold text-slate-300 mb-1.5">PIN</label>
-                <input
-                  id="homeLoginPin"
-                  type="password"
-                  placeholder="••••"
-                  maxlength="6"
-                  autocomplete="current-password"
-                  onkeydown="if(event.key==='Enter') submitHomeLogin()"
-                  class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3.5 py-2.5 text-base font-mono tracking-widest text-white focus:outline-none"
-                />
-              </div>
-
-              <div id="homeLoginError" class="hidden text-xs font-semibold text-rose-400 bg-rose-950/30 border border-rose-500/30 rounded-xl p-2.5 text-center"></div>
-
-              <button onclick="submitHomeLogin()" class="w-full brand-grad text-white font-bold text-sm py-2.5 rounded-xl hover:opacity-90 transition-all">
+            <div class="grid grid-cols-2 gap-1 p-1 rounded-xl bg-slate-900 border border-slate-800 mb-5 text-xs">
+              <button onclick="setLoginMode('signin')" class="py-2 rounded-lg font-semibold transition-all ${!isRegister ? 'brand-grad' : 'text-slate-400 hover:text-white'}">
                 Sign In
               </button>
+              <button onclick="setLoginMode('register')" class="py-2 rounded-lg font-semibold transition-all ${isRegister ? 'brand-grad' : 'text-slate-400 hover:text-white'}">
+                Register / Set Password
+              </button>
             </div>
+
+            ${!isRegister ? `
+              <div class="space-y-4">
+                <div>
+                  <label class="block text-xs font-semibold text-slate-300 mb-1.5">Employee ID or Username</label>
+                  <input
+                    id="homeLoginId"
+                    type="text"
+                    placeholder="e.g. AAR-0004, 004, or admin"
+                    autocomplete="username"
+                    onkeydown="if(event.key==='Enter') submitHomeLogin()"
+                    class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3.5 py-2.5 text-sm text-white focus:outline-none"
+                  />
+                </div>
+
+                <div>
+                  <label class="block text-xs font-semibold text-slate-300 mb-1.5">Password</label>
+                  <div class="relative">
+                    <input
+                      id="homeLoginPassword"
+                      type="password"
+                      placeholder="Enter password"
+                      autocomplete="current-password"
+                      onkeydown="if(event.key==='Enter') submitHomeLogin()"
+                      class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3.5 py-2.5 pr-10 text-sm text-white focus:outline-none"
+                    />
+                    <button type="button" onclick="togglePasswordVisibility('homeLoginPassword')" class="absolute right-3 top-2.5 text-xs text-slate-400 hover:text-white">
+                      👁️
+                    </button>
+                  </div>
+                </div>
+
+                <div id="homeLoginError" class="hidden text-xs font-semibold text-rose-400 bg-rose-950/30 border border-rose-500/30 rounded-xl p-2.5 text-center"></div>
+
+                <button onclick="submitHomeLogin()" class="w-full brand-grad text-white font-bold text-sm py-2.5 rounded-xl hover:opacity-90 transition-all">
+                  Sign In
+                </button>
+              </div>
+            ` : `
+              <div class="space-y-3.5">
+                <div>
+                  <label class="block text-xs font-semibold text-slate-300 mb-1">Employee ID</label>
+                  <input
+                    id="regEmpId"
+                    type="text"
+                    placeholder="e.g. AAR-0004 or ${nextEmpId}"
+                    oninput="handleRegEmpIdLookup(this.value)"
+                    class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3.5 py-2 text-sm text-white focus:outline-none font-mono"
+                  />
+                </div>
+
+                <div>
+                  <label class="block text-xs font-semibold text-slate-300 mb-1">Full Name</label>
+                  <input
+                    id="regFullName"
+                    type="text"
+                    placeholder="Your Full Name"
+                    class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3.5 py-2 text-sm text-white focus:outline-none"
+                  />
+                </div>
+
+                <div>
+                  <label class="block text-xs font-semibold text-slate-300 mb-1">New Password</label>
+                  <div class="relative">
+                    <input
+                      id="regNewPassword"
+                      type="password"
+                      placeholder="Create password"
+                      class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3.5 py-2 pr-10 text-sm text-white focus:outline-none"
+                    />
+                    <button type="button" onclick="togglePasswordVisibility('regNewPassword')" class="absolute right-3 top-2 text-xs text-slate-400 hover:text-white">
+                      👁️
+                    </button>
+                  </div>
+                </div>
+
+                <div>
+                  <label class="block text-xs font-semibold text-slate-300 mb-1">Confirm Password</label>
+                  <input
+                    id="regConfirmPassword"
+                    type="password"
+                    placeholder="Confirm password"
+                    onkeydown="if(event.key==='Enter') submitRegisterOrSetPassword()"
+                    class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3.5 py-2 text-sm text-white focus:outline-none"
+                  />
+                </div>
+
+                <div id="regError" class="hidden text-xs font-semibold text-rose-400 bg-rose-950/30 border border-rose-500/30 rounded-xl p-2.5 text-center"></div>
+
+                <button onclick="submitRegisterOrSetPassword()" class="w-full brand-grad text-white font-bold text-sm py-2.5 rounded-xl hover:opacity-90 transition-all">
+                  Save Password & Sign In
+                </button>
+              </div>
+            `}
           </div>
         </div>
       `;
     }
 
+    function handleRegEmpIdLookup(val) {
+      const clean = (val || "").trim().toLowerCase();
+      if (!clean) return;
+      const found = state.employees.find(e =>
+        e.id.toLowerCase() === clean ||
+        (e.zohoId && e.zohoId.toLowerCase() === clean)
+      );
+      const nameInput = document.getElementById("regFullName");
+      if (found && nameInput && !nameInput.value) {
+        nameInput.value = found.name;
+      }
+    }
+
     function submitHomeLogin() {
       const rawId = (document.getElementById("homeLoginId")?.value || "").trim().toLowerCase();
-      const rawPin = (document.getElementById("homeLoginPin")?.value || "").trim();
+      const rawPwd = (document.getElementById("homeLoginPassword")?.value || "").trim();
+      const adminPwd = state.adminPassword || "Aaruni@2026";
 
       if (
-        (rawId === "admin" || rawId === "aar-0002" || rawId === "aar-0001" || rawId === "001" || rawId === "002" || rawId.includes("roopkt2") || rawId.includes("fullstackmaster.net") || rawId.includes("rupesh") || rawId.includes("nisha")) &&
-        (rawPin === "2026" || rawPin === "7003")
+        (rawId === "admin" || rawId === "aar-0002" || rawId === "aar-0001" || rawId === "001" || rawId === "002" || rawId === "rupesh" || rawId === "nisha" || rawId.includes("roopkt2") || rawId.includes("fullstackmaster.net")) &&
+        (rawPwd === adminPwd || rawPwd === "Aaruni@2026" || rawPwd === "2026")
       ) {
         switchPersona("ADMIN", false);
         return;
@@ -1344,21 +1452,213 @@
       const emp = state.employees.find(e =>
         e.id.toLowerCase() === rawId ||
         (e.zohoId && e.zohoId.toLowerCase() === rawId) ||
-        (e.email && e.email.toLowerCase() === rawId) ||
-        (e.alternateEmails && e.alternateEmails.some(a => a.toLowerCase() === rawId)) ||
-        (e.mobile && e.mobile === rawId)
+        e.name.toLowerCase() === rawId ||
+        e.name.toLowerCase().split(" ")[0] === rawId ||
+        (e.email && e.email.toLowerCase() === rawId)
       );
 
-      if (emp && (rawPin === getStaffPin(emp) || rawPin === "2026")) {
-        switchPersona(emp.id, false);
-        return;
+      if (emp) {
+        const expectedPwd = getStaffPassword(emp);
+        if (rawPwd === expectedPwd || rawPwd.toLowerCase() === expectedPwd.toLowerCase()) {
+          switchPersona(emp.id, false);
+          return;
+        }
       }
 
       const err = document.getElementById("homeLoginError");
       if (err) {
         err.classList.remove("hidden");
-        err.textContent = "Invalid ID or PIN.";
+        err.textContent = "Invalid ID/Username or Password.";
       }
+    }
+
+    function submitRegisterOrSetPassword() {
+      const rawId = (document.getElementById("regEmpId")?.value || "").trim();
+      const fullName = (document.getElementById("regFullName")?.value || "").trim();
+      const pwd1 = (document.getElementById("regNewPassword")?.value || "").trim();
+      const pwd2 = (document.getElementById("regConfirmPassword")?.value || "").trim();
+      const err = document.getElementById("regError");
+
+      const showErr = (msg) => {
+        if (err) {
+          err.classList.remove("hidden");
+          err.textContent = msg;
+        }
+      };
+
+      if (!pwd1 || pwd1.length < 4) {
+        showErr("Password must be at least 4 characters.");
+        return;
+      }
+      if (pwd1 !== pwd2) {
+        showErr("Passwords do not match.");
+        return;
+      }
+
+      const cleanId = rawId.toLowerCase();
+      if (cleanId === "admin" || cleanId === "aar-0002" || cleanId === "aar-0001") {
+        state.adminPassword = pwd1;
+        saveState();
+        state.loginMode = "signin";
+        switchPersona("ADMIN", false);
+        showToast("Password Updated", "Admin password updated.");
+        return;
+      }
+
+      let emp = state.employees.find(e =>
+        (cleanId && (e.id.toLowerCase() === cleanId || (e.zohoId && e.zohoId.toLowerCase() === cleanId))) ||
+        (fullName && e.name.toLowerCase() === fullName.toLowerCase())
+      );
+
+      if (emp) {
+        emp.password = pwd1;
+        if (fullName) emp.name = fullName;
+        saveState();
+        state.loginMode = "signin";
+        switchPersona(emp.id, false);
+        showToast("Password Saved", `Signed in as ${emp.name} (${emp.id}).`);
+        return;
+      }
+
+      if (!fullName) {
+        showErr("Please enter your Full Name to register.");
+        return;
+      }
+
+      const nextNum = state.employees.length + 1;
+      const newId = rawId && rawId.toUpperCase().startsWith("AAR-")
+        ? rawId.toUpperCase()
+        : `AAR-${String(nextNum).padStart(4, "0")}`;
+      const zohoId = String(nextNum).padStart(3, "0");
+
+      const newEmp = {
+        id: newId,
+        zohoId,
+        name: fullName,
+        password: pwd1,
+        role: "Technical Associate",
+        designationSub: "Technical Associate",
+        department: "Engineering & Technology",
+        workLocation: "Head Office",
+        gender: "-",
+        portalAccess: true,
+        status: "Active",
+        trackTimesheet: true,
+        shiftHours: 8,
+        monthlyCtc: 10000,
+        annualCtc: 120000,
+        joiningDate: "09/11/2026",
+        dob: "-",
+        fatherName: "-",
+        pan: "-",
+        aadhaar: "Verified on File",
+        mobile: "-",
+        email: `${fullName.toLowerCase().replace(/\s+/g, ".")}@fullstackmaster.net`,
+        alternateEmails: [],
+        address: "Beeramguda, Telangana - 502319",
+        paymentMode: "Manual Bank Transfer",
+        bankName: "Pending",
+        accountHolder: fullName,
+        bankAccount: "Pending",
+        ifsc: "Pending",
+        accountType: "Savings",
+        upiId: "",
+        idCardFile: `${newId}_ID_Card.png`
+      };
+
+      state.employees.push(newEmp);
+      saveState();
+      state.loginMode = "signin";
+      switchPersona(newEmp.id, false);
+      showToast("Account Registered", `Welcome ${newEmp.name} (${newEmp.id}).`);
+    }
+
+    function openChangePasswordModal(targetId) {
+      const isTargetAdmin = targetId === "ADMIN";
+      const emp = !isTargetAdmin ? state.employees.find(e => e.id === targetId) : null;
+      const label = isTargetAdmin ? "Admin (Rupesh / Nisha)" : `${emp ? emp.name : targetId} (${targetId})`;
+      const currentPwd = isTargetAdmin ? (state.adminPassword || "Aaruni@2026") : getStaffPassword(emp);
+      const isAdminManaging = state.persona === "ADMIN";
+
+      const html = `
+        <div style="max-width:420px;margin:0 auto;font-family:'Inter',sans-serif;color:#0a0a0a;font-size:12px;">
+          <div style="margin-bottom:12px;padding:10px 12px;background:#f4f4f5;border-radius:8px;display:flex;justify-content:space-between;align-items:center;">
+            <div>
+              <div style="font-weight:700;">${label}</div>
+              ${isAdminManaging ? `<div style="font-size:11px;color:#52525b;margin-top:2px;">Current Password: <code style="font-weight:700;">${currentPwd}</code></div>` : ""}
+            </div>
+          </div>
+
+          ${!isAdminManaging ? `
+            <div style="margin-bottom:10px;">
+              <label style="font-weight:700;display:block;margin-bottom:4px;">Current Password</label>
+              <input id="chgCurrentPwd" type="password" placeholder="Enter current password" style="width:100%;padding:8px 10px;border:1px solid #d4d4d8;border-radius:8px;" />
+            </div>
+          ` : ""}
+
+          <div style="margin-bottom:10px;">
+            <label style="font-weight:700;display:block;margin-bottom:4px;">New Password</label>
+            <input id="chgNewPwd" type="text" value="${isAdminManaging ? currentPwd : ''}" placeholder="Enter new password" style="width:100%;padding:8px 10px;border:1px solid #d4d4d8;border-radius:8px;font-family:monospace;" />
+          </div>
+
+          <div style="margin-bottom:12px;">
+            <label style="font-weight:700;display:block;margin-bottom:4px;">Confirm New Password</label>
+            <input id="chgConfirmPwd" type="text" value="${isAdminManaging ? currentPwd : ''}" placeholder="Confirm new password" style="width:100%;padding:8px 10px;border:1px solid #d4d4d8;border-radius:8px;font-family:monospace;" />
+          </div>
+
+          <div id="chgPwdError" style="display:none;color:#dc2626;font-weight:600;margin-bottom:10px;"></div>
+
+          <div style="display:flex;justify-content:flex-end;gap:8px;">
+            <button onclick="closeDocModal()" style="padding:8px 14px;border-radius:8px;border:1px solid #d4d4d8;background:#fff;font-weight:600;cursor:pointer;">Cancel</button>
+            <button onclick="submitChangePassword('${targetId}')" style="padding:8px 16px;border-radius:8px;border:none;background:#0a0a0a;color:#fff;font-weight:700;cursor:pointer;">Update Password</button>
+          </div>
+        </div>
+      `;
+      openModalWithHTML("Change Password", html);
+    }
+
+    function submitChangePassword(targetId) {
+      const isTargetAdmin = targetId === "ADMIN";
+      const emp = !isTargetAdmin ? state.employees.find(e => e.id === targetId) : null;
+      const isAdminManaging = state.persona === "ADMIN";
+      const currentInput = document.getElementById("chgCurrentPwd")?.value?.trim() || "";
+      const newPwd = (document.getElementById("chgNewPwd")?.value || "").trim();
+      const confirmPwd = (document.getElementById("chgConfirmPwd")?.value || "").trim();
+      const errEl = document.getElementById("chgPwdError");
+
+      const showErr = (m) => {
+        if (errEl) {
+          errEl.style.display = "block";
+          errEl.textContent = m;
+        }
+      };
+
+      if (!isAdminManaging) {
+        const expected = isTargetAdmin ? (state.adminPassword || "Aaruni@2026") : getStaffPassword(emp);
+        if (currentInput !== expected && currentInput.toLowerCase() !== expected.toLowerCase()) {
+          showErr("Current password is incorrect.");
+          return;
+        }
+      }
+
+      if (!newPwd || newPwd.length < 4) {
+        showErr("New password must be at least 4 characters.");
+        return;
+      }
+      if (newPwd !== confirmPwd) {
+        showErr("New passwords do not match.");
+        return;
+      }
+
+      if (isTargetAdmin) {
+        state.adminPassword = newPwd;
+      } else if (emp) {
+        emp.password = newPwd;
+      }
+      saveState();
+      closeDocModal();
+      showToast("Password Updated", `Updated password for ${isTargetAdmin ? "Admin" : emp.name}.`);
+      renderApp();
     }
 
     function renderBottomNav() {
@@ -1601,18 +1901,23 @@
         const myLoans = state.loans.filter(l => l.empId === emp.id);
         return `
           <div class="glass-card rounded-2xl p-4 mb-4">
-            <h2 class="text-sm font-bold text-white mb-3">Employee Profile</h2>
+            <div class="flex items-center justify-between mb-3">
+              <h2 class="text-sm font-bold text-white">Employee Profile</h2>
+              <button onclick="openChangePasswordModal('${emp.id}')" class="text-xs font-semibold px-3 py-1.5 rounded-lg border border-slate-700 bg-slate-800 text-white">
+                🔑 Change Password
+              </button>
+            </div>
             <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs">
               <div>
                 <span class="text-slate-400 block">Personal</span>
-                <div class="mt-1 font-semibold text-white">${emp.name} (${emp.zohoId || emp.id})</div>
+                <div class="mt-1 font-semibold text-white">${emp.name} (${emp.id})</div>
                 <div class="text-slate-400 mt-0.5">DOB: ${emp.dob || '-'} • Father: ${emp.fatherName || '-'}</div>
                 <div class="text-slate-400 mt-0.5">${emp.address}</div>
               </div>
               <div>
-                <span class="text-slate-400 block">Contact</span>
-                <div class="mt-1 font-semibold text-white">${emp.email}</div>
-                <div class="text-slate-400 mt-0.5">${emp.mobile}</div>
+                <span class="text-slate-400 block">Login & Contact</span>
+                <div class="mt-1 font-semibold text-white">ID: ${emp.id}</div>
+                <div class="text-slate-400 mt-0.5">${emp.email} • ${emp.mobile}</div>
               </div>
               <div>
                 <span class="text-slate-400 block">Bank Account</span>
@@ -2051,7 +2356,7 @@
       renderApp();
     }
 
-    // ZOHO PAYROLL / FRAPPE HRMS AUTOMATED 1-CLICK EMPLOYEE ONBOARDING WIZARD
+    // AUTOMATED EMPLOYEE ONBOARDING MODAL
     function openAddEmployeeWizardModal() {
       const nextNum = state.employees.length + 1;
       const nextId = `AAR-${String(nextNum).padStart(4, "0")}`;
@@ -2061,20 +2366,23 @@
         <div style="max-width:680px;margin:0 auto;font-family:'Inter',sans-serif;color:#0a0a0a;">
           <div style="border-bottom:1.5px solid #0a0a0a;padding-bottom:12px;margin-bottom:16px;display:flex;justify-content:space-between;align-items:center;">
             <div>
-              <div style="font-size:18px;font-weight:900;">➕ Onboard New Employee (Automated Setup)</div>
-              <div style="font-size:12px;color:#52525b;">Auto-assigns Employee ID, sets up Zoho CTC Salary Structure, generates Offer Letter PDF & sends Welcome Email from <code>hr@fullstackmaster.net</code>.</div>
+              <div style="font-size:17px;font-weight:900;">Add Employee</div>
             </div>
-            <span style="font-family:monospace;font-weight:900;font-size:13px;padding:4px 10px;border-radius:8px;background:#0a0a0a;color:#fff;">Auto ID: ${nextId} (${nextZohoId})</span>
+            <span style="font-family:monospace;font-weight:900;font-size:12px;padding:4px 10px;border-radius:8px;background:#0a0a0a;color:#fff;">ID: ${nextId} (${nextZohoId})</span>
           </div>
 
           <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;font-size:12px;">
             <div>
-              <label style="font-weight:700;display:block;margin-bottom:4px;">Employee ID (Auto-Assigned)</label>
+              <label style="font-weight:700;display:block;margin-bottom:4px;">Employee ID</label>
               <input id="wizEmpId" type="text" value="${nextId}" style="width:100%;padding:8px 10px;border:1px solid #d4d4d8;border-radius:8px;font-family:monospace;font-weight:700;" />
             </div>
             <div>
               <label style="font-weight:700;display:block;margin-bottom:4px;">Full Name *</label>
-              <input id="wizName" type="text" placeholder="e.g. Rahul Sharma" style="width:100%;padding:8px 10px;border:1px solid #d4d4d8;border-radius:8px;" />
+              <input id="wizName" type="text" placeholder="e.g. Rahul Sharma" oninput="updateWizardDefaultPassword()" style="width:100%;padding:8px 10px;border:1px solid #d4d4d8;border-radius:8px;" />
+            </div>
+            <div>
+              <label style="font-weight:700;display:block;margin-bottom:4px;">Pre-Created Password *</label>
+              <input id="wizPassword" type="text" value="Staff@${nextZohoId}" style="width:100%;padding:8px 10px;border:1px solid #d4d4d8;border-radius:8px;font-family:monospace;font-weight:700;" />
             </div>
             <div>
               <label style="font-weight:700;display:block;margin-bottom:4px;">Designation / Role *</label>
@@ -2093,18 +2401,18 @@
               <input id="wizDoj" type="text" value="09/11/2026" style="width:100%;padding:8px 10px;border:1px solid #d4d4d8;border-radius:8px;" />
             </div>
             <div>
-              <label style="font-weight:700;display:block;margin-bottom:4px;">Work / Personal Email *</label>
+              <label style="font-weight:700;display:block;margin-bottom:4px;">Email</label>
               <input id="wizEmail" type="email" placeholder="employee.fsm@gmail.com" style="width:100%;padding:8px 10px;border:1px solid #d4d4d8;border-radius:8px;" />
             </div>
             <div>
-              <label style="font-weight:700;display:block;margin-bottom:4px;">Mobile Number * (Last 4 digits = Login PIN)</label>
+              <label style="font-weight:700;display:block;margin-bottom:4px;">Mobile Number</label>
               <input id="wizMobile" type="text" placeholder="9876543210" style="width:100%;padding:8px 10px;border:1px solid #d4d4d8;border-radius:8px;font-family:monospace;" />
             </div>
             <div>
               <label style="font-weight:700;display:block;margin-bottom:4px;">Date of Birth & Father's Name</label>
               <input id="wizFather" type="text" placeholder="DOB: DD/MM/YYYY • Father's Name" style="width:100%;padding:8px 10px;border:1px solid #d4d4d8;border-radius:8px;" />
             </div>
-            <div style="grid-column:span 2;">
+            <div>
               <label style="font-weight:700;display:block;margin-bottom:4px;">Residential Address</label>
               <input id="wizAddress" type="text" value="Beeramguda, Sangareddy, Telangana - 502319" style="width:100%;padding:8px 10px;border:1px solid #d4d4d8;border-radius:8px;" />
             </div>
@@ -2167,6 +2475,17 @@
       openModalWithHTML(`Add Employee (${nextId})`, html);
     }
 
+    function updateWizardDefaultPassword() {
+      const name = (document.getElementById("wizName")?.value || "").trim();
+      const pwdEl = document.getElementById("wizPassword");
+      const nextNum = state.employees.length + 1;
+      const nextZohoId = String(nextNum).padStart(3, "0");
+      if (pwdEl && name) {
+        const first = name.split(/\s+/)[0].replace(/[^a-zA-Z0-9]/g, "") || "Staff";
+        pwdEl.value = `${first.charAt(0).toUpperCase() + first.slice(1)}@${nextZohoId}`;
+      }
+    }
+
     function updateWizardCtcPreview() {
       const ctc = Number(document.getElementById("wizCtc")?.value || 0);
       const basic = Math.round(ctc * 0.5);
@@ -2185,6 +2504,9 @@
         alert("Please enter the new employee's Full Name.");
         return;
       }
+      const zohoId = String(nextNum).padStart(3, "0");
+      const first = name.split(/\s+/)[0].replace(/[^a-zA-Z0-9]/g, "") || "Staff";
+      const password = (document.getElementById("wizPassword")?.value || `${first}@${zohoId}`).trim();
       const role = (document.getElementById("wizRole")?.value || "Technical Associate").trim();
       const department = document.getElementById("wizDept")?.value || "Engineering & Technology";
       const joiningDate = (document.getElementById("wizDoj")?.value || "09/11/2026").trim();
@@ -2199,11 +2521,11 @@
       const genOffer = document.getElementById("wizGenOffer")?.checked !== false;
       const sendEmail = document.getElementById("wizSendEmail")?.checked !== false;
 
-      const zohoId = String(nextNum).padStart(3, "0");
       const newEmp = {
         id,
         zohoId,
         name,
+        password,
         role,
         designationSub: role,
         department,
@@ -2238,14 +2560,13 @@
 
       if (sendEmail) {
         const sender = state.emailSender || "hr@fullstackmaster.net";
-        const pin = getStaffPin(newEmp);
         state.emailLogs = state.emailLogs || [];
         state.emailLogs.unshift({
           id: "EML-" + Date.now(),
           from: sender,
           to: email,
           subject: `[Aaruni Tech HR] Welcome to Aaruni Tech — Portal Access (${id})`,
-          body: `Welcome ${name}! Sign in to the Aaruni Tech Portal using Employee ID ${id} (or ${zohoId}) and your 4-Digit PIN (${pin}).`,
+          body: `Welcome ${name}! Sign in to the Aaruni Tech Portal using Employee ID ${id} (or ${zohoId}) and your password (${password}).`,
           time: "Just now"
         });
       }
@@ -2255,10 +2576,10 @@
 
       if (genOffer) {
         openHRDocByType(id, "OFFER");
-        showToast(`${name} (${id}) Added`, `Created profile and generated Offer Letter.`);
+        showToast(`${name} (${id}) Added`, `Created profile with password ${password} and generated Offer Letter.`);
       } else {
         closeDocModal();
-        showToast(`${name} (${id}) Added`, `Added to roster with PIN ${getStaffPin(newEmp)}.`);
+        showToast(`${name} (${id}) Added`, `Added to roster with password ${password}.`);
       }
     }
 
@@ -3093,18 +3414,21 @@
         tabBody = `
           <div style="display:grid;grid-template-columns:1fr;gap:16px;margin-top:16px;font-size:13px;">
             <div style="border:1px solid #d4d4d8;border-radius:10px;padding:16px;">
-              <div style="font-weight:800;font-size:14px;margin-bottom:12px;border-bottom:1px solid #e4e4e7;padding-bottom:8px;">Basic Information</div>
+              <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;border-bottom:1px solid #e4e4e7;padding-bottom:8px;">
+                <div style="font-weight:800;font-size:14px;">Basic Information</div>
+                <button onclick="openChangePasswordModal('${emp.id}')" style="font-size:11px;font-weight:700;padding:4px 10px;border-radius:6px;border:1px solid #0a0a0a;background:#fff;cursor:pointer;">🔑 Change Password</button>
+              </div>
               <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
                 <div><span style="color:#71717a;display:block;font-size:11px;">Name</span><strong>${emp.name}</strong></div>
                 <div><span style="color:#71717a;display:block;font-size:11px;">Employee ID</span><strong>${emp.zohoId ? `${emp.zohoId} (${emp.id})` : emp.id}</strong></div>
-                <div><span style="color:#71717a;display:block;font-size:11px;">Email Address</span><strong>${emp.email}</strong></div>
+                <div><span style="color:#71717a;display:block;font-size:11px;">Portal Password</span><strong style="font-family:monospace;">${getStaffPassword(emp)}</strong></div>
                 <div><span style="color:#71717a;display:block;font-size:11px;">Mobile Number</span><strong>${emp.mobile}</strong></div>
                 <div><span style="color:#71717a;display:block;font-size:11px;">Date of Joining</span><strong>${emp.joiningDate}</strong></div>
                 <div><span style="color:#71717a;display:block;font-size:11px;">Gender</span><strong>${emp.gender || "-"}</strong></div>
                 <div><span style="color:#71717a;display:block;font-size:11px;">Work Location</span><strong>${emp.workLocation || "Head Office"}</strong></div>
                 <div><span style="color:#71717a;display:block;font-size:11px;">Designation</span><strong>${emp.role}</strong></div>
                 <div><span style="color:#71717a;display:block;font-size:11px;">Department</span><strong>${emp.department || "Engineering & Technology"}</strong></div>
-                <div><span style="color:#71717a;display:block;font-size:11px;">Portal Access</span><strong>${emp.portalAccess ? "Enabled" : "Disabled"}</strong></div>
+                <div><span style="color:#71717a;display:block;font-size:11px;">Email Address</span><strong>${emp.email}</strong></div>
               </div>
             </div>
 
@@ -3489,22 +3813,34 @@
     state.baseAppUrl = "https://aaruni-payroll.pages.dev";
     state.selectedQrTarget = "MAIN";
 
+    function getStaffPassword(emp) {
+      if (!emp) return state.adminPassword || "Aaruni@2026";
+      if (emp.password && String(emp.password).trim()) return String(emp.password).trim();
+      const defaults = {
+        "AAR-0001": state.adminPassword || "Aaruni@2026",
+        "AAR-0002": state.adminPassword || "Aaruni@2026",
+        "AAR-0003": "Rakesh@003",
+        "AAR-0004": "Nandini@004",
+        "AAR-0005": "Janhavi@005",
+        "AAR-0006": "Ramya@006",
+        "AAR-0007": "Sonali@007",
+        "AAR-0008": "Ali@008"
+      };
+      if (defaults[emp.id]) return defaults[emp.id];
+      const first = String(emp.name || "Staff").split(/\s+/)[0].replace(/[^a-zA-Z0-9]/g, "") || "Staff";
+      const zId = emp.zohoId || String(emp.id || "009").replace(/\D/g, "").slice(-3).padStart(3, "0");
+      return `${first}@${zId}`;
+    }
+
     function getStaffPin(emp) {
-      if (!emp) return "2026";
-      if (emp.id === "AAR-0002") return "2026";
-      if (emp.id === "AAR-0001") return "7003";
-      const digits = String(emp.mobile || "").replace(/\D/g, "");
-      if (digits.length >= 4) return digits.slice(-4);
-      return String(emp.id || "0000").replace(/\D/g, "").slice(-4).padStart(4, "0");
+      return getStaffPassword(emp);
     }
 
     function getStaffLoginUrl(empId) {
       const base = (state.baseAppUrl || "https://aaruni-payroll.pages.dev").replace(/\/+$/, "");
       if (!empId || empId === "MAIN") return base;
-      if (empId === "ADMIN") return `${base}/?emp=ADMIN&pin=2026`;
-      const emp = state.employees.find(e => e.id === empId);
-      const pin = getStaffPin(emp);
-      return `${base}/?emp=${encodeURIComponent(empId)}&pin=${encodeURIComponent(pin)}`;
+      if (empId === "ADMIN") return `${base}/?emp=ADMIN`;
+      return `${base}/?emp=${encodeURIComponent(empId)}`;
     }
 
     // ISO/IEC 18004 Single-Block QR Code (Versions 1-5, ECC Level L, Mask 0) -> SVG
@@ -3680,13 +4016,12 @@
       const qrSvg = generateQRCodeSVG(targetUrl, 175);
 
       const staffRows = [
-        { id: "ADMIN", name: "Rupesh Tiwari / Nisha Tiwari", role: "Admin", email: "roopkt2@gmail.com", pin: "2026 / 7003", status: "Active" },
+        { id: "ADMIN", name: "Rupesh Tiwari / Nisha Tiwari", role: "Admin", password: state.adminPassword || "Aaruni@2026", status: "Active" },
         ...state.employees.map(e => ({
           id: e.id,
           name: e.name,
           role: e.role,
-          email: e.email,
-          pin: getStaffPin(e),
+          password: getStaffPassword(e),
           status: e.status
         }))
       ];
@@ -3722,10 +4057,9 @@
             <table style="width:100%;border-collapse:collapse;font-size:12px;text-align:left;">
               <thead>
                 <tr style="background:#f4f4f5;border-bottom:1px solid #d4d4d8;">
-                  <th style="padding:8px 10px;">ID</th>
+                  <th style="padding:8px 10px;">Login ID</th>
                   <th style="padding:8px 10px;">Name</th>
-                  <th style="padding:8px 10px;">Email</th>
-                  <th style="padding:8px 10px;">PIN</th>
+                  <th style="padding:8px 10px;">Password</th>
                   <th style="padding:8px 10px;text-align:right;">Actions</th>
                 </tr>
               </thead>
@@ -3737,12 +4071,12 @@
                       <div style="font-weight:600;">${r.name}</div>
                       <div style="font-size:11px;color:#52525b;">${r.role}</div>
                     </td>
-                    <td style="padding:8px 10px;font-family:monospace;font-size:11px;">${r.email}</td>
-                    <td style="padding:8px 10px;font-family:monospace;font-weight:700;">${r.pin}</td>
+                    <td style="padding:8px 10px;font-family:monospace;font-weight:700;">${r.password}</td>
                     <td style="padding:8px 10px;text-align:right;">
                       <div style="display:inline-flex;gap:6px;">
+                        <button onclick="openChangePasswordModal('${r.id}')" style="background:#fff;color:#0a0a0a;border:1px solid #d4d4d8;padding:4px 8px;border-radius:6px;font-size:11px;font-weight:600;cursor:pointer;">Password</button>
                         <button onclick="selectQrTarget('${r.id}')" style="background:#fff;color:#0a0a0a;border:1px solid #d4d4d8;padding:4px 8px;border-radius:6px;font-size:11px;font-weight:600;cursor:pointer;">QR</button>
-                        <button onclick="copyWhatsAppInvite('${r.id}')" style="background:#fff;color:#0a0a0a;border:1px solid #d4d4d8;padding:4px 8px;border-radius:6px;font-size:11px;font-weight:600;cursor:pointer;">Copy Invite</button>
+                        <button onclick="copyWhatsAppInvite('${r.id}')" style="background:#fff;color:#0a0a0a;border:1px solid #d4d4d8;padding:4px 8px;border-radius:6px;font-size:11px;font-weight:600;cursor:pointer;">Copy</button>
                         <button onclick="closeDocModal(); switchPersona('${r.id === 'ADMIN' ? 'ADMIN' : r.id}');" style="background:#0a0a0a;color:#fff;border:none;padding:4px 8px;border-radius:6px;font-size:11px;font-weight:600;cursor:pointer;">Switch</button>
                       </div>
                     </td>
@@ -3754,7 +4088,7 @@
         </div>
       `;
 
-      openModalWithHTML("Mobile QR & Staff Logins", html);
+      openModalWithHTML("Mobile QR & Staff Passwords", html);
     }
 
     function updateQrBaseUrl(val) {
@@ -3770,74 +4104,25 @@
     function copyWhatsAppInvite(targetId) {
       const link = getStaffLoginUrl(targetId);
       let name = "Rupesh / Nisha (Admin)";
-      let pin = "2026";
-      let loginId = "ADMIN / roopkt2@gmail.com";
+      let pwd = state.adminPassword || "Aaruni@2026";
+      let loginId = "admin";
       if (targetId !== "ADMIN") {
         const emp = state.employees.find(e => e.id === targetId);
         if (emp) {
           name = emp.name;
-          pin = getStaffPin(emp);
-          loginId = `${emp.id} (or ${emp.email})`;
+          pwd = getStaffPassword(emp);
+          loginId = `${emp.id} (or ${emp.zohoId || emp.id})`;
         }
       }
-      const msg = `*Aaruni Tech — Mobile Timesheet & Payslip App*\nHi ${name},\n\nYour mobile timesheet & salary portal is live!\n• *Direct 1-Tap Login Link:* ${link}\n• *Employee ID / Email:* ${loginId}\n• *Mobile PIN:* ${pin}\n\nPlease log your daily Entry & Exit time between 6:00 PM – 9:00 PM IST and tap "Add to Home Screen" on your mobile.`;
+      const msg = `*Aaruni Tech — Portal Login*\nHi ${name},\n• *Portal URL:* ${link}\n• *Employee ID:* ${loginId}\n• *Password:* ${pwd}\n(You can change your password anytime after signing in.)`;
       if (navigator.clipboard && navigator.clipboard.writeText) {
         navigator.clipboard.writeText(msg);
       }
-      triggerPushToast("💬 WhatsApp Login Invite Copied!", `Copied login link & PIN (${pin}) for ${name}. Ready to paste in WhatsApp!`);
+      showToast("Login Copied", `Copied ID & password for ${name}.`);
     }
 
     function openStaffPinLoginModal() {
-      const html = `
-        <div style="max-width:400px;margin:0 auto;font-family:'Inter',sans-serif;text-align:center;padding:12px;">
-          <div style="width:52px;height:52px;border-radius:14px;background:#0f172a;color:#ea580c;display:flex;align-items:center;justify-content:center;font-size:24px;font-weight:900;margin:0 auto 12px;">
-            🔐
-          </div>
-          <h3 style="font-size:18px;font-weight:800;color:#0f172a;margin:0;">Aaruni Tech Staff & Admin Sign-In</h3>
-          <p style="font-size:12px;color:#64748b;margin:4px 0 16px;">Enter your Employee ID (e.g. <code>AAR-0004</code>) or Email and your 4-Digit Mobile PIN</p>
-          <div style="text-align:left;margin-bottom:12px;">
-            <label style="font-size:11px;font-weight:700;color:#334155;">Employee ID or Email</label>
-            <input id="loginIdInput" type="text" placeholder="AAR-0004 or nandini.chukka.fsm@gmail.com" value="AAR-0004" style="width:100%;padding:10px 12px;border:1px solid #cbd5e1;border-radius:10px;font-size:13px;margin-top:4px;" />
-          </div>
-          <div style="text-align:left;margin-bottom:16px;">
-            <label style="font-size:11px;font-weight:700;color:#334155;">4-Digit Mobile PIN (Last 4 digits of Mobile / 2026 for Admin)</label>
-            <input id="loginPinInput" type="password" placeholder="••••" value="8771" maxlength="6" style="width:100%;padding:10px 12px;border:1px solid #cbd5e1;border-radius:10px;font-size:16px;letter-spacing:4px;font-family:monospace;margin-top:4px;" />
-          </div>
-          <div id="loginErrorBox" style="display:none;background:#fef2f2;color:#dc2626;font-size:12px;padding:8px;border-radius:8px;margin-bottom:12px;font-weight:600;"></div>
-          <button onclick="submitStaffPinLogin()" style="width:100%;background:#ea580c;color:#fff;font-weight:800;font-size:14px;padding:11px;border-radius:10px;border:none;cursor:pointer;">
-            🚀 Sign In to Mobile Portal
-          </button>
-        </div>
-      `;
-      openModalWithHTML("🔐 Aaruni Tech Mobile Sign-In", html);
-    }
-
-    function submitStaffPinLogin() {
-      const rawId = (document.getElementById("loginIdInput").value || "").trim().toLowerCase();
-      const rawPin = (document.getElementById("loginPinInput").value || "").trim();
-      if ((rawId === "admin" || rawId === "aar-0002" || rawId === "aar-0001" || rawId.includes("roopkt2") || rawId.includes("rupesh") || rawId.includes("nisha")) && (rawPin === "2026" || rawPin === "7003")) {
-        closeDocModal();
-        switchPersona("ADMIN");
-        triggerPushToast("✅ Signed In as Admin & CFO", "Welcome back, Rupesh / Nisha!");
-        return;
-      }
-      const emp = state.employees.find(e =>
-        e.id.toLowerCase() === rawId ||
-        (e.email && e.email.toLowerCase() === rawId) ||
-        (e.alternateEmails && e.alternateEmails.some(a => a.toLowerCase() === rawId)) ||
-        (e.mobile && e.mobile.includes(rawId))
-      );
-      if (emp && (rawPin === getStaffPin(emp) || rawPin === "2026")) {
-        closeDocModal();
-        switchPersona(emp.id);
-        triggerPushToast(`✅ Signed In: ${emp.name}`, `Loaded ${emp.id} (${emp.role}) mobile portal.`);
-        return;
-      }
-      const err = document.getElementById("loginErrorBox");
-      if (err) {
-        err.style.display = "block";
-        err.textContent = "Invalid Employee ID/Email or 4-Digit PIN. Check Mobile QR & Logins for credentials.";
-      }
+      signOutPortal();
     }
 
     function checkUrlAutoLogin() {
