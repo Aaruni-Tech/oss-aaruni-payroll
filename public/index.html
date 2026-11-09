@@ -1,30 +1,140 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="light">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
   <title>Aaruni Tech — HR, Timesheet & Encrypted Payroll Portal</title>
   <meta name="description" content="Mobile-first Attendance, Entry/Exit Timesheet, Encrypted Salary Vault, Self-Service HR Documents, and CA Tax Loss Portal for Aaruni Tech." />
   <link rel="manifest" href="/manifest.json" />
-  <meta name="theme-color" content="#ea580c" />
+  <link rel="stylesheet" href="/aaruni-brand.css" />
+  <meta name="theme-color" content="#09090b" />
   <script src="https://www.gstatic.com/antigravity/web/dev/tailwindcss.min.js"></script>
   <style>
+    :root,
+    [data-theme="light"] {
+      --at-bg: #fafafa;
+      --at-surface: #ffffff;
+      --at-surface-muted: #f4f4f5;
+      --at-surface-hover: #e4e4e7;
+      --at-text: #09090b;
+      --at-text-secondary: #3f3f46;
+      --at-text-muted: #71717a;
+      --at-border: #e4e4e7;
+      --at-border-strong: #09090b;
+      --at-primary: #09090b;
+      --at-primary-fg: #ffffff;
+      --at-badge-bg: #f4f4f5;
+      --at-badge-fg: #09090b;
+      --at-shadow: 0 1px 3px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.04);
+      color-scheme: light;
+    }
+    [data-theme="dark"] {
+      --at-bg: #09090b;
+      --at-surface: #121215;
+      --at-surface-muted: #18181b;
+      --at-surface-hover: #27272a;
+      --at-text: #fafafa;
+      --at-text-secondary: #d4d4d8;
+      --at-text-muted: #a1a1aa;
+      --at-border: #27272a;
+      --at-border-strong: #fafafa;
+      --at-primary: #fafafa;
+      --at-primary-fg: #09090b;
+      --at-badge-bg: #27272a;
+      --at-badge-fg: #fafafa;
+      --at-shadow: 0 2px 8px rgba(0,0,0,0.45);
+      color-scheme: dark;
+    }
     * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
     body {
-      font-family: -apple-system, BlinkMacSystemFont, 'Inter', 'Segoe UI', Roboto, sans-serif;
-      background: #0f172a;
-      color: #f8fafc;
+      font-family: -apple-system, BlinkMacSystemFont, 'Inter', 'Geist', 'Segoe UI', Roboto, sans-serif;
+      background-color: var(--at-bg) !important;
+      color: var(--at-text) !important;
       margin: 0;
       padding: 0;
       overflow-x: hidden;
+      transition: background-color 0.15s ease, color 0.15s ease;
     }
     .glass-card {
-      background: rgba(30, 41, 59, 0.88);
-      border: 1px solid rgba(148, 163, 184, 0.16);
-      backdrop-filter: blur(12px);
+      background-color: var(--at-surface) !important;
+      border: 1px solid var(--at-border) !important;
+      box-shadow: var(--at-shadow) !important;
+      color: var(--at-text) !important;
+      backdrop-filter: none !important;
     }
     .brand-grad {
-      background: linear-gradient(135deg, #ea580c 0%, #c2410c 100%);
+      background: var(--at-primary) !important;
+      color: var(--at-primary-fg) !important;
+      border: 1px solid var(--at-primary) !important;
+    }
+    [data-theme="light"] .bg-slate-900,
+    [data-theme="light"] .bg-slate-900\/95,
+    [data-theme="light"] .bg-slate-900\/90,
+    [data-theme="light"] .bg-slate-900\/70,
+    [data-theme="light"] .bg-slate-900\/50 {
+      background-color: #ffffff !important;
+      color: #09090b !important;
+    }
+    [data-theme="light"] .bg-slate-800,
+    [data-theme="light"] .bg-slate-800\/90,
+    [data-theme="light"] .bg-slate-800\/80,
+    [data-theme="light"] .bg-slate-800\/70,
+    [data-theme="light"] .bg-slate-800\/60 {
+      background-color: #f4f4f5 !important;
+      color: #09090b !important;
+    }
+    [data-theme="light"] .bg-slate-700 {
+      background-color: #e4e4e7 !important;
+      color: #09090b !important;
+    }
+    [data-theme="light"] .text-white,
+    [data-theme="light"] .text-slate-100,
+    [data-theme="light"] .text-slate-200 {
+      color: #09090b !important;
+    }
+    [data-theme="light"] .text-slate-300 { color: #27272a !important; }
+    [data-theme="light"] .text-slate-400 { color: #52525b !important; }
+    [data-theme="light"] .border-slate-800,
+    [data-theme="light"] .border-slate-700 { border-color: #e4e4e7 !important; }
+    [data-theme="light"] .from-slate-900,
+    [data-theme="light"] .via-slate-900,
+    [data-theme="light"] .to-orange-950\/30 {
+      --tw-gradient-from: #ffffff !important;
+      --tw-gradient-to: #f4f4f5 !important;
+      --tw-gradient-stops: #ffffff, #f4f4f5 !important;
+    }
+    .text-orange-500, .text-orange-400, .text-orange-300, .text-sky-400, .text-sky-300 {
+      color: var(--at-text) !important;
+    }
+    .border-orange-500, .border-orange-500\/40, .border-orange-500\/50, .border-sky-500\/30 {
+      border-color: var(--at-border-strong) !important;
+    }
+    .bg-orange-500, .bg-orange-500\/20, .bg-orange-500\/15, .bg-orange-500\/10 {
+      background-color: var(--at-badge-bg) !important;
+      color: var(--at-badge-fg) !important;
+    }
+    .at-theme-switcher {
+      display: inline-flex;
+      align-items: center;
+      background-color: var(--at-surface-muted);
+      border: 1px solid var(--at-border);
+      border-radius: 10px;
+      padding: 2px;
+      gap: 2px;
+    }
+    .at-theme-btn {
+      font-size: 11px;
+      font-weight: 700;
+      padding: 4px 8px;
+      border-radius: 7px;
+      border: none;
+      background: transparent;
+      color: var(--at-text-muted);
+      cursor: pointer;
+    }
+    .at-theme-btn.active {
+      background-color: var(--at-primary);
+      color: var(--at-primary-fg);
     }
     .hide-scroll::-webkit-scrollbar { display: none; }
     .hide-scroll { -ms-overflow-style: none; scrollbar-width: none; }
@@ -46,46 +156,53 @@
 </head>
 <body class="min-h-screen pb-24">
 
-  <!-- TOP BRAND & SECURITY BAR -->
+  <!-- TOP BRAND & SECURITY BAR (MONOCHROME BLACK & WHITE + DAY/NIGHT/AUTO TOGGLE) -->
   <header class="sticky top-0 z-40 bg-slate-900/95 border-b border-slate-800 backdrop-blur-md px-3 py-2.5">
     <div class="max-w-5xl mx-auto flex flex-wrap items-center justify-between gap-2">
-      <!-- Brand Logo -->
+      <!-- Brand Logo (Monochrome Black & White) -->
       <div class="flex items-center gap-2.5">
-        <div class="w-9 h-9 rounded-xl bg-slate-800 border border-orange-500/40 flex items-center justify-center shadow-inner">
+        <div class="w-9 h-9 rounded-xl bg-slate-800 border border-slate-700 flex items-center justify-center shadow-inner">
           <svg width="24" height="22" viewBox="0 0 60 52" fill="none">
-            <path d="M8 46L26 8H35L17 46H8Z" fill="#f8fafc"/>
-            <path d="M27 8L46 46H36L22 18L27 8Z" fill="#ea580c"/>
+            <path d="M8 46L26 8H35L17 46H8Z" fill="currentColor"/>
+            <path d="M27 8L46 46H36L22 18L27 8Z" fill="currentColor" opacity="0.65"/>
           </svg>
         </div>
         <div>
           <div class="flex items-center gap-1.5">
-            <h1 class="text-sm font-bold tracking-tight text-white">Aaruni<span class="text-orange-500">Tech</span></h1>
-            <span class="text-xs px-1.5 py-0.5 rounded bg-orange-500/15 text-orange-400 border border-orange-500/30 font-medium">HR & Payroll</span>
+            <h1 class="text-sm font-black tracking-tight text-white">AaruniTech</h1>
+            <span class="text-xs px-1.5 py-0.5 rounded bg-slate-800 text-white border border-slate-700 font-semibold">HR & Payroll</span>
           </div>
           <p class="text-xs text-slate-400">GST Registered • Beeramguda, TG</p>
         </div>
       </div>
 
-      <!-- Controls: Mobile QR Hub + Video-Safe Salary Masking Toggle + Persona Switcher -->
+      <!-- Controls: Day/Night/Auto Theme + Mobile QR Hub + Video-Safe Salary Masking Toggle + Persona Switcher -->
       <div class="flex flex-wrap items-center gap-1.5">
-        <button onclick="openMobileQRHubModal()" class="flex items-center gap-1.5 text-xs font-bold px-2.5 py-1.5 rounded-lg border transition-all bg-orange-500/15 border-orange-500/50 text-orange-300 hover:bg-orange-500/25" title="Open Mobile QR Code Scanner & Staff Login Credentials">
+        <!-- Day / Night / Auto Monochrome Theme Toggle -->
+        <div class="at-theme-switcher" title="Aaruni Tech Monochrome Theme: Day / Night / Auto">
+          <button id="themeBtnLight" onclick="setAaruniTheme('light')" class="at-theme-btn">☀️ Day</button>
+          <button id="themeBtnDark" onclick="setAaruniTheme('dark')" class="at-theme-btn">🌙 Night</button>
+          <button id="themeBtnAuto" onclick="setAaruniTheme('auto')" class="at-theme-btn active">💻 Auto</button>
+        </div>
+
+        <button onclick="openMobileQRHubModal()" class="flex items-center gap-1.5 text-xs font-bold px-2.5 py-1.5 rounded-lg border transition-all bg-slate-800 border-slate-700 text-white hover:opacity-85" title="Open Mobile QR Code Scanner & Staff Login Credentials">
           <span>📲</span>
-          <span>Mobile QR & Logins</span>
+          <span>QR & Logins</span>
         </button>
 
-        <button onclick="openStaffPinLoginModal()" class="flex items-center gap-1 text-xs font-semibold px-2.5 py-1.5 rounded-lg border transition-all bg-slate-800 border-slate-700 text-slate-200 hover:bg-slate-700" title="Test Staff PIN Login Screen">
+        <button onclick="openStaffPinLoginModal()" class="flex items-center gap-1 text-xs font-semibold px-2.5 py-1.5 rounded-lg border transition-all bg-slate-800 border-slate-700 text-slate-200 hover:opacity-85" title="Test Staff PIN Login Screen">
           <span>🔐</span>
           <span class="hidden sm:inline">PIN Login</span>
         </button>
 
-        <button id="btnSalaryMask" onclick="toggleSalaryMask()" class="flex items-center gap-1.5 text-xs font-semibold px-2.5 py-1.5 rounded-lg border transition-all bg-emerald-950/70 border-emerald-500/40 text-emerald-300 hover:bg-emerald-900/60" title="Zoho-style Video-Safe Salary Privacy Shield">
+        <button id="btnSalaryMask" onclick="toggleSalaryMask()" class="flex items-center gap-1.5 text-xs font-semibold px-2.5 py-1.5 rounded-lg border transition-all bg-slate-800 border-slate-700 text-white hover:opacity-85" title="Zoho-style Video-Safe Salary Privacy Shield">
           <span id="maskIcon">🙈</span>
           <span id="maskLabel">Salaries Hidden</span>
         </button>
 
-        <select id="personaSelect" onchange="switchPersona(this.value)" class="bg-slate-800 text-xs font-semibold text-white border border-slate-700 rounded-lg px-2.5 py-1.5 focus:outline-none focus:border-orange-500">
+        <select id="personaSelect" onchange="switchPersona(this.value)" class="bg-slate-800 text-xs font-semibold text-white border border-slate-700 rounded-lg px-2.5 py-1.5 focus:outline-none">
           <option value="ADMIN">👨‍💼 Admin: Rupesh / Nisha (No Salary)</option>
-          <option value="AAR-0004">👩‍💻 Staff: Chukka Nandini (AAR-0004)</option>
+          <option value="AAR-0004">👩‍💻 Staff: Chukka Nandini (004 / AAR-0004)</option>
           <option value="AAR-0005">👩‍💻 Staff: Janhavi Varma (AAR-0005)</option>
           <option value="AAR-0006">👩‍💻 Staff: Koppula Ramya (AAR-0006)</option>
           <option value="AAR-0008">🛡️ Staff: Shaik Ali Moulali (AAR-0008 • New)</option>
@@ -227,25 +344,31 @@
         id: "AAR-0004",
         zohoId: "004",
         name: "Chukka Nandini",
-        role: "Engineering Manager",
+        role: "Technical Team Lead",
         designationSub: "Technical Team Lead",
+        department: "Engineering & Technology",
+        workLocation: "Head Office",
+        gender: "Female",
         status: "Active",
         trackTimesheet: true,
         shiftHours: 8,
+        annualCtc: 150000,
         monthlyCtc: 12500,
         joiningDate: "28/12/2025",
         dob: "13/05/2008",
         fatherName: "Chukka Balraj",
-        pan: "No PAN",
+        pan: "-",
         aadhaar: "2639 7066 9636",
         mobile: "8143088771",
         email: "nandini.chukka.fsm@gmail.com",
         alternateEmails: ["nandinichukka72@gmail.com"],
-        address: "H NO 0001, Tenkati, PO: Tenkati, Shankarampet (A), Medak, Telangana - 502271",
+        address: "H NO 0001, Tenkati, PO Tenkati, Shankarampet (A), Medak Telangana - 502271",
         bankName: "Union Bank of India",
-        accountHolder: "Chukka Madhavi / Chukka Nandini",
+        accountHolder: "Chukka Nandini",
         bankAccount: "08450274004",
         ifsc: "UBIN0826669",
+        accountType: "Savings",
+        paymentMode: "Manual Bank Transfer",
         upiId: "8143088771@ybl",
         idCardFile: "AAR-0004_Chukka_Nandini_ID_Card.png"
       },
@@ -253,51 +376,63 @@
         id: "AAR-0005",
         zohoId: "AAR-0005",
         name: "Janhavi Varma",
-        role: "Software Development Engineer",
+        role: "Technical Associate",
         designationSub: "Technical Associate",
+        department: "Engineering & Technology",
+        workLocation: "Head Office",
+        gender: "Female",
         status: "Active",
         trackTimesheet: true,
         shiftHours: 8,
+        annualCtc: 144000,
         monthlyCtc: 12000,
         joiningDate: "21/04/2026",
         dob: "30/12/2006",
         fatherName: "Rajendra Kumar Verma",
-        pan: "DDXPV6059K",
+        pan: "-",
         aadhaar: "7157 5048 2335",
         mobile: "9014627501",
         email: "janvi.varma.fsm@gmail.com",
         alternateEmails: ["kjhanvi88@gmail.com"],
-        address: "H.NO-9-193/4, Ambedkar Colony, Patancheru, Telangana - 502319",
+        address: "H.NO-9-193/4, Ambedkar Colony, Patancheru Telangana - 502319",
         bankName: "State Bank of India",
-        accountHolder: "JANHAVI VARMA",
+        accountHolder: "Janhavi Varma",
         bankAccount: "42282148001",
         ifsc: "SBIN0010689",
+        accountType: "Savings",
+        paymentMode: "Manual Bank Transfer",
         upiId: "9014627501@ybl",
         idCardFile: "AAR-0005_Janhavi_Varma_ID_Card.png"
       },
       {
         id: "AAR-0006",
-        zohoId: "003",
+        zohoId: "AAR-0006",
         name: "Koppula Ramya",
-        role: "Software Development Engineer",
+        role: "Technical Associate",
         designationSub: "Technical Associate",
+        department: "Engineering & Technology",
+        workLocation: "Head Office",
+        gender: "Female",
         status: "Active",
         trackTimesheet: true,
         shiftHours: 8,
+        annualCtc: 102000,
         monthlyCtc: 8500,
         joiningDate: "03/08/2026",
         dob: "02/10/2004",
         fatherName: "Koppula Surya Prasad",
-        pan: "No PAN",
+        pan: "-",
         aadhaar: "4565 9170 0731",
         mobile: "9502770375",
         email: "koppula.ramya.fsm@gmail.com",
         alternateEmails: [],
-        address: "H no 16-113/10/2, Plot no 70, Maruthinagar, Beeramguda, Telangana - 502032",
-        bankName: "Canara Bank",
+        address: "H no 16-113/10/2, Plot no 70, Maruthinagar, Beeramguda, Sangareddy Telangana - 502032",
+        bankName: "Canara",
         accountHolder: "Koppula Ramya",
         bankAccount: "110077657480",
         ifsc: "CNRB0000033",
+        accountType: "Savings",
+        paymentMode: "Manual Bank Transfer",
         upiId: "9502770375@ybl",
         idCardFile: "AAR-0006_Koppula_Ramya_ID_Card.png"
       },
@@ -310,7 +445,7 @@
         relievingDate: "18/10/2026",
         trackTimesheet: false,
         shiftHours: 8,
-        monthlyCtc: 8500,
+        monthlyCtc: 0,
         joiningDate: "01/10/2026",
         dob: "N/A",
         fatherName: "N/A",
@@ -329,17 +464,22 @@
       },
       {
         id: "AAR-0008",
-        zohoId: "008",
+        zohoId: "AAR-0008",
         name: "Shaik Ali Moulali",
         role: "Security Operations",
+        designationSub: "Security Operations",
+        department: "Operations & Security",
+        workLocation: "Head Office",
+        gender: "Male",
         status: "Active",
         trackTimesheet: true,
         shiftHours: 8,
+        annualCtc: 120000,
         monthlyCtc: 10000,
         joiningDate: "01/11/2026",
         dob: "06/09/1989",
         fatherName: "S Sayya Savali",
-        pan: "Pending",
+        pan: "-",
         aadhaar: "6213 9858 1473",
         mobile: "9052088836",
         email: "shaik.ali.aaruni@gmail.com",
@@ -349,6 +489,8 @@
         accountHolder: "Shaik Ali Moulali",
         bankAccount: "Pending",
         ifsc: "Pending",
+        accountType: "Savings",
+        paymentMode: "Manual Bank Transfer",
         upiId: "9052088836@ybl",
         idCardFile: "AAR-0008_Shaik_Ali_Moulali_ID_Card.jpg"
       }
@@ -386,7 +528,7 @@
       { id: "NOV-008-06", empId: "AAR-0008", date: "2026-11-07", entryTime: "09:00", exitTime: "17:00", hours: 8, status: "Worked", summary: "Daily security patrol & log", taskLink: "On-site", source: "Mobile PWA" }
     ];
 
-    // Historical 2026 Monthly Summary migrated from Nandini_FSM_Daily_Timesheet.xlsx
+    // Historical 2026 Monthly Summary migrated from Nandini_FSM_Daily_Timesheet.xlsx & Oct 2026 Zoho Payslips
     const LEGACY_2026_ROLLUP = [
       { month: "2026-01", label: "January 2026", nandiniDays: 24, nandiniHours: 170, totalPayroll: 12500, opsExpense: 8500, revenue: 0 },
       { month: "2026-02", label: "February 2026", nandiniDays: 22, nandiniHours: 176, totalPayroll: 12500, opsExpense: 7800, revenue: 0 },
@@ -397,10 +539,10 @@
       { month: "2026-07", label: "July 2026", nandiniDays: 27, nandiniHours: 214, totalPayroll: 24500, opsExpense: 9800, revenue: 0 },
       { month: "2026-08", label: "August 2026", nandiniDays: 25, nandiniHours: 200, totalPayroll: 33000, opsExpense: 12500, revenue: 0 },
       { month: "2026-09", label: "September 2026", nandiniDays: 23, nandiniHours: 184, totalPayroll: 33000, opsExpense: 11200, revenue: 0 },
-      { month: "2026-10", label: "October 2026", nandiniDays: 26, nandiniHours: 208, totalPayroll: 35500, opsExpense: 14000, revenue: 0 }
+      { month: "2026-10", label: "October 2026", nandiniDays: 30, nandiniHours: 208, totalPayroll: 27758, opsExpense: 14000, revenue: 0 }
     ];
 
-    // Pre-seeded Published Payslips (matching exact Payslip_004_Oct_2026.pdf from Zoho!)
+    // Pre-seeded Published Payslips (matching exact October 2026 Zoho Payslips for Nandini, Janhavi & Ramya!)
     const INITIAL_PAYSLIPS = [
       {
         id: "PS-2026-10-AAR-0004",
@@ -414,10 +556,11 @@
         fixedAllowance: 6048,
         bonus: 404,
         grossEarnings: 12500,
+        deductionLabel: "Personal Advance",
         deductions: 5000,
         netPay: 7500,
         amountInWords: "Indian Rupee Seven Thousand Five Hundred Only",
-        status: "Paid via Axis Bank (UTIB0002057)"
+        status: "Paid via Manual Bank Transfer (31/10/2026)"
       },
       {
         id: "PS-2026-10-AAR-0005",
@@ -425,16 +568,17 @@
         yearMonth: "2026-10",
         periodLabel: "October 2026",
         payDate: "31/10/2026",
-        paidDays: 31,
-        lopDays: 0,
-        basic: 6000,
-        fixedAllowance: 6000,
+        paidDays: 21,
+        lopDays: 10,
+        basic: 4065,
+        fixedAllowance: 4065,
         bonus: 0,
-        grossEarnings: 12000,
+        grossEarnings: 8130,
+        deductionLabel: "-",
         deductions: 0,
-        netPay: 12000,
-        amountInWords: "Indian Rupee Twelve Thousand Only",
-        status: "Paid via Axis Bank (UTIB0002057)"
+        netPay: 8130,
+        amountInWords: "Indian Rupee Eight Thousand One Hundred Thirty Only",
+        status: "Paid via Manual Bank Transfer (31/10/2026)"
       },
       {
         id: "PS-2026-10-AAR-0006",
@@ -442,16 +586,17 @@
         yearMonth: "2026-10",
         periodLabel: "October 2026",
         payDate: "31/10/2026",
-        paidDays: 31,
-        lopDays: 0,
-        basic: 4250,
-        fixedAllowance: 4250,
-        bonus: 0,
-        grossEarnings: 8500,
-        deductions: 0,
-        netPay: 8500,
-        amountInWords: "Indian Rupee Eight Thousand Five Hundred Only",
-        status: "Paid via Axis Bank (UTIB0002057)"
+        paidDays: 25,
+        lopDays: 6,
+        basic: 3427,
+        fixedAllowance: 3427,
+        bonus: 274,
+        grossEarnings: 7128,
+        deductionLabel: "Short Hours",
+        deductions: 171,
+        netPay: 6957,
+        amountInWords: "Indian Rupee Six Thousand Nine Hundred Fifty-Seven Only",
+        status: "Paid via Manual Bank Transfer (31/10/2026)"
       }
     ];
 
@@ -511,50 +656,93 @@
     let state = {
       persona: "ADMIN", // "ADMIN" or empId
       activeTab: "pulse",
+      themeMode: localStorage.getItem("aaruni_theme_v5") || "auto", // "light" | "dark" | "auto"
       salariesMasked: true, // Zoho-style default hidden salary mode!
+      showAccountNumbers: {}, // Per-employee Masked A/C No toggle (XXXX4004 -> Show A/C No)
       selectedMonth: "2026-11",
       throughDate: "2026-11-09",
       compOffApproved: { "AAR-0004": true, "AAR-0005": true, "AAR-0006": true, "AAR-0008": true },
-      employees: JSON.parse(localStorage.getItem("aaruni_emp_v4") || "null") || DEFAULT_EMPLOYEES,
-      timesheets: JSON.parse(localStorage.getItem("aaruni_ts_v4") || "null") || INITIAL_TIMESHEETS,
-      payslips: JSON.parse(localStorage.getItem("aaruni_ps_v4") || "null") || INITIAL_PAYSLIPS,
-      loans: JSON.parse(localStorage.getItem("aaruni_loans_v4") || "null") || INITIAL_LOANS,
-      messages: JSON.parse(localStorage.getItem("aaruni_msg_v4") || "null") || INITIAL_MESSAGES,
-      taxRollup: JSON.parse(localStorage.getItem("aaruni_tax_v4") || "null") || LEGACY_2026_ROLLUP
+      employees: JSON.parse(localStorage.getItem("aaruni_emp_v5") || "null") || DEFAULT_EMPLOYEES,
+      timesheets: JSON.parse(localStorage.getItem("aaruni_ts_v5") || "null") || INITIAL_TIMESHEETS,
+      payslips: JSON.parse(localStorage.getItem("aaruni_ps_v5") || "null") || INITIAL_PAYSLIPS,
+      loans: JSON.parse(localStorage.getItem("aaruni_loans_v5") || "null") || INITIAL_LOANS,
+      messages: JSON.parse(localStorage.getItem("aaruni_msg_v5") || "null") || INITIAL_MESSAGES,
+      taxRollup: JSON.parse(localStorage.getItem("aaruni_tax_v5") || "null") || LEGACY_2026_ROLLUP
     };
 
     function saveState() {
-      localStorage.setItem("aaruni_emp_v4", JSON.stringify(state.employees));
-      localStorage.setItem("aaruni_ts_v4", JSON.stringify(state.timesheets));
-      localStorage.setItem("aaruni_ps_v4", JSON.stringify(state.payslips));
-      localStorage.setItem("aaruni_loans_v4", JSON.stringify(state.loans));
-      localStorage.setItem("aaruni_msg_v4", JSON.stringify(state.messages));
-      localStorage.setItem("aaruni_tax_v4", JSON.stringify(state.taxRollup));
+      localStorage.setItem("aaruni_emp_v5", JSON.stringify(state.employees));
+      localStorage.setItem("aaruni_ts_v5", JSON.stringify(state.timesheets));
+      localStorage.setItem("aaruni_ps_v5", JSON.stringify(state.payslips));
+      localStorage.setItem("aaruni_loans_v5", JSON.stringify(state.loans));
+      localStorage.setItem("aaruni_msg_v5", JSON.stringify(state.messages));
+      localStorage.setItem("aaruni_tax_v5", JSON.stringify(state.taxRollup));
     }
 
     // ============================================================================
-    // 2. HELPERS: SALARY MASKING, INDIAN WORDS, PAYROLL ENGINE
+    // 2. HELPERS: MONOCHROME THEME (DAY/NIGHT/AUTO), SALARY & ACCOUNT MASKING
     // ============================================================================
+    function applyAaruniTheme() {
+      const mode = state.themeMode || "auto";
+      let resolved = mode;
+      if (mode === "auto") {
+        const prefersDark = window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches;
+        resolved = prefersDark ? "dark" : "light";
+      }
+      document.documentElement.setAttribute("data-theme", resolved);
+      ["Light", "Dark", "Auto"].forEach(k => {
+        const btn = document.getElementById("themeBtn" + k);
+        if (btn) {
+          btn.classList.toggle("active", mode.toLowerCase() === k.toLowerCase());
+        }
+      });
+    }
+
+    function setAaruniTheme(mode) {
+      state.themeMode = mode;
+      localStorage.setItem("aaruni_theme_v5", mode);
+      applyAaruniTheme();
+    }
+
+    if (window.matchMedia) {
+      window.matchMedia("(prefers-color-scheme: dark)").addEventListener("change", () => {
+        if (state.themeMode === "auto") applyAaruniTheme();
+      });
+    }
+
+    function fmtAcctNo(emp) {
+      const raw = String(emp.bankAccount || "Pending");
+      if (raw.length <= 4 || raw === "Pending" || raw === "Confidential" || raw === "N/A") return raw;
+      const revealed = !!state.showAccountNumbers[emp.id];
+      const masked = "XXXX" + raw.slice(-4);
+      return `<span class="font-mono font-bold">${revealed ? raw : masked}</span> <button onclick="toggleAccountNo('${emp.id}')" class="underline text-xs font-semibold ml-1 cursor-pointer">${revealed ? 'Hide A/C No' : 'Show A/C No'}</button>`;
+    }
+
+    function toggleAccountNo(empId) {
+      state.showAccountNumbers[empId] = !state.showAccountNumbers[empId];
+      renderApp();
+      if (state.openProfileEmpId === empId) {
+        openEmployeeProfileModal(empId, state.openProfileTab || "overview");
+      }
+    }
+
     function fmtINR(amount, forceUnmask = false) {
       if (state.salariesMasked && !forceUnmask) {
-        return `<span class="inline-flex items-center gap-1 font-mono text-amber-300/90 bg-slate-800/90 px-1.5 py-0.5 rounded border border-slate-700 cursor-pointer" onclick="toggleSalaryMask()" title="Tap to reveal salaries">₹ •••••• <span class="text-xs">👁️</span></span>`;
+        return `<span class="inline-flex items-center gap-1 font-mono bg-slate-800/90 px-1.5 py-0.5 rounded border border-slate-700 cursor-pointer" onclick="toggleSalaryMask()" title="Tap to reveal salaries">₹ •••••• <span class="text-xs">👁️</span></span>`;
       }
       return "₹" + Number(amount || 0).toLocaleString("en-IN");
     }
 
     function toggleSalaryMask() {
       state.salariesMasked = !state.salariesMasked;
-      const btn = document.getElementById("btnSalaryMask");
       const icon = document.getElementById("maskIcon");
       const label = document.getElementById("maskLabel");
       if (state.salariesMasked) {
-        icon.textContent = "🙈";
-        label.textContent = "Salaries Hidden";
-        btn.className = "flex items-center gap-1.5 text-xs font-semibold px-2.5 py-1.5 rounded-lg border transition-all bg-emerald-950/70 border-emerald-500/40 text-emerald-300";
+        if (icon) icon.textContent = "🙈";
+        if (label) label.textContent = "Salaries Hidden";
       } else {
-        icon.textContent = "👁️";
-        label.textContent = "Salaries Visible";
-        btn.className = "flex items-center gap-1.5 text-xs font-semibold px-2.5 py-1.5 rounded-lg border transition-all bg-amber-950/80 border-amber-500/50 text-amber-300";
+        if (icon) icon.textContent = "👁️";
+        if (label) label.textContent = "Salaries Visible";
       }
       renderApp();
     }
@@ -1336,7 +1524,7 @@
             <div class="flex flex-wrap items-center justify-between gap-2 mb-3">
               <div>
                 <h2 class="text-base font-bold text-white">👥 Aaruni Tech Master Roster (AAR-0001 to AAR-0008+)</h2>
-                <p class="text-xs text-slate-400">Flexible Employee IDs, Active/Inactive lifecycle (Sonali Roy marked Inactive), Ali Maula Ali (AAR-0008) onboarded, and salary vault encrypted.</p>
+                <p class="text-xs text-slate-400">Complete Zoho-synced employee profiles (Overview, Salary Details, Investments, Payslips & Forms, Loans), masked bank account numbers, and flexible IDs.</p>
               </div>
               <button onclick="addNewEmployeePrompt()" class="brand-grad text-white text-xs font-bold px-3.5 py-2 rounded-xl shadow">
                 ➕ Add New Staff (AAR-0009)
@@ -1350,41 +1538,50 @@
                     <div class="flex items-center gap-2.5">
                       <input type="text" value="${e.id}" onchange="updateEmpField(${idx}, 'id', this.value)" class="w-24 bg-slate-900 border border-slate-700 rounded-lg px-2 py-1 text-xs font-mono font-bold text-orange-400" title="Editable Employee ID" />
                       <div>
-                        <input type="text" value="${e.name}" onchange="updateEmpField(${idx}, 'name', this.value)" class="bg-transparent font-bold text-sm text-white focus:bg-slate-900 px-1 rounded" />
-                        <div class="text-xs text-slate-400">${e.role} • Joined: ${e.joiningDate} • Aadhaar: ${e.aadhaar}</div>
+                        <div class="flex items-center gap-2">
+                          <input type="text" value="${e.name}" onchange="updateEmpField(${idx}, 'name', this.value)" class="bg-transparent font-bold text-sm text-white focus:bg-slate-900 px-1 rounded" />
+                          ${e.zohoId ? `<span class="text-[10px] font-mono px-1.5 py-0.5 rounded bg-slate-900 border border-slate-700 text-slate-300">Zoho ID: ${e.zohoId}</span>` : ""}
+                        </div>
+                        <div class="text-xs text-slate-400">${e.role} • Dept: ${e.department || 'Operations'} • Joined: ${e.joiningDate} • DOB: ${e.dob || '-'}</div>
                       </div>
                     </div>
-                    <div class="flex flex-wrap items-center gap-2">
+                    <div class="flex flex-wrap items-center gap-1.5">
+                      <button onclick="openEmployeeProfileModal('${e.id}', 'overview')" class="text-xs font-bold bg-white text-black hover:opacity-90 px-2.5 py-1 rounded-lg border border-slate-300">
+                        👤 Full Profile & CTC
+                      </button>
+                      <button onclick="openOctPayslipForEmp('${e.id}')" class="text-xs bg-slate-900 hover:bg-slate-700 text-emerald-300 border border-slate-700 px-2.5 py-1 rounded-lg">
+                        📄 Oct 2026 Slip
+                      </button>
                       <button onclick="previewIDCard('${e.id}')" class="text-xs bg-slate-900 hover:bg-slate-700 text-orange-300 border border-slate-700 px-2.5 py-1 rounded-lg">
                         🪪 ID Card
                       </button>
                       <button onclick="openHRDocByType('${e.id}', 'OFFER')" class="text-xs bg-slate-900 hover:bg-slate-700 text-sky-300 border border-slate-700 px-2.5 py-1 rounded-lg">
                         📜 Offer Letter
                       </button>
-                      <button onclick="openHRDocByType('${e.id}', 'EXPERIENCE')" class="text-xs bg-slate-900 hover:bg-slate-700 text-emerald-300 border border-slate-700 px-2.5 py-1 rounded-lg">
-                        🎓 Exp Cert
-                      </button>
                       <button onclick="toggleEmployeeActive(${idx})" class="text-xs font-bold px-2.5 py-1 rounded-lg border ${e.status === 'Active' ? 'bg-emerald-500/20 text-emerald-300 border-emerald-500/30' : 'bg-rose-500/20 text-rose-300 border-rose-500/30'}">
-                        ${e.status === 'Active' ? '🟢 Active' : '🔴 Inactive (Relieved)'}
+                        ${e.status === 'Active' ? '🟢 Active' : '🔴 Inactive'}
                       </button>
                     </div>
                   </div>
                   <div class="grid grid-cols-1 md:grid-cols-4 gap-2 mt-3 pt-2.5 border-t border-slate-700/60 text-xs">
                     <div>
-                      <span class="text-slate-400">Encrypted Monthly CTC:</span>
-                      <div class="mt-0.5 font-bold">${fmtINR(e.monthlyCtc)}</div>
+                      <span class="text-slate-400">Annual / Monthly CTC:</span>
+                      <div class="mt-0.5 font-bold">${fmtINR(e.annualCtc || (e.monthlyCtc * 12))}/yr • ${fmtINR(e.monthlyCtc)}/mo</div>
                     </div>
                     <div>
-                      <span class="text-slate-400">Mobile / Contacts:</span>
-                      <input type="text" value="${e.mobile}" onchange="updateEmpField(${idx}, 'mobile', this.value)" class="w-full bg-slate-900 border border-slate-700 rounded px-2 py-1 text-white mt-0.5" />
+                      <span class="text-slate-400">Email & Mobile:</span>
+                      <div class="mt-0.5 font-semibold text-white truncate" title="${e.email}">${e.mobile} • ${e.email}</div>
                     </div>
                     <div>
-                      <span class="text-slate-400">Bank & Acct No:</span>
-                      <input type="text" value="${e.bankName} - ${e.bankAccount}" onchange="updateEmpField(${idx}, 'bankAccount', this.value)" class="w-full bg-slate-900 border border-slate-700 rounded px-2 py-1 text-white mt-0.5" />
+                      <div class="flex items-center justify-between">
+                        <span class="text-slate-400">Bank (${e.bankName}):</span>
+                        <button onclick="toggleAccountNo('${e.id}')" class="text-[11px] font-bold underline text-sky-400">${state.revealAccountMap && state.revealAccountMap[e.id] ? 'Hide A/C No' : 'Show A/C No'}</button>
+                      </div>
+                      <div class="mt-0.5 font-mono font-bold text-white">${fmtAcctNo(e)} <span class="text-slate-400 font-sans font-normal">(${e.ifsc})</span></div>
                     </div>
                     <div>
-                      <span class="text-slate-400">UPI ID / IFSC:</span>
-                      <input type="text" value="${e.upiId} (${e.ifsc})" onchange="updateEmpField(${idx}, 'upiId', this.value)" class="w-full bg-slate-900 border border-slate-700 rounded px-2 py-1 text-white mt-0.5" />
+                      <span class="text-slate-400">Residential Address:</span>
+                      <div class="mt-0.5 text-slate-300 truncate" title="${e.address}">${e.address}</div>
                     </div>
                   </div>
                 </div>
@@ -1803,52 +2000,52 @@
     }
 
     function buildZohoPayslipHTML(ps, emp) {
+      const dedLabel = ps.deductionLabel || (Number(ps.deductions) > 0 ? "Personal Advance" : "");
       return `
-        <div style="max-width:740px;margin:0 auto;font-family:'Inter',sans-serif;color:#0f172a;border:1px solid #cbd5e1;border-radius:12px;padding:28px;">
-          <div style="display:flex;justify-content:space-between;align-items:flex-start;border-bottom:1px solid #cbd5e1;padding-bottom:16px;">
+        <div style="max-width:740px;margin:0 auto;font-family:'Inter',sans-serif;color:#0a0a0a;border:1px solid #d4d4d8;border-radius:12px;padding:28px;background:#ffffff;">
+          <div style="display:flex;justify-content:space-between;align-items:flex-start;border-bottom:1.5px solid #0a0a0a;padding-bottom:16px;">
             <div style="display:flex;align-items:center;gap:12px;">
-              <svg width="44" height="40" viewBox="0 0 60 52" fill="none">
-                <path d="M8 46L26 8H35L17 46H8Z" fill="#111827"/>
-                <path d="M27 8L46 46H36L22 18L27 8Z" fill="#EA580C"/>
-              </svg>
+              <div style="width:42px;height:42px;border-radius:10px;background:#0a0a0a;color:#ffffff;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:18px;letter-spacing:-0.04em;">
+                AT
+              </div>
               <div>
-                <div style="font-size:20px;font-weight:800;color:#0f172a;">Aaruni Tech</div>
-                <div style="font-size:12px;color:#475569;">Villa 257 Praneeth Pranav Knight Woods Beeramguda Telangana 502319 India</div>
+                <div style="font-size:20px;font-weight:800;color:#0a0a0a;">Aaruni Tech</div>
+                <div style="font-size:12px;color:#52525b;">Villa 257 Praneeth Pranav Knighwoods Beeramguda Telangana 502319 India</div>
               </div>
             </div>
             <div style="text-align:right;">
-              <div style="font-size:12px;color:#64748b;">Payslip For the Month</div>
-              <div style="font-size:18px;font-weight:800;color:#0f172a;">${ps.periodLabel}</div>
+              <div style="font-size:12px;color:#52525b;">Payslip For the Month</div>
+              <div style="font-size:18px;font-weight:800;color:#0a0a0a;">${ps.periodLabel}</div>
             </div>
           </div>
 
-          <div style="display:grid;grid-template-columns:1.3fr 1fr;gap:20px;margin-top:20px;padding-bottom:16px;border-bottom:1px dashed #cbd5e1;font-size:13px;">
+          <div style="display:grid;grid-template-columns:1.3fr 1fr;gap:20px;margin-top:20px;padding-bottom:16px;border-bottom:1px dashed #d4d4d8;font-size:13px;">
             <div>
-              <div style="font-size:11px;font-weight:700;color:#64748b;margin-bottom:8px;">EMPLOYEE SUMMARY</div>
-              <div style="padding:3px 0;"><span style="color:#64748b;display:inline-block;width:130px;">Employee Name</span> : <strong>${emp.name}</strong></div>
-              <div style="padding:3px 0;"><span style="color:#64748b;display:inline-block;width:130px;">Designation</span> : <strong>${emp.designationSub || emp.role}</strong></div>
-              <div style="padding:3px 0;"><span style="color:#64748b;display:inline-block;width:130px;">Employee ID</span> : <strong>${emp.zohoId || emp.id} (${emp.id})</strong></div>
-              <div style="padding:3px 0;"><span style="color:#64748b;display:inline-block;width:130px;">Date of Joining</span> : <strong>${emp.joiningDate}</strong></div>
-              <div style="padding:3px 0;"><span style="color:#64748b;display:inline-block;width:130px;">Pay Period</span> : <strong>${ps.periodLabel}</strong></div>
-              <div style="padding:3px 0;"><span style="color:#64748b;display:inline-block;width:130px;">Pay Date</span> : <strong>${ps.payDate}</strong></div>
+              <div style="font-size:11px;font-weight:700;color:#52525b;margin-bottom:8px;">EMPLOYEE SUMMARY</div>
+              <div style="padding:3px 0;"><span style="color:#52525b;display:inline-block;width:130px;">Employee Name</span> : <strong>${emp.name}</strong></div>
+              <div style="padding:3px 0;"><span style="color:#52525b;display:inline-block;width:130px;">Designation</span> : <strong>${emp.designationSub || emp.role}</strong></div>
+              <div style="padding:3px 0;"><span style="color:#52525b;display:inline-block;width:130px;">Employee ID</span> : <strong>${emp.zohoId || emp.id}</strong></div>
+              <div style="padding:3px 0;"><span style="color:#52525b;display:inline-block;width:130px;">Date of Joining</span> : <strong>${emp.joiningDate}</strong></div>
+              <div style="padding:3px 0;"><span style="color:#52525b;display:inline-block;width:130px;">Pay Period</span> : <strong>${ps.periodLabel}</strong></div>
+              <div style="padding:3px 0;"><span style="color:#52525b;display:inline-block;width:130px;">Pay Date</span> : <strong>${ps.payDate}</strong></div>
             </div>
-            <div style="background:#f0fdf4;border:1px solid #bbf7d0;border-radius:10px;padding:16px;">
-              <div style="font-size:24px;font-weight:800;color:#14532d;border-left:4px solid #22c55e;padding-left:10px;">₹${Number(ps.netPay).toLocaleString("en-IN", {minimumFractionDigits:2})}</div>
-              <div style="font-size:12px;color:#16a34a;padding-left:14px;margin-bottom:10px;">Total Net Pay</div>
-              <div style="border-top:1px dashed #bbf7d0;padding-top:8px;font-size:12px;">
+            <div style="background:#fafafa;border:1.5px solid #0a0a0a;border-radius:10px;padding:16px;">
+              <div style="font-size:24px;font-weight:900;color:#0a0a0a;border-left:4px solid #0a0a0a;padding-left:10px;">₹${Number(ps.netPay).toLocaleString("en-IN", {minimumFractionDigits:2})}</div>
+              <div style="font-size:12px;color:#52525b;padding-left:14px;margin-bottom:10px;font-weight:600;">Total Net Pay</div>
+              <div style="border-top:1px dashed #d4d4d8;padding-top:8px;font-size:12px;">
                 <div>Paid Days : <strong>${ps.paidDays}</strong></div>
                 <div style="margin-top:4px;">LOP Days : <strong>${ps.lopDays}</strong></div>
               </div>
             </div>
           </div>
 
-          <div style="padding:10px 0;border-bottom:1px dashed #cbd5e1;font-size:13px;">
-            <span style="color:#64748b;display:inline-block;width:130px;">Bank Account No</span> : <strong>${emp.bankAccount}</strong> (${emp.bankName} • IFSC: ${emp.ifsc})
+          <div style="padding:10px 0;border-bottom:1px dashed #d4d4d8;font-size:13px;">
+            <span style="color:#52525b;display:inline-block;width:130px;">Bank Account No</span> : <strong>${emp.bankAccount}</strong> (${emp.bankName} • IFSC: ${emp.ifsc})
           </div>
 
-          <table style="width:100%;border-collapse:collapse;margin-top:18px;font-size:13px;border:1px solid #e2e8f0;">
+          <table style="width:100%;border-collapse:collapse;margin-top:18px;font-size:13px;border:1px solid #d4d4d8;">
             <thead>
-              <tr style="background:#f8fafc;text-align:left;border-bottom:1px solid #e2e8f0;">
+              <tr style="background:#f4f4f5;text-align:left;border-bottom:1px solid #d4d4d8;">
                 <th style="padding:10px;">EARNINGS</th>
                 <th style="padding:10px;text-align:right;">AMOUNT</th>
                 <th style="padding:10px;text-align:right;">YTD</th>
@@ -1858,15 +2055,15 @@
               </tr>
             </thead>
             <tbody>
-              <tr style="border-bottom:1px solid #f1f5f9;">
+              <tr style="border-bottom:1px solid #e4e4e7;">
                 <td style="padding:10px;">Basic</td>
                 <td style="padding:10px;text-align:right;font-weight:600;">₹${Number(ps.basic).toLocaleString("en-IN", {minimumFractionDigits:2})}</td>
                 <td style="padding:10px;text-align:right;">₹${Number(ps.basic).toLocaleString("en-IN", {minimumFractionDigits:2})}</td>
-                <td style="padding:10px;">Personal Advance</td>
-                <td style="padding:10px;text-align:right;font-weight:600;">₹${Number(ps.deductions).toLocaleString("en-IN", {minimumFractionDigits:2})}</td>
-                <td style="padding:10px;text-align:right;">₹${Number(ps.deductions).toLocaleString("en-IN", {minimumFractionDigits:2})}</td>
+                <td style="padding:10px;">${dedLabel}</td>
+                <td style="padding:10px;text-align:right;font-weight:600;">${dedLabel ? `₹${Number(ps.deductions).toLocaleString("en-IN", {minimumFractionDigits:2})}` : ""}</td>
+                <td style="padding:10px;text-align:right;">${dedLabel ? `₹${Number(ps.deductions).toLocaleString("en-IN", {minimumFractionDigits:2})}` : ""}</td>
               </tr>
-              <tr style="border-bottom:1px solid #f1f5f9;">
+              <tr style="border-bottom:1px solid #e4e4e7;">
                 <td style="padding:10px;">Fixed Allowance</td>
                 <td style="padding:10px;text-align:right;font-weight:600;">₹${Number(ps.fixedAllowance).toLocaleString("en-IN", {minimumFractionDigits:2})}</td>
                 <td style="padding:10px;text-align:right;">₹${Number(ps.fixedAllowance).toLocaleString("en-IN", {minimumFractionDigits:2})}</td>
@@ -1875,7 +2072,7 @@
                 <td style="padding:10px;"></td>
               </tr>
               ${ps.bonus ? `
-              <tr style="border-bottom:1px solid #f1f5f9;">
+              <tr style="border-bottom:1px solid #e4e4e7;">
                 <td style="padding:10px;">Bonus</td>
                 <td style="padding:10px;text-align:right;font-weight:600;">₹${Number(ps.bonus).toLocaleString("en-IN", {minimumFractionDigits:2})}</td>
                 <td style="padding:10px;text-align:right;">₹${Number(ps.bonus).toLocaleString("en-IN", {minimumFractionDigits:2})}</td>
@@ -1883,7 +2080,7 @@
                 <td style="padding:10px;"></td>
                 <td style="padding:10px;"></td>
               </tr>` : ""}
-              <tr style="background:#f8fafc;font-weight:700;">
+              <tr style="background:#f4f4f5;font-weight:700;">
                 <td style="padding:10px;">Gross Earnings</td>
                 <td style="padding:10px;text-align:right;">₹${Number(ps.grossEarnings).toLocaleString("en-IN", {minimumFractionDigits:2})}</td>
                 <td></td>
@@ -1894,18 +2091,18 @@
             </tbody>
           </table>
 
-          <div style="display:flex;justify-content:space-between;align-items:center;border:1px solid #e2e8f0;border-radius:10px;margin-top:18px;overflow:hidden;">
+          <div style="display:flex;justify-content:space-between;align-items:center;border:1.5px solid #0a0a0a;border-radius:10px;margin-top:18px;overflow:hidden;">
             <div style="padding:12px 16px;">
               <div style="font-weight:800;font-size:13px;">TOTAL NET PAYABLE</div>
-              <div style="font-size:12px;color:#64748b;">Gross Earnings - Total Deductions</div>
+              <div style="font-size:12px;color:#52525b;">Gross Earnings - Total Deductions</div>
             </div>
-            <div style="background:#f0fdf4;padding:14px 20px;font-size:18px;font-weight:800;color:#0f172a;">₹${Number(ps.netPay).toLocaleString("en-IN", {minimumFractionDigits:2})}</div>
+            <div style="background:#0a0a0a;padding:14px 20px;font-size:18px;font-weight:800;color:#ffffff;">₹${Number(ps.netPay).toLocaleString("en-IN", {minimumFractionDigits:2})}</div>
           </div>
 
-          <div style="text-align:right;font-size:12px;color:#475569;margin-top:12px;padding-bottom:14px;border-bottom:1px solid #e2e8f0;">
+          <div style="text-align:right;font-size:12px;color:#52525b;margin-top:12px;padding-bottom:14px;border-bottom:1px solid #e4e4e7;">
             Amount In Words : <strong>${ps.amountInWords}</strong>
           </div>
-          <div style="text-align:center;font-size:11px;color:#94a3b8;margin-top:16px;">-- This is a system-generated document issued by Aaruni Tech. --</div>
+          <div style="text-align:center;font-size:11px;color:#71717a;margin-top:16px;">-- This is a system-generated document. --</div>
         </div>
       `;
     }
@@ -1914,6 +2111,203 @@
       const ps = state.payslips.find(p => p.id === psId);
       const emp = state.employees.find(e => e.id === ps.empId);
       openModalWithHTML(`Payslip — ${emp.name} (${ps.periodLabel})`, buildZohoPayslipHTML(ps, emp));
+    }
+
+    function openOctPayslipForEmp(empId) {
+      const ps = state.payslips.find(p => p.empId === empId && p.yearMonth === "2026-10") || state.payslips.find(p => p.empId === empId);
+      if (!ps) {
+        const emp = state.employees.find(e => e.id === empId);
+        showToast("ℹ️ No Payslip Issued", `${emp ? emp.name : empId} is configured with ₹0 salary / no October 2026 payslip.`);
+        return;
+      }
+      openPayslipModal(ps.id);
+    }
+
+    function openEmployeeProfileModal(empId, activeTab = "overview") {
+      const emp = state.employees.find(e => e.id === empId) || state.employees[3];
+      const annualCtc = emp.annualCtc || (emp.monthlyCtc * 12);
+      const basicMo = Math.round(emp.monthlyCtc * 0.5);
+      const basicYr = basicMo * 12;
+      const fixedMo = emp.monthlyCtc - basicMo;
+      const fixedYr = fixedMo * 12;
+      const empPayslips = state.payslips.filter(p => p.empId === emp.id);
+      const empLoans = state.loans.filter(l => l.empId === emp.id);
+      const maskedAcct = emp.bankAccount && emp.bankAccount.length >= 4
+        ? "XXXX" + emp.bankAccount.slice(-4)
+        : emp.bankAccount;
+
+      let tabBody = "";
+      if (activeTab === "overview") {
+        tabBody = `
+          <div style="display:grid;grid-template-columns:1fr;gap:16px;margin-top:16px;font-size:13px;">
+            <div style="border:1px solid #d4d4d8;border-radius:10px;padding:16px;">
+              <div style="font-weight:800;font-size:14px;margin-bottom:12px;border-bottom:1px solid #e4e4e7;padding-bottom:8px;">Basic Information</div>
+              <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+                <div><span style="color:#71717a;display:block;font-size:11px;">Name</span><strong>${emp.name}</strong></div>
+                <div><span style="color:#71717a;display:block;font-size:11px;">Employee ID</span><strong>${emp.zohoId ? `${emp.zohoId} (${emp.id})` : emp.id}</strong></div>
+                <div><span style="color:#71717a;display:block;font-size:11px;">Email Address</span><strong>${emp.email}</strong></div>
+                <div><span style="color:#71717a;display:block;font-size:11px;">Mobile Number</span><strong>${emp.mobile}</strong></div>
+                <div><span style="color:#71717a;display:block;font-size:11px;">Date of Joining</span><strong>${emp.joiningDate}</strong></div>
+                <div><span style="color:#71717a;display:block;font-size:11px;">Gender</span><strong>${emp.gender || "-"}</strong></div>
+                <div><span style="color:#71717a;display:block;font-size:11px;">Work Location</span><strong>${emp.workLocation || "Head Office"}</strong></div>
+                <div><span style="color:#71717a;display:block;font-size:11px;">Designation</span><strong>${emp.role}</strong></div>
+                <div><span style="color:#71717a;display:block;font-size:11px;">Department</span><strong>${emp.department || "Engineering & Technology"}</strong></div>
+                <div><span style="color:#71717a;display:block;font-size:11px;">Portal Access</span><strong>${emp.portalAccess ? "Enabled" : "Disabled"}</strong></div>
+              </div>
+            </div>
+
+            <div style="border:1px solid #d4d4d8;border-radius:10px;padding:16px;">
+              <div style="font-weight:800;font-size:14px;margin-bottom:12px;border-bottom:1px solid #e4e4e7;padding-bottom:8px;">Personal Information</div>
+              <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+                <div><span style="color:#71717a;display:block;font-size:11px;">Date of Birth</span><strong>${emp.dob || "-"}</strong></div>
+                <div><span style="color:#71717a;display:block;font-size:11px;">Father's Name</span><strong>${emp.fatherName || "-"}</strong></div>
+                <div><span style="color:#71717a;display:block;font-size:11px;">PAN</span><strong>${emp.pan || "-"}</strong></div>
+                <div><span style="color:#71717a;display:block;font-size:11px;">Personal Email Address</span><strong>${(emp.alternateEmails && emp.alternateEmails[0]) || emp.email}</strong></div>
+                <div style="grid-column:span 2;"><span style="color:#71717a;display:block;font-size:11px;">Residential Address</span><strong>${emp.address}</strong></div>
+              </div>
+            </div>
+
+            <div style="border:1px solid #d4d4d8;border-radius:10px;padding:16px;">
+              <div style="font-weight:800;font-size:14px;margin-bottom:12px;border-bottom:1px solid #e4e4e7;padding-bottom:8px;">Payment Information</div>
+              <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+                <div><span style="color:#71717a;display:block;font-size:11px;">Payment Mode</span><strong>${emp.paymentMode || "Manual Bank Transfer"}</strong></div>
+                <div><span style="color:#71717a;display:block;font-size:11px;">Account Holder Name</span><strong>${emp.accountHolder || emp.name}</strong></div>
+                <div><span style="color:#71717a;display:block;font-size:11px;">Bank Name</span><strong>${emp.bankName}</strong></div>
+                <div>
+                  <span style="color:#71717a;display:block;font-size:11px;">Account Number</span>
+                  <strong id="modalAcctNoVal" data-masked="${maskedAcct}" data-full="${emp.bankAccount}">${maskedAcct}</strong>
+                  <button onclick="const el=document.getElementById('modalAcctNoVal');const show=el.textContent.includes('X');el.textContent=show?el.dataset.full:el.dataset.masked;this.textContent=show?'Hide A/C No':'Show A/C No';" style="margin-left:8px;font-size:11px;font-weight:700;text-decoration:underline;background:none;border:none;cursor:pointer;color:#0a0a0a;">Show A/C No</button>
+                </div>
+                <div><span style="color:#71717a;display:block;font-size:11px;">IFSC</span><strong>${emp.ifsc}</strong></div>
+                <div><span style="color:#71717a;display:block;font-size:11px;">Account Type</span><strong>${emp.accountType || "Savings"}</strong></div>
+              </div>
+            </div>
+          </div>
+        `;
+      } else if (activeTab === "salary") {
+        tabBody = `
+          <div style="margin-top:16px;border:1px solid #d4d4d8;border-radius:10px;padding:18px;font-size:13px;">
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;padding-bottom:14px;border-bottom:1px solid #e4e4e7;">
+              <div>
+                <div style="color:#71717a;font-size:11px;font-weight:700;text-transform:uppercase;">Annual CTC</div>
+                <div style="font-size:20px;font-weight:900;color:#0a0a0a;margin-top:2px;">₹${annualCtc.toLocaleString("en-IN", {minimumFractionDigits:2})} <span style="font-size:12px;font-weight:500;color:#71717a;">per year</span></div>
+              </div>
+              <div>
+                <div style="color:#71717a;font-size:11px;font-weight:700;text-transform:uppercase;">Monthly CTC</div>
+                <div style="font-size:20px;font-weight:900;color:#0a0a0a;margin-top:2px;">₹${emp.monthlyCtc.toLocaleString("en-IN", {minimumFractionDigits:2})} <span style="font-size:12px;font-weight:500;color:#71717a;">per month</span></div>
+              </div>
+            </div>
+
+            <div style="font-weight:800;font-size:14px;margin:16px 0 10px;">Salary Structure</div>
+            <table style="width:100%;border-collapse:collapse;font-size:13px;border:1px solid #d4d4d8;">
+              <thead>
+                <tr style="background:#f4f4f5;border-bottom:1px solid #d4d4d8;text-align:left;">
+                  <th style="padding:10px;">SALARY COMPONENTS</th>
+                  <th style="padding:10px;text-align:right;">MONTHLY AMOUNT</th>
+                  <th style="padding:10px;text-align:right;">ANNUAL AMOUNT</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr style="border-bottom:1px solid #e4e4e7;">
+                  <td style="padding:10px;" colspan="3"><strong>Earnings</strong></td>
+                </tr>
+                <tr style="border-bottom:1px solid #e4e4e7;">
+                  <td style="padding:10px;">Basic <span style="color:#71717a;font-size:11px;">(50.00 % of CTC)</span></td>
+                  <td style="padding:10px;text-align:right;font-weight:600;">₹${basicMo.toLocaleString("en-IN", {minimumFractionDigits:2})}</td>
+                  <td style="padding:10px;text-align:right;">₹${basicYr.toLocaleString("en-IN", {minimumFractionDigits:2})}</td>
+                </tr>
+                <tr style="border-bottom:1px solid #e4e4e7;">
+                  <td style="padding:10px;">Fixed Allowance</td>
+                  <td style="padding:10px;text-align:right;font-weight:600;">₹${fixedMo.toLocaleString("en-IN", {minimumFractionDigits:2})}</td>
+                  <td style="padding:10px;text-align:right;">₹${fixedYr.toLocaleString("en-IN", {minimumFractionDigits:2})}</td>
+                </tr>
+                <tr style="background:#f4f4f5;font-weight:800;">
+                  <td style="padding:10px;">Cost to Company</td>
+                  <td style="padding:10px;text-align:right;">₹${emp.monthlyCtc.toLocaleString("en-IN", {minimumFractionDigits:2})}</td>
+                  <td style="padding:10px;text-align:right;">₹${annualCtc.toLocaleString("en-IN", {minimumFractionDigits:2})}</td>
+                </tr>
+              </tbody>
+            </table>
+
+            <div style="margin-top:16px;padding:12px;border:1px dashed #d4d4d8;border-radius:8px;display:flex;justify-content:space-between;">
+              <span><strong>Perks / Additional Benefits</strong></span>
+              <strong>₹0.00</strong>
+            </div>
+          </div>
+        `;
+      } else if (activeTab === "investments") {
+        tabBody = `
+          <div style="margin-top:16px;border:1px solid #d4d4d8;border-radius:10px;padding:18px;font-size:13px;">
+            <div style="font-weight:800;font-size:14px;margin-bottom:6px;">Investments & Tax Proofs (FY 2026–2027)</div>
+            <p style="color:#52525b;font-size:12px;margin:0 0 12px;">Annual CTC (₹${annualCtc.toLocaleString("en-IN")}) is below the Indian New Tax Regime exemption threshold (₹12,00,000). Zero TDS deduction required.</p>
+            <div style="padding:12px;background:#f4f4f5;border-radius:8px;font-weight:600;">Tax Regime: New Tax Regime (Default) • TDS Deducted YTD: ₹0.00</div>
+          </div>
+        `;
+      } else if (activeTab === "payslips") {
+        tabBody = `
+          <div style="margin-top:16px;border:1px solid #d4d4d8;border-radius:10px;padding:18px;font-size:13px;">
+            <div style="font-weight:800;font-size:14px;margin-bottom:12px;">Payslips & Official HR Forms</div>
+            ${empPayslips.length === 0 ? `<div style="color:#71717a;">No payslips issued for this profile.</div>` : empPayslips.map(ps => `
+              <div style="display:flex;justify-content:space-between;align-items:center;padding:10px 12px;border:1px solid #d4d4d8;border-radius:8px;margin-bottom:8px;">
+                <div>
+                  <strong>${ps.periodLabel}</strong> • Paid Days: ${ps.paidDays} • LOP: ${ps.lopDays}
+                  <div style="font-size:11px;color:#52525b;">Pay Date: ${ps.payDate} • Net Pay: ₹${Number(ps.netPay).toLocaleString("en-IN", {minimumFractionDigits:2})}</div>
+                </div>
+                <button onclick="openPayslipModal('${ps.id}')" style="background:#0a0a0a;color:#fff;font-size:12px;font-weight:700;padding:6px 12px;border-radius:6px;border:none;cursor:pointer;">View Payslip PDF</button>
+              </div>
+            `).join("")}
+          </div>
+        `;
+      } else if (activeTab === "loans") {
+        tabBody = `
+          <div style="margin-top:16px;border:1px solid #d4d4d8;border-radius:10px;padding:18px;font-size:13px;">
+            <div style="font-weight:800;font-size:14px;margin-bottom:12px;">Loans & Personal Advances</div>
+            ${empLoans.length === 0 ? `<div style="color:#71717a;">No active or historical loans/advances recorded for ${emp.name}.</div>` : empLoans.map(l => {
+              const isPaid = l.status === "Paid" || Number(l.remainingBalance || 0) === 0;
+              return `
+                <div style="display:flex;justify-content:space-between;align-items:center;padding:10px 12px;border:1px solid #d4d4d8;border-radius:8px;margin-bottom:8px;">
+                  <div>
+                    <strong>₹${Number(l.totalAmount).toLocaleString("en-IN")} (${l.type})</strong> • Taken: ${l.takenDate}
+                    <div style="font-size:11px;color:#52525b;">${l.note || ''} • Balance: ₹${Number(l.remainingBalance).toLocaleString("en-IN")}</div>
+                  </div>
+                  <span style="font-size:11px;font-weight:800;padding:4px 10px;border-radius:99px;border:1px solid #0a0a0a;background:${isPaid ? '#f4f4f5' : '#0a0a0a'};color:${isPaid ? '#0a0a0a' : '#ffffff'};">
+                    ${isPaid ? '✅ PAID / RECOVERED' : '⏳ PENDING'}
+                  </span>
+                </div>
+              `;
+            }).join("")}
+          </div>
+        `;
+      }
+
+      const html = `
+        <div style="max-width:740px;margin:0 auto;font-family:'Inter',sans-serif;color:#0a0a0a;">
+          <div style="display:flex;justify-content:space-between;align-items:center;border-bottom:1.5px solid #0a0a0a;padding-bottom:12px;">
+            <div>
+              <div style="display:flex;align-items:center;gap:8px;">
+                <span style="font-size:18px;font-weight:900;">${emp.zohoId ? `${emp.zohoId} - ` : ""}${emp.name}</span>
+                <span style="font-size:11px;font-weight:800;padding:2px 8px;border-radius:99px;border:1px solid #0a0a0a;background:${emp.status === 'Active' ? '#0a0a0a' : '#f4f4f5'};color:${emp.status === 'Active' ? '#ffffff' : '#52525b'};">${emp.status}</span>
+              </div>
+              <div style="font-size:12px;color:#52525b;margin-top:2px;">${emp.role} • ${emp.id}</div>
+            </div>
+            <div style="display:flex;gap:6px;flex-wrap:wrap;">
+              ${[
+                ["overview", "Overview"],
+                ["salary", "Salary Details"],
+                ["investments", "Investments"],
+                ["payslips", "Payslips & Forms"],
+                ["loans", "Loans"]
+              ].map(([id, label]) => `
+                <button onclick="openEmployeeProfileModal('${emp.id}', '${id}')" style="font-size:12px;font-weight:700;padding:6px 11px;border-radius:6px;border:1px solid #0a0a0a;cursor:pointer;background:${activeTab === id ? '#0a0a0a' : '#ffffff'};color:${activeTab === id ? '#ffffff' : '#0a0a0a'};">
+                  ${label}
+                </button>
+              `).join("")}
+            </div>
+          </div>
+          ${tabBody}
+        </div>
+      `;
+      openModalWithHTML(`Employee Profile — ${emp.name} (${emp.id})`, html);
     }
 
     function previewDraftPayslip(empId) {
@@ -2541,6 +2935,7 @@
       }
     }
 
+    applyAaruniTheme();
     checkUrlAutoLogin();
     renderApp();
   </script>

@@ -1,0 +1,201 @@
+/**
+ * ============================================================================
+ * AARUNI TECH — OFFICIAL INTERNAL TOOLS MONOCHROME DESIGN SYSTEM (aaruni-brand.css)
+ * High-contrast Black & White aesthetic with Day / Night / Auto theme engine.
+ * Designed for all Aaruni Tech internal tools (HR, Payroll, Attendance, Tax, Admin).
+ * ============================================================================
+ */
+
+:root,
+[data-theme="light"] {
+  --at-bg: #fafafa;
+  --at-surface: #ffffff;
+  --at-surface-muted: #f4f4f5;
+  --at-surface-hover: #e4e4e7;
+  --at-text: #09090b;
+  --at-text-secondary: #3f3f46;
+  --at-text-muted: #71717a;
+  --at-border: #e4e4e7;
+  --at-border-strong: #18181b;
+  --at-primary: #09090b;
+  --at-primary-fg: #ffffff;
+  --at-badge-bg: #f4f4f5;
+  --at-badge-fg: #18181b;
+  --at-shadow: 0 1px 3px rgba(0, 0, 0, 0.06), 0 1px 2px rgba(0, 0, 0, 0.04);
+  color-scheme: light;
+}
+
+[data-theme="dark"] {
+  --at-bg: #09090b;
+  --at-surface: #121215;
+  --at-surface-muted: #18181b;
+  --at-surface-hover: #27272a;
+  --at-text: #fafafa;
+  --at-text-secondary: #d4d4d8;
+  --at-text-muted: #a1a1aa;
+  --at-border: #27272a;
+  --at-border-strong: #fafafa;
+  --at-primary: #fafafa;
+  --at-primary-fg: #09090b;
+  --at-badge-bg: #27272a;
+  --at-badge-fg: #fafafa;
+  --at-shadow: 0 2px 8px rgba(0, 0, 0, 0.45);
+  color-scheme: dark;
+}
+
+* {
+  box-sizing: border-box;
+  -webkit-tap-highlight-color: transparent;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Inter", "Geist", "Segoe UI", Roboto, sans-serif;
+  background-color: var(--at-bg) !important;
+  color: var(--at-text) !important;
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+  transition: background-color 0.15s ease, color 0.15s ease;
+}
+
+/* Monochrome Surfaces & Cards */
+.glass-card,
+.at-card {
+  background-color: var(--at-surface) !important;
+  border: 1px solid var(--at-border) !important;
+  box-shadow: var(--at-shadow) !important;
+  color: var(--at-text) !important;
+  backdrop-filter: none !important;
+}
+
+/* Primary Monochrome CTA Button (Black in Day mode, White in Night mode) */
+.brand-grad,
+.at-btn-primary {
+  background: var(--at-primary) !important;
+  color: var(--at-primary-fg) !important;
+  border: 1px solid var(--at-primary) !important;
+  font-weight: 700;
+  transition: opacity 0.15s ease, transform 0.1s ease;
+}
+
+.brand-grad:hover,
+.at-btn-primary:hover {
+  opacity: 0.88;
+}
+
+/* Secondary Monochrome Button */
+.at-btn-secondary {
+  background-color: var(--at-surface-muted) !important;
+  color: var(--at-text) !important;
+  border: 1px solid var(--at-border) !important;
+}
+
+/* Theme overrides so utility classes adapt cleanly between Day (Light) and Night (Dark) */
+[data-theme="light"] .bg-slate-900,
+[data-theme="light"] .bg-slate-900\/95,
+[data-theme="light"] .bg-slate-900\/90,
+[data-theme="light"] .bg-slate-900\/70,
+[data-theme="light"] .bg-slate-900\/50 {
+  background-color: #ffffff !important;
+  color: #09090b !important;
+}
+
+[data-theme="light"] .bg-slate-800,
+[data-theme="light"] .bg-slate-800\/90,
+[data-theme="light"] .bg-slate-800\/80,
+[data-theme="light"] .bg-slate-800\/70,
+[data-theme="light"] .bg-slate-800\/60 {
+  background-color: #f4f4f5 !important;
+  color: #09090b !important;
+}
+
+[data-theme="light"] .bg-slate-700 {
+  background-color: #e4e4e7 !important;
+  color: #09090b !important;
+}
+
+[data-theme="light"] .text-white,
+[data-theme="light"] .text-slate-100,
+[data-theme="light"] .text-slate-200 {
+  color: #09090b !important;
+}
+
+[data-theme="light"] .text-slate-300 {
+  color: #27272a !important;
+}
+
+[data-theme="light"] .text-slate-400 {
+  color: #52525b !important;
+}
+
+[data-theme="light"] .border-slate-800,
+[data-theme="light"] .border-slate-700 {
+  border-color: #e4e4e7 !important;
+}
+
+/* Monochrome accent overrides across both themes */
+.text-orange-500,
+.text-orange-400,
+.text-orange-300,
+.text-sky-400,
+.text-sky-300 {
+  color: var(--at-text) !important;
+}
+
+.border-orange-500,
+.border-orange-500\/40,
+.border-orange-500\/50,
+.border-sky-500\/30 {
+  border-color: var(--at-border-strong) !important;
+}
+
+.bg-orange-500,
+.bg-orange-500\/20,
+.bg-orange-500\/15,
+.bg-orange-500\/10 {
+  background-color: var(--at-badge-bg) !important;
+  color: var(--at-badge-fg) !important;
+}
+
+/* Theme Segmented Switcher */
+.at-theme-switcher {
+  display: inline-flex;
+  align-items: center;
+  background-color: var(--at-surface-muted);
+  border: 1px solid var(--at-border);
+  border-radius: 10px;
+  padding: 2px;
+  gap: 2px;
+}
+
+.at-theme-btn {
+  font-size: 11px;
+  font-weight: 700;
+  padding: 4px 8px;
+  border-radius: 7px;
+  border: none;
+  background: transparent;
+  color: var(--at-text-muted);
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.at-theme-btn.active {
+  background-color: var(--at-primary);
+  color: var(--at-primary-fg);
+}
+
+@media print {
+  body * { visibility: hidden; }
+  #printModalContent, #printModalContent * { visibility: visible; }
+  #printModalContent {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    background: #ffffff !important;
+    color: #000000 !important;
+    box-shadow: none !important;
+  }
+  .no-print { display: none !important; }
+}
