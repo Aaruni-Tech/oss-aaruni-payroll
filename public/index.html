@@ -1302,9 +1302,7 @@
     }
 
     function renderLoginScreen() {
-      const isRegister = state.loginMode === "register";
-      const nextNum = state.employees.length + 1;
-      const nextEmpId = `AAR-${String(nextNum).padStart(4, "0")}`;
+      const isSetPwd = state.loginMode === "setpassword";
 
       return `
         <div class="max-w-sm mx-auto mt-10 mb-12">
@@ -1317,25 +1315,25 @@
             </div>
 
             <div class="grid grid-cols-2 gap-1 p-1 rounded-xl bg-slate-900 border border-slate-800 mb-5 text-xs">
-              <button onclick="setLoginMode('signin')" class="py-2 rounded-lg font-semibold transition-all ${!isRegister ? 'brand-grad' : 'text-slate-400 hover:text-white'}">
+              <button onclick="setLoginMode('signin')" class="py-2 rounded-lg font-semibold transition-all ${!isSetPwd ? 'brand-grad' : 'text-slate-400 hover:text-white'}">
                 Sign In
               </button>
-              <button onclick="setLoginMode('register')" class="py-2 rounded-lg font-semibold transition-all ${isRegister ? 'brand-grad' : 'text-slate-400 hover:text-white'}">
-                Register / Set Password
+              <button onclick="setLoginMode('setpassword')" class="py-2 rounded-lg font-semibold transition-all ${isSetPwd ? 'brand-grad' : 'text-slate-400 hover:text-white'}">
+                Set Password
               </button>
             </div>
 
-            ${!isRegister ? `
+            ${!isSetPwd ? `
               <div class="space-y-4">
                 <div>
-                  <label class="block text-xs font-semibold text-slate-300 mb-1.5">Employee ID or Username</label>
+                  <label class="block text-xs font-semibold text-slate-300 mb-1.5">Employee ID</label>
                   <input
                     id="homeLoginId"
                     type="text"
-                    placeholder="e.g. AAR-0004, 004, or admin"
+                    placeholder="e.g. AAR-0004 or 004"
                     autocomplete="username"
                     onkeydown="if(event.key==='Enter') submitHomeLogin()"
-                    class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3.5 py-2.5 text-sm text-white focus:outline-none"
+                    class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3.5 py-2.5 text-sm text-white focus:outline-none font-mono"
                   />
                 </div>
 
@@ -1369,19 +1367,8 @@
                   <input
                     id="regEmpId"
                     type="text"
-                    placeholder="e.g. AAR-0004 or ${nextEmpId}"
-                    oninput="handleRegEmpIdLookup(this.value)"
-                    class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3.5 py-2 text-sm text-white focus:outline-none font-mono"
-                  />
-                </div>
-
-                <div>
-                  <label class="block text-xs font-semibold text-slate-300 mb-1">Full Name</label>
-                  <input
-                    id="regFullName"
-                    type="text"
-                    placeholder="Your Full Name"
-                    class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3.5 py-2 text-sm text-white focus:outline-none"
+                    placeholder="e.g. AAR-0004 or 004"
+                    class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3.5 py-2.5 text-sm text-white focus:outline-none font-mono"
                   />
                 </div>
 
@@ -1391,10 +1378,10 @@
                     <input
                       id="regNewPassword"
                       type="password"
-                      placeholder="Create password"
-                      class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3.5 py-2 pr-10 text-sm text-white focus:outline-none"
+                      placeholder="Enter new password"
+                      class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3.5 py-2.5 pr-10 text-sm text-white focus:outline-none"
                     />
-                    <button type="button" onclick="togglePasswordVisibility('regNewPassword')" class="absolute right-3 top-2 text-xs text-slate-400 hover:text-white">
+                    <button type="button" onclick="togglePasswordVisibility('regNewPassword')" class="absolute right-3 top-2.5 text-xs text-slate-400 hover:text-white">
                       👁️
                     </button>
                   </div>
@@ -1405,35 +1392,22 @@
                   <input
                     id="regConfirmPassword"
                     type="password"
-                    placeholder="Confirm password"
+                    placeholder="Confirm new password"
                     onkeydown="if(event.key==='Enter') submitRegisterOrSetPassword()"
-                    class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3.5 py-2 text-sm text-white focus:outline-none"
+                    class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3.5 py-2.5 text-sm text-white focus:outline-none"
                   />
                 </div>
 
                 <div id="regError" class="hidden text-xs font-semibold text-rose-400 bg-rose-950/30 border border-rose-500/30 rounded-xl p-2.5 text-center"></div>
 
                 <button onclick="submitRegisterOrSetPassword()" class="w-full brand-grad text-white font-bold text-sm py-2.5 rounded-xl hover:opacity-90 transition-all">
-                  Save Password & Sign In
+                  Set Password & Sign In
                 </button>
               </div>
             `}
           </div>
         </div>
       `;
-    }
-
-    function handleRegEmpIdLookup(val) {
-      const clean = (val || "").trim().toLowerCase();
-      if (!clean) return;
-      const found = state.employees.find(e =>
-        e.id.toLowerCase() === clean ||
-        (e.zohoId && e.zohoId.toLowerCase() === clean)
-      );
-      const nameInput = document.getElementById("regFullName");
-      if (found && nameInput && !nameInput.value) {
-        nameInput.value = found.name;
-      }
     }
 
     function submitHomeLogin() {
@@ -1468,13 +1442,12 @@
       const err = document.getElementById("homeLoginError");
       if (err) {
         err.classList.remove("hidden");
-        err.textContent = "Invalid ID/Username or Password.";
+        err.textContent = "Invalid Employee ID or Password.";
       }
     }
 
     function submitRegisterOrSetPassword() {
       const rawId = (document.getElementById("regEmpId")?.value || "").trim();
-      const fullName = (document.getElementById("regFullName")?.value || "").trim();
       const pwd1 = (document.getElementById("regNewPassword")?.value || "").trim();
       const pwd2 = (document.getElementById("regConfirmPassword")?.value || "").trim();
       const err = document.getElementById("regError");
@@ -1486,6 +1459,10 @@
         }
       };
 
+      if (!rawId) {
+        showErr("Please enter your Employee ID.");
+        return;
+      }
       if (!pwd1 || pwd1.length < 4) {
         showErr("Password must be at least 4 characters.");
         return;
@@ -1505,72 +1482,21 @@
         return;
       }
 
-      let emp = state.employees.find(e =>
-        (cleanId && (e.id.toLowerCase() === cleanId || (e.zohoId && e.zohoId.toLowerCase() === cleanId))) ||
-        (fullName && e.name.toLowerCase() === fullName.toLowerCase())
+      const emp = state.employees.find(e =>
+        e.id.toLowerCase() === cleanId ||
+        (e.zohoId && e.zohoId.toLowerCase() === cleanId)
       );
 
-      if (emp) {
-        emp.password = pwd1;
-        if (fullName) emp.name = fullName;
-        saveState();
-        state.loginMode = "signin";
-        switchPersona(emp.id, false);
-        showToast("Password Saved", `Signed in as ${emp.name} (${emp.id}).`);
+      if (!emp) {
+        showErr("Employee ID not found.");
         return;
       }
 
-      if (!fullName) {
-        showErr("Please enter your Full Name to register.");
-        return;
-      }
-
-      const nextNum = state.employees.length + 1;
-      const newId = rawId && rawId.toUpperCase().startsWith("AAR-")
-        ? rawId.toUpperCase()
-        : `AAR-${String(nextNum).padStart(4, "0")}`;
-      const zohoId = String(nextNum).padStart(3, "0");
-
-      const newEmp = {
-        id: newId,
-        zohoId,
-        name: fullName,
-        password: pwd1,
-        role: "Technical Associate",
-        designationSub: "Technical Associate",
-        department: "Engineering & Technology",
-        workLocation: "Head Office",
-        gender: "-",
-        portalAccess: true,
-        status: "Active",
-        trackTimesheet: true,
-        shiftHours: 8,
-        monthlyCtc: 10000,
-        annualCtc: 120000,
-        joiningDate: "09/11/2026",
-        dob: "-",
-        fatherName: "-",
-        pan: "-",
-        aadhaar: "Verified on File",
-        mobile: "-",
-        email: `${fullName.toLowerCase().replace(/\s+/g, ".")}@fullstackmaster.net`,
-        alternateEmails: [],
-        address: "Beeramguda, Telangana - 502319",
-        paymentMode: "Manual Bank Transfer",
-        bankName: "Pending",
-        accountHolder: fullName,
-        bankAccount: "Pending",
-        ifsc: "Pending",
-        accountType: "Savings",
-        upiId: "",
-        idCardFile: `${newId}_ID_Card.png`
-      };
-
-      state.employees.push(newEmp);
+      emp.password = pwd1;
       saveState();
       state.loginMode = "signin";
-      switchPersona(newEmp.id, false);
-      showToast("Account Registered", `Welcome ${newEmp.name} (${newEmp.id}).`);
+      switchPersona(emp.id, false);
+      showToast("Password Saved", `Signed in as ${emp.name} (${emp.id}).`);
     }
 
     function openChangePasswordModal(targetId) {
