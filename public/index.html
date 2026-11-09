@@ -457,15 +457,32 @@
 
     const INITIAL_LOANS = [
       {
+        id: "LOAN-002",
+        empId: "AAR-0004",
+        empName: "Chukka Nandini",
+        type: "Personal Advance (3 Days Ago)",
+        takenDate: "06/11/2026",
+        totalAmount: 5000,
+        monthlyDeduction: 5000,
+        remainingBalance: 5000,
+        startMonth: "2026-11",
+        paidDate: "-",
+        note: "₹5,000 taken on 06 Nov 2026 (3 days back) — Pending deduction in Nov 2026 salary",
+        status: "Pending"
+      },
+      {
         id: "LOAN-001",
         empId: "AAR-0004",
         empName: "Chukka Nandini",
-        type: "Personal Advance",
-        totalAmount: 10000,
+        type: "Personal Advance (Oct 2026)",
+        takenDate: "05/10/2026",
+        totalAmount: 5000,
         monthlyDeduction: 5000,
-        remainingBalance: 5000,
+        remainingBalance: 0,
         startMonth: "2026-10",
-        status: "Active"
+        paidDate: "31/10/2026",
+        note: "₹5,000 already paid/recovered in Oct 2026 salary slip (Net paid ₹7,500)",
+        status: "Paid"
       }
     ];
 
@@ -498,21 +515,21 @@
       selectedMonth: "2026-11",
       throughDate: "2026-11-09",
       compOffApproved: { "AAR-0004": true, "AAR-0005": true, "AAR-0006": true, "AAR-0008": true },
-      employees: JSON.parse(localStorage.getItem("aaruni_emp_v2") || "null") || DEFAULT_EMPLOYEES,
-      timesheets: JSON.parse(localStorage.getItem("aaruni_ts_v2") || "null") || INITIAL_TIMESHEETS,
-      payslips: JSON.parse(localStorage.getItem("aaruni_ps_v2") || "null") || INITIAL_PAYSLIPS,
-      loans: JSON.parse(localStorage.getItem("aaruni_loans_v2") || "null") || INITIAL_LOANS,
-      messages: JSON.parse(localStorage.getItem("aaruni_msg_v2") || "null") || INITIAL_MESSAGES,
-      taxRollup: JSON.parse(localStorage.getItem("aaruni_tax_v2") || "null") || LEGACY_2026_ROLLUP
+      employees: JSON.parse(localStorage.getItem("aaruni_emp_v4") || "null") || DEFAULT_EMPLOYEES,
+      timesheets: JSON.parse(localStorage.getItem("aaruni_ts_v4") || "null") || INITIAL_TIMESHEETS,
+      payslips: JSON.parse(localStorage.getItem("aaruni_ps_v4") || "null") || INITIAL_PAYSLIPS,
+      loans: JSON.parse(localStorage.getItem("aaruni_loans_v4") || "null") || INITIAL_LOANS,
+      messages: JSON.parse(localStorage.getItem("aaruni_msg_v4") || "null") || INITIAL_MESSAGES,
+      taxRollup: JSON.parse(localStorage.getItem("aaruni_tax_v4") || "null") || LEGACY_2026_ROLLUP
     };
 
     function saveState() {
-      localStorage.setItem("aaruni_emp_v2", JSON.stringify(state.employees));
-      localStorage.setItem("aaruni_ts_v2", JSON.stringify(state.timesheets));
-      localStorage.setItem("aaruni_ps_v2", JSON.stringify(state.payslips));
-      localStorage.setItem("aaruni_loans_v2", JSON.stringify(state.loans));
-      localStorage.setItem("aaruni_msg_v2", JSON.stringify(state.messages));
-      localStorage.setItem("aaruni_tax_v2", JSON.stringify(state.taxRollup));
+      localStorage.setItem("aaruni_emp_v4", JSON.stringify(state.employees));
+      localStorage.setItem("aaruni_ts_v4", JSON.stringify(state.timesheets));
+      localStorage.setItem("aaruni_ps_v4", JSON.stringify(state.payslips));
+      localStorage.setItem("aaruni_loans_v4", JSON.stringify(state.loans));
+      localStorage.setItem("aaruni_msg_v4", JSON.stringify(state.messages));
+      localStorage.setItem("aaruni_tax_v4", JSON.stringify(state.taxRollup));
     }
 
     // ============================================================================
@@ -624,8 +641,8 @@
       const basic = Math.round(grossEarned * 0.5);
       const allowance = grossEarned - basic;
 
-      const activeLoan = state.loans.find(l => l.empId === emp.id && l.status === "Active" && l.remainingBalance > 0);
-      const loanCut = activeLoan ? Math.min(activeLoan.monthlyDeduction, activeLoan.remainingBalance) : 0;
+      const pendingLoans = state.loans.filter(l => l.empId === emp.id && (l.status === "Pending" || l.status === "Active") && Number(l.remainingBalance || 0) > 0);
+      const loanCut = pendingLoans.reduce((sum, l) => sum + Math.min(Number(l.monthlyDeduction || 0), Number(l.remainingBalance || 0)), 0);
       const netPay = Math.max(0, grossEarned - loanCut);
 
       const submittedToday = mapByDate.has("2026-11-09");
@@ -977,6 +994,12 @@
       const missingToday = payrollRows.filter(r => !r.submittedToday);
       const totalNextMonthDisbursement = trackedStaff.reduce((acc, e) => acc + Number(e.monthlyCtc || 0), 0);
       const totalNetThisMonth = payrollRows.reduce((acc, r) => acc + r.netPay, 0);
+      const totalPendingLoans = state.loans
+        .filter(l => (l.status === "Pending" || l.status === "Active") && Number(l.remainingBalance || 0) > 0)
+        .reduce((sum, l) => sum + Number(l.remainingBalance || 0), 0);
+      const totalPaidLoans = state.loans
+        .filter(l => l.status === "Paid" || Number(l.remainingBalance || 0) === 0)
+        .reduce((sum, l) => sum + Number(l.totalAmount || 0), 0);
 
       // TAB 1: LIVE HR PULSE & REMINDERS
       if (state.activeTab === "pulse") {
@@ -999,9 +1022,9 @@
               <div class="text-xs text-slate-400 mt-0.5">100% Tax Loss Harvested</div>
             </div>
             <div class="glass-card rounded-xl p-3 border-l-4 border-l-sky-500">
-              <div class="text-xs text-slate-400">Active Advance Recovery</div>
-              <div class="text-lg font-extrabold text-sky-400 mt-0.5">${fmtINR(5000)}</div>
-              <div class="text-xs text-slate-400 mt-0.5">Nandini (AAR-0004)</div>
+              <div class="text-xs text-slate-400">Pending Loan / Advance</div>
+              <div class="text-lg font-extrabold text-sky-400 mt-0.5">${fmtINR(totalPendingLoans)}</div>
+              <div class="text-xs text-slate-400 mt-0.5">Paid/Recovered: ${fmtINR(totalPaidLoans)}</div>
             </div>
           </div>
 
@@ -1090,27 +1113,102 @@
             </div>
           </div>
 
-          <!-- Loans & Salary Advance Manager -->
-          <div class="glass-card rounded-2xl p-4">
-            <div class="flex items-center justify-between mb-3">
+          <!-- Loans & Salary Advance Ledger + 1-Tap Paid / Pending Manager -->
+          <div class="glass-card rounded-2xl p-4 border border-sky-500/30">
+            <div class="flex flex-wrap items-center justify-between gap-2 mb-3">
               <div>
-                <h3 class="text-sm font-bold text-white">💳 Active Staff Loans & Salary Advances</h3>
-                <p class="text-xs text-slate-400">Automatically deducted during the 1st-of-month payroll run.</p>
+                <h3 class="text-sm font-bold text-white">💳 Staff Loans & Salary Advances Ledger (Paid vs Pending)</h3>
+                <p class="text-xs text-slate-400">Add new advances anytime, edit monthly cuts, or toggle any advance between <strong>⏳ Pending</strong> (deducted in next payroll) and <strong>✅ Paid / Recovered</strong>.</p>
               </div>
-              <button onclick="addSampleAdvance()" class="text-xs bg-slate-800 hover:bg-slate-700 text-orange-400 border border-orange-500/30 px-3 py-1.5 rounded-xl font-semibold">
-                ➕ Record New Advance
-              </button>
+              <div class="flex items-center gap-2 text-xs">
+                <span class="px-2.5 py-1 rounded-lg bg-amber-500/15 border border-amber-500/40 text-amber-300 font-bold">⏳ Pending: ${fmtINR(totalPendingLoans)}</span>
+                <span class="px-2.5 py-1 rounded-lg bg-emerald-500/15 border border-emerald-500/40 text-emerald-300 font-bold">✅ Paid: ${fmtINR(totalPaidLoans)}</span>
+              </div>
             </div>
-            <div class="space-y-2">
-              ${state.loans.map(l => `
-                <div class="bg-slate-800/70 border border-slate-700 rounded-xl p-3 flex flex-wrap items-center justify-between gap-2 text-xs">
-                  <div>
-                    <span class="font-bold text-white">${l.empName} (${l.empId})</span> • <span class="text-orange-400">${l.type}</span>
-                    <div class="text-slate-400 mt-0.5">Started: ${l.startMonth} • Monthly Cut: ${fmtINR(l.monthlyDeduction)} • Remaining: <strong>${fmtINR(l.remainingBalance)}</strong></div>
-                  </div>
-                  <span class="px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 font-semibold">${l.status}</span>
+
+            <!-- Inline Add New Loan / Advance Form -->
+            <div class="bg-slate-900/90 border border-slate-700 rounded-xl p-3 mb-3">
+              <div class="text-xs font-bold text-orange-400 mb-2">➕ Record New Staff Loan / Salary Advance</div>
+              <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-6 gap-2 items-end">
+                <div>
+                  <label class="text-[11px] text-slate-400 block mb-1">Staff Member</label>
+                  <select id="newLoanEmpId" class="w-full bg-slate-800 border border-slate-700 rounded-lg px-2.5 py-1.5 text-xs text-white">
+                    ${trackedStaff.map(e => `<option value="${e.id}">${e.name} (${e.id})</option>`).join("")}
+                  </select>
                 </div>
-              `).join("")}
+                <div>
+                  <label class="text-[11px] text-slate-400 block mb-1">Advance Amount (₹)</label>
+                  <input type="number" id="newLoanAmount" value="5000" min="100" step="500" onchange="document.getElementById('newLoanCut').value = this.value" class="w-full bg-slate-800 border border-slate-700 rounded-lg px-2.5 py-1.5 text-xs text-white font-mono" />
+                </div>
+                <div>
+                  <label class="text-[11px] text-slate-400 block mb-1">Monthly Salary Cut (₹)</label>
+                  <input type="number" id="newLoanCut" value="5000" min="0" step="500" class="w-full bg-slate-800 border border-slate-700 rounded-lg px-2.5 py-1.5 text-xs text-white font-mono" />
+                </div>
+                <div>
+                  <label class="text-[11px] text-slate-400 block mb-1">Date Taken</label>
+                  <input type="date" id="newLoanDate" value="2026-11-09" class="w-full bg-slate-800 border border-slate-700 rounded-lg px-2.5 py-1.5 text-xs text-white" />
+                </div>
+                <div>
+                  <label class="text-[11px] text-slate-400 block mb-1">Status</label>
+                  <select id="newLoanStatus" class="w-full bg-slate-800 border border-slate-700 rounded-lg px-2.5 py-1.5 text-xs text-white">
+                    <option value="Pending">⏳ Pending (Deduct in Salary)</option>
+                    <option value="Paid">✅ Already Paid / Recovered</option>
+                  </select>
+                </div>
+                <div>
+                  <button onclick="submitNewLoanAdvance()" class="w-full brand-grad text-white text-xs font-bold py-2 px-3 rounded-lg shadow">
+                    ➕ Add Advance
+                  </button>
+                </div>
+              </div>
+              <div class="mt-2">
+                <input type="text" id="newLoanNote" placeholder="Optional note (e.g., Personal advance sent via UPI, deduct from Nov 2026 salary)" class="w-full bg-slate-800 border border-slate-700 rounded-lg px-2.5 py-1.5 text-xs text-white" />
+              </div>
+            </div>
+
+            <!-- Loans & Advances List (Pending & Paid) -->
+            <div class="space-y-2.5">
+              ${state.loans.map(l => {
+                const isPaid = l.status === "Paid" || Number(l.remainingBalance || 0) === 0;
+                return `
+                  <div class="bg-slate-800/80 border ${isPaid ? 'border-emerald-500/30 opacity-90' : 'border-amber-500/50'} rounded-xl p-3 flex flex-col md:flex-row md:items-center justify-between gap-3 text-xs">
+                    <div class="space-y-1">
+                      <div class="flex flex-wrap items-center gap-2">
+                        <span class="font-bold text-white text-sm">${l.empName} (${l.empId})</span>
+                        <span class="px-2 py-0.5 rounded bg-slate-700 text-orange-300 font-semibold">${l.type || 'Personal Advance'}</span>
+                        <span class="px-2 py-0.5 rounded font-bold ${isPaid ? 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/40' : 'bg-amber-500/20 text-amber-300 border border-amber-500/40'}">
+                          ${isPaid ? '✅ PAID / RECOVERED' : '⏳ PENDING RECOVERY'}
+                        </span>
+                      </div>
+                      <div class="text-slate-300">
+                        Taken: <strong>${l.takenDate || l.startMonth}</strong> • Total Taken: <strong>${fmtINR(l.totalAmount)}</strong> •
+                        ${isPaid
+                          ? `Settled on: <strong class="text-emerald-300">${l.paidDate || 'Recovered'}</strong>`
+                          : `Remaining Pending: <strong class="text-amber-300">${fmtINR(l.remainingBalance)}</strong>`
+                        }
+                      </div>
+                      ${l.note ? `<div class="text-slate-400 italic">"${l.note}"</div>` : ''}
+                    </div>
+
+                    <div class="flex flex-wrap items-center gap-2">
+                      ${!isPaid ? `
+                        <div class="flex items-center gap-1 bg-slate-900 border border-slate-700 rounded-lg px-2 py-1">
+                          <span class="text-[11px] text-slate-400">Monthly Cut ₹</span>
+                          <input type="number" value="${l.monthlyDeduction}" onchange="updateLoanField('${l.id}', 'monthlyDeduction', this.value)" class="w-16 bg-transparent text-white font-mono font-bold text-xs focus:outline-none" />
+                        </div>
+                      ` : ''}
+
+                      <button onclick="toggleLoanPaidStatus('${l.id}')" class="px-3 py-1.5 rounded-lg font-bold transition-all ${isPaid ? 'bg-amber-500/20 hover:bg-amber-500/30 text-amber-300 border border-amber-500/40' : 'bg-emerald-600 hover:bg-emerald-500 text-white shadow'}">
+                        ${isPaid ? '↩️ Mark as Pending' : '✅ Mark Paid / Settled'}
+                      </button>
+
+                      <button onclick="deleteLoanEntry('${l.id}')" class="px-2 py-1.5 rounded-lg bg-rose-500/15 hover:bg-rose-500/30 text-rose-300 border border-rose-500/30" title="Delete Advance Entry">
+                        🗑️
+                      </button>
+                    </div>
+                  </div>
+                `;
+              }).join("")}
             </div>
           </div>
         `;
@@ -1188,6 +1286,28 @@
                       <div class="font-bold text-rose-400 mt-0.5">-${fmtINR(r.loanCut)}</div>
                     </div>
                   </div>
+
+                  ${state.loans.filter(l => l.empId === r.emp.id).length > 0 ? `
+                    <div class="bg-slate-900/70 border border-slate-800 rounded-xl p-2.5 mb-2 space-y-1.5 text-xs">
+                      <div class="font-bold text-slate-300">💳 Loans & Salary Advances History for ${r.emp.name}:</div>
+                      ${state.loans.filter(l => l.empId === r.emp.id).map(l => {
+                        const isPaid = l.status === "Paid" || Number(l.remainingBalance || 0) === 0;
+                        return `
+                          <div class="flex flex-wrap items-center justify-between gap-2 bg-slate-800/70 px-2.5 py-1.5 rounded-lg border ${isPaid ? 'border-emerald-500/30' : 'border-amber-500/40'}">
+                            <div>
+                              <span class="font-semibold text-white">${l.takenDate || l.startMonth}</span> •
+                              <span>Amount: <strong>${fmtINR(l.totalAmount)}</strong></span> •
+                              <span class="${isPaid ? 'text-emerald-300 font-bold' : 'text-amber-300 font-bold'}">${isPaid ? '✅ PAID (' + (l.paidDate || 'Settled') + ')' : '⏳ PENDING (Cut: ' + fmtINR(l.monthlyDeduction) + ')'}</span>
+                              ${l.note ? `<span class="text-slate-400 ml-1">— ${l.note}</span>` : ''}
+                            </div>
+                            <button onclick="toggleLoanPaidStatus('${l.id}')" class="px-2.5 py-1 rounded font-bold ${isPaid ? 'bg-amber-500/20 text-amber-300 border border-amber-500/30' : 'bg-emerald-600 text-white'}">
+                              ${isPaid ? '↩️ Mark Pending' : '✅ Mark Paid'}
+                            </button>
+                          </div>
+                        `;
+                      }).join("")}
+                    </div>
+                  ` : ''}
 
                   <div class="flex flex-wrap items-center justify-between gap-2 pt-2">
                     <div class="text-xs text-slate-400">
@@ -1485,24 +1605,76 @@
       renderApp();
     }
 
-    function addSampleAdvance() {
-      const empId = prompt("Enter Employee ID (e.g. AAR-0004, AAR-0005, AAR-0006, AAR-0008):", "AAR-0006");
+    function submitNewLoanAdvance() {
+      const empId = document.getElementById("newLoanEmpId")?.value || "AAR-0004";
       const emp = state.employees.find(e => e.id === empId);
-      if (!emp) return alert("Employee ID not found");
-      const amt = Number(prompt(`Enter Personal Advance / Loan Amount (₹) for ${emp.name}:`, "3000") || 0);
-      if (amt <= 0) return;
-      state.loans.push({
+      if (!emp) return;
+      const amt = Number(document.getElementById("newLoanAmount")?.value || 0);
+      const cut = Number(document.getElementById("newLoanCut")?.value || amt);
+      const dtRaw = document.getElementById("newLoanDate")?.value || "2026-11-09";
+      const status = document.getElementById("newLoanStatus")?.value || "Pending";
+      const note = (document.getElementById("newLoanNote")?.value || "").trim() || `Personal advance recorded on ${dtRaw}`;
+      if (amt <= 0) {
+        showToast("⚠️ Enter Valid Amount", "Please enter an advance/loan amount greater than ₹0.");
+        return;
+      }
+      const [y, m, d] = dtRaw.split("-");
+      const formattedDate = d && m && y ? `${d}/${m}/${y}` : dtRaw;
+      const isPaid = status === "Paid";
+
+      state.loans.unshift({
         id: "LOAN-" + Date.now(),
         empId: emp.id,
         empName: emp.name,
         type: "Personal Advance",
+        takenDate: formattedDate,
         totalAmount: amt,
-        monthlyDeduction: amt,
-        remainingBalance: amt,
-        startMonth: "2026-11",
-        status: "Active"
+        monthlyDeduction: cut > 0 ? cut : amt,
+        remainingBalance: isPaid ? 0 : amt,
+        startMonth: `${y || '2026'}-${m || '11'}`,
+        paidDate: isPaid ? formattedDate : "-",
+        note,
+        status: isPaid ? "Paid" : "Pending"
       });
       saveState();
+      showToast(
+        isPaid ? `✅ Paid Advance Recorded (${emp.name})` : `⏳ Pending Advance Recorded (${emp.name})`,
+        `Recorded ₹${amt.toLocaleString("en-IN")} (${isPaid ? 'Already Paid/Settled' : 'Pending salary deduction of ₹' + cut.toLocaleString("en-IN")})`
+      );
+      renderApp();
+    }
+
+    function toggleLoanPaidStatus(loanId) {
+      const loan = state.loans.find(l => l.id === loanId);
+      if (!loan) return;
+      const currentlyPaid = loan.status === "Paid" || Number(loan.remainingBalance || 0) === 0;
+      if (currentlyPaid) {
+        loan.status = "Pending";
+        loan.remainingBalance = Number(loan.totalAmount || 5000);
+        loan.paidDate = "-";
+        showToast("⏳ Marked as Pending", `${loan.empName}'s ₹${loan.totalAmount.toLocaleString("en-IN")} advance is now Pending and will be deducted in payroll.`);
+      } else {
+        loan.status = "Paid";
+        loan.remainingBalance = 0;
+        loan.paidDate = "09/11/2026";
+        showToast("✅ Marked as Paid / Recovered", `${loan.empName}'s ₹${loan.totalAmount.toLocaleString("en-IN")} advance is now marked Paid/Settled!`);
+      }
+      saveState();
+      renderApp();
+    }
+
+    function updateLoanField(loanId, field, val) {
+      const loan = state.loans.find(l => l.id === loanId);
+      if (!loan) return;
+      loan[field] = Number(val || 0);
+      saveState();
+      renderApp();
+    }
+
+    function deleteLoanEntry(loanId) {
+      state.loans = state.loans.filter(l => l.id !== loanId);
+      saveState();
+      showToast("🗑️ Advance Entry Removed", "Removed the selected loan/advance record.");
       renderApp();
     }
 
@@ -1582,11 +1754,23 @@
           amountInWords: numberToIndianWords(r.netPay),
           status: "Paid via Axis Bank / UPI"
         });
+
+        // Automatically deduct & mark Pending loans as Paid if fully recovered
+        state.loans.forEach(l => {
+          if (l.empId === emp.id && (l.status === "Pending" || l.status === "Active") && Number(l.remainingBalance || 0) > 0) {
+            const cut = Math.min(Number(l.monthlyDeduction || 0), Number(l.remainingBalance || 0));
+            l.remainingBalance = Math.max(0, Number(l.remainingBalance || 0) - cut);
+            if (l.remainingBalance === 0) {
+              l.status = "Paid";
+              l.paidDate = "30/11/2026 (Nov Salary Deduction)";
+            }
+          }
+        });
       });
       saveState();
       showToast(
         "🎉 All November 2026 PDF Payslips Published!",
-        `Generated official Aaruni Tech PDF payslips for ${tracked.length} staff, sent mobile push notifications, and updated the CA Tax Loss statement.`
+        `Generated official Aaruni Tech PDF payslips for ${tracked.length} staff, auto-settled deducted advances, and updated the CA Tax Loss statement.`
       );
       renderApp();
     }
