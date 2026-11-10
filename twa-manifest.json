@@ -1,6 +1,6 @@
 {
   "packageId": "com.aarunitech.payroll",
-  "host": "payroll.aaruni.in",
+  "host": "my.aaruni.in",
   "name": "Aaruni Tech Payroll & Attendance",
   "launcherName": "Aaruni Payroll",
   "display": "standalone",
@@ -12,8 +12,8 @@
   "backgroundColor": "#0F172A",
   "enableNotifications": true,
   "startUrl": "/?source=android_twa",
-  "iconUrl": "https://payroll.aaruni.in/icon-512.png",
-  "maskableIconUrl": "https://payroll.aaruni.in/icon-512.png",
+  "iconUrl": "https://my.aaruni.in/icon-512.png",
+  "maskableIconUrl": "https://my.aaruni.in/icon-512.png",
   "appVersionName": "1.0.0",
   "appVersionCode": 1,
   "shortcuts": [
@@ -29,7 +29,7 @@
     }
   ],
   "generatorApp": "bubblewrap-cli",
-  "webManifestUrl": "https://payroll.aaruni.in/manifest.json",
+  "webManifestUrl": "https://my.aaruni.in/manifest.json",
   "fallbackType": "customtabs",
   "features": {
     "locationDelegation": {
@@ -45,7 +45,7 @@
   "enableSiteSettingsShortcut": true,
   "isChromeOSOnly": false,
   "isMetaQuest": false,
-  "fullScopeUrl": "https://payroll.aaruni.in/",
+  "fullScopeUrl": "https://my.aaruni.in/",
   "minSdkVersion": 21,
   "orientation": "portrait"
 }

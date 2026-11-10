@@ -8,7 +8,7 @@
   <h3>Next-Generation Employee-First HRMS, Live Accrued Salary Engine & Bank Dossier Generator</h3>
   <p><strong>Villa 257 Chaitanya Nagar Colony, Praneeth Pranav Knight Woods, Beeramguda, Telangana - 502319</strong></p>
 
-  [![Cloudflare Pages](https://img.shields.io/badge/Live%20Portal-aaruni--payroll.pages.dev-2563EB?logo=cloudflare)](https://payroll.aaruni.in)
+  [![Cloudflare Pages](https://img.shields.io/badge/Live%20Portal-aaruni--payroll.pages.dev-2563EB?logo=cloudflare)](https://my.aaruni.in)
   [![Android TWA](https://img.shields.io/badge/Google%20Play%20ID-com.aarunitech.payroll-34D399?logo=google-play)](twa-manifest.json)
   [![Flutter App](https://img.shields.io/badge/Flutter%20Mobile%20App-Aaruni--Tech%2Foss--horilla--hr--mobile-8B5CF6?logo=flutter)](https://github.com/Aaruni-Tech/oss-horilla-hr-mobile)
   [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
@@ -50,7 +50,7 @@
 ## 📲 Mobile App & Play Store Setup
 
 ### 1. Instant Mobile PWA (Zero App Store Wait)
-Open **[https://payroll.aaruni.in](https://payroll.aaruni.in)** on any mobile browser:
+Open **[https://my.aaruni.in](https://my.aaruni.in)** on any mobile browser:
 - **Android Chrome**: Tap `⋮` (Menu) → **"Add to Home Screen"** / **"Install App"**.
 - **iOS Safari**: Tap `Share ⬆️` → **"Add to Home Screen"**.
 - Features full offline caching via `sw.js` and automated 6:00 PM – 9:00 PM IST push notifications.
