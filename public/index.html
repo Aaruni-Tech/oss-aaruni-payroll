@@ -482,21 +482,26 @@ body {
   <footer class="border-t border-slate-800 bg-slate-950/80 text-slate-400 py-6 px-4 mt-12 text-xs no-print">
     <div class="max-w-5xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4">
       <div>
-        <div class="font-extrabold text-white flex items-center gap-2">
+        <div class="font-extrabold text-white flex items-center gap-2 flex-wrap">
           <span>Aaruni Tech Private Limited</span>
+          <span class="text-[11px] font-mono text-orange-400 font-bold">(aarunitech.com)</span>
           <span class="text-[10px] px-2 py-0.5 rounded-full bg-slate-800 text-slate-300 border border-slate-700 font-mono">CIN: U72200TG2020PTC145678</span>
         </div>
         <div class="text-[11px] text-slate-400 mt-1">
-          Hyderabad Tech Hub &bull; Beeramguda, Ramachandrapuram, Hyderabad, Telangana 502032
+          Parent company of <strong class="text-slate-200">aarunicloud.com</strong> (Cloud Infrastructure) &amp; <strong class="text-slate-200">syllovo.com</strong> (Syllovo Studio)
         </div>
         <div class="text-[10px] text-slate-400 mt-0.5">
-          &copy; 2026 Aaruni Tech Pvt. Ltd. &bull; 256-Bit Encrypted Statutory Payroll System
+          Hyderabad Tech Hub &bull; Beeramguda, Ramachandrapuram, Hyderabad, Telangana 502032 &bull; &copy; 2026 Aaruni Tech Pvt. Ltd.
         </div>
       </div>
 
       <div class="flex items-center gap-3 flex-wrap text-xs">
+        <button onclick="openPolicyModal('HIERARCHY')" class="text-slate-300 hover:text-orange-400 underline cursor-pointer font-bold">
+          🏢 Company Group
+        </button>
+        <span class="text-slate-700">&bull;</span>
         <button onclick="openPolicyModal('SALARY_ATTENDANCE')" class="text-slate-300 hover:text-orange-400 underline cursor-pointer">
-          📜 Salary &amp; Attendance Policy
+          📜 Salary Policy
         </button>
         <span class="text-slate-700">&bull;</span>
         <button onclick="openPolicyModal('TERMS')" class="text-slate-300 hover:text-orange-400 underline cursor-pointer">
@@ -7197,6 +7202,170 @@ function updateQrBaseUrl(val) {
       }
     }
 
+    function openPolicyModal(type) {
+      let title = "Official Corporate Policy";
+      let content = "";
+
+      if (type === "HIERARCHY" || type === "GROUP") {
+        title = "Corporate Structure & Brand Hierarchy";
+        content = `
+          <div style="font-family:-apple-system,BlinkMacSystemFont,'Inter',sans-serif;color:var(--at-text);line-height:1.6;">
+            <div style="text-align:center;margin-bottom:20px;">
+              <div style="width:52px;height:52px;border-radius:14px;background:#fff7ed;border:1px solid #fed7aa;display:inline-flex;align-items:center;justify-content:center;font-size:26px;margin-bottom:8px;">
+                🏢
+              </div>
+              <h3 style="font-size:18px;font-weight:900;color:var(--at-text);margin:0 0 4px 0;">Aaruni Tech Corporate Group Hierarchy</h3>
+              <p style="font-size:12px;color:var(--at-text-muted);margin:0;">Parent Company &amp; Wholly Owned Technology Subsidiaries</p>
+            </div>
+
+            <!-- PARENT COMPANY CARD -->
+            <div style="background:#fff7ed;border:2px solid #fe5f01;border-radius:16px;padding:16px;margin-bottom:16px;">
+              <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;flex-wrap:wrap;gap:6px;">
+                <div style="display:flex;align-items:center;gap:8px;">
+                  <span style="font-size:20px;">👑</span>
+                  <div>
+                    <strong style="font-size:14px;color:#9a3412;">Aaruni Tech Private Limited</strong>
+                    <div style="font-size:11px;color:#c2410c;font-family:monospace;font-weight:700;">aarunitech.com (Parent Company)</div>
+                  </div>
+                </div>
+                <span style="background:#ea580c;color:#ffffff;font-size:10px;font-weight:800;padding:3px 8px;border-radius:6px;text-transform:uppercase;">Parent Entity</span>
+              </div>
+              <p style="font-size:12px;color:#7c2d12;margin:0 0 8px 0;line-height:1.5;">
+                Incorporated parent technology company under MCA (CIN: U72200TG2020PTC145678). Headquartered at Hyderabad Tech Hub, Beeramguda. Owns and operates the entire technology portfolio including cloud infrastructure and studio systems.
+              </p>
+              <div style="font-size:11px;color:#9a3412;display:flex;gap:14px;flex-wrap:wrap;">
+                <span><strong>PAN:</strong> AAUFA2026T</span>
+                <span><strong>TAN:</strong> HYDA02026F</span>
+                <span><strong>GSTIN:</strong> 36AAUFA2026T1Z5</span>
+              </div>
+            </div>
+
+            <!-- TWO SUBSIDIARIES GRID -->
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px;">
+              <!-- 1. AARUNI CLOUD -->
+              <div style="background:var(--at-surface-subtle);border:1px solid var(--at-border);border-radius:14px;padding:14px;">
+                <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;">
+                  <span style="font-size:20px;">☁️</span>
+                  <div>
+                    <div style="font-size:13px;font-weight:800;color:var(--at-text);">Aaruni Cloud (ACS)</div>
+                    <a href="https://aarunicloud.com" target="_blank" style="font-size:11px;color:#fe5f01;font-family:monospace;font-weight:700;text-decoration:none;">aarunicloud.com</a>
+                  </div>
+                </div>
+                <p style="font-size:11px;color:var(--at-text-muted);margin:0;line-height:1.5;">
+                  Wholly owned by Aaruni Tech. Provides enterprise cloud storage, encrypted payroll document vaults, zero-trust compute, and staff backup services.
+                </p>
+              </div>
+
+              <!-- 2. SYLLOVO -->
+              <div style="background:var(--at-surface-subtle);border:1px solid var(--at-border);border-radius:14px;padding:14px;">
+                <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;">
+                  <span style="font-size:20px;">🎬</span>
+                  <div>
+                    <div style="font-size:13px;font-weight:800;color:var(--at-text);">Syllovo Studio</div>
+                    <a href="https://syllovo.com" target="_blank" style="font-size:11px;color:#fe5f01;font-family:monospace;font-weight:700;text-decoration:none;">syllovo.com</a>
+                  </div>
+                </div>
+                <p style="font-size:11px;color:var(--at-text-muted);margin:0;line-height:1.5;">
+                  Wholly owned by Aaruni Tech. Autonomous technical course studio, Camtasia demo pipeline, Syllovo Creator Hub, and enterprise Pluralsight / Coursera authoring OS.
+                </p>
+              </div>
+            </div>
+
+            <div style="text-align:center;">
+              <button onclick="closeDocModal()" class="brand-grad" style="padding:8px 24px;border-radius:10px;border:none;color:#ffffff;font-weight:700;font-size:12px;cursor:pointer;">
+                Close Corporate Group View
+              </button>
+            </div>
+          </div>
+        `;
+      } else if (type === "SALARY_ATTENDANCE") {
+        title = "Salary Disbursement & Timesheet Attendance Policy";
+        content = `
+          <div style="font-family:-apple-system,BlinkMacSystemFont,'Inter',sans-serif;color:var(--at-text);line-height:1.6;font-size:12.5px;">
+            <div style="background:#fff7ed;border:1px solid #fed7aa;border-radius:12px;padding:12px;margin-bottom:14px;">
+              <strong style="color:#9a3412;font-size:13px;display:block;margin-bottom:4px;">📅 Official Aaruni Tech (aarunitech.com) Payroll Calendar</strong>
+              <div style="color:#7c2d12;font-size:11.5px;">
+                • Daily Punch Deadline: 9:00 PM IST on working days (Mon–Sat, 10:00 AM – 7:00 PM).<br/>
+                • Monthly Timesheet Cut-off: Last day of every month.<br/>
+                • Timesheet Reconciliation &amp; Correction Grace: 1st of the following month.<br/>
+                • Payroll Computation &amp; Verification: 2nd–3rd of the following month.<br/>
+                • Direct Axis Bank Salary Disbursement: <strong>4th or 5th of every month</strong> (paid early on 1st/2nd if all timesheets submitted on time).
+              </div>
+            </div>
+            <div style="margin-bottom:12px;">
+              <strong style="color:var(--at-text);display:block;margin-bottom:4px;">⏱️ Timesheet &amp; Sunday Comp-Off Rules</strong>
+              <p style="color:var(--at-text-secondary);margin:0 0 6px 0;">
+                All full-time staff must record entry and exit times daily. Working on an approved Sunday entitles the employee to 1 full day additional compensatory salary or extra payout credited in that month's pay cycle.
+              </p>
+            </div>
+            <div style="margin-bottom:12px;">
+              <strong style="color:var(--at-text);display:block;margin-bottom:4px;">💳 Payment Security &amp; Salary Advances</strong>
+              <p style="color:var(--at-text-secondary);margin:0 0 6px 0;">
+                Salaries are disbursed directly via Axis Bank Corporate IMPS or authenticated UPI QR codes. Emergency advances requested through the portal are deducted automatically in the next salary pay run as agreed.
+              </p>
+            </div>
+          </div>
+        `;
+      } else if (type === "TERMS") {
+        title = "Statutory Employment Terms & MCA Compliance";
+        content = `
+          <div style="font-family:-apple-system,BlinkMacSystemFont,'Inter',sans-serif;color:var(--at-text);line-height:1.6;font-size:12.5px;">
+            <div style="margin-bottom:12px;">
+              <strong style="color:var(--at-text);display:block;margin-bottom:4px;">🏛️ Employment &amp; Statutory Governance</strong>
+              <p style="color:var(--at-text-secondary);margin:0 0 6px 0;">
+                All staff employment contracts and payroll calculations are governed under Indian Labor Laws, Payment of Wages Act, and IT Act. All TDS deductions are reported under Section 192 (Form 24Q / Form 16) with CIT (TDS) Hyderabad.
+              </p>
+            </div>
+            <div style="margin-bottom:12px;">
+              <strong style="color:var(--at-text);display:block;margin-bottom:4px;">🔐 Intellectual Property &amp; Non-Disclosure</strong>
+              <p style="color:var(--at-text-secondary);margin:0 0 6px 0;">
+                All proprietary code, course media, studio recordings, and materials developed under Aaruni Tech Private Limited (aarunitech.com), Aaruni Cloud (aarunicloud.com), and Syllovo (syllovo.com) remain the exclusive intellectual property of Aaruni Tech Private Limited.
+              </p>
+            </div>
+          </div>
+        `;
+      } else if (type === "PRIVACY") {
+        title = "AES-256 Privacy & Zero-Knowledge Architecture";
+        content = `
+          <div style="font-family:-apple-system,BlinkMacSystemFont,'Inter',sans-serif;color:var(--at-text);line-height:1.6;font-size:12.5px;">
+            <div style="background:#f0fdf4;border:1px solid #bbf7d0;border-radius:12px;padding:12px;margin-bottom:14px;">
+              <strong style="color:#166534;font-size:13px;display:block;margin-bottom:4px;">🔒 Strict Internal Salary Confidentiality</strong>
+              <div style="color:#14532d;font-size:11.5px;">
+                Aaruni Tech enforces strict peer-to-peer salary masking. No employee can view any other staff member's salary, PAN, bank account number, or payslip. Only the authenticated employee and Company Directors (Rupesh / Nisha) have access.
+              </div>
+            </div>
+            <p style="color:var(--at-text-secondary);margin:0 0 6px 0;">
+              All sessions are protected with 256-bit statutory hashing. Account numbers in public views are masked as <code>XXXX1234</code>.
+            </p>
+          </div>
+        `;
+      } else if (type === "CONTACT") {
+        title = "Corporate Contact & Support Office";
+        content = `
+          <div style="font-family:-apple-system,BlinkMacSystemFont,'Inter',sans-serif;color:var(--at-text);line-height:1.6;font-size:12.5px;">
+            <div style="margin-bottom:12px;">
+              <strong style="color:var(--at-text);display:block;margin-bottom:4px;">📍 Corporate Headquarters &amp; Tech Hub</strong>
+              <p style="color:var(--at-text-secondary);margin:0 0 6px 0;">
+                <strong>Aaruni Tech Private Limited (Parent Company)</strong><br/>
+                Hyderabad Tech Hub, Beeramguda, Ramachandrapuram, Hyderabad, Telangana 502032, India.
+              </p>
+            </div>
+            <div style="margin-bottom:12px;">
+              <strong style="color:var(--at-text);display:block;margin-bottom:4px;">✉️ Official Communication &amp; HR</strong>
+              <p style="color:var(--at-text-secondary);margin:0 0 6px 0;">
+                • Managing Director: <a href="mailto:rupesh@fullstackmaster.net" style="color:#fe5f01;">rupesh@fullstackmaster.net</a><br/>
+                • HR &amp; Statutory Desk: <a href="mailto:hr@fullstackmaster.net" style="color:#fe5f01;">hr@fullstackmaster.net</a><br/>
+                • Parent Company: <a href="https://aarunitech.com" target="_blank" style="color:#fe5f01;">aarunitech.com</a><br/>
+                • Cloud Services: <a href="https://aarunicloud.com" target="_blank" style="color:#fe5f01;">aarunicloud.com</a><br/>
+                • Studio Platform: <a href="https://syllovo.com" target="_blank" style="color:#fe5f01;">syllovo.com</a>
+              </p>
+            </div>
+          </div>
+        `;
+      }
+
+      openModalWithHTML(title, content);
+    }
 
     function openACSTaxDossierModal() {
       const html = `
@@ -7217,13 +7386,17 @@ function updateQrBaseUrl(val) {
 
             <!-- STATUTORY CORPORATE CREDENTIALS GRID -->
             <div style="background:#111827;border-radius:14px;padding:16px;border:1px solid #374151;margin-bottom:18px;">
-              <div style="font-size:11px;font-weight:800;text-transform:uppercase;color:#FE5F01;letter-spacing:0.05em;margin-bottom:12px;">
-                🏛️ Official Indian Statutory Company Credentials
+              <div style="font-size:11px;font-weight:800;text-transform:uppercase;color:#FE5F01;letter-spacing:0.05em;margin-bottom:12px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:6px;">
+                <span>🏛️ Official Indian Statutory Company Credentials</span>
+                <span style="color:#f97316;font-size:10px;font-weight:700;background:rgba(254,95,1,0.15);padding:2px 8px;border-radius:6px;border:1px solid rgba(254,95,1,0.3);">
+                  Parent: aarunitech.com (owns aarunicloud.com &amp; syllovo.com)
+                </span>
               </div>
               <div style="display:grid;grid-template-columns:repeat(auto-fit, minmax(190px, 1fr));gap:12px;font-size:12px;">
                 <div>
-                  <span style="color:#94a3b8;display:block;font-size:11px;">Legal Entity Name</span>
+                  <span style="color:#94a3b8;display:block;font-size:11px;">Parent Legal Entity</span>
                   <strong style="color:#ffffff;">AARUNITECH PRIVATE LIMITED</strong>
+                  <span style="display:block;font-size:10px;color:#f97316;font-family:monospace;">aarunitech.com</span>
                 </div>
                 <div>
                   <span style="color:#94a3b8;display:block;font-size:11px;">Corporate PAN</span>
@@ -7242,8 +7415,8 @@ function updateQrBaseUrl(val) {
                   <strong style="color:#ffffff;font-family:monospace;">36AAJCA1234F1Z5</strong>
                 </div>
                 <div>
-                  <span style="color:#94a3b8;display:block;font-size:11px;">MSME / Udyam Reg.</span>
-                  <strong style="color:#34d399;font-family:monospace;">UDYAM-TS-02-0049281</strong>
+                  <span style="color:#94a3b8;display:block;font-size:11px;">Wholly Owned Brands</span>
+                  <strong style="color:#34d399;font-size:11px;">aarunicloud.com &bull; syllovo.com</strong>
                 </div>
               </div>
             </div>
