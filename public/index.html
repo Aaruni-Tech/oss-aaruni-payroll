@@ -2237,6 +2237,62 @@ body {
               </div>
             </div>
           </div>
+
+          <!-- 📱 AUTHENTIC UPI RECEIVING QR CODE UPLOAD CARD -->
+          <div class="glass-card rounded-2xl p-4 mb-4 border border-slate-800">
+            <div class="flex items-center justify-between mb-3 flex-wrap gap-2">
+              <div class="flex items-center gap-2.5">
+                <span class="text-2xl">📱</span>
+                <div>
+                  <div class="flex items-center gap-2">
+                    <span class="text-xs font-black uppercase tracking-wider text-orange-400">Salary Payout UPI QR Code &amp; VPA</span>
+                    ${emp.upiQrImage ? `
+                      <span class="bg-emerald-500/20 text-emerald-300 text-[10px] font-bold px-2 py-0.5 rounded-full border border-emerald-500/40">🟢 Authentic QR Uploaded</span>
+                    ` : `
+                      <span class="bg-amber-500/20 text-amber-300 text-[10px] font-bold px-2 py-0.5 rounded-full border border-amber-500/40">🟡 QR Upload Pending</span>
+                    `}
+                  </div>
+                  <div class="text-xs text-slate-300 mt-0.5">Upload your actual PhonePe / Google Pay / Paytm QR code screenshot for 100% verified salary credits.</div>
+                </div>
+              </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 items-center">
+              <div>
+                <div class="mb-3">
+                  <label class="block text-[11px] font-bold text-slate-400 mb-1">Your Personal UPI ID (VPA)</label>
+                  <div class="flex gap-2">
+                    <input type="text" id="staffUpiInput_${emp.id}" value="${emp.upiId || ''}" placeholder="e.g. 8143088771@ybl or yourname@okaxis" class="flex-1 bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-xs text-white font-mono focus:border-orange-500 focus:outline-none" />
+                    <button onclick="handleStaffUPIIdUpdate('${emp.id}', document.getElementById('staffUpiInput_${emp.id}').value)" class="brand-grad text-white text-xs font-bold px-3 py-2 rounded-xl shadow cursor-pointer">
+                      Save UPI
+                    </button>
+                  </div>
+                </div>
+
+                <div>
+                  <label class="block text-[11px] font-bold text-slate-400 mb-1">Upload QR Code Screenshot</label>
+                  <input type="file" accept="image/*" onchange="handleStaffUPIQRUpload(event, '${emp.id}')" class="block w-full text-xs text-slate-400 file:mr-2 file:py-1.5 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-orange-600 file:text-white hover:file:bg-orange-500 cursor-pointer" />
+                  <div class="text-[10px] text-slate-400 mt-1">
+                    How: Open PhonePe or Google Pay &gt; Tap Profile &gt; Tap "My QR Code" &gt; Take Screenshot &gt; Upload here
+                  </div>
+                </div>
+              </div>
+
+              <div class="text-center p-3 rounded-xl bg-slate-900/60 border border-slate-800">
+                ${emp.upiQrImage ? `
+                  <div class="text-[11px] text-emerald-400 font-bold mb-2">✅ Active Receiving QR Code on File</div>
+                  <img src="${emp.upiQrImage}" alt="${emp.name} UPI QR" style="max-width:140px;max-height:140px;border-radius:10px;border:2px solid #10b981;margin:0 auto;display:block;box-shadow:0 4px 12px rgba(0,0,0,0.3);" />
+                  <div class="text-[10px] text-slate-400 mt-2">Managing Director will scan this authentic QR on salary day</div>
+                ` : `
+                  <div class="text-slate-400 text-xs py-4">
+                    <span class="text-3xl block mb-2">📷</span>
+                    <strong class="text-white">No QR Code Uploaded Yet</strong><br/>
+                    Please upload your QR screenshot so Admin can scan and disburse your monthly salary instantly!
+                  </div>
+                `}
+              </div>
+            </div>
+          </div>
         `;
       }
 
@@ -3107,13 +3163,21 @@ body {
       const pendingAdvances = (state.advanceRequests || []).filter(a => a.status === "Pending");
       const pendingLeaves = (state.leaveRequests || []).filter(l => l.status === "Pending");
 
+      if (!state.activeTab || state.activeTab === "phonetool") {
+        state.activeTab = "payroll";
+      }
+
+      const activeStaffCount = state.employees.filter(e => e.status === "Active" && e.monthlyCtc > 0).length;
+
       // 1. TOP TAB NAVIGATION BAR FOR ADMIN (SLEEK & IMMEDIATE DESKTOP + MOBILE ACCESS)
       const adminTabs = [
-        { id: "roster", label: "👥 Employees", count: `${state.employees.length} Staff` },
-        { id: "pulse", label: "⏱️ Attendance Pulse", count: missingToday.length > 0 ? `${missingToday.length} Missing` : 'All Logged' },
-        { id: "payroll", label: "💰 November Pay Run", count: '₹43,000' },
-        { id: "loans", label: "⚡ Advances & Loans", count: (pendingAdvances.length + pendingLeaves.length) > 0 ? `${pendingAdvances.length + pendingLeaves.length} Pending` : '' },
-        { id: "form16", label: "📑 Form 16 & Tax", count: 'FY 2026-27' }
+        { id: "dashboard", label: "⏱️ Dashboard", count: "" },
+        { id: "roster", label: "👥 Employees", count: `${activeStaffCount} Active` },
+        { id: "payroll", label: "📅 Pay Runs", count: '₹43,000' },
+        { id: "pulse", label: "🕒 Attendance Pulse", count: missingToday.length > 0 ? `${missingToday.length} Missing` : 'All Logged' },
+        { id: "loans", label: "📋 Approvals & Loans", count: (pendingAdvances.length + pendingLeaves.length) > 0 ? `${pendingAdvances.length + pendingLeaves.length} Pending` : '' },
+        { id: "form16", label: "📑 Form 16 & Tax", count: 'FY 2026-27' },
+        { id: "invites", label: "📨 Staff Invites", count: "4 Staff" }
       ];
 
       const adminTabBar = `
@@ -3272,6 +3336,18 @@ body {
         ` : ''}
       `;
 
+      let tabContent = "";
+
+      // =========================================================================
+      // TAB 0: DASHBOARD (EXECUTIVE LIQUIDITY & NEXT PAYROLL RUN OVERVIEW)
+      // =========================================================================
+      if (state.activeTab === "dashboard") {
+        tabContent = `
+          ${adminRunwayCard}
+          ${adminNextPayrollCard}
+        `;
+      }
+
       // =========================================================================
       // TAB 1: EMPLOYEES DIRECTORY (ACTUAL IN-HAND PAYABLE & DISBURSEMENT CONSOLE)
       // =========================================================================
@@ -3296,7 +3372,18 @@ body {
           .reduce((sum, e) => sum + (state.novDisbursements[e.id]?.amount || e.monthlyCtc), 0);
         const allPaid = (paidCount === activeCount);
 
+        const query = state.adminSearchQuery || "";
         const filteredEmployees = allEmployees.filter((e) => {
+          if (query) {
+            const matchesQuery = 
+              e.name.toLowerCase().includes(query) ||
+              e.id.toLowerCase().includes(query) ||
+              (e.role && e.role.toLowerCase().includes(query)) ||
+              (e.bankAccount && e.bankAccount.toLowerCase().includes(query)) ||
+              (e.ifsc && e.ifsc.toLowerCase().includes(query)) ||
+              (e.pan && e.pan.toLowerCase().includes(query));
+            if (!matchesQuery) return false;
+          }
           if (activeFilter === "Active") return e.status === "Active" && e.monthlyCtc > 0;
           if (activeFilter === "Founders") return e.status === "Active" && e.monthlyCtc === 0;
           if (activeFilter === "Inactive") return e.status !== "Active";
@@ -3306,8 +3393,7 @@ body {
         // Check if November payslips are currently published
         const novSlipsPublished = (state.payslips || []).some(p => p.id.startsWith("PS-2026-11"));
 
-        return `
-          ${adminTabBar}
+        tabContent = `
 
           <!-- IF PREMATURELY PUBLISHED: PROMINENT 1-CLICK UNDO / REVERT BANNER -->
           ${novSlipsPublished ? `
@@ -3552,8 +3638,7 @@ body {
       // =========================================================================
       if (state.activeTab === "pulse") {
         const loggedTodayCount = trackedStaff.length - missingToday.length;
-        return `
-          ${adminTabBar}
+        tabContent = `
           
           <div class="grid grid-cols-1 md:grid-cols-3 gap-3 mb-4">
             <div class="glass-card rounded-xl p-3 border-l-4 border-emerald-500">
@@ -3629,8 +3714,66 @@ body {
 
         const novSlipsPublished = (state.payslips || []).some(p => p.id.startsWith("PS-2026-11"));
 
-        return `
-          ${adminTabBar}
+        tabContent = `
+          <!-- ZOHO-STYLE SUB NAVIGATION (RUN PAYROLL / PAYROLL HISTORY) -->
+          <div class="zoho-sub-nav">
+            <button class="zoho-sub-tab active">Run Payroll</button>
+            <button class="zoho-sub-tab" onclick="setTab('roster')">Payroll History</button>
+          </div>
+
+          <!-- ZOHO PEACH DIRECT PAYOUT ANNOUNCEMENT BANNER -->
+          <div class="zoho-peach-banner">
+            <div style="display:flex;align-items:center;gap:8px;">
+              <span style="font-size:16px;">✨</span>
+              <span><strong>Direct Bank Payouts:</strong> Pay salaries from Axis Bank corporate account without manual switching using Axis Bank CSV / UPI QR codes.</span>
+            </div>
+            <button onclick="downloadAxisBankCSV()" style="background:#FF6B35;color:#fff;border:none;padding:5px 12px;border-radius:6px;font-size:11px;font-weight:700;cursor:pointer;white-space:nowrap;">
+              Download Bank CSV
+            </button>
+          </div>
+
+          <!-- ZOHO HERO PAY RUN CARD (NOVEMBER 2026 READY) -->
+          <div class="zoho-payrun-card">
+            <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;margin-bottom:16px;">
+              <div>
+                <div style="display:flex;align-items:center;gap:8px;">
+                  <span style="font-size:16px;font-weight:800;color:#ffffff;">Process Pay Run for <strong style="color:#fe5f01;">November 2026</strong></span>
+                  <span style="background:#0284c7;color:#ffffff;font-size:10px;font-weight:800;padding:2px 8px;border-radius:4px;letter-spacing:0.05em;">READY</span>
+                </div>
+                <div style="font-size:12px;color:#94a3b8;margin-top:4px;">
+                  4 Active Working Employees &bull; Monthly Payout Schedule
+                </div>
+              </div>
+              <div>
+                <button onclick="document.getElementById('payrollEmployeeList')?.scrollIntoView({behavior:'smooth'})" class="zoho-orange-btn">
+                  <span>Process Pay Run (₹43,000)</span> <span>→</span>
+                </button>
+              </div>
+            </div>
+
+            <div style="display:grid;grid-template-columns:repeat(auto-fit, minmax(140px, 1fr));gap:16px;padding:16px;background:rgba(15,23,42,0.6);border-radius:10px;border:1px solid #1e293b;">
+              <div>
+                <div style="font-size:11px;font-weight:700;color:#94a3b8;text-transform:uppercase;">Employees' Net Pay</div>
+                <div style="font-size:22px;font-weight:900;color:#10b981;margin-top:2px;">₹${totalNetPayout.toLocaleString('en-IN')}.00</div>
+                <div style="font-size:10px;color:#94a3b8;">${paidCount} of 4 Disbursed</div>
+              </div>
+              <div>
+                <div style="font-size:11px;font-weight:700;color:#94a3b8;text-transform:uppercase;">Payment Date</div>
+                <div style="font-size:18px;font-weight:800;color:#ffffff;margin-top:2px;">01/12/2026</div>
+                <div style="font-size:10px;color:#94a3b8;">Target Corporate Disbursal</div>
+              </div>
+              <div>
+                <div style="font-size:11px;font-weight:700;color:#94a3b8;text-transform:uppercase;">No. of Employees</div>
+                <div style="font-size:18px;font-weight:800;color:#ffffff;margin-top:2px;">4 Active</div>
+                <div style="font-size:10px;color:#94a3b8;">Nandini, Janhavi, Ramya, Ali</div>
+              </div>
+            </div>
+
+            <div style="margin-top:14px;font-size:11px;color:#94a3b8;display:flex;align-items:center;gap:6px;">
+              <span>ⓘ</span>
+              <span>Please process and approve this pay run before 01/12/2026. Staff receives instant notification upon completion.</span>
+            </div>
+          </div>
 
           <!-- IF PREMATURELY PUBLISHED: 1-CLICK UNDO RETRACTION BANNER -->
           ${novSlipsPublished ? `
@@ -3782,9 +3925,7 @@ body {
       // TAB 4: ADVANCES & LOANS
       // =========================================================================
       if (state.activeTab === "loans") {
-        return `
-          ${adminTabBar}
-          
+        tabContent = `
           <div class="grid grid-cols-1 md:grid-cols-2 gap-3 mb-4">
             <div class="glass-card rounded-xl p-3 border-l-4 border-orange-500">
               <div class="text-xs text-slate-400">Pending Advance Recovery</div>
@@ -3853,9 +3994,7 @@ body {
       if (state.activeTab === "form16" || state.activeTab === "catax") {
         const d = state.companyTaxDetails;
         const allSlips = state.payslips || [];
-        return `
-          ${adminTabBar}
-          
+        tabContent = `
           <div class="glass-card rounded-2xl p-4 mb-4">
             <div class="flex flex-wrap items-center justify-between gap-2 mb-4">
               <div>
@@ -3907,7 +4046,101 @@ body {
         `;
       }
 
-      return adminTabBar;
+      if (state.activeTab === "invites") {
+        tabContent = renderStaffInvitesTab();
+      }
+
+      if (!tabContent) {
+        tabContent = `
+          ${adminRunwayCard}
+          ${adminNextPayrollCard}
+        `;
+      }
+
+      return `
+        <div class="zoho-layout-container">
+          <!-- LEFT PERSISTENT NAVY SIDEBAR (#182033) -->
+          <aside class="zoho-sidebar hidden md:flex">
+            <div>
+              <div class="zoho-sidebar-brand">
+                <img src="aaruni_square_logo.png" style="width:28px;height:28px;border-radius:6px;" alt="Aaruni" />
+                <div style="font-size:16px;font-weight:900;color:#ffffff;letter-spacing:-0.02em;display:flex;align-items:center;gap:6px;">
+                  <span>Payroll</span>
+                  <span style="font-size:9px;font-weight:800;color:#FE5F01;background:rgba(254,95,1,0.15);padding:1px 5px;border-radius:4px;border:1px solid rgba(254,95,1,0.3);">MyAaruni</span>
+                </div>
+              </div>
+
+              <div class="zoho-sidebar-nav">
+                <button onclick="setTab('dashboard')" class="zoho-nav-btn ${state.activeTab === 'dashboard' ? 'active' : ''}">
+                  <span style="font-size:15px;">⏱️</span> <span>Dashboard</span>
+                </button>
+                <button onclick="setTab('roster')" class="zoho-nav-btn ${state.activeTab === 'roster' ? 'active' : ''}">
+                  <span style="font-size:15px;">👥</span> <span>Employees</span>
+                </button>
+                <button onclick="setTab('payroll')" class="zoho-nav-btn ${state.activeTab === 'payroll' ? 'active' : ''}">
+                  <span style="font-size:15px;">📅</span> <span>Pay Runs</span>
+                </button>
+                <button onclick="setTab('pulse')" class="zoho-nav-btn ${state.activeTab === 'pulse' ? 'active' : ''}">
+                  <span style="font-size:15px;">🕒</span> <span>Attendance &amp; Pulse</span>
+                </button>
+                <button onclick="setTab('loans')" class="zoho-nav-btn ${state.activeTab === 'loans' ? 'active' : ''}">
+                  <span style="font-size:15px;">📋</span> <span>Approvals &amp; Loans</span>
+                </button>
+                <button onclick="setTab('form16')" class="zoho-nav-btn ${state.activeTab === 'form16' ? 'active' : ''}">
+                  <span style="font-size:15px;">📑</span> <span>Form 16 &amp; TDS</span>
+                </button>
+                <button onclick="setTab('invites')" class="zoho-nav-btn ${state.activeTab === 'invites' ? 'active' : ''}">
+                  <span style="font-size:15px;">📨</span> <span>Staff Invites</span>
+                </button>
+                <button onclick="openACSTaxDossierModal()" class="zoho-nav-btn">
+                  <span style="font-size:15px;">📁</span> <span>Tax &amp; CA Dossier</span>
+                </button>
+              </div>
+            </div>
+
+            <!-- Bottom Sidebar Support & TDS Card -->
+            <div style="padding:16px;border-top:1px solid #232d46;">
+              <a href="mailto:rupesh@fullstackmaster.net" style="color:#a6b0c3;font-size:12px;text-decoration:none;display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;font-weight:600;">
+                <span>Contact Support</span>
+                <span>›</span>
+              </a>
+              <div onclick="openACSTaxDossierModal()" style="background:#1e2538;border:1px solid #2e3a54;border-radius:10px;padding:12px;cursor:pointer;transition:all 0.15s ease;">
+                <div style="font-size:11px;font-weight:800;color:#ffffff;line-height:1.4;">Track TDS Liabilities &amp; Generate Form 24Q / 16</div>
+                <div style="font-size:11px;color:#fe5f01;font-weight:700;margin-top:6px;display:flex;align-items:center;gap:4px;">
+                  <span>View Details</span> <span>→</span>
+                </div>
+              </div>
+            </div>
+          </aside>
+
+          <!-- MAIN WORKSPACE -->
+          <div class="zoho-workspace">
+            <!-- Mobile top tab bar -->
+            <div class="md:hidden mb-3">
+              ${adminTabBar}
+            </div>
+
+            <!-- Zoho Top Search & Action Bar -->
+            <div class="zoho-top-search hidden md:flex">
+              <div style="display:flex;align-items:center;gap:12px;flex:1;max-width:440px;">
+                <div style="position:relative;width:100%;">
+                  <input type="text" id="zohoSearchInput" placeholder="🔍 Search in Employee, Role, Bank, PAN..." value="${state.adminSearchQuery || ''}" class="zoho-search-input" style="width:100%;box-sizing:border-box;" oninput="handleAdminRosterSearch(this.value)" />
+                </div>
+              </div>
+              <div style="display:flex;align-items:center;gap:8px;">
+                <button onclick="openStaffInvitationsModal()" class="zoho-orange-btn">
+                  <span>📨</span> <span>Staff Invitations</span>
+                </button>
+                <button onclick="openACSTaxDossierModal()" style="background:#1e293b;border:1px solid #334155;color:#fff;padding:9px 14px;border-radius:8px;font-size:12px;font-weight:700;cursor:pointer;display:inline-flex;align-items:center;gap:6px;">
+                  <span>🏛️</span> <span>Tax Dossier</span>
+                </button>
+              </div>
+            </div>
+
+            ${tabContent}
+          </div>
+        </div>
+      `;
     }
 
     function submitStaffTimesheet(empId, customDate, customIn, customOut, customSummary) {
@@ -4672,6 +4905,283 @@ body {
     }
 
     // ============================================================================
+    // CLIPBOARD, STAFF UPI QR UPLOAD & PAYMENTS CONFIRMATION CONTROLLERS
+    // ============================================================================
+    function copyToClipboard(text, label) {
+      if (!text) return showToast("Warning", "Nothing to copy");
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(text).then(() => {
+          showToast("📋 Copied to Clipboard", `${label || 'Text'}: ${text}`);
+        }).catch(() => fallbackCopy(text, label));
+      } else {
+        fallbackCopy(text, label);
+      }
+    }
+
+    function fallbackCopy(text, label) {
+      const ta = document.createElement("textarea");
+      ta.value = text;
+      ta.style.position = "fixed";
+      ta.style.opacity = "0";
+      document.body.appendChild(ta);
+      ta.select();
+      try {
+        document.execCommand("copy");
+        showToast("📋 Copied to Clipboard", `${label || 'Text'}: ${text}`);
+      } catch (e) {
+        showToast("Notice", `Select and copy: ${text}`);
+      }
+      document.body.removeChild(ta);
+    }
+
+    function handleStaffUPIQRUpload(event, empId) {
+      const file = event.target.files && event.target.files[0];
+      if (!file) return;
+      if (!file.type.startsWith("image/")) {
+        return showToast("Error", "Please select a valid image file (PNG, JPG, or WEBP)");
+      }
+      if (file.size > 5 * 1024 * 1024) {
+        return showToast("Error", "Image must be under 5MB");
+      }
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        const dataUrl = e.target.result;
+        const emp = state.employees.find(emp => emp.id === empId);
+        if (emp) {
+          emp.upiQrImage = dataUrl;
+          saveState();
+          showToast("✅ UPI QR Code Saved", `Authentic payment QR code uploaded successfully for ${emp.name}! Admin will scan this authentic QR on salary day.`);
+          renderApp();
+        }
+      };
+      reader.readAsDataURL(file);
+    }
+
+    function handleStaffUPIIdUpdate(empId, newUpiId) {
+      const emp = state.employees.find(e => e.id === empId);
+      if (!emp) return;
+      const trimmed = (newUpiId || "").trim();
+      if (trimmed) {
+        emp.upiId = trimmed;
+        saveState();
+        showToast("✅ UPI ID Updated", `UPI ID updated to ${trimmed}`);
+        renderApp();
+      }
+    }
+
+    function markEmployeeAsPaid(empId, utr, amount) {
+      const emp = state.employees.find(e => e.id === empId);
+      const actualUtr = utr || ("AXIS-" + Math.floor(100000 + Math.random() * 900000));
+      state.novDisbursements = state.novDisbursements || {};
+      state.novDisbursements[empId] = {
+        paid: true,
+        utr: actualUtr,
+        date: new Date().toISOString().slice(0, 10),
+        amount: Number(amount || (emp ? emp.monthlyCtc : 10000))
+      };
+      safeLocalSet("aaruni_nov_disbursements_v2", JSON.stringify(state.novDisbursements));
+      showToast("✅ Payment Confirmed", `${emp ? emp.name : empId} marked as Paid (Ref: ${actualUtr}).`);
+      renderApp();
+    }
+
+    function unmarkEmployeeAsPaid(empId) {
+      const emp = state.employees.find(e => e.id === empId);
+      if (state.novDisbursements && state.novDisbursements[empId]) {
+        state.novDisbursements[empId].paid = false;
+        state.novDisbursements[empId].utr = "";
+      }
+      safeLocalSet("aaruni_nov_disbursements_v2", JSON.stringify(state.novDisbursements));
+      showToast("↩️ Reverted to Unpaid", `${emp ? emp.name : empId} status reverted.`);
+      renderApp();
+    }
+
+    function handleAdminRosterSearch(query) {
+      state.adminSearchQuery = (query || "").trim().toLowerCase();
+      renderApp();
+      const input = document.getElementById("zohoSearchInput");
+      if (input) {
+        input.focus();
+        input.selectionStart = input.selectionEnd = input.value.length;
+      }
+    }
+
+    function openStaffInvitationsModal() {
+      const activeStaff = state.employees.filter(e => e.status === "Active" && e.monthlyCtc > 0);
+      const origin = window.location.origin || "https://my-aaruni.pages.dev";
+
+      const generateInviteText = (emp) => {
+        const pwd = getStaffPassword(emp);
+        const link = `${origin}/?emp=${emp.id}`;
+        return `🌟 Hello ${emp.name},\nWelcome to your official MyAaruni Employee Portal!\n\n📱 Portal Link: ${link}\n👤 Username: ${emp.id}\n🔑 Temporary Password: ${pwd}\n\n📌 Instructions:\n1. Open link on phone.\n2. Submit daily timesheets from 10:00 AM – 7:00 PM IST.\n3. Upload your PhonePe / Google Pay QR code screenshot under profile for monthly salary payouts.\n\nNeed help? Contact Admin: rupesh@fullstackmaster.net`;
+      };
+
+      const groupInviteAll = `📢 Aaruni Tech Staff Portal Onboarding Credentials:\nOfficial Portal Link: ${origin}\n\n` +
+        activeStaff.map((emp, i) => {
+          const pwd = getStaffPassword(emp);
+          return `${i+1}. ${emp.name} (${emp.role}):\n   • Username: ${emp.id}\n   • Password: ${pwd}\n   • Direct Link: ${origin}/?emp=${emp.id}`;
+        }).join('\n\n') +
+        `\n\n📌 Mandatory Instructions:\n1. Log in daily to submit work timesheets.\n2. Upload your authentic PhonePe/GPay QR code under profile to enable monthly salary credit.`;
+
+      const html = `
+        <div style="font-family:'Inter',sans-serif;color:#0f172a;max-width:680px;margin:0 auto;">
+          <div style="background:#090D16;color:#ffffff;border-radius:16px;padding:20px;border:1.5px solid #FF6B35;box-shadow:0 12px 32px rgba(255,107,53,0.25);">
+            <div style="display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid #334155;padding-bottom:12px;margin-bottom:14px;flex-wrap:wrap;gap:10px;">
+              <div>
+                <div style="font-size:16px;font-weight:900;color:#ffffff;display:flex;align-items:center;gap:8px;">
+                  <span>📨 Staff Portal Invitations Hub</span>
+                  <span style="font-size:10px;font-weight:800;background:rgba(255,107,53,0.2);color:#FF6B35;padding:2px 8px;border-radius:6px;border:1px solid rgba(255,107,53,0.4);">
+                    4 Active Staff
+                  </span>
+                </div>
+                <div style="font-size:12px;color:#94a3b8;margin-top:2px;">
+                  Invite team members to MyAaruni with 1-click WhatsApp, Email, or clipboard credentials.
+                </div>
+              </div>
+              <button onclick="copyToClipboard(\`${groupInviteAll.replace(/`/g, '\\`')}\`, 'All 4 Staff Invites')" style="background:linear-gradient(135deg, #FF6B35 0%, #EA580C 100%);color:#fff;border:none;font-weight:800;font-size:11px;padding:8px 14px;border-radius:8px;cursor:pointer;display:inline-flex;align-items:center;gap:6px;box-shadow:0 4px 12px rgba(255,107,53,0.35);">
+                📢 Copy All 4 Invites (for WhatsApp Group)
+              </button>
+            </div>
+
+            <div style="display:grid;grid-template-columns:1fr;gap:12px;">
+              ${activeStaff.map(emp => {
+                const pwd = getStaffPassword(emp);
+                const link = `${origin}/?emp=${emp.id}`;
+                const msg = generateInviteText(emp);
+                const waUrl = `https://wa.me/91${emp.mobile}?text=${encodeURIComponent(msg)}`;
+                const mailUrl = `mailto:${emp.email}?subject=${encodeURIComponent("Welcome to MyAaruni Staff Portal")}&body=${encodeURIComponent(msg)}`;
+
+                return `
+                  <div style="background:rgba(15,23,42,0.85);border:1px solid #334155;border-radius:12px;padding:12px 14px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;">
+                    <div>
+                      <div style="display:flex;align-items:center;gap:8px;">
+                        <strong style="font-size:13px;color:#ffffff;">${emp.name}</strong>
+                        <span style="font-size:11px;font-family:monospace;background:#1e293b;color:#FF6B35;padding:1px 6px;border-radius:4px;font-weight:700;">${emp.id}</span>
+                      </div>
+                      <div style="font-size:11px;color:#94a3b8;margin-top:2px;">
+                        ${emp.role} &bull; 📞 +91 ${emp.mobile} &bull; ✉️ ${emp.email}
+                      </div>
+                      <div style="font-size:11px;margin-top:4px;display:flex;gap:12px;flex-wrap:wrap;">
+                        <span style="color:#cbd5e1;">Username: <strong style="color:#fff;font-family:monospace;">${emp.id}</strong></span>
+                        <span style="color:#cbd5e1;">Password: <strong style="color:#4ade80;font-family:monospace;">${pwd}</strong></span>
+                      </div>
+                    </div>
+
+                    <div style="display:flex;gap:6px;flex-wrap:wrap;">
+                      <a href="${waUrl}" target="_blank" rel="noopener noreferrer" style="background:#22c55e;color:#ffffff;text-decoration:none;font-size:11px;font-weight:700;padding:6px 12px;border-radius:8px;display:inline-flex;align-items:center;gap:4px;">
+                        💬 WhatsApp
+                      </a>
+                      <a href="${mailUrl}" style="background:#0284c7;color:#ffffff;text-decoration:none;font-size:11px;font-weight:700;padding:6px 12px;border-radius:8px;display:inline-flex;align-items:center;gap:4px;">
+                        ✉️ Email
+                      </a>
+                      <button onclick="copyToClipboard(\`${msg.replace(/`/g, '\\`')}\`, 'Invite for ${emp.name}')" style="background:#334155;color:#ffffff;border:none;font-size:11px;font-weight:700;padding:6px 12px;border-radius:8px;cursor:pointer;">
+                        📋 Copy Text
+                      </button>
+                    </div>
+                  </div>
+                `;
+              }).join('')}
+            </div>
+
+            <div style="margin-top:14px;padding:10px 12px;background:rgba(255,107,53,0.1);border:1px solid rgba(255,107,53,0.3);border-radius:10px;font-size:11px;color:#fed7aa;display:flex;align-items:center;gap:8px;">
+              <span>💡</span>
+              <span>Staff can log in with Employee ID (e.g. <code>AAR-0004</code> or <code>004</code>) or their first name. They can change password anytime via "Set Password".</span>
+            </div>
+          </div>
+        </div>
+      `;
+      openModalWithHTML("📨 Staff Portal Invitations Hub", html);
+    }
+
+    function renderStaffInvitesTab() {
+      const activeStaff = state.employees.filter(e => e.status === "Active" && e.monthlyCtc > 0);
+      const origin = window.location.origin || "https://my-aaruni.pages.dev";
+
+      const generateInviteText = (emp) => {
+        const pwd = getStaffPassword(emp);
+        const link = `${origin}/?emp=${emp.id}`;
+        return `🌟 Hello ${emp.name},\nWelcome to your official MyAaruni Employee Portal!\n\n📱 Portal Link: ${link}\n👤 Username: ${emp.id}\n🔑 Temporary Password: ${pwd}\n\n📌 Instructions:\n1. Open link on phone.\n2. Submit daily timesheets (10 AM - 7 PM).\n3. Upload your PhonePe/GPay QR code screenshot under profile for monthly salary payouts.`;
+      };
+
+      const groupInviteAll = `📢 Aaruni Tech Staff Portal Onboarding Credentials:\nOfficial Portal Link: ${origin}\n\n` +
+        activeStaff.map((emp, i) => {
+          const pwd = getStaffPassword(emp);
+          return `${i+1}. ${emp.name} (${emp.role}):\n   • Username: ${emp.id}\n   • Password: ${pwd}\n   • Direct Link: ${origin}/?emp=${emp.id}`;
+        }).join('\n\n') +
+        `\n\n📌 Mandatory Instructions:\n1. Log in daily to submit work timesheets.\n2. Upload your authentic PhonePe/GPay QR code under profile to enable monthly salary credit.`;
+
+      return `
+        <div class="glass-card rounded-2xl p-5 mb-5 border-2 border-orange-500/70 shadow-xl">
+          <div class="flex items-center justify-between border-b border-slate-800 pb-4 mb-4 flex-wrap gap-3">
+            <div>
+              <div class="text-sm font-black uppercase tracking-wider text-orange-400 flex items-center gap-2">
+                <span>📨 Staff Onboarding &amp; Login Credentials Hub</span>
+                <span class="bg-orange-500/20 text-orange-300 text-[10px] font-bold px-2 py-0.5 rounded border border-orange-500/40">Zoho Replacement</span>
+              </div>
+              <div class="text-xs text-slate-300 mt-1">
+                Send 1-click WhatsApp, Email, or SMS invites to active staff to log in to MyAaruni instead of Zoho.
+              </div>
+            </div>
+            <button onclick="copyToClipboard(\`${groupInviteAll.replace(/`/g, '\\`')}\`, 'All 4 Staff Invites')" class="zoho-orange-btn">
+              <span>📢 Copy All 4 Invites (for WhatsApp Group)</span>
+            </button>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            ${activeStaff.map(emp => {
+              const pwd = getStaffPassword(emp);
+              const link = `${origin}/?emp=${emp.id}`;
+              const msg = generateInviteText(emp);
+              const waUrl = `https://wa.me/91${emp.mobile}?text=${encodeURIComponent(msg)}`;
+              const mailUrl = `mailto:${emp.email}?subject=${encodeURIComponent("Welcome to MyAaruni Staff Portal")}&body=${encodeURIComponent(msg)}`;
+
+              return `
+                <div class="p-4 rounded-xl bg-slate-950/80 border border-slate-800 hover:border-orange-500/50 transition-all">
+                  <div class="flex items-center justify-between gap-2 mb-3">
+                    <div class="flex items-center gap-2.5">
+                      <img src="photos/${emp.id}.jpeg" onerror="this.onerror=null; this.src='aaruni_square_logo.png'" class="w-10 h-10 rounded-xl object-cover border border-orange-500/40" />
+                      <div>
+                        <div class="font-extrabold text-white text-sm">${emp.name}</div>
+                        <div class="text-[11px] text-slate-400">${emp.role} &bull; <span class="font-mono text-orange-400 font-bold">${emp.id}</span></div>
+                      </div>
+                    </div>
+                    <span class="bg-emerald-500/20 text-emerald-300 text-[10px] font-bold px-2 py-0.5 rounded-full border border-emerald-500/30">Active</span>
+                  </div>
+
+                  <div class="bg-slate-900/90 rounded-lg p-2.5 text-xs font-mono mb-3 space-y-1 border border-slate-800">
+                    <div class="flex justify-between text-slate-300">
+                      <span class="text-slate-500">Username:</span>
+                      <span class="font-bold text-white">${emp.id}</span>
+                    </div>
+                    <div class="flex justify-between text-slate-300">
+                      <span class="text-slate-500">Temporary Password:</span>
+                      <span class="font-bold text-emerald-400">${pwd}</span>
+                    </div>
+                    <div class="flex justify-between text-slate-300">
+                      <span class="text-slate-500">Mobile Phone:</span>
+                      <span class="text-slate-300">+91 ${emp.mobile}</span>
+                    </div>
+                  </div>
+
+                  <div class="flex items-center gap-2 flex-wrap">
+                    <a href="${waUrl}" target="_blank" rel="noopener noreferrer" class="flex-1 text-center bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs py-2 px-3 rounded-lg shadow transition-all no-underline">
+                      💬 WhatsApp
+                    </a>
+                    <a href="${mailUrl}" class="flex-1 text-center bg-sky-600 hover:bg-sky-500 text-white font-bold text-xs py-2 px-3 rounded-lg shadow transition-all no-underline">
+                      ✉️ Email
+                    </a>
+                    <button onclick="copyToClipboard(\`${msg.replace(/`/g, '\\`')}\`, 'Invite for ${emp.name}')" class="bg-slate-800 hover:bg-slate-700 text-slate-200 font-bold text-xs py-2 px-3 rounded-lg border border-slate-700 cursor-pointer">
+                      📋 Copy
+                    </button>
+                  </div>
+                </div>
+              `;
+            }).join('')}
+          </div>
+        </div>
+      `;
+    }
+
+    // ============================================================================
     const buildZohoPayslipHTML = (ps, emp) => buildOfficialPayslipHTML(ps, emp);
     // 7. MODAL RENDERERS: OFFICIAL STATUTORY PAYSLIP, OFFER LETTER, LOAN PROOF, EXP, CA TAX
     // ============================================================================
@@ -5077,7 +5587,7 @@ body {
 
     
     // ============================================================================
-    // NEW: ADMIN UPI PAYMENT MODAL WITH DYNAMIC SCANNABLE UPI QR CODE
+    // NEW: ADMIN UPI PAYMENT MODAL WITH AUTHENTIC QR & 1-CLICK BANK PARTICULARS
     // ============================================================================
     function openAdminUPIPaymentModal(empId, defaultAmount, defaultNote) {
       const emp = state.employees.find(e => e.id === empId);
@@ -5092,6 +5602,8 @@ body {
       const photoPath = `photos/${emp.id}.jpeg`;
       const photoHtml = `<img src="${photoPath}" onerror="this.onerror=null; this.src='aaruni_square_logo.png'" alt="${emp.name}" style="width:52px;height:52px;border-radius:12px;object-fit:cover;border:2px solid #FE5F01;background:#090D16;" />`;
       
+      const hasAuthenticQr = !!emp.upiQrImage;
+
       const html = `
         <div style="font-family:'Inter',sans-serif;color:#0f172a;max-width:540px;margin:0 auto;">
           <div style="background:linear-gradient(135deg, #090D16 0%, #1E293B 100%);color:#fff;border-radius:16px;padding:20px;border:1.5px solid #FE5F01;box-shadow:0 12px 32px rgba(254,95,1,0.25);">
@@ -5103,44 +5615,100 @@ body {
                   <div style="font-size:12px;color:#94a3b8;">${emp.role} • <span style="font-family:monospace;color:#FE5F01;font-weight:700;">${emp.id}</span></div>
                 </div>
               </div>
-              <span style="background:rgba(254,95,1,0.2);color:#FE5F01;font-size:11px;font-weight:800;padding:4px 8px;border-radius:6px;border:1px solid rgba(254,95,1,0.4);">
-                ⚡ Instant UPI Deep Link
+              <span style="background:${hasAuthenticQr ? 'rgba(16,185,129,0.2)' : 'rgba(254,95,1,0.2)'};color:${hasAuthenticQr ? '#34d399' : '#FE5F01'};font-size:11px;font-weight:800;padding:4px 8px;border-radius:6px;border:1px solid ${hasAuthenticQr ? 'rgba(16,185,129,0.4)' : 'rgba(254,95,1,0.4)'};">
+                ${hasAuthenticQr ? '🟢 Authentic QR Verified' : '⚡ Dynamic UPI Link'}
               </span>
             </div>
 
             <!-- PAYMENT AMOUNT HERO -->
-            <div style="background:rgba(15,23,42,0.8);border:1px solid #334155;border-radius:12px;padding:14px;text-align:center;margin-bottom:16px;">
-              <div style="font-size:11px;font-weight:700;color:#94a3b8;text-transform:uppercase;letter-spacing:0.05em;">Payable Amount</div>
+            <div style="background:rgba(15,23,42,0.8);border:1px solid #334155;border-radius:12px;padding:14px;text-align:center;margin-bottom:14px;">
+              <div style="font-size:11px;font-weight:700;color:#94a3b8;text-transform:uppercase;letter-spacing:0.05em;">Payable Net Amount</div>
               <div style="font-size:32px;font-weight:900;color:#FE5F01;margin:4px 0;">₹${amount.toLocaleString('en-IN')}.00</div>
               <div style="font-size:12px;color:#cbd5e1;">Purpose: <strong>${note}</strong></div>
             </div>
 
-            <!-- SCANNABLE UPI QR CODE -->
-            <div style="text-align:center;background:#ffffff;padding:16px;border-radius:14px;display:inline-block;width:100%;margin-bottom:14px;box-sizing:border-box;">
-              <div style="display:inline-block;padding:6px;background:#ffffff;border-radius:8px;">
-                ${qrSvg}
+            <!-- SCANNABLE QR CODE CONTAINER -->
+            <div style="text-align:center;background:#ffffff;padding:16px;border-radius:14px;margin-bottom:14px;box-sizing:border-box;">
+              ${hasAuthenticQr ? `
+                <div style="font-size:12px;font-weight:800;color:#059669;margin-bottom:8px;display:flex;align-items:center;justify-content:center;gap:6px;">
+                  <span>✅ Official PhonePe / Google Pay QR (Uploaded by ${emp.name})</span>
+                </div>
+                <img src="${emp.upiQrImage}" alt="${emp.name} UPI QR" style="max-width:210px;max-height:210px;border-radius:10px;border:2px solid #FE5F01;margin:0 auto;display:block;box-shadow:0 4px 16px rgba(0,0,0,0.15);" />
+                <div style="font-size:12px;color:#475569;margin-top:8px;font-weight:600;">
+                  📷 Scan with PhonePe / Google Pay / Axis Bank Mobile App
+                </div>
+              ` : `
+                <div style="background:#fff7ed;border:1px solid #fed7aa;color:#9a3412;padding:8px 10px;border-radius:8px;font-size:11px;font-weight:600;margin-bottom:10px;text-align:left;">
+                  ⚠️ Dynamic UPI strings can be rejected by some bank apps. For 100% success, scan employee's uploaded QR, upload it below, or use 1-Click Axis Bank IMPS.
+                </div>
+                <div style="display:inline-block;padding:6px;background:#ffffff;border-radius:8px;">
+                  ${qrSvg}
+                </div>
+                <div style="font-size:12px;color:#475569;margin-top:6px;font-weight:600;">
+                  📷 Scan with PhonePe, Google Pay, Paytm, or BHIM
+                </div>
+              `}
+
+              <div style="margin-top:8px;display:flex;align-items:center;justify-content:center;gap:6px;flex-wrap:wrap;">
+                <div style="font-family:monospace;font-size:12px;color:#0f172a;background:#f1f5f9;padding:6px 12px;border-radius:6px;">
+                  UPI ID: <strong>${upiId}</strong>
+                </div>
+                <button onclick="copyToClipboard('${upiId}', 'UPI ID')" style="background:#FF6B35;color:#ffffff;border:none;padding:6px 12px;border-radius:6px;font-size:11px;font-weight:700;cursor:pointer;">
+                  📋 Copy UPI ID
+                </button>
               </div>
-              <div style="font-size:12px;color:#475569;margin-top:8px;font-weight:600;">
-                📷 Scan with <strong>PhonePe, Google Pay, Paytm or BHIM UPI</strong> from your mobile
-              </div>
-              <div style="margin-top:6px;font-family:monospace;font-size:12px;color:#0f172a;background:#f1f5f9;padding:6px 10px;border-radius:6px;display:inline-block;">
-                UPI ID: <strong>${upiId}</strong>
+
+              <!-- Upload / Override QR by Admin -->
+              <div style="margin-top:10px;border-top:1px dashed #cbd5e1;padding-top:10px;text-align:center;">
+                <label style="font-size:11px;font-weight:700;color:#0369a1;display:inline-block;cursor:pointer;">
+                  📷 ${hasAuthenticQr ? 'Replace / Upload Updated QR Screenshot:' : 'Upload ' + emp.name + '\'s Real QR Screenshot (Admin Override):'}
+                </label>
+                <input type="file" accept="image/*" onchange="handleStaffUPIQRUpload(event, '${emp.id}'); setTimeout(() => openAdminUPIPaymentModal('${emp.id}', ${amount}, '${note}'), 500);" style="font-size:11px;color:#64748b;margin-top:4px;display:block;margin-left:auto;margin-right:auto;" />
               </div>
             </div>
 
-            <!-- BENEFICIARY BANK PARTICULARS -->
-            <div style="background:rgba(15,23,42,0.6);border:1px solid #334155;border-radius:10px;padding:10px 14px;font-size:12px;margin-bottom:16px;">
-              <div style="display:flex;justify-content:space-between;margin-bottom:4px;">
+            <!-- BENEFICIARY BANK PARTICULARS WITH 1-CLICK COPY BUTTONS -->
+            <div style="background:rgba(15,23,42,0.7);border:1px solid #334155;border-radius:12px;padding:12px 14px;font-size:12px;margin-bottom:14px;">
+              <div style="font-size:11px;font-weight:800;color:#38bdf8;text-transform:uppercase;letter-spacing:0.05em;margin-bottom:8px;display:flex;justify-content:space-between;align-items:center;">
+                <span>🏦 Direct Axis Bank IMPS / NEFT Particulars</span>
+                <span style="color:#94a3b8;font-size:10px;font-weight:600;">100% Reliable Payout</span>
+              </div>
+              
+              <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;padding:4px 0;border-bottom:1px solid rgba(255,255,255,0.06);">
+                <span style="color:#94a3b8;">Beneficiary Name:</span>
+                <div style="display:flex;align-items:center;gap:6px;">
+                  <strong style="color:#ffffff;">${emp.accountHolder || emp.name}</strong>
+                  <button onclick="copyToClipboard('${emp.accountHolder || emp.name}', 'Name')" style="background:#334155;color:#38bdf8;border:none;padding:2px 6px;border-radius:4px;font-size:10px;font-weight:700;cursor:pointer;">📋 Copy</button>
+                </div>
+              </div>
+
+              <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;padding:4px 0;border-bottom:1px solid rgba(255,255,255,0.06);">
                 <span style="color:#94a3b8;">Bank Name:</span>
                 <strong style="color:#ffffff;">${emp.bankName}</strong>
               </div>
-              <div style="display:flex;justify-content:space-between;margin-bottom:4px;">
+
+              <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;padding:4px 0;border-bottom:1px solid rgba(255,255,255,0.06);">
                 <span style="color:#94a3b8;">Account Number:</span>
-                <strong style="color:#ffffff;font-family:monospace;">${emp.bankAccount}</strong>
+                <div style="display:flex;align-items:center;gap:6px;">
+                  <strong style="color:#ffffff;font-family:monospace;font-size:13px;">${emp.bankAccount}</strong>
+                  <button onclick="copyToClipboard('${emp.bankAccount}', 'Account Number')" style="background:#FF6B35;color:#ffffff;border:none;padding:2px 6px;border-radius:4px;font-size:10px;font-weight:700;cursor:pointer;">📋 Copy A/C</button>
+                </div>
               </div>
-              <div style="display:flex;justify-content:space-between;">
+
+              <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;padding:4px 0;border-bottom:1px solid rgba(255,255,255,0.06);">
                 <span style="color:#94a3b8;">IFSC Code:</span>
-                <strong style="color:#ffffff;font-family:monospace;">${emp.ifsc}</strong>
+                <div style="display:flex;align-items:center;gap:6px;">
+                  <strong style="color:#ffffff;font-family:monospace;font-size:13px;">${emp.ifsc}</strong>
+                  <button onclick="copyToClipboard('${emp.ifsc}', 'IFSC Code')" style="background:#FF6B35;color:#ffffff;border:none;padding:2px 6px;border-radius:4px;font-size:10px;font-weight:700;cursor:pointer;">📋 Copy IFSC</button>
+                </div>
+              </div>
+
+              <div style="display:flex;justify-content:space-between;align-items:center;padding:4px 0;">
+                <span style="color:#94a3b8;">Exact Net Amount:</span>
+                <div style="display:flex;align-items:center;gap:6px;">
+                  <strong style="color:#4ade80;font-size:14px;font-weight:900;">₹${amount}</strong>
+                  <button onclick="copyToClipboard('${amount}', 'Amount')" style="background:#15803d;color:#ffffff;border:none;padding:2px 6px;border-radius:4px;font-size:10px;font-weight:700;cursor:pointer;">📋 Copy Amount</button>
+                </div>
               </div>
             </div>
 
@@ -5156,13 +5724,23 @@ body {
           </div>
         </div>
       `;
-      openModalWithHTML(`Pay via UPI — ${emp.name}`, html);
+      openModalWithHTML(`Pay via UPI / IMPS — ${emp.name}`, html);
     }
 
     function confirmUPIPaymentCompleted(empId, amount, note) {
       const emp = state.employees.find(e => e.id === empId);
       const utr = "UPI-AXIS-" + Math.floor(100000 + Math.random() * 900000);
-      
+
+      // Update state.novDisbursements so Pay Run marks this employee as Paid immediately!
+      state.novDisbursements = state.novDisbursements || {};
+      state.novDisbursements[empId] = {
+        paid: true,
+        utr: utr,
+        date: new Date().toISOString().slice(0, 10),
+        amount: Number(amount)
+      };
+      safeLocalSet("aaruni_nov_disbursements_v2", JSON.stringify(state.novDisbursements));
+
       // Update any matching pending advance
       if (state.advanceRequests) {
         const adv = state.advanceRequests.find(a => a.empId === empId && a.status === "Pending");
@@ -6318,7 +6896,7 @@ function updateQrBaseUrl(val) {
     function checkUrlAutoLogin() {
       try {
         const params = new URLSearchParams(window.location.search);
-        const empParam = params.get("emp") || params.get("login");
+        const empParam = params.get("emp") || params.get("login") || params.get("persona");
         const simParam = params.get("sim") || params.get("mobile");
         const tabParam = params.get("tab");
         const themeParam = params.get("theme");
@@ -6331,6 +6909,7 @@ function updateQrBaseUrl(val) {
         const clean = empParam.trim().toUpperCase();
         if (clean === "ADMIN") {
           switchPersona("ADMIN");
+          if (tabParam) state.activeTab = tabParam;
         } else {
           const numOnly = parseInt(clean.replace(/[^0-9]/g, ""), 10);
           const found = state.employees.find(e => {
@@ -6352,6 +6931,8 @@ function updateQrBaseUrl(val) {
             if (holidayParam) setTimeout(() => openHolidayCalendarModal(), 300);
             const taxParam = params.get("tax");
             if (taxParam) setTimeout(() => openACSTaxDossierModal(), 300);
+            const upiParam = params.get("upi");
+            if (upiParam) setTimeout(() => openAdminUPIPaymentModal(found.id), 300);
           }
         }
       } catch (e) {}
@@ -6833,6 +7414,15 @@ function renderApp() {
 
         const vp = document.getElementById("appViewport");
         if (!vp) return;
+
+        const mainEl = document.querySelector("main");
+        if (mainEl) {
+          if (state.persona === "ADMIN") {
+            mainEl.className = "w-full max-w-[1520px] mx-auto px-2 md:px-4 pt-2";
+          } else {
+            mainEl.className = "max-w-5xl mx-auto px-3 pt-4";
+          }
+        }
         if (state.persona === "LOGIN") {
           vp.innerHTML = renderLoginScreen();
         } else if (state.persona === "ADMIN") {
