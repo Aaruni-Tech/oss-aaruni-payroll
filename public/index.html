@@ -1476,7 +1476,7 @@
         .filter(l => l.empId === emp.id && l.status !== "Paid" && l.status !== "Settled / Paid")
         .reduce((acc, l) => acc + Number(l.remainingBalance || l.monthlyDeduction || 0), 0);
       const projectedFullMonthNet = Math.max(0, (emp.monthlyCtc || 0) - pendingLoans);
-      const portalUrl = (state.baseAppUrl || window.location.origin || "https://aaruni-payroll.pages.dev").replace(/\/+$/, "");
+      const portalUrl = (state.baseAppUrl || window.location.origin || "https://payroll.aaruni.in").replace(/\/+$/, "");
 
       const annualCtc = Number(emp.annualCtc || (emp.monthlyCtc * 12) || 120000);
       const ytd = computeCumulativeYTD(emp.id, "2026-11") || {
@@ -3196,7 +3196,7 @@
         netYtd: Number(ps.netPay || 0),
         monthsCount: 1
       };
-      const portalUrl = (state.baseAppUrl || window.location.origin || "https://aaruni-payroll.pages.dev").replace(/\/+$/, "");
+      const portalUrl = (state.baseAppUrl || window.location.origin || "https://payroll.aaruni.in").replace(/\/+$/, "");
       const verifyQr = generateQRCodeSVG(portalUrl + "/?verify=payslip&id=" + ps.id + "&emp=" + emp.id, 90);
 
       return `
@@ -4439,7 +4439,7 @@
     // ============================================================================
     // 8. ISO-18004 PURE-JS QR CODE SVG GENERATOR + MOBILE LOGIN & ANDROID HUB
     // ============================================================================
-    state.baseAppUrl = "https://aaruni-payroll.pages.dev";
+    state.baseAppUrl = "https://payroll.aaruni.in";
     state.selectedQrTarget = "MAIN";
 
     function getStaffPassword(emp) {
@@ -4466,7 +4466,7 @@
     }
 
     function getStaffLoginUrl(empId) {
-      const base = (state.baseAppUrl || "https://aaruni-payroll.pages.dev").replace(/\/+$/, "");
+      const base = (state.baseAppUrl || "https://payroll.aaruni.in").replace(/\/+$/, "");
       if (empId === "APK") return `${base}/downloads/aaruni-payroll.apk`;
       if (!empId || empId === "MAIN") return base;
       if (empId === "ADMIN") return `${base}/?emp=ADMIN`;
@@ -4720,7 +4720,7 @@
       openModalWithHTML("📲 Aaruni Tech Mobile QR & PWA Hub", html);
     }
 function updateQrBaseUrl(val) {
-      state.baseAppUrl = (val || "https://aaruni-payroll.pages.dev").trim();
+      state.baseAppUrl = (val || "https://payroll.aaruni.in").trim();
       openMobileQRHubModal(state.selectedQrTarget);
     }
 
@@ -4787,7 +4787,7 @@ function updateQrBaseUrl(val) {
     }
 
     function openInstallMobileAppModal(selectedId = "ALL") {
-      const portalUrl = (state.baseAppUrl || window.location.origin || "https://aaruni-payroll.pages.dev").trim().replace(/\/+$/, "");
+      const portalUrl = (state.baseAppUrl || window.location.origin || "https://payroll.aaruni.in").trim().replace(/\/+$/, "");
       const qrPortalSvg = generateQRCodeSVG(portalUrl + "/?tab=timesheet&source=qr", 160);
       const apkDirectUrl = portalUrl + "/downloads/aaruni-payroll.apk";
       const qrApkSvg = generateQRCodeSVG(apkDirectUrl, 160);
