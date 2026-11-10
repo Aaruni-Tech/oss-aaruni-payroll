@@ -198,6 +198,28 @@
       border-color: #cbd5e1 !important;
     }
 
+    /* Mobile phone simulator responsive fix: force 1-column cards inside phone frame */
+    #mobileSimulatorScreen .grid-cols-2,
+    #mobileSimulatorScreen .grid-cols-3,
+    #mobileSimulatorScreen .grid-cols-4,
+    #mobileSimulatorScreen .grid-cols-5,
+    #mobileSimulatorScreen .md\:grid-cols-2,
+    #mobileSimulatorScreen .md\:grid-cols-3,
+    #mobileSimulatorScreen .md\:grid-cols-4,
+    #mobileSimulatorScreen .md\:grid-cols-5 {
+      grid-template-columns: repeat(1, minmax(0, 1fr)) !important;
+    }
+    #mobileSimulatorScreen .col-span-2,
+    #mobileSimulatorScreen .col-span-3,
+    #mobileSimulatorScreen .col-span-4,
+    #mobileSimulatorScreen .col-span-5 {
+      grid-column: span 1 / span 1 !important;
+    }
+    #mobileSimulatorScreen .glass-card {
+      padding: 14px !important;
+      margin-bottom: 12px !important;
+    }
+
     /* Mobile phone simulator custom scrollbar */
     .custom-scrollbar::-webkit-scrollbar {
       width: 5px;
@@ -1044,38 +1066,10 @@
     function renderRoleBar() {
       const bar = document.getElementById("authenticatedRoleBar");
       if (!bar) return;
-      if (state.persona === "LOGIN") {
-        bar.classList.add("hidden");
-        bar.innerHTML = "";
-        return;
-      }
-      bar.classList.remove("hidden");
-
-      const isAdmin = state.persona === "ADMIN";
-      const staffList = (state.employees || []).filter(e => e.id !== "ADMIN");
-
-      bar.innerHTML = `
-        <span class="text-[10px] font-bold uppercase tracking-wider text-slate-400 whitespace-nowrap mr-1">Switch View:</span>
-        <button onclick="switchPersona('ADMIN', false)" class="text-[11px] font-bold px-2.5 py-1 rounded-lg border transition-all cursor-pointer whitespace-nowrap ${isAdmin ? 'brand-grad text-white shadow' : 'bg-slate-800 border-slate-700 text-slate-300 hover:text-white'}">
-          👑 Admin (Rupesh)
-        </button>
-        ${staffList.map(e => {
-          const isActive = state.persona === e.id;
-          return `
-            <button onclick="switchPersona('${e.id}', true, ${state.mobileSimulatorMode})" class="text-[11px] font-semibold px-2.5 py-1 rounded-lg border transition-all cursor-pointer whitespace-nowrap ${isActive ? 'brand-grad text-white shadow font-bold' : 'bg-slate-800 border-slate-700 text-slate-300 hover:text-white'}">
-              ${e.id === '001' ? '👑' : (e.id === 'AAR-0008' ? '🛡️' : '👩‍💼')} ${e.name.split(' ')[0]} (${e.id.replace('AAR-', '')})
-            </button>
-          `;
-        }).join('')}
-        ${!isAdmin ? `
-          <button onclick="toggleMobileSimulator()" class="text-[11px] font-bold px-2.5 py-1 rounded-lg border transition-all cursor-pointer whitespace-nowrap ${state.mobileSimulatorMode ? 'bg-orange-600 border-orange-400 text-white shadow animate-pulse' : 'bg-slate-800 border-slate-700 text-orange-400 hover:text-orange-300'}">
-            ${state.mobileSimulatorMode ? '📱 Mobile Sim: ON' : '📱 Simulate Mobile App'}
-          </button>
-        ` : ''}
-        <button onclick="signOutPortal()" class="text-[11px] font-semibold px-2.5 py-1 rounded-lg bg-red-950/60 border border-red-500/40 text-red-200 whitespace-nowrap cursor-pointer hover:bg-red-900/80">
-          🔒 Sign Out
-        </button>
-      `;
+      // Per user instruction: completely remove the crowded horizontal employee scrollbar on top!
+      // Admin accesses employees cleanly via the dedicated "Employees" page.
+      bar.classList.add("hidden");
+      bar.innerHTML = "";
     }
 
     function signOutPortal() {
@@ -1102,7 +1096,10 @@
 
       if (state.persona === "ADMIN") {
         box.innerHTML = `
-          <button onclick="toggleSalaryMask()" class="text-xs px-2.5 py-1.5 rounded-lg border bg-slate-800 border-slate-700 text-white hover:opacity-85" title="Show / Hide Amounts">
+          <button onclick="setTab('roster')" class="text-xs font-bold px-3 py-1.5 rounded-lg border bg-orange-500/20 border-orange-500/50 text-orange-300 hover:bg-orange-500/30 flex items-center gap-1.5 cursor-pointer shadow-sm" title="View & Manage All Employees">
+            <span>👥</span> <span>Employees</span>
+          </button>
+          <button onclick="toggleSalaryMask()" class="text-xs px-2.5 py-1.5 rounded-lg border bg-slate-800 border-slate-700 text-white hover:opacity-85 cursor-pointer" title="Show / Hide Amounts">
             ${state.salariesMasked ? '👁️‍🗨️' : '👁️'}
           </button>
           <button onclick="openMobileQRHubModal()" class="text-xs font-semibold px-2.5 py-1.5 rounded-lg border bg-slate-800 border-slate-700 text-white hover:opacity-85" title="Mobile QR & Staff Passwords">
@@ -1638,45 +1635,34 @@
         return '';
       })();
 
-      // 2. ADMIN PREVIEW BAR (IF ADMIN IS VIEWING AS EMPLOYEE)
+      // 2. ADMIN PREVIEW BAR (IF ADMIN IS VIEWING AS EMPLOYEE — CLEAN SINGLE BAR, NO SCROLLBAR)
       const adminPreviewBar = (state.isAdminPreviewing && !isInsideSimulator) ? `
-        <div class="glass-card rounded-2xl p-4 mb-4 bg-gradient-to-r from-orange-950/60 via-slate-900 to-slate-900 border-2 border-orange-500/80 shadow-xl">
-          <div class="flex items-center justify-between gap-3 flex-wrap border-b border-orange-500/30 pb-3 mb-3">
-            <div class="flex items-center gap-3">
-              <span class="text-2xl p-2 rounded-xl bg-orange-500/20 border border-orange-500/40">🕵️‍♂️</span>
-              <div>
-                <div class="flex items-center gap-2">
-                  <span class="text-xs font-black uppercase tracking-wider text-orange-400">Admin Impersonation Mode</span>
-                  <span class="text-[10px] px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 font-bold border border-emerald-500/40">Live Access &bull; Zero Password</span>
-                </div>
-                <div class="text-xs text-slate-300 mt-0.5">
-                  Viewing employee portal as <strong>${emp.name}</strong> (<span class="font-mono text-orange-300 font-bold">${emp.id}</span>) &bull; <span class="text-slate-400">${emp.role || 'Staff Member'}</span>
-                </div>
+        <div class="glass-card rounded-2xl p-4 mb-4 bg-gradient-to-r from-orange-950/60 via-slate-900 to-slate-900 border-2 border-orange-500/80 shadow-xl flex items-center justify-between gap-3 flex-wrap">
+          <div class="flex items-center gap-3">
+            <span class="text-2xl p-2 rounded-xl bg-orange-500/20 border border-orange-500/40">🕵️‍♂️</span>
+            <div>
+              <div class="flex items-center gap-2">
+                <span class="text-xs font-black uppercase tracking-wider text-orange-400">Admin Impersonation Mode</span>
+                <span class="text-[10px] px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 font-bold border border-emerald-500/40">Live Access &bull; Zero Password</span>
               </div>
-            </div>
-            <div class="flex items-center gap-2 flex-wrap">
-              <!-- View Mode Toggle -->
-              <div class="inline-flex rounded-xl bg-slate-950 p-1 border border-slate-700 shadow-inner">
-                <button onclick="toggleMobileSimulator(false)" class="text-xs px-3 py-1.5 rounded-lg font-bold transition-all ${!state.mobileSimulatorMode ? 'brand-grad text-white shadow' : 'text-slate-400 hover:text-white'}">
-                  🖥️ Desktop Web View
-                </button>
-                <button onclick="toggleMobileSimulator(true)" class="text-xs px-3 py-1.5 rounded-lg font-bold transition-all ${state.mobileSimulatorMode ? 'brand-grad text-white shadow' : 'text-slate-400 hover:text-white'}">
-                  📱 Mobile App (390px)
-                </button>
+              <div class="text-xs text-slate-300 mt-0.5">
+                Viewing employee portal as <strong>${emp.name}</strong> (<span class="font-mono text-orange-300 font-bold">${emp.id}</span>) &bull; <span class="text-slate-400">${emp.role || 'Staff Member'}</span>
               </div>
-              <button onclick="switchPersona('ADMIN', false)" class="brand-grad text-white text-xs font-bold px-3 py-2 rounded-xl shadow cursor-pointer hover:opacity-90">
-                ← Exit to Admin Console
-              </button>
             </div>
           </div>
-          <!-- Quick Staff Switcher Chips -->
-          <div class="flex items-center gap-1.5 overflow-x-auto hide-scroll pt-0.5">
-            <span class="text-[10px] font-bold uppercase tracking-wider text-slate-400 whitespace-nowrap mr-1">Switch Staff:</span>
-            ${state.employees.filter(e => e.id !== 'ADMIN').map(e => `
-              <button onclick="switchPersona('${e.id}', true, false)" class="text-[11px] font-medium px-2.5 py-1 rounded-lg border transition-all cursor-pointer whitespace-nowrap ${e.id === emp.id ? 'brand-grad text-white font-bold border-orange-400 shadow' : 'bg-slate-900/80 border-slate-800 text-slate-300 hover:text-white hover:border-slate-700'}">
-                ${e.id === '001' ? '👑' : (e.id === '002' ? '⭐' : (e.id === 'AAR-0008' ? '🛡️' : '👩‍💼'))} ${e.name.split(' ')[0]} <span class="font-mono opacity-70 text-[10px]">(${e.id.replace('AAR-', '')})</span>
+          <div class="flex items-center gap-2 flex-wrap">
+            <!-- View Mode Toggle -->
+            <div class="inline-flex rounded-xl bg-slate-950 p-1 border border-slate-700 shadow-inner">
+              <button onclick="toggleMobileSimulator(false)" class="text-xs px-3 py-1.5 rounded-lg font-bold transition-all ${!state.mobileSimulatorMode ? 'brand-grad text-white shadow' : 'text-slate-400 hover:text-white cursor-pointer'}">
+                🖥️ Desktop View
               </button>
-            `).join('')}
+              <button onclick="toggleMobileSimulator(true)" class="text-xs px-3 py-1.5 rounded-lg font-bold transition-all ${state.mobileSimulatorMode ? 'brand-grad text-white shadow' : 'text-slate-400 hover:text-white cursor-pointer'}">
+                📱 Mobile App (390px)
+              </button>
+            </div>
+            <button onclick="switchPersona('ADMIN', false)" class="brand-grad text-white text-xs font-bold px-3 py-2 rounded-xl shadow cursor-pointer hover:opacity-90">
+              ← Exit to Admin Console
+            </button>
           </div>
         </div>
       ` : '';
@@ -1729,7 +1715,7 @@
       `;
 
       // 4. A TO Z SUB-NAVIGATION MENU BAR (PHONETOOL / ATTENDANCE / SALARY / PAYSLIPS / TAX / DOCUMENTS)
-      const subNavBar = `
+      const subNavBar = isInsideSimulator ? "" : `
         <div class="glass-card rounded-2xl p-1.5 mb-4 border border-slate-800 flex items-center justify-between gap-1 overflow-x-auto hide-scroll">
           <button onclick="setTab('phonetool')" class="flex items-center gap-1.5 px-3.5 py-2 rounded-xl text-xs font-semibold whitespace-nowrap transition-all ${activeTab === 'phonetool' ? 'brand-grad text-white font-bold shadow' : 'text-slate-400 hover:text-white hover:bg-slate-800/60'}">
             <span>📇</span> <span>PhoneTool Profile</span>
@@ -1754,12 +1740,61 @@
 
       // 5. TAB VIEW 1: PHONETOOL PROFILE (OVERVIEW & DIRECTORY CARDS)
       if (activeTab === "phonetool") {
+        const todayDateStr = "2026-11-11";
+        const todayLog = (state.timesheets || []).find(t => t.empId === emp.id && t.date === todayDateStr);
+        const todaySubmitted = !!todayLog;
+
         return `
           ${adminPreviewBar}
           ${phoneToolHeader}
           ${subNavBar}
           ${inactivityAlertHtml}
 
+          <!-- DIRECT TODAY'S TIMESHEET & DAILY WORK PUNCH CARD (PROMINENT AT TOP) -->
+          <div class="glass-card rounded-2xl p-4 mb-4 border-2 ${todaySubmitted ? 'border-emerald-500/70 bg-gradient-to-r from-emerald-950/30 to-slate-900' : 'border-orange-500/70 bg-gradient-to-r from-orange-950/40 via-slate-900 to-slate-900'} shadow-xl">
+            <div class="flex items-center justify-between gap-3 mb-3 flex-wrap border-b border-slate-800 pb-2.5">
+              <div class="flex items-center gap-2.5">
+                <span class="text-2xl">${todaySubmitted ? '✅' : '⏱️'}</span>
+                <div>
+                  <div class="flex items-center gap-2">
+                    <span class="text-xs font-black uppercase tracking-wider ${todaySubmitted ? 'text-emerald-400' : 'text-orange-400'}">Today's Timesheet Entry</span>
+                    <span class="text-[10px] px-2 py-0.5 rounded-full font-bold ${todaySubmitted ? 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/40' : 'bg-amber-500/20 text-amber-300 border border-amber-500/40'}">
+                      ${todaySubmitted ? '🟢 Logged (' + todayLog.hours + ' hrs)' : '🟡 Pending Submission'}
+                    </span>
+                  </div>
+                  <div class="text-xs text-slate-300 mt-0.5">Wednesday, 11 Nov 2026 &bull; Standard Shift: 10:00 AM – 7:00 PM IST</div>
+                </div>
+              </div>
+              <button onclick="setTab('timesheet')" class="text-xs text-orange-400 hover:text-orange-300 font-semibold flex items-center gap-1 cursor-pointer">
+                <span>📅 View Full Monthly History & Missing Days</span> <span>→</span>
+              </button>
+            </div>
+
+            <!-- Direct Quick Input Row -->
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-2.5 items-end">
+              <div>
+                <label class="block text-[11px] font-bold text-slate-400 mb-1">Check-In Time</label>
+                <input type="time" id="tsIn" value="${todayLog ? todayLog.entryTime : '10:00'}" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-xs text-white font-mono focus:border-orange-500 focus:outline-none" />
+              </div>
+              <div>
+                <label class="block text-[11px] font-bold text-slate-400 mb-1">Check-Out Time</label>
+                <input type="time" id="tsOut" value="${todayLog ? todayLog.exitTime : '19:00'}" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-xs text-white font-mono focus:border-orange-500 focus:outline-none" />
+              </div>
+              <div>
+                <label class="block text-[11px] font-bold text-slate-400 mb-1">Work Tasks / Deliverables</label>
+                <input type="text" id="tsSummary" value="${todayLog ? todayLog.summary : ''}" placeholder="Coursera demo recording, Zap project review..." class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-xs text-white focus:border-orange-500 focus:outline-none" />
+                <input type="hidden" id="tsDate" value="2026-11-11" />
+                <input type="hidden" id="tsLink" value="Direct Entry" />
+              </div>
+              <div>
+                <button onclick="submitStaffTimesheet('${emp.id}')" class="w-full brand-grad text-white font-bold text-xs py-2.5 px-4 rounded-xl shadow cursor-pointer hover:opacity-90 flex items-center justify-center gap-1.5">
+                  <span>${todaySubmitted ? '🔄 Update Today Timesheet' : '💾 Submit Today Timesheet'}</span>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- CORPORATE WORK & SHAREABLE DIRECTORY PROFILE (ZERO SENSITIVE DATA — SAFE TO SHARE) -->
           <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
             <!-- 🏢 Work & Role Information Card -->
             <div class="glass-card rounded-2xl p-4 border border-slate-800">
@@ -1798,7 +1833,7 @@
               </div>
             </div>
 
-            <!-- 📞 Contact & Directory Reach Card -->
+            <!-- 📞 Contact & Communication Card -->
             <div class="glass-card rounded-2xl p-4 border border-slate-800">
               <div class="text-xs font-bold text-sky-400 uppercase tracking-wider mb-3 flex items-center gap-2">
                 <span>📞 Contact &amp; Communication</span>
@@ -1821,168 +1856,202 @@
                   <span class="text-slate-200">Direct Chat &amp; Email Synced</span>
                 </div>
                 <div class="py-2.5 flex justify-between items-center">
+                  <span class="text-slate-400">Official Identity Card:</span>
+                  <button onclick="previewIDCard('${emp.id}')" class="text-xs font-bold text-orange-400 hover:text-orange-300 underline cursor-pointer">
+                    🪪 View Official ID Badge
+                  </button>
+                </div>
+                <div class="py-2.5 flex justify-between items-center">
                   <span class="text-slate-400">Mobile HR App:</span>
                   <span class="text-emerald-400 font-semibold">Installed / Cloud Synced</span>
                 </div>
-              </div>
-
-              <!-- Quick Action Launchpad -->
-              <div class="mt-4 pt-3 border-t border-slate-800/80">
-                <div class="text-[11px] font-bold text-slate-400 uppercase tracking-wider mb-2">⚡ Quick Launchpad:</div>
-                <div class="grid grid-cols-2 gap-2">
-                  <button onclick="setTab('timesheet')" class="bg-slate-800 hover:bg-slate-700 text-white text-xs font-semibold p-2.5 rounded-xl border border-slate-700 flex items-center gap-2 cursor-pointer">
-                    <span>⏱️</span> <span>Log Timesheet</span>
-                  </button>
-                  <button onclick="setTab('salary')" class="bg-slate-800 hover:bg-slate-700 text-white text-xs font-semibold p-2.5 rounded-xl border border-slate-700 flex items-center gap-2 cursor-pointer">
-                    <span>💰</span> <span>Check Salary</span>
-                  </button>
-                  <button onclick="setTab('payslips')" class="bg-slate-800 hover:bg-slate-700 text-white text-xs font-semibold p-2.5 rounded-xl border border-slate-700 flex items-center gap-2 cursor-pointer">
-                    <span>📄</span> <span>View Payslips</span>
-                  </button>
-                  <button onclick="setTab('hrdocs')" class="bg-slate-800 hover:bg-slate-700 text-white text-xs font-semibold p-2.5 rounded-xl border border-slate-700 flex items-center gap-2 cursor-pointer">
-                    <span>📁</span> <span>My Documents</span>
-                  </button>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <!-- 🏦 Verified Bank & Identity Verification Card -->
-          <div class="glass-card rounded-2xl p-4 mb-4 border border-slate-800">
-            <div class="flex items-center justify-between mb-3 flex-wrap gap-2">
-              <div class="text-xs font-bold text-white uppercase tracking-wider flex items-center gap-2">
-                <span>🏦 Verified Banking &amp; Government Identity Dossier</span>
-                <span class="bg-emerald-500/20 text-emerald-400 text-[10px] font-bold px-2 py-0.5 rounded border border-emerald-500/30">Verified</span>
-              </div>
-              <button onclick="previewIDCard('${emp.id}')" class="brand-grad text-white text-xs font-bold px-3 py-1.5 rounded-lg shadow cursor-pointer">
-                🪪 View ID Badge
-              </button>
-            </div>
-            <div class="grid grid-cols-1 md:grid-cols-4 gap-3 text-xs">
-              <div class="p-3 rounded-xl bg-slate-900/60 border border-slate-800">
-                <div class="text-slate-400 text-[11px]">Primary Bank:</div>
-                <div class="font-bold text-white text-sm mt-0.5">Axis Bank Ltd</div>
-                <div class="text-[10px] text-slate-400 mt-1">Direct NEFT/RTGS salary channel</div>
-              </div>
-              <div class="p-3 rounded-xl bg-slate-900/60 border border-slate-800">
-                <div class="text-slate-400 text-[11px]">Salary Account Number:</div>
-                <div class="font-mono font-bold text-white text-sm mt-0.5">${state.salariesMasked ? '••••••••••••3409' : (emp.bankAccount || '924010057263409')}</div>
-                <div class="text-[10px] text-emerald-400 mt-1">Verified Active</div>
-              </div>
-              <div class="p-3 rounded-xl bg-slate-900/60 border border-slate-800">
-                <div class="text-slate-400 text-[11px]">IFSC Code:</div>
-                <div class="font-mono font-bold text-white text-sm mt-0.5">${emp.ifsc || 'UTIB0002057'}</div>
-                <div class="text-[10px] text-slate-400 mt-1">Beeramguda Branch</div>
-              </div>
-              <div class="p-3 rounded-xl bg-slate-900/60 border border-slate-800">
-                <div class="text-slate-400 text-[11px]">Tax / PAN Status:</div>
-                <div class="font-bold text-white text-sm mt-0.5">PAN Verified</div>
-                <div class="text-[10px] text-emerald-400 mt-1">Section 72 &bull; ₹0 TDS Slab</div>
               </div>
             </div>
           </div>
         `;
       }
 
-      // 6. TAB VIEW 2: ATTENDANCE & TIMESHEET
       if (activeTab === "timesheet") {
+        const dayNames = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+        const monthlyAudit = [];
+        
+        for (let d = 11; d >= 1; d--) {
+          const dateStr = `2026-11-${String(d).padStart(2, '0')}`;
+          const dt = new Date(2026, 10, d);
+          const dayName = dayNames[dt.getDay()];
+          const isSunday = (dt.getDay() === 0);
+          const isToday = (d === 11);
+
+          const entry = (state.timesheets || []).find(t => t.empId === emp.id && t.date === dateStr);
+          const leave = (myLeaves || []).find(l => l.startDate <= dateStr && l.endDate >= dateStr);
+
+          monthlyAudit.push({
+            dateStr,
+            dayName,
+            isSunday,
+            isToday,
+            entry,
+            leave
+          });
+        }
+
+        const totalDaysWorked = monthlyAudit.filter(m => m.entry && m.entry.hours > 0).length;
+        const missingDays = monthlyAudit.filter(m => !m.entry && !m.leave && !m.isSunday);
+        const missingCount = missingDays.length;
+
         return `
           ${adminPreviewBar}
           ${phoneToolHeader}
           ${subNavBar}
           ${inactivityAlertHtml}
 
-          <!-- Attendance KPI Cards -->
-          <div class="grid grid-cols-1 md:grid-cols-3 gap-3 mb-4">
-            <div class="glass-card rounded-xl p-3 border-l-4 border-orange-500">
-              <div class="text-xs text-slate-400 font-semibold">Days Came This Month</div>
-              <div class="text-2xl font-extrabold text-white mt-1">${stats.workedDays} Days</div>
-              <div class="text-[11px] text-slate-400 mt-0.5">${stats.paidSundays} Paid Sundays accrued</div>
+          <!-- Attendance KPI Summary Cards -->
+          <div class="grid grid-cols-1 md:grid-cols-4 gap-3 mb-4">
+            <div class="glass-card rounded-xl p-3 border-l-4 border-emerald-500">
+              <div class="text-xs text-slate-400 font-semibold">Days Worked This Month</div>
+              <div class="text-2xl font-extrabold text-white mt-1">${totalDaysWorked} Days</div>
+              <div class="text-[11px] text-emerald-400 mt-0.5">${stats.effectiveDaysFromHours} days of 8h standard work</div>
             </div>
             <div class="glass-card rounded-xl p-3 border-l-4 border-sky-500">
               <div class="text-xs text-slate-400 font-semibold">Total Working Hours</div>
               <div class="text-2xl font-extrabold text-white mt-1">${stats.totalHours} Hours</div>
-              <div class="text-[11px] text-sky-400 mt-0.5">${stats.effectiveDaysFromHours} Days of 8h standard work</div>
+              <div class="text-[11px] text-slate-400 mt-0.5">Accrued: ${fmtINR(stats.accruedSalarySoFar)}</div>
             </div>
-            <div class="glass-card rounded-xl p-3 border-l-4 border-emerald-500">
-              <div class="text-xs text-slate-400 font-semibold">Timesheet Status</div>
-              <div class="text-2xl font-extrabold ${stats.submittedToday ? 'text-emerald-400' : 'text-amber-400'} mt-1">
-                ${stats.submittedToday ? '✅ Logged' : '⚠️ Pending'}
+            <div class="glass-card rounded-xl p-3 border-l-4 ${missingCount > 0 ? 'border-rose-500' : 'border-emerald-500'}">
+              <div class="text-xs text-slate-400 font-semibold">Missing Timesheet Days</div>
+              <div class="text-2xl font-extrabold ${missingCount > 0 ? 'text-rose-400' : 'text-emerald-400'} mt-1">
+                ${missingCount} Day${missingCount === 1 ? '' : 's'}
               </div>
-              <div class="text-[11px] text-slate-400 mt-0.5">${stats.submittedToday ? 'Today is recorded' : 'Log yesterday & today'}</div>
+              <div class="text-[11px] text-slate-400 mt-0.5">${missingCount > 0 ? 'Action required below' : 'All weekdays accounted for'}</div>
+            </div>
+            <div class="glass-card rounded-xl p-3 border-l-4 border-orange-500">
+              <div class="text-xs text-slate-400 font-semibold">Sundays / Off Days</div>
+              <div class="text-2xl font-extrabold text-white mt-1">2 Sundays</div>
+              <div class="text-[11px] text-orange-400 mt-0.5">Paid Weekly Rest Days</div>
             </div>
           </div>
 
-          <!-- Timesheet Submission Card -->
+          <!-- MISSING TIMESHEET ALERT BOX (IF ANY WORKING DAY IS UNACCOUNTED FOR) -->
+          ${missingCount > 0 ? `
+            <div class="glass-card rounded-2xl p-4 mb-4 border-2 border-rose-500/80 bg-gradient-to-r from-rose-950/60 via-slate-900 to-slate-900 shadow-xl">
+              <div class="flex items-center gap-3">
+                <span class="text-2xl p-2 rounded-xl bg-rose-500/20 border border-rose-500/40">⚠️</span>
+                <div>
+                  <div class="text-xs font-black uppercase tracking-wider text-rose-400">Action Required: ${missingCount} Day(s) Without Timesheet Log</div>
+                  <div class="text-xs text-slate-300 mt-0.5">
+                    You have not submitted work hours for: <strong class="text-rose-300">${missingDays.map(m => m.dateStr + ' (' + m.dayName + ')').join(', ')}</strong>. 
+                    Please either click <strong>[+ Log Hours]</strong> to record what you worked, or <strong>[Mark Leave]</strong> if you were absent.
+                  </div>
+                </div>
+              </div>
+            </div>
+          ` : ''}
+
+          <!-- DAILY ATTENDANCE & TIMESHEET AUDIT (DAY-BY-DAY NOVEMBER 2026) -->
           <div class="glass-card rounded-2xl p-4 mb-4 border border-slate-800">
             <div class="flex items-center justify-between mb-3 flex-wrap gap-2">
               <div>
-                <h3 class="text-sm font-bold text-white">Log Work &amp; Timesheet</h3>
-                <p class="text-xs text-slate-400">${emp.role} &bull; ${emp.id} &bull; 8 Hours = 1 Full Working Day</p>
+                <h3 class="text-sm font-bold text-white">Daily Attendance &amp; Timesheet Audit — November 2026</h3>
+                <p class="text-xs text-slate-400">Comprehensive daily breakdown showing working hours, weekly rest, leaves, and missing entries.</p>
               </div>
-              <div class="text-xs text-slate-300">
-                Expected Salary So Far: <strong class="text-white">${fmtINR(stats.accruedSalarySoFar)}</strong>
-              </div>
+              <button onclick="openQuickTimesheetModal('${emp.id}', '2026-11-11')" class="brand-grad text-white text-xs font-bold px-3 py-1.5 rounded-lg shadow cursor-pointer">
+                + Log Today's Timesheet
+              </button>
             </div>
 
-            <div class="grid grid-cols-2 md:grid-cols-5 gap-2.5 pt-3 border-t border-slate-800 items-end">
-              <div>
-                <label class="block text-[11px] text-slate-400 mb-1">Date</label>
-                <input type="date" id="tsDate" value="2026-11-09" class="w-full bg-slate-800 border border-slate-700 rounded-lg px-2.5 py-2 text-xs text-white" />
-              </div>
-              <div>
-                <label class="block text-[11px] text-slate-400 mb-1">Entry Time</label>
-                <input type="time" id="tsEntry" value="10:00" class="w-full bg-slate-800 border border-slate-700 rounded-lg px-2.5 py-2 text-xs text-white" />
-              </div>
-              <div>
-                <label class="block text-[11px] text-slate-400 mb-1">Exit Time</label>
-                <input type="time" id="tsExit" value="19:00" class="w-full bg-slate-800 border border-slate-700 rounded-lg px-2.5 py-2 text-xs text-white" />
-              </div>
-              <div class="col-span-2 md:col-span-1">
-                <label class="block text-[11px] text-slate-400 mb-1">Summary / Work</label>
-                <input type="text" id="tsSummary" placeholder="Completed video audit..." class="w-full bg-slate-800 border border-slate-700 rounded-lg px-2.5 py-2 text-xs text-white" />
-                <input type="hidden" id="tsLink" value="" />
-              </div>
-              <div class="col-span-2 md:col-span-1">
-                <button onclick="submitStaffTimesheet('${emp.id}')" class="w-full brand-grad text-white font-bold text-xs py-2 rounded-lg cursor-pointer shadow">
-                  Submit Timesheet
-                </button>
-              </div>
-            </div>
-          </div>
-
-          <!-- Attendance Log Table -->
-          <div class="glass-card rounded-2xl p-4 mb-4 border border-slate-800">
-            <h3 class="text-sm font-bold text-white mb-3">Attendance Log — November 2026</h3>
             <div class="overflow-x-auto">
               <table class="w-full text-left border-collapse text-xs">
                 <thead>
-                  <tr class="border-b border-slate-800 text-slate-400">
-                    <th class="py-2 px-2">Date</th>
-                    <th class="py-2 px-2">Time</th>
-                    <th class="py-2 px-2">Hours</th>
-                    <th class="py-2 px-2">Summary</th>
+                  <tr class="border-b border-slate-800 text-slate-400 uppercase tracking-wider text-[10px]">
+                    <th class="py-2.5 px-3">Date &amp; Day</th>
+                    <th class="py-2.5 px-3">Time In / Out</th>
+                    <th class="py-2.5 px-3">Hours</th>
+                    <th class="py-2.5 px-3">Status &amp; Work Summary</th>
+                    <th class="py-2.5 px-3 text-right">Actions</th>
                   </tr>
                 </thead>
                 <tbody class="divide-y divide-slate-800/60">
-                  ${stats.entries.map(e => `
-                    <tr>
-                      <td class="py-2.5 px-2 font-semibold text-white">${e.date}</td>
-                      <td class="py-2.5 px-2 font-mono text-slate-300">${e.entryTime} – ${e.exitTime}</td>
-                      <td class="py-2.5 px-2 font-bold text-white">${e.hours}h</td>
-                      <td class="py-2.5 px-2 text-slate-300">${e.summary}</td>
-                    </tr>
-                  `).join("")}
+                  ${monthlyAudit.map(row => {
+                    const isWorked = row.entry && row.entry.hours > 0;
+                    const isMissing = !row.entry && !row.leave && !row.isSunday;
+
+                    return `
+                      <tr class="${row.isToday ? 'bg-orange-500/10' : (isMissing ? 'bg-rose-950/20' : '')}">
+                        <td class="py-3 px-3 whitespace-nowrap">
+                          <div class="font-bold text-white flex items-center gap-1.5">
+                            <span>${row.dateStr}</span>
+                            <span class="text-slate-400 font-normal">(${row.dayName})</span>
+                            ${row.isToday ? '<span class="text-[9px] bg-orange-500 text-white font-black px-1.5 py-0.5 rounded">TODAY</span>' : ''}
+                          </div>
+                        </td>
+                        <td class="py-3 px-3 whitespace-nowrap font-mono text-slate-300">
+                          ${isWorked ? (row.entry.entryTime + ' – ' + row.entry.exitTime) : (row.isSunday ? 'Weekly Rest' : (row.leave ? 'Full Day Leave' : '—'))}
+                        </td>
+                        <td class="py-3 px-3 whitespace-nowrap font-bold ${isWorked ? 'text-white' : 'text-slate-500'}">
+                          ${isWorked ? (row.entry.hours + ' hrs') : '0.0 hrs'}
+                        </td>
+                        <td class="py-3 px-3">
+                          ${isWorked ? `
+                            <div class="flex items-center gap-2">
+                              <span class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 whitespace-nowrap">
+                                🟢 Present
+                              </span>
+                              <span class="text-slate-300 truncate max-w-xs">${row.entry.summary || 'Engineering and daily operations'}</span>
+                            </div>
+                          ` : (row.leave ? `
+                            <div class="flex items-center gap-2">
+                              <span class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-sky-500/20 text-sky-400 border border-sky-500/30 whitespace-nowrap">
+                                🏖️ ${row.leave.leaveType}
+                              </span>
+                              <span class="text-slate-400">${row.leave.reason || 'Approved leave record'}</span>
+                            </div>
+                          ` : (row.isSunday ? `
+                            <div class="flex items-center gap-2">
+                              <span class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-amber-500/20 text-amber-300 border border-amber-500/30 whitespace-nowrap">
+                                🌴 Sunday Off
+                              </span>
+                              <span class="text-slate-400">Scheduled Weekly Rest Day (Accrued)</span>
+                            </div>
+                          ` : `
+                            <div class="flex items-center gap-2">
+                              <span class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-rose-500/20 text-rose-400 border border-rose-500/30 whitespace-nowrap">
+                                🔴 Missing Timesheet
+                              </span>
+                              <span class="text-rose-300 font-semibold">No work log recorded</span>
+                            </div>
+                          `))}
+                        </td>
+                        <td class="py-3 px-3 text-right whitespace-nowrap">
+                          ${isWorked ? `
+                            <button onclick="openQuickTimesheetModal('${emp.id}', '${row.dateStr}')" class="text-[11px] font-semibold px-2 py-1 rounded bg-slate-800 border border-slate-700 text-slate-300 hover:text-white cursor-pointer" title="Edit Log">
+                              ✏️ Edit
+                            </button>
+                          ` : (isMissing ? `
+                            <button onclick="openQuickTimesheetModal('${emp.id}', '${row.dateStr}')" class="brand-grad text-white text-[11px] font-bold px-2.5 py-1 rounded-lg shadow cursor-pointer mr-1">
+                              ➕ Log Hours
+                            </button>
+                            <button onclick="markDayAsLeave('${emp.id}', '${row.dateStr}')" class="bg-slate-800 hover:bg-slate-700 border border-slate-700 text-slate-300 text-[11px] font-semibold px-2 py-1 rounded-lg cursor-pointer">
+                              🏖️ Mark Leave
+                            </button>
+                          ` : (row.isSunday ? `
+                            <button onclick="openQuickTimesheetModal('${emp.id}', '${row.dateStr}')" class="text-[10px] font-semibold px-2 py-1 rounded bg-slate-800 border border-slate-700 text-orange-400 hover:text-orange-300 cursor-pointer">
+                              + Sunday Extra
+                            </button>
+                          ` : ''))}
+                        </td>
+                      </tr>
+                    `;
+                  }).join('')}
                 </tbody>
               </table>
             </div>
           </div>
 
-          <!-- My Leave Applications -->
+          <!-- Leave Applications Card -->
           <div class="glass-card rounded-2xl p-4 border border-slate-800">
             <div class="flex items-center justify-between gap-2 mb-3 flex-wrap">
               <div>
-                <h3 class="text-sm font-bold text-white">Leave Applications (${myLeaves.length})</h3>
+                <h3 class="text-sm font-bold text-white">Leave Applications &amp; Comp-Off Requests (${myLeaves.length})</h3>
                 <p class="text-xs text-slate-400">Track real-time approval status from Aaruni Tech administration.</p>
               </div>
               <button onclick="openApplyLeaveModal('${emp.id}')" class="brand-grad text-white text-xs font-bold px-3 py-1.5 rounded-lg shadow cursor-pointer">
@@ -2010,7 +2079,6 @@
         `;
       }
 
-      // 7. TAB VIEW 3: SALARY & COMPENSATION (CONFIDENTIAL DETAILS)
       if (activeTab === "salary") {
         return `
           ${adminPreviewBar}
@@ -2310,6 +2378,41 @@
           ${adminPreviewBar}
           ${phoneToolHeader}
           ${subNavBar}
+
+          <!-- 🏦 Verified Bank & Government Identity Verification Card -->
+          <div class="glass-card rounded-2xl p-4 mb-4 border border-slate-800">
+            <div class="flex items-center justify-between mb-3 flex-wrap gap-2">
+              <div class="text-xs font-bold text-white uppercase tracking-wider flex items-center gap-2">
+                <span>🏦 Verified Banking &amp; Government Identity Dossier</span>
+                <span class="bg-emerald-500/20 text-emerald-400 text-[10px] font-bold px-2 py-0.5 rounded border border-emerald-500/30">Verified Active</span>
+              </div>
+              <button onclick="previewIDCard('${emp.id}')" class="brand-grad text-white text-xs font-bold px-3 py-1.5 rounded-lg shadow cursor-pointer">
+                🪪 View Official ID Badge
+              </button>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-3 text-xs">
+              <div class="p-3 rounded-xl bg-slate-900/60 border border-slate-800">
+                <div class="text-slate-400 text-[11px]">Primary Bank:</div>
+                <div class="font-bold text-white text-sm mt-0.5">Axis Bank Ltd</div>
+                <div class="text-[10px] text-slate-400 mt-1">Direct NEFT/RTGS salary channel</div>
+              </div>
+              <div class="p-3 rounded-xl bg-slate-900/60 border border-slate-800">
+                <div class="text-slate-400 text-[11px]">Salary Account Number:</div>
+                <div class="font-mono font-bold text-white text-sm mt-0.5">${state.salariesMasked ? '••••••••••••3409' : (emp.bankAccount || '924010057263409')}</div>
+                <div class="text-[10px] text-emerald-400 mt-1">Verified Salary Channel</div>
+              </div>
+              <div class="p-3 rounded-xl bg-slate-900/60 border border-slate-800">
+                <div class="text-slate-400 text-[11px]">IFSC Code:</div>
+                <div class="font-mono font-bold text-white text-sm mt-0.5">${emp.ifsc || 'UTIB0002057'}</div>
+                <div class="text-[10px] text-slate-400 mt-1">Beeramguda Branch</div>
+              </div>
+              <div class="p-3 rounded-xl bg-slate-900/60 border border-slate-800">
+                <div class="text-slate-400 text-[11px]">Tax / PAN Status:</div>
+                <div class="font-bold text-white text-sm mt-0.5">PAN Verified</div>
+                <div class="text-[10px] text-emerald-400 mt-1">Section 72 &bull; ₹0 TDS Slab</div>
+              </div>
+            </div>
+          </div>
 
           <div class="glass-card rounded-2xl p-4 border border-slate-800">
             <h2 class="text-sm font-bold text-white mb-3">Self-Service Official Documents &amp; Certificates</h2>
@@ -2862,13 +2965,19 @@
       return adminNextPayrollCard;
     }
 
-    function submitStaffTimesheet(empId) {
+    function submitStaffTimesheet(empId, customDate, customIn, customOut, customSummary) {
       const emp = state.employees.find(e => e.id === empId);
-      const dt = document.getElementById("tsDate").value;
-      const inT = document.getElementById("tsIn").value;
-      const outT = document.getElementById("tsOut").value;
-      const summary = document.getElementById("tsSummary").value.trim() || "Daily engineering & content tasks";
-      const link = document.getElementById("tsLink").value.trim() || "Mobile PWA";
+      const dtEl = document.getElementById("tsDate");
+      const inEl = document.getElementById("tsIn") || document.getElementById("tsEntry");
+      const outEl = document.getElementById("tsOut") || document.getElementById("tsExit");
+      const sumEl = document.getElementById("tsSummary");
+      const linkEl = document.getElementById("tsLink");
+
+      const dt = customDate || (dtEl ? dtEl.value : "2026-11-11");
+      const inT = customIn || (inEl ? inEl.value : "10:00");
+      const outT = customOut || (outEl ? outEl.value : "19:00");
+      const summary = (customSummary || (sumEl ? sumEl.value.trim() : "")) || "Engineering, video production & daily operations tasks";
+      const link = (linkEl ? linkEl.value.trim() : "") || "Direct Timesheet";
       const hrs = calcHoursBetween(inT, outT);
 
       state.timesheets = state.timesheets.filter(t => !(t.empId === empId && t.date === dt));
@@ -2882,10 +2991,77 @@
         status: "Worked",
         summary,
         taskLink: link,
-        source: "Mobile PWA (Entry/Exit)"
+        source: "Staff Portal Entry"
       });
       saveState();
-      showToast("✅ Timesheet Logged & Synced!", `${emp.name}: ${hrs} hrs (${inT} → ${outT}) recorded for ${dt}. Evening 6–9 PM reminders stopped for today.`);
+      showToast("✅ Timesheet Recorded!", `${emp.name}: ${hrs} hrs (${inT} → ${outT}) logged for ${dt}.`);
+      closeModal();
+      renderApp();
+    }
+
+    function openQuickTimesheetModal(empId, dateStr) {
+      const emp = state.employees.find(e => e.id === empId);
+      const existing = state.timesheets.find(t => t.empId === empId && t.date === dateStr);
+      const inTime = existing ? existing.entryTime : "10:00";
+      const outTime = existing ? existing.exitTime : "19:00";
+      const summary = existing ? existing.summary : "";
+
+      const html = `
+        <div style="font-family:'Inter',sans-serif;color:#0f172a;max-width:440px;margin:0 auto;">
+          <div style="background:#090D16;color:#ffffff;padding:16px;border-radius:14px;border:1px solid #1e293b;margin-bottom:14px;">
+            <div style="font-size:11px;font-weight:800;color:#FE5F01;text-transform:uppercase;letter-spacing:0.05em;">Log Timesheet for Date</div>
+            <div style="font-size:16px;font-weight:800;margin-top:2px;">${emp.name} &bull; ${dateStr}</div>
+            <div style="font-size:11px;color:#94a3b8;margin-top:2px;">Standard Work Day: 8.0 Hours</div>
+          </div>
+
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px;">
+            <div>
+              <label style="display:block;font-size:11px;font-weight:700;color:#475569;margin-bottom:4px;">Check-In Time</label>
+              <input type="time" id="modalTsIn" value="${inTime}" style="width:100%;padding:8px 10px;border:1px solid #cbd5e1;border-radius:8px;font-size:12px;font-weight:600;" />
+            </div>
+            <div>
+              <label style="display:block;font-size:11px;font-weight:700;color:#475569;margin-bottom:4px;">Check-Out Time</label>
+              <input type="time" id="modalTsOut" value="${outTime}" style="width:100%;padding:8px 10px;border:1px solid #cbd5e1;border-radius:8px;font-size:12px;font-weight:600;" />
+            </div>
+          </div>
+
+          <div style="margin-bottom:14px;">
+            <label style="display:block;font-size:11px;font-weight:700;color:#475569;margin-bottom:4px;">Work Completed / Summary</label>
+            <textarea id="modalTsSummary" placeholder="Completed Coursera lab recording, slide revisions..." style="width:100%;padding:8px 10px;border:1px solid #cbd5e1;border-radius:8px;font-size:12px;font-family:inherit;height:70px;">${summary}</textarea>
+          </div>
+
+          <div style="display:flex;gap:8px;">
+            <button onclick="submitStaffTimesheet('${empId}', '${dateStr}', document.getElementById('modalTsIn').value, document.getElementById('modalTsOut').value, document.getElementById('modalTsSummary').value)" style="flex:1;background:linear-gradient(135deg,#FE5F01,#EA580C);color:#fff;font-weight:800;font-size:12px;padding:10px;border-radius:8px;border:none;cursor:pointer;box-shadow:0 4px 12px rgba(254,95,1,0.3);">
+              💾 Save &amp; Log Timesheet
+            </button>
+            <button onclick="closeModal()" style="background:#f1f5f9;color:#475569;font-weight:700;font-size:12px;padding:10px 16px;border-radius:8px;border:1px solid #cbd5e1;cursor:pointer;">
+              Cancel
+            </button>
+          </div>
+        </div>
+      `;
+      openModalWithHTML(`⏱️ Log Timesheet — ${dateStr}`, html);
+    }
+
+    function markDayAsLeave(empId, dateStr) {
+      const emp = state.employees.find(e => e.id === empId);
+      if (!state.leaveRequests) state.leaveRequests = [];
+      
+      const newLeave = {
+        id: "LV-" + Date.now().toString().slice(-6),
+        empId: empId,
+        leaveType: "Casual Leave",
+        startDate: dateStr,
+        endDate: dateStr,
+        days: 1,
+        reason: "Planned day off / Recorded absence",
+        status: "Approved",
+        appliedOn: "2026-11-11"
+      };
+
+      state.leaveRequests.unshift(newLeave);
+      saveState();
+      showToast("🏖️ Marked as Leave", `${emp.name}: ${dateStr} marked as Casual Leave (Approved).`);
       renderApp();
     }
 
@@ -5154,13 +5330,27 @@ function updateQrBaseUrl(val) {
       try {
         const params = new URLSearchParams(window.location.search);
         const empParam = params.get("emp") || params.get("login");
+        const simParam = params.get("sim") || params.get("mobile");
+        const tabParam = params.get("tab");
+        const isSim = (simParam === "1" || simParam === "true");
         if (!empParam) return;
         const clean = empParam.trim().toUpperCase();
-        if (clean === "ADMIN" || clean === "AAR-0002" || clean === "AAR-0001") {
+        if (clean === "ADMIN") {
           switchPersona("ADMIN");
         } else {
-          const found = state.employees.find(e => e.id.toUpperCase() === clean);
-          if (found) switchPersona(found.id);
+          const numOnly = parseInt(clean.replace(/[^0-9]/g, ""), 10);
+          const found = state.employees.find(e => {
+            const eId = e.id.toUpperCase();
+            const eNum = parseInt(eId.replace(/[^0-9]/g, ""), 10);
+            return eId === clean || 
+                   eId.replace("AAR-", "") === clean || 
+                   (!isNaN(numOnly) && !isNaN(eNum) && numOnly === eNum) ||
+                   (e.zohoId && e.zohoId.toUpperCase() === clean);
+          });
+          if (found) {
+            switchPersona(found.id, true, isSim);
+            if (tabParam) state.activeTab = tabParam;
+          }
         }
       } catch (e) {}
     }
@@ -5393,44 +5583,33 @@ function openHolidayCalendarModal() {
 
       return `
         <div class="mobile-simulator-wrapper max-w-4xl mx-auto py-2">
-          <!-- Top Impersonation Workbench Bar (always outside phone frame for easy navigation) -->
+          <!-- Top Impersonation Workbench Bar (Clean & Compact — Zero Horizontal Scrollbar) -->
           ${state.isAdminPreviewing ? `
-            <div class="glass-card rounded-2xl p-3.5 mb-4 bg-gradient-to-r from-orange-950/60 via-slate-900 to-slate-900 border-2 border-orange-500/80 shadow-xl">
-              <div class="flex items-center justify-between gap-3 flex-wrap border-b border-orange-500/30 pb-2.5 mb-2.5">
-                <div class="flex items-center gap-2.5">
-                  <span class="text-xl p-1.5 rounded-lg bg-orange-500/20 border border-orange-500/40">📱</span>
-                  <div>
-                    <div class="flex items-center gap-2">
-                      <span class="text-xs font-black uppercase tracking-wider text-orange-400">Mobile App Simulator (390 × 844)</span>
-                      <span class="text-[10px] px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 font-bold border border-emerald-500/40">Android APK Preview</span>
-                    </div>
-                    <div class="text-xs text-slate-300 mt-0.5">
-                      Testing mobile app as <strong>${emp.name}</strong> (<span class="font-mono text-orange-300 font-bold">${emp.id}</span>) &bull; <span class="text-slate-400">${emp.role || 'Staff Member'}</span>
-                    </div>
+            <div class="glass-card rounded-2xl p-3.5 mb-4 bg-gradient-to-r from-orange-950/60 via-slate-900 to-slate-900 border-2 border-orange-500/80 shadow-xl flex items-center justify-between gap-3 flex-wrap">
+              <div class="flex items-center gap-2.5">
+                <span class="text-xl p-1.5 rounded-lg bg-orange-500/20 border border-orange-500/40">📱</span>
+                <div>
+                  <div class="flex items-center gap-2">
+                    <span class="text-xs font-black uppercase tracking-wider text-orange-400">Mobile App Simulator (390 × 844)</span>
+                    <span class="text-[10px] px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 font-bold border border-emerald-500/40">Android APK Preview</span>
                   </div>
-                </div>
-                <div class="flex items-center gap-2 flex-wrap">
-                  <div class="inline-flex rounded-xl bg-slate-950 p-1 border border-slate-700 shadow-inner">
-                    <button onclick="toggleMobileSimulator(false)" class="text-xs px-3 py-1 rounded-lg font-bold text-slate-400 hover:text-white transition-all cursor-pointer">
-                      🖥️ Desktop Web View
-                    </button>
-                    <button onclick="toggleMobileSimulator(true)" class="text-xs px-3 py-1 rounded-lg font-bold brand-grad text-white shadow transition-all cursor-pointer">
-                      📱 Mobile App (390px)
-                    </button>
+                  <div class="text-xs text-slate-300 mt-0.5">
+                    Testing mobile app as <strong>${emp.name}</strong> (<span class="font-mono text-orange-300 font-bold">${emp.id}</span>) &bull; <span class="text-slate-400">${emp.role || 'Staff Member'}</span>
                   </div>
-                  <button onclick="switchPersona('ADMIN', false)" class="brand-grad text-white text-xs font-bold px-3 py-1.5 rounded-xl shadow cursor-pointer hover:opacity-90">
-                    ← Exit to Admin Console
-                  </button>
                 </div>
               </div>
-              <!-- Quick Staff Switcher Chips -->
-              <div class="flex items-center gap-1.5 overflow-x-auto hide-scroll pt-0.5">
-                <span class="text-[10px] font-bold uppercase tracking-wider text-slate-400 whitespace-nowrap mr-1">Switch Staff:</span>
-                ${state.employees.filter(e => e.id !== 'ADMIN').map(e => `
-                  <button onclick="switchPersona('${e.id}', true, true)" class="text-[11px] font-medium px-2.5 py-1 rounded-lg border transition-all cursor-pointer whitespace-nowrap ${e.id === emp.id ? 'brand-grad text-white font-bold border-orange-400 shadow' : 'bg-slate-900/80 border-slate-800 text-slate-300 hover:text-white hover:border-slate-700'}">
-                    ${e.id === '001' ? '👑' : (e.id === '002' ? '⭐' : (e.id === 'AAR-0008' ? '🛡️' : '👩‍💼'))} ${e.name.split(' ')[0]} <span class="font-mono opacity-70 text-[10px]">(${e.id.replace('AAR-', '')})</span>
+              <div class="flex items-center gap-2 flex-wrap">
+                <div class="inline-flex rounded-xl bg-slate-950 p-1 border border-slate-700 shadow-inner">
+                  <button onclick="toggleMobileSimulator(false)" class="text-xs px-3 py-1 rounded-lg font-bold text-slate-400 hover:text-white transition-all cursor-pointer">
+                    🖥️ Desktop View
                   </button>
-                `).join('')}
+                  <button onclick="toggleMobileSimulator(true)" class="text-xs px-3 py-1 rounded-lg font-bold brand-grad text-white shadow transition-all cursor-pointer">
+                    📱 Mobile App (390px)
+                  </button>
+                </div>
+                <button onclick="switchPersona('ADMIN', false)" class="brand-grad text-white text-xs font-bold px-3 py-1.5 rounded-xl shadow cursor-pointer hover:opacity-90">
+                  ← Exit to Admin Console
+                </button>
               </div>
             </div>
           ` : ''}
