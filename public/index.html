@@ -6581,7 +6581,7 @@ body {
     // ============================================================================
     // 8. ISO-18004 PURE-JS QR CODE SVG GENERATOR + MOBILE LOGIN & ANDROID HUB
     // ============================================================================
-    state.baseAppUrl = "https://my.aaruni.in";
+    state.baseAppUrl = (typeof window !== 'undefined' && window.location.origin && !window.location.origin.includes('file:')) ? window.location.origin : "https://my.aarunitech.com";
     state.selectedQrTarget = "MAIN";
 
     function getStaffPassword(emp) {
