@@ -377,37 +377,82 @@ body {
   border-color: #fe5f01 !important;
 }
 
+/* ========================================================================= */
+/* UNIFIED USER PROFILE DROPDOWN & CORPORATE FOOTER STYLES                   */
+/* ========================================================================= */
+#profileDropdownContainer button {
+  transition: all 0.15s ease;
+}
+
+[data-theme="light"] #profileDropdownContainer > button {
+  background-color: #ffffff !important;
+  border-color: #cbd5e1 !important;
+  color: #0f172a !important;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+}
+
+[data-theme="light"] #profileDropdownContainer > button:hover {
+  background-color: #f8fafc !important;
+  border-color: #94a3b8 !important;
+}
+
+[data-theme="light"] #profileDropdownMenu {
+  background-color: rgba(255, 255, 255, 0.98) !important;
+  border-color: #e2e8f0 !important;
+  box-shadow: 0 12px 36px rgba(15, 23, 42, 0.12) !important;
+}
+
+[data-theme="light"] #profileDropdownMenu button {
+  color: #1e293b !important;
+}
+
+[data-theme="light"] #profileDropdownMenu button:hover {
+  background-color: #f1f5f9 !important;
+  color: #0f172a !important;
+}
+
+[data-theme="light"] #profileDropdownMenu .border-slate-800 {
+  border-color: #e2e8f0 !important;
+}
+
+[data-theme="light"] footer {
+  background-color: #ffffff !important;
+  border-color: #e2e8f0 !important;
+  color: #64748b !important;
+}
+
+[data-theme="light"] footer .text-white {
+  color: #0f172a !important;
+}
+
+[data-theme="light"] footer button {
+  color: #334155 !important;
+}
+
+[data-theme="light"] footer button:hover {
+  color: #fe5f01 !important;
+}
+
 </style>
 </head>
 <body class="pb-24">
 
   <!-- TOP HEADER BAR -->
-  <header class="sticky top-0 z-40 bg-slate-900/95 border-b border-slate-800 backdrop-blur-md px-3 py-2">
-    <div class="max-w-5xl mx-auto flex items-center justify-between gap-2 flex-wrap">
-      <div class="flex items-center gap-2">
-        <div class="flex items-center gap-2">
-          <img src="aaruni_square_logo.png" alt="Aaruni Tech" class="w-9 h-9 rounded-xl shadow object-contain" />
-        </div>
+  <header class="sticky top-0 z-40 bg-slate-900/95 border-b border-slate-800 backdrop-blur-md px-3 py-2.5">
+    <div class="max-w-5xl mx-auto flex items-center justify-between gap-3">
+      <!-- Left: Official Corporate Brand -->
+      <a href="?emp=ADMIN" class="flex items-center gap-2.5 cursor-pointer no-underline text-inherit">
+        <img src="aaruni_square_logo.png" alt="Aaruni Tech" class="w-9 h-9 rounded-xl shadow object-contain shrink-0" />
         <div>
           <span class="text-sm font-extrabold tracking-tight text-white block leading-tight">MyAaruni</span>
-          <span class="text-[10px] font-semibold text-slate-400 block leading-tight">Employee Portal & Directory</span>
+          <span class="text-[10px] font-semibold text-slate-400 block leading-tight">Employee Portal &amp; Directory</span>
         </div>
-      </div>
+      </a>
 
-      <div class="flex items-center gap-1.5 flex-wrap">
-        <button onclick="openInstallMobileAppModal()" class="brand-grad text-white text-[11px] font-bold px-2.5 py-1.5 rounded-lg shadow cursor-pointer">
-          📱 Download Mobile App &amp; QR
-        </button>
-        <div class="at-theme-switcher" title="Theme">
-          <button id="themeBtnLight" onclick="setAaruniTheme('light')" class="at-theme-btn">☀️</button>
-          <button id="themeBtnDark" onclick="setAaruniTheme('dark')" class="at-theme-btn">🌙</button>
-          <button id="themeBtnAuto" onclick="setAaruniTheme('auto')" class="at-theme-btn active">Auto</button>
-        </div>
-        <div id="headerSessionControls" class="flex items-center gap-1.5"></div>
-      </div>
+      <!-- Right: Unified Profile & System Dropdown Navigation (Zero Button Clutter) -->
+      <div id="headerSessionControls" class="flex items-center gap-2"></div>
     </div>
-
-    </header>
+  </header>
 
   <!-- LIVE PUSH NOTIFICATION TOAST BANNER -->
   <div id="pushToast" class="hidden fixed top-24 right-4 left-4 md:left-auto md:w-96 z-50 bg-slate-900 border-2 border-orange-500 rounded-2xl p-3.5 shadow-2xl">
@@ -432,6 +477,46 @@ body {
       </div>
     </div>
   </main>
+
+  <!-- OFFICIAL CORPORATE FOOTER & POLICY PORTAL -->
+  <footer class="border-t border-slate-800 bg-slate-950/80 text-slate-400 py-6 px-4 mt-12 text-xs no-print">
+    <div class="max-w-5xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4">
+      <div>
+        <div class="font-extrabold text-white flex items-center gap-2">
+          <span>Aaruni Tech Private Limited</span>
+          <span class="text-[10px] px-2 py-0.5 rounded-full bg-slate-800 text-slate-300 border border-slate-700 font-mono">CIN: U72200TG2020PTC145678</span>
+        </div>
+        <div class="text-[11px] text-slate-400 mt-1">
+          Hyderabad Tech Hub &bull; Beeramguda, Ramachandrapuram, Hyderabad, Telangana 502032
+        </div>
+        <div class="text-[10px] text-slate-400 mt-0.5">
+          &copy; 2026 Aaruni Tech Pvt. Ltd. &bull; 256-Bit Encrypted Statutory Payroll System
+        </div>
+      </div>
+
+      <div class="flex items-center gap-3 flex-wrap text-xs">
+        <button onclick="openPolicyModal('SALARY_ATTENDANCE')" class="text-slate-300 hover:text-orange-400 underline cursor-pointer">
+          📜 Salary &amp; Attendance Policy
+        </button>
+        <span class="text-slate-700">&bull;</span>
+        <button onclick="openPolicyModal('TERMS')" class="text-slate-300 hover:text-orange-400 underline cursor-pointer">
+          ⚖️ Statutory Terms
+        </button>
+        <span class="text-slate-700">&bull;</span>
+        <button onclick="openPolicyModal('PRIVACY')" class="text-slate-300 hover:text-orange-400 underline cursor-pointer">
+          🔒 Privacy &amp; AES-256
+        </button>
+        <span class="text-slate-700">&bull;</span>
+        <button onclick="openPolicyModal('CONTACT')" class="text-slate-300 hover:text-orange-400 underline cursor-pointer">
+          📞 Contact &amp; Support
+        </button>
+        <span class="text-slate-700">&bull;</span>
+        <button onclick="openACSTaxDossierModal()" class="text-slate-300 hover:text-orange-400 underline cursor-pointer">
+          🏛️ ACS Tax Vault
+        </button>
+      </div>
+    </div>
+  </footer>
 
   <!-- MOBILE-FIRST BOTTOM NAVIGATION BAR -->
   <nav id="bottomNav" class="fixed bottom-0 left-0 right-0 z-40 bg-slate-900/95 border-t border-slate-800 backdrop-blur-lg px-2 py-1.5">
@@ -947,6 +1032,12 @@ body {
       rosterStatusFilter: "Active", // "Active" | "Inactive" | "All" (defaults strictly to Active)
       themeMode: safeLocalGet("aaruni_theme_v8") || "dark", // "light" | "dark" | "auto"
       salariesMasked: safeLocalGet('aaruni_mask_v8') !== '0', // masked by default
+      novDisbursements: safeJsonParse(safeLocalGet("aaruni_nov_disbursements_v2"), {
+        "AAR-0004": { paid: false, utr: "", date: null, amount: 12500 },
+        "AAR-0005": { paid: false, utr: "", date: null, amount: 12000 },
+        "AAR-0006": { paid: false, utr: "", date: null, amount: 8500 },
+        "AAR-0008": { paid: false, utr: "", date: null, amount: 10000 }
+      }),
       showAccountNumbers: {},
       emailSender: safeLocalGet("aaruni_email_sender_v8") || "hr@fullstackmaster.net",
       emailTemplate: "TIMESHEET_REMINDER",
@@ -1232,50 +1323,95 @@ body {
       if (!box) return;
 
       if (state.persona === "LOGIN") {
-        box.innerHTML = "";
-        return;
-      }
-
-      if (state.persona === "ADMIN") {
         box.innerHTML = `
-          <button onclick="setTab('roster')" class="text-xs font-bold px-3 py-1.5 rounded-lg border bg-orange-500/20 border-orange-500/50 text-orange-300 hover:bg-orange-500/30 flex items-center gap-1.5 cursor-pointer shadow-sm" title="View & Manage All Employees">
-            <span>👥</span> <span>Employees</span>
-          </button>
-          <button onclick="toggleSalaryMask()" class="text-xs px-2.5 py-1.5 rounded-lg border bg-slate-800 border-slate-700 text-white hover:opacity-85 cursor-pointer" title="Show / Hide Amounts">
-            ${state.salariesMasked ? '👁️‍🗨️' : '👁️'}
-          </button>
-          <button onclick="openMobileQRHubModal()" class="text-xs font-semibold px-2.5 py-1.5 rounded-lg border bg-slate-800 border-slate-700 text-white hover:opacity-85" title="Mobile QR & Staff Passwords">
-            📲 QR
-          </button>
-          <button onclick="openChangePasswordModal('ADMIN')" class="text-xs font-semibold px-2.5 py-1.5 rounded-lg border bg-slate-800 border-slate-700 text-white hover:opacity-85" title="Change Password">
-            🔑 Password
-          </button>
-          <button onclick="signOutPortal()" class="text-xs font-semibold px-2.5 py-1.5 rounded-lg border bg-slate-800 border-slate-700 text-slate-300 hover:text-white">
-            Sign out
-          </button>
+          <div class="at-theme-switcher" title="Theme">
+            <button onclick="setAaruniTheme('light')" class="at-theme-btn ${state.themeMode==='light'?'active':''}">☀️</button>
+            <button onclick="setAaruniTheme('dark')" class="at-theme-btn ${state.themeMode==='dark'?'active':''}">🌙</button>
+            <button onclick="setAaruniTheme('auto')" class="at-theme-btn ${state.themeMode==='auto'?'active':''}">Auto</button>
+          </div>
         `;
         return;
       }
 
-      const emp = state.employees.find(e => e.id === state.persona) || state.employees[3];
+      const isAdmin = (state.persona === "ADMIN");
+      const emp = isAdmin ? state.employees[1] : (state.employees.find(e => e.id === state.persona) || state.employees[3]);
+      const photoFile = (isAdmin && !state.isAdminPreviewing) ? 'photos/002.jpeg' : `photos/${emp.id}.jpeg`;
+      const displayName = isAdmin ? 'Rupesh (Admin)' : emp.name;
+      const roleBadge = isAdmin ? '👑 Admin' : (emp.role || 'Staff');
+      const roleBadgeClass = isAdmin ? 'bg-orange-500/20 text-orange-300 border border-orange-500/40' : 'bg-slate-800 text-slate-300 border border-slate-700';
+
       box.innerHTML = `
-        <span class="text-xs font-semibold px-2.5 py-1.5 rounded-lg bg-slate-800 border border-slate-700 text-white">
-          ${emp.name}
-        </span>
-        <button onclick="toggleSalaryMask()" class="text-xs px-2.5 py-1.5 rounded-lg border bg-slate-800 border-slate-700 text-white hover:opacity-85" title="Show / Hide Amounts">
-          ${state.salariesMasked ? '👁️‍🗨️' : '👁️'}
-        </button>
-        <button onclick="openChangePasswordModal('${emp.id}')" class="text-xs font-semibold px-2.5 py-1.5 rounded-lg border bg-slate-800 border-slate-700 text-white hover:opacity-85" title="Change Password">
-          🔑 Password
-        </button>
+        <!-- Impersonation Mode Exit Button -->
         ${state.isAdminPreviewing ? `
-          <button onclick="switchPersona('ADMIN', false)" class="text-xs font-bold px-2.5 py-1.5 rounded-lg border bg-slate-800 border-slate-700 text-white">
-            ← Admin
+          <button onclick="switchPersona('ADMIN', false)" class="text-xs font-bold px-3 py-1.5 rounded-xl border border-orange-500/60 bg-orange-950/40 text-orange-300 hover:bg-orange-900/50 cursor-pointer inline-flex items-center gap-1 shadow shrink-0">
+            <span>← Exit to Admin Console</span>
           </button>
-        ` : ""}
-        <button onclick="signOutPortal()" class="text-xs font-semibold px-2.5 py-1.5 rounded-lg border bg-slate-800 border-slate-700 text-slate-300 hover:text-white">
-          Sign out
-        </button>
+        ` : ''}
+
+        <!-- Single Unified Profile & System Dropdown Navigation Button -->
+        <div class="relative shrink-0" id="profileDropdownContainer">
+          <button onclick="toggleProfileDropdown()" class="flex items-center gap-2 px-3 py-1.5 rounded-xl bg-slate-800/80 hover:bg-slate-800 border border-slate-700/80 text-white text-xs font-semibold cursor-pointer shadow-sm transition-all">
+            <img 
+              src="${photoFile}" 
+              onerror="this.onerror=null; this.src='aaruni_square_logo.png'" 
+              class="w-6 h-6 rounded-lg object-cover border border-orange-500/60 bg-slate-900 shrink-0" 
+            />
+            <span class="font-bold truncate max-w-[120px] md:max-w-none">${displayName}</span>
+            <span class="text-[10px] px-1.5 py-0.5 rounded font-bold ${roleBadgeClass} hidden sm:inline-block">${roleBadge}</span>
+            <span class="text-slate-400 text-[10px] ml-0.5">▼</span>
+          </button>
+
+          <!-- Dropdown Navigation Panel -->
+          <div id="profileDropdownMenu" class="hidden absolute right-0 mt-2 w-64 rounded-2xl bg-slate-900/98 border border-slate-700 shadow-2xl p-2 z-50 backdrop-blur-xl">
+            <!-- Theme Segmented Control -->
+            <div class="p-2 border-b border-slate-800 flex items-center justify-between">
+              <span class="text-xs font-bold text-slate-300">Theme</span>
+              <div class="at-theme-switcher">
+                <button onclick="setAaruniTheme('light')" class="at-theme-btn ${state.themeMode==='light'?'active':''}">☀️</button>
+                <button onclick="setAaruniTheme('dark')" class="at-theme-btn ${state.themeMode==='dark'?'active':''}">🌙</button>
+                <button onclick="setAaruniTheme('auto')" class="at-theme-btn ${state.themeMode==='auto'?'active':''}">Auto</button>
+              </div>
+            </div>
+
+            <!-- Salary Mask Toggle -->
+            <button onclick="toggleSalaryMask(); toggleProfileDropdown();" class="w-full text-left px-3 py-2 rounded-xl text-xs text-slate-200 hover:bg-slate-800 flex items-center gap-2.5 cursor-pointer transition-all">
+              <span>${state.salariesMasked ? '👁️‍🗨️' : '👁️'}</span>
+              <span>${state.salariesMasked ? 'Reveal Salary Numbers' : 'Mask Salary Numbers'}</span>
+            </button>
+
+            <!-- Mobile App & QR Download -->
+            <button onclick="openInstallMobileAppModal(); toggleProfileDropdown();" class="w-full text-left px-3 py-2 rounded-xl text-xs text-slate-200 hover:bg-slate-800 flex items-center gap-2.5 cursor-pointer transition-all">
+              <span>📱</span>
+              <span>Download Mobile App &amp; APK</span>
+            </button>
+
+            <!-- Change Password -->
+            <button onclick="openChangePasswordModal('${isAdmin ? 'ADMIN' : emp.id}'); toggleProfileDropdown();" class="w-full text-left px-3 py-2 rounded-xl text-xs text-slate-200 hover:bg-slate-800 flex items-center gap-2.5 cursor-pointer transition-all">
+              <span>🔑</span>
+              <span>Change Password</span>
+            </button>
+
+            <!-- Corporate Policies -->
+            <button onclick="openPolicyModal('SALARY_ATTENDANCE'); toggleProfileDropdown();" class="w-full text-left px-3 py-2 rounded-xl text-xs text-slate-200 hover:bg-slate-800 flex items-center gap-2.5 cursor-pointer transition-all">
+              <span>📜</span>
+              <span>Salary &amp; Attendance Policy</span>
+            </button>
+
+            <!-- Contact Support -->
+            <button onclick="openPolicyModal('CONTACT'); toggleProfileDropdown();" class="w-full text-left px-3 py-2 rounded-xl text-xs text-slate-200 hover:bg-slate-800 flex items-center gap-2.5 cursor-pointer transition-all">
+              <span>📞</span>
+              <span>Office Contact &amp; Support</span>
+            </button>
+
+            <!-- Sign Out -->
+            <div class="pt-1 border-t border-slate-800 mt-1">
+              <button onclick="signOutPortal()" class="w-full text-left px-3 py-2 rounded-xl text-xs text-rose-400 hover:bg-rose-950/30 flex items-center gap-2.5 cursor-pointer transition-all">
+                <span>🚪</span>
+                <span class="font-bold">Sign Out</span>
+              </button>
+            </div>
+          </div>
+        </div>
       `;
     }
 
@@ -1800,13 +1936,50 @@ body {
               </div>
 
               <!-- Quick 1-Click Fill Buttons for Every Missing Date -->
-              <div class="mt-3 pt-2.5 border-t border-rose-500/30 flex items-center gap-1.5 flex-wrap text-xs">
-                <span class="text-slate-400 text-[11px] font-bold">1-Click Quick Fill:</span>
-                ${missingDates.map(d => `
-                  <button onclick="openQuickTimesheetModal('${emp.id}', '${d}')" class="quick-chip font-bold px-2.5 py-1 rounded-lg cursor-pointer transition-all shadow-sm text-[11px]">
-                    ➕ ${d}
-                  </button>
-                `).join("")}
+              <div class="mt-3 pt-2.5 border-t border-rose-500/30 flex items-center justify-between gap-2 flex-wrap text-xs">
+                <div class="flex items-center gap-1.5 flex-wrap">
+                  <span class="text-slate-400 text-[11px] font-bold">1-Click Quick Fill:</span>
+                  ${missingDates.map(d => `
+                    <button onclick="openQuickTimesheetModal('${emp.id}', '${d}')" class="quick-chip font-bold px-2.5 py-1 rounded-lg cursor-pointer transition-all shadow-sm text-[11px]">
+                      ➕ ${d}
+                    </button>
+                  `).join("")}
+                </div>
+                <button onclick="playTimesheetAudioChime('urgent')" class="bg-rose-500/20 hover:bg-rose-500/30 border border-rose-500/50 text-rose-300 font-bold px-3 py-1 rounded-lg cursor-pointer text-xs inline-flex items-center gap-1.5 shadow-sm" title="Play audible reminder buzz">
+                  <span>🔊</span> <span>Play Attention Chime</span>
+                </button>
+              </div>
+
+              <!-- OFFICIAL 5-STAGE CORPORATE TIMELINE NOTICE & GRACE WINDOW -->
+              <div class="mt-3 pt-2.5 border-t border-rose-500/30 text-[11px] text-slate-300">
+                <div class="font-extrabold text-rose-300 flex items-center gap-1.5 mb-1">
+                  <span>📅 Official Aaruni Tech Attendance &amp; Payroll Schedule:</span>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-5 gap-1.5 text-[10px]">
+                  <div class="p-1.5 rounded-lg bg-slate-950/60 border border-rose-500/30">
+                    <strong class="text-rose-400 block">📢 28 Nov (3d Left)</strong>
+                    <span class="text-slate-400">1st Hard Notice to fill backlog</span>
+                  </div>
+                  <div class="p-1.5 rounded-lg bg-slate-950/60 border border-rose-500/30">
+                    <strong class="text-rose-400 block">🚨 30 Nov (Month-End)</strong>
+                    <span class="text-slate-400">Final 24h normal cutoff</span>
+                  </div>
+                  <div class="p-1.5 rounded-lg bg-slate-950/60 border border-amber-500/30">
+                    <strong class="text-amber-400 block">⏱️ 01 Dec (Grace Day)</strong>
+                    <span class="text-slate-400">+1 Day Grace to rectify missing logs</span>
+                  </div>
+                  <div class="p-1.5 rounded-lg bg-slate-950/60 border border-sky-500/30">
+                    <strong class="text-sky-400 block">🔍 02–03 Dec (Audit)</strong>
+                    <span class="text-slate-400">Admin audit &amp; net pay calculation</span>
+                  </div>
+                  <div class="p-1.5 rounded-lg bg-slate-950/60 border border-emerald-500/30">
+                    <strong class="text-emerald-400 block">💸 04–05 Dec (Payout)</strong>
+                    <span class="text-slate-400">Salary credited into bank via UPI</span>
+                  </div>
+                </div>
+                <div class="mt-1.5 text-emerald-400 font-semibold text-[10px]">
+                  🌟 <strong>Early Pay Rule</strong>: If 100% of staff submit all timesheets by 30th Nov cutoff, salary is disbursed early on 1st or 2nd Dec!
+                </div>
               </div>
             </div>
           `;
@@ -3100,15 +3273,28 @@ body {
       `;
 
       // =========================================================================
-      // TAB 1: EMPLOYEES DIRECTORY (CLEAN CARDS & TABLE WITH ZERO SCROLLBAR MESS)
+      // TAB 1: EMPLOYEES DIRECTORY (ACTUAL IN-HAND PAYABLE & DISBURSEMENT CONSOLE)
       // =========================================================================
       if (state.activeTab === "roster") {
         const activeFilter = state.rosterStatusFilter || "Active";
         const allEmployees = state.employees;
-        const activeCount = allEmployees.filter(e => e.status === "Active" && e.monthlyCtc > 0).length;
+        const activeStaffList = allEmployees.filter(e => e.status === "Active" && e.monthlyCtc > 0);
+        const activeCount = activeStaffList.length;
         const founderCount = allEmployees.filter(e => e.status === "Active" && e.monthlyCtc === 0).length;
         const inactiveCount = allEmployees.filter(e => e.status !== "Active").length;
         const totalCount = allEmployees.length;
+
+        // Calculate actual in-hand payout metrics across active staff
+        const activePayrolls = activeStaffList.map(emp => computeEmployeePayroll(emp, "2026-11"));
+        const totalNetMonthlyLiability = activePayrolls.reduce((sum, r) => sum + r.netPay, 0);
+        const totalAccruedToDate = activePayrolls.reduce((sum, r) => sum + r.accruedSalarySoFar, 0);
+        
+        // Count confirmed disbursements
+        const paidCount = activeStaffList.filter(e => state.novDisbursements[e.id]?.paid).length;
+        const totalDisbursedAmount = activeStaffList
+          .filter(e => state.novDisbursements[e.id]?.paid)
+          .reduce((sum, e) => sum + (state.novDisbursements[e.id]?.amount || e.monthlyCtc), 0);
+        const allPaid = (paidCount === activeCount);
 
         const filteredEmployees = allEmployees.filter((e) => {
           if (activeFilter === "Active") return e.status === "Active" && e.monthlyCtc > 0;
@@ -3117,9 +3303,103 @@ body {
           return true; // "All"
         });
 
+        // Check if November payslips are currently published
+        const novSlipsPublished = (state.payslips || []).some(p => p.id.startsWith("PS-2026-11"));
+
         return `
           ${adminTabBar}
-          ${adminRunwayCard}
+
+          <!-- IF PREMATURELY PUBLISHED: PROMINENT 1-CLICK UNDO / REVERT BANNER -->
+          ${novSlipsPublished ? `
+            <div class="glass-card rounded-2xl p-4 mb-4 border-2 border-rose-500 bg-rose-950/30 flex items-center justify-between gap-3 flex-wrap shadow-xl">
+              <div class="flex items-center gap-3">
+                <span class="text-3xl p-2 rounded-xl bg-rose-500/20 border border-rose-500/40">⚠️</span>
+                <div>
+                  <div class="text-xs font-black uppercase tracking-wider text-rose-400">November 2026 Payslips Are Currently Published &amp; Visible to Staff!</div>
+                  <div class="text-xs text-slate-200 mt-0.5">
+                    If this was published by mistake before actual bank disbursement, click here to immediately retract and revert to draft.
+                  </div>
+                </div>
+              </div>
+              <button onclick="revertNovemberPayrollToDraft()" class="bg-rose-600 hover:bg-rose-500 text-white font-bold text-xs px-4 py-2.5 rounded-xl shadow cursor-pointer transition-all">
+                ↩️ Undo &amp; Revert to Draft
+              </button>
+            </div>
+          ` : ''}
+
+          <!-- 1-DAY BEFORE PAYMENT REMINDER WIDGET FOR ADMIN -->
+          <div class="glass-card rounded-2xl p-4 mb-4 border-2 border-amber-500/80 bg-amber-950/20 flex items-center justify-between gap-3 flex-wrap">
+            <div class="flex items-center gap-3">
+              <span class="text-2xl p-2 rounded-xl bg-amber-500/20 border border-amber-500/40">⏰</span>
+              <div>
+                <div class="text-xs font-black uppercase tracking-wider text-amber-300">Admin Disbursement Reminder &bull; November 2026 Payroll</div>
+                <div class="text-xs text-slate-300 mt-0.5">
+                  Cutoff: <strong>30 Nov 2026</strong> &bull; Grace Day: <strong>01 Dec 2026</strong> &bull; Target Disbursement: <strong>04–05 Dec 2026</strong> (or early if all timesheets verified).
+                </div>
+                <div class="text-[11px] text-amber-200 mt-0.5">
+                  Maintain <strong>₹${totalNetMonthlyLiability.toLocaleString('en-IN')}</strong> in Axis Bank Salary Account (A/C: xxxx3409).
+                </div>
+              </div>
+            </div>
+            <div class="flex items-center gap-2">
+              <button onclick="openPolicyModal('SALARY_ATTENDANCE')" class="bg-slate-800 hover:bg-slate-700 border border-slate-700 text-slate-200 text-xs font-semibold px-3 py-1.5 rounded-lg cursor-pointer">
+                📜 View Policy Timeline
+              </button>
+            </div>
+          </div>
+
+          <!-- SUMMARY CASH OUTFLOW & DISBURSEMENT PROGRESS CARD -->
+          <div class="glass-card runway-card-gradient rounded-2xl p-4 mb-4 border-2 border-emerald-500/70 shadow-xl">
+            <div class="flex items-center justify-between border-b border-slate-800 pb-3 mb-3 flex-wrap gap-2">
+              <div>
+                <div class="text-xs font-black uppercase tracking-wider text-emerald-400 flex items-center gap-2">
+                  <span>💼 Real-World Company Cash Outflow &amp; Payout Audit</span>
+                  <span class="bg-emerald-500/20 text-emerald-300 text-[10px] font-bold px-2 py-0.5 rounded border border-emerald-500/30">Verified In-Hand Payouts</span>
+                </div>
+                <div class="text-[11px] text-slate-400 mt-0.5">
+                  Exact net cash required to pay 4 active working team members after loan/advance deductions.
+                </div>
+              </div>
+              <div class="flex items-center gap-2">
+                <button onclick="downloadAxisBankCSV()" class="bg-slate-800 hover:bg-slate-700 border border-slate-700 text-slate-200 text-xs font-semibold px-3 py-1.5 rounded-lg cursor-pointer">
+                  Export Bank CSV
+                </button>
+                <button onclick="openACSTaxDossierModal()" class="brand-grad text-white text-xs font-bold px-3 py-1.5 rounded-lg shadow cursor-pointer inline-flex items-center gap-1">
+                  <span>🏛️ Tax Dossier</span>
+                </button>
+              </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-3.5">
+              <!-- 1. Total Final In-Hand Payout Liability -->
+              <div class="p-3.5 rounded-xl bg-slate-950/80 border border-emerald-500/50">
+                <div class="text-[11px] font-bold text-slate-400 uppercase tracking-wider">🏦 Final In-Hand Cash to Pay (4 Staff)</div>
+                <div class="text-2xl font-black text-emerald-400 mt-1">₹${totalNetMonthlyLiability.toLocaleString('en-IN')}</div>
+                <div class="text-[11px] text-emerald-300 font-semibold mt-1">Actual Bank Outflow &bull; Sum of Net In-Hand</div>
+                <div class="text-[10px] text-slate-400 mt-0.5">Nandini (₹12.5k), Janhavi (₹12k), Ramya (₹8.5k), Ali (₹10k)</div>
+              </div>
+
+              <!-- 2. Accrued So Far To Date -->
+              <div class="p-3.5 rounded-xl bg-slate-950/80 border border-slate-800">
+                <div class="text-[11px] font-bold text-slate-400 uppercase tracking-wider">⏱️ Accrued to Date (Day 11/30)</div>
+                <div class="text-2xl font-black text-sky-400 mt-1">₹${totalAccruedToDate.toLocaleString('en-IN')}</div>
+                <div class="text-[11px] text-sky-300 font-semibold mt-1">36.7% of Monthly Payroll Cycle Elapsed</div>
+                <div class="text-[10px] text-slate-400 mt-0.5">Calculated from verified employee punch logs</div>
+              </div>
+
+              <!-- 3. Current Disbursement Progress -->
+              <div class="p-3.5 rounded-xl bg-slate-950/80 border ${allPaid ? 'border-emerald-500' : 'border-orange-500/50'}">
+                <div class="text-[11px] font-bold text-orange-400 uppercase tracking-wider">💸 Bank Disbursal Progress</div>
+                <div class="text-2xl font-black ${allPaid ? 'text-emerald-400' : 'text-white'} mt-1">
+                  ₹${totalDisbursedAmount.toLocaleString('en-IN')} <span class="text-xs font-normal text-slate-400">/ ₹${totalNetMonthlyLiability.toLocaleString('en-IN')}</span>
+                </div>
+                <div class="text-[11px] ${allPaid ? 'text-emerald-400 font-bold' : 'text-amber-300'} font-semibold mt-1">
+                  ${allPaid ? '✅ 100% Disbursed (4 of 4 Staff Paid)' : `⏳ ${paidCount} of 4 Staff Paid &bull; ₹${(totalNetMonthlyLiability - totalDisbursedAmount).toLocaleString('en-IN')} Pending`}
+                </div>
+                <div class="text-[10px] text-slate-400 mt-0.5">Disburse via UPI QR or Axis Bank CMS transfer</div>
+              </div>
+            </div>
+          </div>
 
           <div class="glass-card rounded-2xl p-4">
             <div class="flex flex-wrap items-center justify-between gap-3 mb-4">
@@ -3129,7 +3409,7 @@ body {
                   <span class="text-xs px-2.5 py-0.5 rounded-full bg-slate-800 border border-slate-700 text-slate-300 font-semibold">${filteredEmployees.length} Staff</span>
                 </h2>
                 <p class="text-xs text-slate-400 mt-0.5">
-                  ${activeFilter === 'Active' ? 'Showing 4 active working team members to be paid' : activeFilter === 'Founders' ? 'Showing company founders (Deferred Drawing • ₹0 Liability)' : activeFilter === 'Inactive' ? 'Showing inactive & relieved staff members' : 'Showing all staff members'}
+                  ${activeFilter === 'Active' ? 'Showing actual in-hand payable calculations for the 4 active working team members' : activeFilter === 'Founders' ? 'Showing company founders (Deferred Drawing • ₹0 Liability)' : activeFilter === 'Inactive' ? 'Showing inactive & relieved staff members' : 'Showing all staff members'}
                 </p>
               </div>
 
@@ -3160,31 +3440,36 @@ body {
                   <tr class="border-b border-slate-800 text-slate-400">
                     <th class="py-2.5 px-2">ID</th>
                     <th class="py-2.5 px-2">Employee</th>
-                    <th class="py-2.5 px-2">Role &amp; Dept</th>
-                    <th class="py-2.5 px-2">Joined</th>
-                    <th class="py-2.5 px-2 text-right">Monthly CTC</th>
-                    <th class="py-2.5 px-2">Status</th>
-                    <th class="py-2.5 px-2 text-right">Actions</th>
+                    <th class="py-2.5 px-2">Role &amp; Workstation</th>
+                    <th class="py-2.5 px-2 text-right">Base CTC</th>
+                    <th class="py-2.5 px-2 text-center">Nov Logged</th>
+                    <th class="py-2.5 px-2 text-right">Accrued to Date</th>
+                    <th class="py-2.5 px-2 text-right font-black text-emerald-400">Net In-Hand Payable</th>
+                    <th class="py-2.5 px-2 text-center">Payment Status</th>
+                    <th class="py-2.5 px-2 text-right">Disburse &amp; Actions</th>
                   </tr>
                 </thead>
                 <tbody class="divide-y divide-slate-800/60">
                   ${filteredEmployees.length === 0 ? `
                     <tr>
-                      <td colspan="7" class="py-8 text-center text-slate-400">
+                      <td colspan="9" class="py-8 text-center text-slate-400">
                         No employees found matching status "${activeFilter}".
                       </td>
                     </tr>
                   ` : filteredEmployees.map((e) => {
-                    const idx = state.employees.findIndex(emp => emp.id === e.id);
                     const isFounder = e.monthlyCtc === 0 && e.status === "Active";
+                    const isInactive = e.status !== "Active";
+                    const payroll = computeEmployeePayroll(e, "2026-11");
+                    const disb = state.novDisbursements[e.id] || { paid: false, utr: "" };
+
                     return `
-                    <tr class="${e.status !== 'Active' ? 'opacity-60' : ''}">
+                    <tr class="${isInactive ? 'opacity-60' : ''}">
                       <td class="py-3 px-2 font-mono font-bold text-white">${e.id}</td>
                       <td class="py-3 px-2">
                         <div class="flex items-center gap-2">
                           <img src="photos/${e.id}.jpeg" onerror="this.onerror=null; this.src='aaruni_square_logo.png'" class="w-8 h-8 rounded-xl object-cover border border-orange-500/50 bg-slate-950 shrink-0" />
                           <div>
-                            <button onclick="switchPersona('${e.id}', true)" class="font-bold text-white hover:underline text-left cursor-pointer flex items-center gap-1.5">
+                            <button onclick="switchPersona('${e.id}', true)" class="font-bold text-white hover:underline text-left cursor-pointer flex items-center gap-1">
                               <span>${e.name}</span>
                               <span class="text-[10px] text-orange-400">↗</span>
                             </button>
@@ -3194,29 +3479,61 @@ body {
                       </td>
                       <td class="py-3 px-2 text-slate-300">
                         <div>${e.role}</div>
-                        <div class="text-[10px] text-slate-400">${e.department || 'Operations'}</div>
+                        <div class="text-[10px] text-slate-400">${e.workstation || 'Beeramguda Tech Hub'}</div>
                       </td>
-                      <td class="py-3 px-2 text-slate-400">${e.joiningDate}</td>
-                      <td class="py-3 px-2 text-right font-semibold text-white">
-                        ${isFounder ? '<span class="text-amber-400 font-bold">Deferred (₹0)</span>' : e.status !== 'Active' ? '<span class="text-slate-500">Relieved (₹0)</span>' : fmtINR(e.monthlyCtc)}
+                      <td class="py-3 px-2 text-right font-semibold text-slate-300">
+                        ${isFounder ? '<span class="text-amber-400 font-bold">Deferred (₹0)</span>' : isInactive ? '<span class="text-slate-500">Relieved (₹0)</span>' : fmtINR(e.monthlyCtc)}
                       </td>
-                      <td class="py-3 px-2">
-                        <button onclick="toggleEmployeeActive(${idx})" class="text-[10px] font-bold px-2 py-0.5 rounded-full border cursor-pointer ${e.status === 'Active' ? (isFounder ? 'border-amber-500/50 bg-amber-500/10 text-amber-300' : 'border-emerald-500/50 bg-emerald-500/10 text-emerald-300') : 'border-slate-700 bg-slate-800 text-slate-400'}">
-                          ${isFounder ? '👑 Founder' : e.status === 'Active' ? '🟢 Active Staff' : '⚪ Relieved'}
-                        </button>
+                      <td class="py-3 px-2 text-center">
+                        ${(!isFounder && !isInactive) ? `
+                          <div class="font-bold text-white">${payroll.accruedPayableDays} / 30d</div>
+                          <div class="text-[10px] text-sky-400 font-semibold">${payroll.totalHours} hrs &bull; ${payroll.paidSundays} Sun</div>
+                        ` : '<span class="text-slate-500">&mdash;</span>'}
+                      </td>
+                      <td class="py-3 px-2 text-right font-mono font-semibold text-sky-300">
+                        ${(!isFounder && !isInactive) ? fmtINR(payroll.accruedSalarySoFar) : '₹0'}
+                      </td>
+                      <td class="py-3 px-2 text-right">
+                        ${(!isFounder && !isInactive) ? `
+                          <div class="font-mono font-black text-emerald-400 text-sm">${fmtINR(payroll.netPay)}</div>
+                          <div class="text-[10px] text-slate-400">${payroll.loanCut > 0 ? `-${fmtINR(payroll.loanCut)} advance recovery` : 'Full In-Hand'}</div>
+                        ` : isFounder ? '<span class="text-amber-400 font-bold text-xs">₹0.00 (Deferred)</span>' : '<span class="text-slate-500 text-xs">₹0.00 (Relieved)</span>'}
+                      </td>
+                      <td class="py-3 px-2 text-center whitespace-nowrap">
+                        ${(!isFounder && !isInactive) ? `
+                          ${disb.paid ? `
+                            <span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-emerald-500/20 text-emerald-300 border border-emerald-500/40">
+                              🟢 Paid (${disb.utr || 'UPI'})
+                            </span>
+                          ` : `
+                            <span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-amber-500/20 text-amber-300 border border-amber-500/40">
+                              ⏳ Unpaid (₹${Number(payroll.netPay).toLocaleString('en-IN')})
+                            </span>
+                          `}
+                        ` : isFounder ? `
+                          <span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-slate-800 text-slate-400 border border-slate-700">Founder Deferral</span>
+                        ` : `
+                          <span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-slate-800 text-slate-400 border border-slate-700">Relieved</span>
+                        `}
                       </td>
                       <td class="py-3 px-2 text-right whitespace-nowrap">
                         <div class="flex items-center justify-end gap-1.5 flex-wrap">
-                          <button onclick="switchPersona('${e.id}', true)" class="brand-grad text-white text-[11px] font-bold px-2.5 py-1.5 rounded-lg cursor-pointer shadow inline-flex items-center gap-1" title="View Full Employee Portal in Impersonation Mode">
-                            <span>👁️ View Portal</span>
-                          </button>
-                          ${e.status === 'Active' && e.monthlyCtc > 0 ? `
-                            <button onclick="openAdminUPIPaymentModal('${e.id}', ${e.monthlyCtc}, 'Salary_${e.id}_Nov2026')" class="bg-emerald-600 hover:bg-emerald-500 text-white text-[11px] font-bold px-2.5 py-1.5 rounded-lg cursor-pointer shadow inline-flex items-center gap-1" title="Generate UPI Payment QR">
-                              <span>⚡ Pay UPI</span>
-                            </button>
+                          ${(!isFounder && !isInactive) ? `
+                            ${!disb.paid ? `
+                              <button onclick="openAdminUPIPaymentModal('${e.id}', ${payroll.netPay}, 'Salary_${e.id}_Nov2026')" class="brand-grad text-white text-[11px] font-bold px-2.5 py-1.5 rounded-lg cursor-pointer shadow inline-flex items-center gap-1" title="Pay via UPI QR">
+                                <span>⚡ Pay UPI</span>
+                              </button>
+                              <button onclick="markEmployeeAsPaid('${e.id}', '', ${payroll.netPay})" class="bg-emerald-600 hover:bg-emerald-500 text-white text-[11px] font-bold px-2 py-1.5 rounded-lg cursor-pointer shadow" title="Confirm Payment Done">
+                                ✅ Mark Paid
+                              </button>
+                            ` : `
+                              <button onclick="unmarkEmployeeAsPaid('${e.id}')" class="bg-slate-800 hover:bg-slate-700 border border-slate-700 text-rose-300 text-[10px] font-bold px-2 py-1.5 rounded-lg cursor-pointer" title="Revert to Unpaid">
+                                ↩️ Undo
+                              </button>
+                            `}
                           ` : ''}
-                          <button onclick="previewIDCard('${e.id}')" class="bg-slate-800 hover:bg-slate-700 border border-slate-700 text-slate-300 text-[11px] font-semibold px-2 py-1.5 rounded-lg cursor-pointer" title="View Verified ID Badge">
-                            🪪 ID
+                          <button onclick="switchPersona('${e.id}', true)" class="bg-slate-800 hover:bg-slate-700 border border-slate-700 text-slate-200 text-[11px] font-semibold px-2 py-1.5 rounded-lg cursor-pointer" title="View Full Employee Portal">
+                            👁️ View
                           </button>
                         </div>
                       </td>
@@ -3299,28 +3616,98 @@ body {
         `;
       }
 
+      
       // =========================================================================
-      // TAB 3: NOVEMBER PAY RUN
+      // TAB 3: NOVEMBER PAY RUN (WITH PUBLISH GUARDRAILS & 1-CLICK UNDO)
       // =========================================================================
       if (state.activeTab === "payroll") {
+        const activeStaffList = state.employees.filter(e => e.status === "Active" && e.monthlyCtc > 0);
+        const activePayrolls = activeStaffList.map(e => computeEmployeePayroll(e, "2026-11"));
+        const totalNetPayout = activePayrolls.reduce((sum, r) => sum + r.netPay, 0);
+        const paidCount = activeStaffList.filter(e => state.novDisbursements[e.id]?.paid).length;
+        const allPaid = (paidCount === activeStaffList.length);
+
+        const novSlipsPublished = (state.payslips || []).some(p => p.id.startsWith("PS-2026-11"));
+
         return `
           ${adminTabBar}
-          ${adminRunwayCard}
-          ${adminNextPayrollCard}
+
+          <!-- IF PREMATURELY PUBLISHED: 1-CLICK UNDO RETRACTION BANNER -->
+          ${novSlipsPublished ? `
+            <div class="glass-card rounded-2xl p-4 mb-4 border-2 border-rose-500 bg-rose-950/30 flex items-center justify-between gap-3 flex-wrap shadow-xl">
+              <div class="flex items-center gap-3">
+                <span class="text-3xl p-2 rounded-xl bg-rose-500/20 border border-rose-500/40">⚠️</span>
+                <div>
+                  <div class="text-xs font-black uppercase tracking-wider text-rose-400">November 2026 Payslips Are Currently Published &amp; Visible!</div>
+                  <div class="text-xs text-slate-200 mt-0.5">
+                    Did you click publish by mistake before paying salary? Click below to retract and revert back to Draft immediately.
+                  </div>
+                </div>
+              </div>
+              <button onclick="revertNovemberPayrollToDraft()" class="bg-rose-600 hover:bg-rose-500 text-white font-bold text-xs px-4 py-2.5 rounded-xl shadow cursor-pointer transition-all">
+                ↩️ Undo &amp; Revert to Draft
+              </button>
+            </div>
+          ` : ''}
+
+          <!-- PAYROLL HERO CARD WITH STRICT PUBLISH GUARDRAIL -->
+          <div class="glass-card timesheet-punch-box rounded-2xl p-4 mb-4 border-2 border-orange-500/70 shadow-xl">
+            <div class="flex items-center justify-between gap-3 flex-wrap border-b border-slate-800 pb-3 mb-3">
+              <div>
+                <div class="text-[11px] font-black uppercase tracking-wider text-orange-400 flex items-center gap-2">
+                  <span>📅 Next Payroll Run — November 2026 Cycle</span>
+                  <span class="bg-orange-500/20 text-orange-300 text-[10px] font-bold px-2 py-0.5 rounded-full border border-orange-500/30">Auto Calculating</span>
+                </div>
+                <div class="text-xl font-extrabold text-white mt-1">
+                  Cutoff: <span class="text-orange-400">30 Nov 2026</span> &bull; Disburse: <span class="text-emerald-400">01 Dec 2026</span>
+                  <span class="text-xs font-semibold text-slate-400 ml-2">(20 Days Remaining)</span>
+                </div>
+              </div>
+              <div class="text-right">
+                <div class="text-[11px] font-bold text-slate-400 uppercase tracking-wider">Total Net Salary Outflow to Disburse</div>
+                <div class="text-2xl font-black text-emerald-400 mt-0.5">₹${totalNetPayout.toLocaleString('en-IN')}</div>
+                <div class="text-[11px] text-slate-400">${paidCount} of 4 Active Staff Paid via Corporate Banking</div>
+              </div>
+            </div>
+            
+            <div class="flex items-center justify-between gap-3 flex-wrap text-xs">
+              <div class="flex items-center gap-4 text-slate-300 flex-wrap">
+                <div><span>1st Notice:</span> <strong class="text-white">28 Nov</strong></div>
+                <div><span>Grace Day:</span> <strong class="text-amber-300">01 Dec</strong></div>
+                <div><span>Audit &amp; Calc:</span> <strong class="text-white">02&ndash;03 Dec</strong></div>
+                <div><span>NEFT / UPI Payout:</span> <strong class="text-emerald-400">04&ndash;05 Dec</strong></div>
+              </div>
+
+              <!-- STRICT GUARDRAIL BUTTONS (CANNOT CLICK ACCIDENTALLY BEFORE DISBURSING) -->
+              <div class="flex items-center gap-2 flex-wrap">
+                <button onclick="downloadAxisBankCSV()" class="bg-slate-800 hover:bg-slate-700 text-white border border-slate-700 font-semibold px-3 py-2 rounded-xl cursor-pointer">
+                  Export Bank CSV
+                </button>
+
+                ${allPaid ? `
+                  <button onclick="openPublishConfirmationModal()" class="brand-grad text-white font-bold px-4 py-2 rounded-xl shadow-lg cursor-pointer animate-pulse flex items-center gap-1.5">
+                    <span>📢 Publish &amp; Notify Staff (All 4 Paid)</span>
+                  </button>
+                ` : `
+                  <button disabled class="opacity-50 cursor-not-allowed bg-slate-800 text-slate-400 border border-slate-700 font-semibold px-3.5 py-2 rounded-xl flex items-center gap-1.5" title="You must disburse salary and mark all 4 active staff as paid before publishing payslips">
+                    <span>🔒 Publish Locked (${paidCount}/4 Paid)</span>
+                  </button>
+                `}
+              </div>
+            </div>
+            ${!allPaid ? `
+              <div class="mt-2.5 pt-2 border-t border-slate-800/60 text-[11px] text-amber-300 flex items-center gap-1.5">
+                <span>🛡️ Guardrail Active:</span>
+                <span>You cannot publish payslips until all 4 active staff have been paid. Disburse salary via UPI or bank transfer and click "Mark Paid" below.</span>
+              </div>
+            ` : ''}
+          </div>
 
           <div class="glass-card rounded-2xl p-4">
             <div class="flex flex-wrap items-center justify-between gap-2 mb-4">
               <div>
-                <h2 class="text-base font-bold text-white">November 2026 Pay Run Calculations</h2>
-                <p class="text-xs text-slate-400">Pay Date: 30/11/2026 &bull; Projected Payout: <strong>${fmtINR(totalNextMonthDisbursement)}</strong></p>
-              </div>
-              <div class="flex items-center gap-2">
-                <button onclick="downloadAxisBankCSV()" class="bg-slate-800 border border-slate-700 text-white text-xs font-semibold px-3 py-1.5 rounded-lg cursor-pointer hover:bg-slate-700">
-                  Export Bank CSV
-                </button>
-                <button onclick="finalizeAndPublishAllPayslips()" class="brand-grad text-white text-xs font-bold px-3.5 py-1.5 rounded-lg cursor-pointer">
-                  Publish Payslips
-                </button>
+                <h2 class="text-base font-bold text-white">November 2026 Pay Run &bull; Actual In-Hand Payouts</h2>
+                <p class="text-xs text-slate-400">Pay Date: 30/11/2026 &bull; Total Cash to Pay: <strong>₹${totalNetPayout.toLocaleString('en-IN')}</strong></p>
               </div>
             </div>
 
@@ -3329,31 +3716,61 @@ body {
                 <thead>
                   <tr class="border-b border-slate-800 text-slate-400">
                     <th class="py-2.5 px-2">Employee</th>
-                    <th class="py-2.5 px-2">Paid Days</th>
-                    <th class="py-2.5 px-2 text-right">Gross</th>
-                    <th class="py-2.5 px-2 text-right">Advance Cut</th>
-                    <th class="py-2.5 px-2 text-right">Net Pay</th>
-                    <th class="py-2.5 px-2 text-right">Actions</th>
+                    <th class="py-2.5 px-2 text-right">Base CTC</th>
+                    <th class="py-2.5 px-2 text-center">Paid Days</th>
+                    <th class="py-2.5 px-2 text-right">Advance Recovery</th>
+                    <th class="py-2.5 px-2 text-right font-black text-emerald-400">Actual Net In-Hand</th>
+                    <th class="py-2.5 px-2 text-center">Payment Status</th>
+                    <th class="py-2.5 px-2 text-right">Disburse &amp; Confirm</th>
                   </tr>
                 </thead>
                 <tbody class="divide-y divide-slate-800/60">
-                  ${payrollRows.map(r => `
+                  ${activePayrolls.map(r => {
+                    const disb = state.novDisbursements[r.emp.id] || { paid: false, utr: "" };
+                    return `
                     <tr>
                       <td class="py-3 px-2">
                         <div class="font-bold text-white">${r.emp.name}</div>
                         <div class="text-[11px] text-slate-400 font-mono">${r.emp.id}</div>
                       </td>
-                      <td class="py-3 px-2 text-slate-300">${r.accruedPayableDays} / 30d</td>
-                      <td class="py-3 px-2 text-right font-mono font-bold text-white">${fmtINR(r.emp.monthlyCtc)}</td>
-                      <td class="py-3 px-2 text-right font-mono text-rose-400">₹0</td>
-                      <td class="py-3 px-2 text-right font-mono font-extrabold text-emerald-400">${fmtINR(r.emp.monthlyCtc)}</td>
+                      <td class="py-3 px-2 text-right font-mono text-slate-300">${fmtINR(r.emp.monthlyCtc)}</td>
+                      <td class="py-3 px-2 text-center text-slate-300">${r.accruedPayableDays} / 30d</td>
+                      <td class="py-3 px-2 text-right font-mono ${r.loanCut > 0 ? 'text-rose-400 font-bold' : 'text-slate-500'}">
+                        ${r.loanCut > 0 ? `-${fmtINR(r.loanCut)}` : '₹0'}
+                      </td>
+                      <td class="py-3 px-2 text-right font-mono font-black text-emerald-400 text-sm">
+                        ${fmtINR(r.netPay)}
+                      </td>
+                      <td class="py-3 px-2 text-center whitespace-nowrap">
+                        ${disb.paid ? `
+                          <span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-emerald-500/20 text-emerald-300 border border-emerald-500/40">
+                            🟢 Paid (${disb.utr || 'UPI'})
+                          </span>
+                        ` : `
+                          <span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-amber-500/20 text-amber-300 border border-amber-500/40">
+                            ⏳ Unpaid
+                          </span>
+                        `}
+                      </td>
                       <td class="py-3 px-2 text-right whitespace-nowrap">
-                        <button onclick="openAdminUPIPaymentModal('${r.emp.id}', ${r.emp.monthlyCtc}, 'Salary_${r.emp.id}_Nov2026')" class="brand-grad text-white text-[11px] font-bold px-2.5 py-1 rounded-lg">
-                          ⚡ Pay UPI
-                        </button>
+                        <div class="flex items-center justify-end gap-1.5">
+                          ${!disb.paid ? `
+                            <button onclick="openAdminUPIPaymentModal('${r.emp.id}', ${r.netPay}, 'Salary_${r.emp.id}_Nov2026')" class="brand-grad text-white text-[11px] font-bold px-2.5 py-1.5 rounded-lg cursor-pointer shadow">
+                              ⚡ Pay UPI
+                            </button>
+                            <button onclick="markEmployeeAsPaid('${r.emp.id}', '', ${r.netPay})" class="bg-emerald-600 hover:bg-emerald-500 text-white text-[11px] font-bold px-2.5 py-1.5 rounded-lg cursor-pointer shadow">
+                              ✅ Mark Paid
+                            </button>
+                          ` : `
+                            <button onclick="unmarkEmployeeAsPaid('${r.emp.id}')" class="bg-slate-800 hover:bg-slate-700 border border-slate-700 text-rose-300 text-[10px] font-bold px-2 py-1.5 rounded-lg cursor-pointer">
+                              ↩️ Undo
+                            </button>
+                          `}
+                        </div>
                       </td>
                     </tr>
-                  `).join("")}
+                    `;
+                  }).join("")}
                 </tbody>
               </table>
             </div>

@@ -356,3 +356,59 @@ body {
 .border-orange-500\/80 {
   border-color: #fe5f01 !important;
 }
+
+/* ========================================================================= */
+/* UNIFIED USER PROFILE DROPDOWN & CORPORATE FOOTER STYLES                   */
+/* ========================================================================= */
+#profileDropdownContainer button {
+  transition: all 0.15s ease;
+}
+
+[data-theme="light"] #profileDropdownContainer > button {
+  background-color: #ffffff !important;
+  border-color: #cbd5e1 !important;
+  color: #0f172a !important;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+}
+
+[data-theme="light"] #profileDropdownContainer > button:hover {
+  background-color: #f8fafc !important;
+  border-color: #94a3b8 !important;
+}
+
+[data-theme="light"] #profileDropdownMenu {
+  background-color: rgba(255, 255, 255, 0.98) !important;
+  border-color: #e2e8f0 !important;
+  box-shadow: 0 12px 36px rgba(15, 23, 42, 0.12) !important;
+}
+
+[data-theme="light"] #profileDropdownMenu button {
+  color: #1e293b !important;
+}
+
+[data-theme="light"] #profileDropdownMenu button:hover {
+  background-color: #f1f5f9 !important;
+  color: #0f172a !important;
+}
+
+[data-theme="light"] #profileDropdownMenu .border-slate-800 {
+  border-color: #e2e8f0 !important;
+}
+
+[data-theme="light"] footer {
+  background-color: #ffffff !important;
+  border-color: #e2e8f0 !important;
+  color: #64748b !important;
+}
+
+[data-theme="light"] footer .text-white {
+  color: #0f172a !important;
+}
+
+[data-theme="light"] footer button {
+  color: #334155 !important;
+}
+
+[data-theme="light"] footer button:hover {
+  color: #fe5f01 !important;
+}
