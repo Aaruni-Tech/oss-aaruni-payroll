@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="dark">
+<html lang="en" data-theme="light">
 <head>
     <link rel="icon" type="image/png" sizes="32x32" href="aaruni_square_logo.png" />
   <link rel="icon" type="image/png" sizes="16x16" href="aaruni_square_logo.png" />
@@ -11,7 +11,7 @@
   <title>Aaruni Tech — HR, Timesheet & Encrypted Payroll Portal</title>
   <meta name="description" content="Mobile-first Attendance, Entry/Exit Timesheet, Encrypted Salary Vault, Self-Service HR Documents, and CA Tax Loss Portal for Aaruni Tech." />
   <link rel="manifest" href="manifest.json" />
-  <meta name="theme-color" content="#09090b" />
+  <meta name="theme-color" content="#f8fafc" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
   <meta name="apple-mobile-web-app-title" content="Aaruni HR" />
@@ -1030,7 +1030,7 @@ body {
       adminPassword: safeLocalGet("aaruni_admin_pwd_v8") || "Aaruni@2026",
       activeTab: "roster",
       rosterStatusFilter: "Active", // "Active" | "Inactive" | "All" (defaults strictly to Active)
-      themeMode: safeLocalGet("aaruni_theme_v8") || "dark", // "light" | "dark" | "auto"
+      themeMode: safeLocalGet("aaruni_theme_v9") || "light", // "light" (Zoho crisp white default) | "dark" | "auto"
       salariesMasked: safeLocalGet('aaruni_mask_v8') !== '0', // masked by default
       novDisbursements: safeJsonParse(safeLocalGet("aaruni_nov_disbursements_v2"), {
         "AAR-0004": { paid: false, utr: "", date: null, amount: 12500 },
@@ -1101,7 +1101,7 @@ body {
 
     function setAaruniTheme(mode) {
       state.themeMode = mode;
-      safeLocalSet("aaruni_theme_v8", mode);
+      safeLocalSet("aaruni_theme_v9", mode);
       applyAaruniTheme();
     }
 
@@ -1427,123 +1427,263 @@ body {
     }
 
     function renderLoginScreen() {
-      const isSetPwd = state.loginMode === "setpassword";
-
       return `
-        <div class="max-w-sm mx-auto mt-10 mb-12">
-          <div class="glass-card rounded-2xl p-6 md:p-7">
-            <div class="flex flex-col items-center text-center mb-5">
-              <img src="aaruni_square_logo.png" alt="Aaruni Tech" class="w-16 h-16 rounded-2xl shadow-xl mb-3 object-contain border border-orange-500/30" />
-              <h2 class="text-lg font-black tracking-tight text-white">Aaruni Tech</h2>
-              <span class="text-[11px] font-bold text-orange-400">HR, Timesheet &amp; Encrypted Payroll</span>
+        <div class="max-w-sm mx-auto mt-8 mb-12">
+          <div class="glass-card rounded-2xl p-6 md:p-7 shadow-xl border border-slate-200 dark:border-slate-800">
+            <div class="flex flex-col items-center text-center mb-6">
+              <img src="aaruni_square_logo.png" alt="Aaruni Tech" class="w-16 h-16 rounded-2xl shadow-md mb-3 object-contain border border-orange-500/30" />
+              <h2 class="text-xl font-black tracking-tight" style="color: var(--at-text);">Aaruni Tech</h2>
+              <span class="text-xs font-bold text-orange-600 dark:text-orange-400 uppercase tracking-wider mt-0.5">HR, Timesheet &amp; Encrypted Payroll</span>
+              <p class="text-xs text-slate-500 dark:text-slate-400 mt-1">Sign in with your Employee ID to access your dashboard</p>
             </div>
 
-            <div class="grid grid-cols-2 gap-1 p-1 rounded-xl bg-slate-900 border border-slate-800 mb-5 text-xs">
-              <button onclick="setLoginMode('signin')" class="py-2 rounded-lg font-semibold transition-all ${!isSetPwd ? 'brand-grad' : 'text-slate-400 hover:text-white'}">
-                Sign In
-              </button>
-              <button onclick="setLoginMode('setpassword')" class="py-2 rounded-lg font-semibold transition-all ${isSetPwd ? 'brand-grad' : 'text-slate-400 hover:text-white'}">
-                Set Password
-              </button>
-            </div>
-
-            ${!isSetPwd ? `
-              <div class="space-y-4">
-                <div>
-                  <label class="block text-xs font-semibold text-slate-300 mb-1.5">Employee ID</label>
+            <div class="space-y-4">
+              <div>
+                <label class="block text-xs font-semibold mb-1.5" style="color: var(--at-text-secondary);">Employee ID</label>
+                <div class="relative">
+                  <span class="absolute left-3.5 top-2.5 text-slate-400 text-sm">👤</span>
                   <input
                     id="homeLoginId"
                     type="text"
-                    placeholder="e.g. AAR-0004 or 004"
+                    placeholder="e.g. AAR-0004 or 004 or email"
                     autocomplete="username"
                     onkeydown="if(event.key==='Enter') submitHomeLogin()"
-                    class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3.5 py-2.5 text-sm text-white focus:outline-none font-mono"
+                    class="w-full rounded-xl pl-9 pr-3.5 py-2.5 text-sm font-mono focus:outline-none transition-all"
+                    style="background-color: var(--at-surface-subtle); border: 1px solid var(--at-border); color: var(--at-text);"
                   />
-                </div>
-
-                <div>
-                  <label class="block text-xs font-semibold text-slate-300 mb-1.5">Password</label>
-                  <div class="relative">
-                    <input
-                      id="homeLoginPassword"
-                      type="password"
-                      placeholder="Enter password"
-                      autocomplete="current-password"
-                      onkeydown="if(event.key==='Enter') submitHomeLogin()"
-                      class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3.5 py-2.5 pr-10 text-sm text-white focus:outline-none"
-                    />
-                    <button type="button" onclick="togglePasswordVisibility('homeLoginPassword')" class="absolute right-3 top-2.5 text-xs text-slate-400 hover:text-white">
-                      👁️
-                    </button>
-                  </div>
-                </div>
-
-                <div id="homeLoginError" class="hidden text-xs font-semibold text-rose-400 bg-rose-950/30 border border-rose-500/30 rounded-xl p-2.5 text-center"></div>
-
-                <button onclick="submitHomeLogin()" class="w-full brand-grad text-white font-bold text-sm py-2.5 rounded-xl hover:opacity-90 transition-all cursor-pointer">
-                  Sign In to Private Portal
-                </button>
-
-                <div class="pt-4 mt-2 border-t border-slate-800">
-                  <div class="p-3 rounded-xl bg-orange-950/30 border border-orange-500/40 text-center">
-                    <div class="text-[11px] font-extrabold text-orange-400 uppercase tracking-wider mb-1">📲 Mobile-First Company Policy</div>
-                    <p class="text-xs text-slate-300 leading-relaxed mb-2.5">
-                      All Aaruni Tech employees log daily attendance, track accrued salary, and download payslips on the official <strong>Aaruni Mobile App</strong>.
-                    </p>
-                    <button type="button" onclick="openInstallMobileAppModal()" class="w-full py-2 px-3 rounded-lg brand-grad text-white font-bold text-xs transition-all cursor-pointer">
-                      📱 Scan QR to Download APK &amp; View Portal
-                    </button>
-                  </div>
                 </div>
               </div>
-            ` : `
-              <div class="space-y-3.5">
-                <div>
-                  <label class="block text-xs font-semibold text-slate-300 mb-1">Employee ID</label>
-                  <input
-                    id="regEmpId"
-                    type="text"
-                    placeholder="e.g. AAR-0004 or 004"
-                    class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3.5 py-2.5 text-sm text-white focus:outline-none font-mono"
-                  />
-                </div>
 
-                <div>
-                  <label class="block text-xs font-semibold text-slate-300 mb-1">New Password</label>
-                  <div class="relative">
-                    <input
-                      id="regNewPassword"
-                      type="password"
-                      placeholder="Enter new password"
-                      class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3.5 py-2.5 pr-10 text-sm text-white focus:outline-none"
-                    />
-                    <button type="button" onclick="togglePasswordVisibility('regNewPassword')" class="absolute right-3 top-2.5 text-xs text-slate-400 hover:text-white">
-                      👁️
-                    </button>
-                  </div>
-                </div>
-
-                <div>
-                  <label class="block text-xs font-semibold text-slate-300 mb-1">Confirm Password</label>
+              <div>
+                <label class="block text-xs font-semibold mb-1.5" style="color: var(--at-text-secondary);">Password</label>
+                <div class="relative">
+                  <span class="absolute left-3.5 top-2.5 text-slate-400 text-sm">🔒</span>
                   <input
-                    id="regConfirmPassword"
+                    id="homeLoginPassword"
                     type="password"
-                    placeholder="Confirm new password"
-                    onkeydown="if(event.key==='Enter') submitRegisterOrSetPassword()"
-                    class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3.5 py-2.5 text-sm text-white focus:outline-none"
+                    placeholder="Enter password"
+                    autocomplete="current-password"
+                    onkeydown="if(event.key==='Enter') submitHomeLogin()"
+                    class="w-full rounded-xl pl-9 pr-10 py-2.5 text-sm focus:outline-none transition-all"
+                    style="background-color: var(--at-surface-subtle); border: 1px solid var(--at-border); color: var(--at-text);"
                   />
+                  <button type="button" onclick="togglePasswordVisibility('homeLoginPassword')" class="absolute right-3 top-2.5 text-xs text-slate-400 hover:text-slate-600 dark:hover:text-white cursor-pointer" title="Toggle password visibility">
+                    👁️
+                  </button>
                 </div>
+              </div>
 
-                <div id="regError" class="hidden text-xs font-semibold text-rose-400 bg-rose-950/30 border border-rose-500/30 rounded-xl p-2.5 text-center"></div>
-
-                <button onclick="submitRegisterOrSetPassword()" class="w-full brand-grad text-white font-bold text-sm py-2.5 rounded-xl hover:opacity-90 transition-all">
-                  Set Password & Sign In
+              <!-- Dedicated Reset Password Link (Direct on Login Card) -->
+              <div class="flex items-center justify-between text-xs mt-1 mb-1 select-none">
+                <label class="flex items-center gap-1.5 text-slate-500 cursor-pointer">
+                  <input type="checkbox" id="loginRememberMe" checked class="rounded border-slate-300 text-orange-600 focus:ring-orange-500 cursor-pointer" />
+                  <span>Remember ID</span>
+                </label>
+                <button type="button" onclick="openForgotPasswordModal()" class="text-orange-600 hover:text-orange-700 dark:text-orange-400 dark:hover:text-orange-300 font-bold hover:underline cursor-pointer">
+                  Forgot / Reset Password?
                 </button>
               </div>
-            `}
+
+              <div id="homeLoginError" class="hidden text-xs font-semibold text-rose-600 bg-rose-50 dark:bg-rose-950/30 border border-rose-200 dark:border-rose-500/30 rounded-xl p-2.5 text-center"></div>
+
+              <button onclick="submitHomeLogin()" class="w-full brand-grad text-white font-bold text-sm py-2.5 rounded-xl hover:opacity-95 transition-all cursor-pointer flex items-center justify-center gap-2 shadow-md">
+                <span>Sign In to Private Portal</span>
+                <span>&rarr;</span>
+              </button>
+
+              <div class="pt-4 mt-2 border-t" style="border-color: var(--at-border);">
+                <div class="p-3.5 rounded-xl text-center" style="background-color: var(--at-badge-bg); border: 1px solid rgba(254, 95, 1, 0.25);">
+                  <div class="text-[11px] font-extrabold text-orange-600 dark:text-orange-400 uppercase tracking-wider mb-1">📲 Mobile-First Company Policy</div>
+                  <p class="text-xs text-slate-600 dark:text-slate-300 leading-relaxed mb-2.5">
+                    All Aaruni Tech employees log daily attendance, track accrued salary, and download payslips on the official <strong>Aaruni Mobile App</strong>.
+                  </p>
+                  <div class="flex items-center gap-2">
+                    <button type="button" onclick="openInstallMobileAppModal()" class="flex-1 py-2 px-3 rounded-lg brand-grad text-white font-bold text-xs transition-all cursor-pointer shadow-sm">
+                      📱 Scan QR for Mobile APK
+                    </button>
+                    <button type="button" onclick="openForgotPasswordModal()" class="py-2 px-3 rounded-lg text-xs font-semibold text-slate-700 dark:text-slate-200 bg-white dark:bg-slate-800 hover:bg-slate-100 dark:hover:bg-slate-700 transition-all cursor-pointer" style="border: 1px solid var(--at-border);">
+                      🔑 Reset Pwd
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       `;
+    }
+
+    function openForgotPasswordModal() {
+      const currentTypedId = (document.getElementById("homeLoginId")?.value || "").trim();
+      const html = `
+        <div style="max-width:440px;margin:0 auto;font-family:-apple-system,BlinkMacSystemFont,'Inter',sans-serif;color:var(--at-text);font-size:13px;">
+          <div style="text-align:center;margin-bottom:16px;">
+            <div style="width:48px;height:48px;border-radius:14px;background:#fff7ed;border:1px solid #fed7aa;display:inline-flex;align-items:center;justify-content:center;font-size:22px;margin-bottom:8px;">
+              🔑
+            </div>
+            <h3 style="font-size:17px;font-weight:800;color:var(--at-text);margin:0 0 4px 0;">Reset Account Password</h3>
+            <p style="font-size:12px;color:var(--at-text-muted);margin:0;">
+              Self-service password reset for Aaruni Tech employees &amp; management.
+            </p>
+          </div>
+
+          <div style="background:var(--at-surface-subtle);border:1px solid var(--at-border);border-radius:14px;padding:16px;margin-bottom:16px;">
+            <div style="margin-bottom:12px;">
+              <label style="display:block;font-size:11px;font-weight:700;color:var(--at-text-secondary);margin-bottom:4px;text-transform:uppercase;letter-spacing:0.04em;">
+                Employee ID or Registered Email
+              </label>
+              <input
+                id="resetModalEmpId"
+                type="text"
+                value="${currentTypedId}"
+                placeholder="e.g. AAR-0004 or 004 or chukka.nandini@aarunitech.com"
+                style="width:100%;box-sizing:border-box;padding:9px 12px;border-radius:10px;border:1px solid var(--at-border);background:var(--at-surface);color:var(--at-text);font-size:13px;font-family:monospace;"
+              />
+            </div>
+
+            <div style="margin-bottom:12px;">
+              <label style="display:block;font-size:11px;font-weight:700;color:var(--at-text-secondary);margin-bottom:4px;text-transform:uppercase;letter-spacing:0.04em;">
+                New Password (minimum 4 characters)
+              </label>
+              <div style="position:relative;">
+                <input
+                  id="resetModalNewPwd"
+                  type="password"
+                  placeholder="Enter new password"
+                  style="width:100%;box-sizing:border-box;padding:9px 36px 9px 12px;border-radius:10px;border:1px solid var(--at-border);background:var(--at-surface);color:var(--at-text);font-size:13px;"
+                />
+                <button type="button" onclick="togglePasswordVisibility('resetModalNewPwd')" style="position:absolute;right:10px;top:8px;background:none;border:none;cursor:pointer;font-size:14px;color:var(--at-text-muted);" title="Toggle visibility">
+                  👁️
+                </button>
+              </div>
+            </div>
+
+            <div style="margin-bottom:12px;">
+              <label style="display:block;font-size:11px;font-weight:700;color:var(--at-text-secondary);margin-bottom:4px;text-transform:uppercase;letter-spacing:0.04em;">
+                Confirm New Password
+              </label>
+              <input
+                id="resetModalConfirmPwd"
+                type="password"
+                placeholder="Re-enter new password"
+                onkeydown="if(event.key==='Enter') executePasswordReset()"
+                style="width:100%;box-sizing:border-box;padding:9px 12px;border-radius:10px;border:1px solid var(--at-border);background:var(--at-surface);color:var(--at-text);font-size:13px;"
+              />
+            </div>
+
+            <div id="resetModalError" style="display:none;background:#fef2f2;border:1px solid #fecaca;color:#dc2626;padding:8px 12px;border-radius:8px;font-size:12px;font-weight:600;margin-bottom:12px;text-align:center;"></div>
+            <div id="resetModalSuccess" style="display:none;background:#f0fdf4;border:1px solid #bbf7d0;color:#16a34a;padding:8px 12px;border-radius:8px;font-size:12px;font-weight:600;margin-bottom:12px;text-align:center;"></div>
+
+            <button onclick="executePasswordReset()" class="brand-grad" style="width:100%;padding:10px;border-radius:10px;border:none;color:#fff;font-weight:700;font-size:13px;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:6px;box-shadow:0 2px 10px rgba(254,95,1,0.3);">
+              <span>💾 Save New Password &amp; Continue</span>
+            </button>
+          </div>
+
+          <!-- Quick HR WhatsApp & Email Assist -->
+          <div style="padding:12px 14px;border-radius:12px;background:#fff7ed;border:1px solid #fed7aa;font-size:12px;line-height:1.5;">
+            <div style="font-weight:700;color:#9a3412;margin-bottom:4px;display:flex;align-items:center;gap:6px;">
+              <span>💬 Need Help from Admin?</span>
+            </div>
+            <p style="color:#7c2d12;margin:0 0 8px 0;font-size:11px;">
+              If you forgot your Employee ID or cannot access your account, you can request an instant password reset from <strong>Rupesh Tiwari (Founder &amp; MD)</strong>:
+            </p>
+            <div style="display:flex;gap:8px;">
+              <a href="https://wa.me/919900000000?text=Hi%20Rupesh%2C%20I%20am%20requesting%20a%20password%20reset%20for%20Aaruni%20Payroll%20portal." target="_blank" style="flex:1;text-align:center;padding:7px;background:#25d366;color:#ffffff;border-radius:8px;text-decoration:none;font-weight:700;font-size:11px;">
+                💬 WhatsApp HR
+              </a>
+              <a href="mailto:rupesh@fullstackmaster.net?subject=Aaruni%20Payroll%20Password%20Reset%20Request&body=Hi%20Rupesh%2C%0A%0APlease%20reset%20my%20password%20for%20Employee%20ID%3A%20" style="flex:1;text-align:center;padding:7px;background:#0284c7;color:#ffffff;border-radius:8px;text-decoration:none;font-weight:700;font-size:11px;">
+                ✉️ Email Admin
+              </a>
+            </div>
+          </div>
+        </div>
+      `;
+      openModalWithHTML("Reset Aaruni Account Password", html);
+    }
+
+    function executePasswordReset() {
+      const rawId = (document.getElementById("resetModalEmpId")?.value || "").trim();
+      const pwd1 = (document.getElementById("resetModalNewPwd")?.value || "").trim();
+      const pwd2 = (document.getElementById("resetModalConfirmPwd")?.value || "").trim();
+      const errEl = document.getElementById("resetModalError");
+      const succEl = document.getElementById("resetModalSuccess");
+
+      const showErr = (msg) => {
+        if (succEl) succEl.style.display = "none";
+        if (errEl) {
+          errEl.style.display = "block";
+          errEl.textContent = msg;
+        }
+      };
+
+      if (!rawId) {
+        showErr("Please enter your Employee ID or registered email.");
+        return;
+      }
+      if (!pwd1 || pwd1.length < 4) {
+        showErr("Password must be at least 4 characters long.");
+        return;
+      }
+      if (pwd1 !== pwd2) {
+        showErr("Passwords do not match. Please verify both fields.");
+        return;
+      }
+
+      const cleanId = rawId.toLowerCase();
+      // Check if admin
+      if (cleanId === "admin" || cleanId === "aar-0002" || cleanId === "aar-0001" || cleanId === "rupesh" || cleanId === "nisha" || cleanId.includes("roopkt")) {
+        state.adminPassword = pwd1;
+        saveState();
+        if (errEl) errEl.style.display = "none";
+        if (succEl) {
+          succEl.style.display = "block";
+          succEl.textContent = "✅ Admin password reset successfully!";
+        }
+        setTimeout(() => {
+          closeDocModal();
+          const pwdInput = document.getElementById("homeLoginPassword");
+          const idInput = document.getElementById("homeLoginId");
+          if (idInput) idInput.value = rawId;
+          if (pwdInput) pwdInput.value = pwd1;
+          showToast("Password Reset", "Admin password has been reset. Please sign in.");
+        }, 1200);
+        return;
+      }
+
+      // Check employee
+      const emp = state.employees.find(e =>
+        e.id.toLowerCase() === cleanId ||
+        e.id.toLowerCase().replace("aar-0", "") === cleanId ||
+        e.id.toLowerCase().replace("aar-", "") === cleanId ||
+        (e.zohoId && e.zohoId.toLowerCase() === cleanId) ||
+        e.name.toLowerCase() === cleanId ||
+        e.name.toLowerCase().split(" ")[0] === cleanId ||
+        (e.email && e.email.toLowerCase() === cleanId)
+      );
+
+      if (!emp) {
+        showErr(`Employee ID "${rawId}" not found in Aaruni Roster. Please check your ID or contact HR.`);
+        return;
+      }
+
+      // Update employee password
+      emp.password = pwd1;
+      saveState();
+
+      if (errEl) errEl.style.display = "none";
+      if (succEl) {
+        succEl.style.display = "block";
+        succEl.textContent = `✅ Password reset successfully for ${emp.name} (${emp.id})!`;
+      }
+
+      setTimeout(() => {
+        closeDocModal();
+        const idInput = document.getElementById("homeLoginId");
+        const pwdInput = document.getElementById("homeLoginPassword");
+        if (idInput) idInput.value = emp.id;
+        if (pwdInput) pwdInput.value = pwd1;
+        showToast("Password Reset", `Password reset for ${emp.name}. You can now sign in.`);
+      }, 1200);
     }
 
     function submitHomeLogin() {
@@ -6903,6 +7043,9 @@ function updateQrBaseUrl(val) {
         if (themeParam && ["light", "dark", "auto"].includes(themeParam.toLowerCase())) {
           state.themeMode = themeParam.toLowerCase();
           applyAaruniTheme();
+        }
+        if (params.get("reset") === "1" || params.get("forgot") === "1") {
+          setTimeout(() => openForgotPasswordModal(), 100);
         }
         const isSim = (simParam === "1" || simParam === "true");
         if (!empParam) return;
