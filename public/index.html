@@ -2015,6 +2015,25 @@
           ${subNavBar}
           ${inactivityAlertHtml}
 
+          <!-- Attendance Header & Actions -->
+          <div class="flex items-center justify-between mb-4 flex-wrap gap-2">
+            <div>
+              <h2 class="text-sm font-bold text-white flex items-center gap-2">
+                <span>⏱️ Monthly Attendance &amp; Timesheet Audit (Nov 2026)</span>
+                ${missingCount > 0 ? `<span class="bg-rose-500/20 text-rose-300 text-[10px] font-bold px-2 py-0.5 rounded border border-rose-500/40">${missingCount} Missing</span>` : '<span class="bg-emerald-500/20 text-emerald-300 text-[10px] font-bold px-2 py-0.5 rounded border border-emerald-500/40">100% Compliant</span>'}
+              </h2>
+              <div class="text-[11px] text-slate-400 mt-0.5">Verified daily logs for statutory payroll disbursement.</div>
+            </div>
+            <div class="flex items-center gap-2">
+              <button onclick="openHolidayCalendarModal()" class="text-xs font-bold px-3.5 py-1.5 rounded-xl border border-amber-500/50 bg-amber-950/40 text-amber-300 hover:bg-amber-900/50 cursor-pointer inline-flex items-center gap-1.5 shadow">
+                <span>🌴 2026 Holiday Calendar</span>
+              </button>
+              <button onclick="openAddTimesheetModal('${emp.id}')" class="brand-grad text-white text-xs font-bold px-3.5 py-1.5 rounded-xl shadow cursor-pointer">
+                + Log Hours
+              </button>
+            </div>
+          </div>
+
           <!-- Attendance KPI Summary Cards -->
           <div class="grid grid-cols-1 md:grid-cols-4 gap-3 mb-4">
             <div class="glass-card rounded-xl p-3 border-l-4 border-emerald-500">
@@ -2101,14 +2120,21 @@
                           ${isWorked ? (row.entry.hours + ' hrs') : '0.0 hrs'}
                         </td>
                         <td class="py-3 px-3">
-                          ${isWorked ? `
+                          ${isWorked ? (row.isSunday ? `
+                            <div class="flex items-center gap-2">
+                              <span class="text-[10px] font-black px-2.5 py-0.5 rounded-full bg-amber-500/20 text-amber-300 border border-amber-500/50 whitespace-nowrap shadow animate-pulse">
+                                🌟 Sunday Overtime (+1 Day Extra Pay)
+                              </span>
+                              <span class="text-white font-semibold truncate max-w-xs">${row.entry.summary || 'Sunday operational duty'}</span>
+                            </div>
+                          ` : `
                             <div class="flex items-center gap-2">
                               <span class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 whitespace-nowrap">
                                 🟢 Present
                               </span>
                               <span class="text-slate-300 truncate max-w-xs">${row.entry.summary || 'Engineering and daily operations'}</span>
                             </div>
-                          ` : (row.leave ? `
+                          `) : (row.leave ? `
                             <div class="flex items-center gap-2">
                               <span class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-sky-500/20 text-sky-400 border border-sky-500/30 whitespace-nowrap">
                                 🏖️ ${row.leave.leaveType}
@@ -6234,11 +6260,16 @@ function updateQrBaseUrl(val) {
             <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;">
               <div>
                 <span style="background:#ea580c;color:#ffffff;font-size:10px;font-weight:800;padding:2px 8px;border-radius:6px;text-transform:uppercase;">Official Company Policy</span>
-                <h3 style="font-size:18px;font-weight:900;margin:6px 0 2px 0;">📅 Aaruni Tech Yearly Holiday Calendar</h3>
+                <h3 style="font-size:18px;font-weight:900;margin:6px 0 2px 0;">📅 Aaruni Tech Yearly Holiday Calendar (2026–2027)</h3>
                 <p style="font-size:12px;color:#94a3b8;margin:0;">Declared company festival holidays are paid and do not use personal paid leave.</p>
               </div>
-              <div style="font-size:11px;color:#cbd5e1;background:#1e293b;border:1px solid #334155;border-radius:8px;padding:6px 12px;">
-                Sangareddy, Telangana • 7 Festival Occasions
+              <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
+                <a href="downloads/Aaruni_Tech_Attendance_Guide_Holiday_Calendar.pdf" download="Aaruni_Tech_Attendance_Guide_Holiday_Calendar.pdf" style="background:linear-gradient(135deg, #FE5F01 0%, #EA580C 100%);color:#ffffff;font-size:11px;font-weight:800;padding:7px 14px;border-radius:8px;text-decoration:none;display:inline-flex;align-items:center;gap:6px;box-shadow:0 4px 12px rgba(254,95,1,0.35);">
+                  📥 Download Official PDF Guide
+                </a>
+                <div style="font-size:11px;color:#cbd5e1;background:#1e293b;border:1px solid #334155;border-radius:8px;padding:6px 12px;">
+                  Beeramguda, Telangana
+                </div>
               </div>
             </div>
           </div>
