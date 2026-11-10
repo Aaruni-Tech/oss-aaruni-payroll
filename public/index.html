@@ -1273,7 +1273,7 @@
           <div style="margin-bottom:12px;padding:10px 12px;background:#f4f4f5;border-radius:8px;display:flex;justify-content:space-between;align-items:center;">
             <div>
               <div style="font-weight:700;">${label}</div>
-              ${isAdminManaging ? `<div style="font-size:11px;color:#52525b;margin-top:2px;">Current Password: <code style="font-weight:700;">${currentPwd}</code></div>` : ""}
+              <div style="font-size:11px;color:#059669;margin-top:2px;">🔒 Encrypted Authentication Protected</div>
             </div>
           </div>
 
@@ -1286,12 +1286,12 @@
 
           <div style="margin-bottom:10px;">
             <label style="font-weight:700;display:block;margin-bottom:4px;">New Password</label>
-            <input id="chgNewPwd" type="text" value="${isAdminManaging ? currentPwd : ''}" placeholder="Enter new password" style="width:100%;padding:8px 10px;border:1px solid #d4d4d8;border-radius:8px;font-family:monospace;" />
+            <input id="chgNewPwd" type="password" placeholder="Enter new secure password" style="width:100%;padding:8px 10px;border:1px solid #d4d4d8;border-radius:8px;" />
           </div>
 
           <div style="margin-bottom:12px;">
             <label style="font-weight:700;display:block;margin-bottom:4px;">Confirm New Password</label>
-            <input id="chgConfirmPwd" type="text" value="${isAdminManaging ? currentPwd : ''}" placeholder="Confirm new password" style="width:100%;padding:8px 10px;border:1px solid #d4d4d8;border-radius:8px;font-family:monospace;" />
+            <input id="chgConfirmPwd" type="password" placeholder="Confirm new secure password" style="width:100%;padding:8px 10px;border:1px solid #d4d4d8;border-radius:8px;" />
           </div>
 
           <div id="chgPwdError" style="display:none;color:#dc2626;font-weight:600;margin-bottom:10px;"></div>
@@ -4061,21 +4061,19 @@ function updateQrBaseUrl(val) {
     function copyWhatsAppInvite(targetId) {
       const link = getStaffLoginUrl(targetId);
       let name = "Rupesh / Nisha (Admin)";
-      let pwd = state.adminPassword || "Aaruni@2026";
       let loginId = "admin";
       if (targetId !== "ADMIN") {
         const emp = state.employees.find(e => e.id === targetId);
         if (emp) {
           name = emp.name;
-          pwd = getStaffPassword(emp);
           loginId = `${emp.id} (or ${emp.zohoId || emp.id})`;
         }
       }
-      const msg = `*Aaruni Tech — Portal Login*\nHi ${name},\n• *Portal URL:* ${link}\n• *Employee ID:* ${loginId}\n• *Password:* ${pwd}\n(You can change your password anytime after signing in.)`;
+      const msg = `*Aaruni Tech — Employee Portal Access*\nHi ${name},\n• *Portal URL:* ${link}\n• *Employee ID:* ${loginId}\n• *Access:* Sign in using your private password, or switch to 'Set Password' tab if you are signing in for the first time.\n(Keep your password confidential.)`;
       if (navigator.clipboard && navigator.clipboard.writeText) {
         navigator.clipboard.writeText(msg);
       }
-      showToast("Login Copied", `Copied ID & password for ${name}.`);
+      showToast("Invite Copied", `Copied secure login invite for ${name}.`);
     }
 
     function openStaffPinLoginModal() {
