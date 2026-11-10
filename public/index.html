@@ -5186,9 +5186,9 @@ function updateQrBaseUrl(val) {
     }
 
     function openInstallMobileAppModal() {
-      const portalUrl = (state.baseAppUrl || window.location.origin || "https://my.aaruni.in").trim().replace(/\/+$/, "");
-      const apkDirectUrl = portalUrl + "/downloads/aaruni-payroll.apk";
-      const qrStaticPng = (portalUrl.includes("my.aaruni.in")) ? "downloads/aaruni-payroll-custom-qr.png" : "downloads/aaruni-payroll-qr.png";
+      // Always ensure the APK download URL points to the live, working host
+      const apkDirectUrl = "https://my-aaruni.pages.dev/downloads/aaruni-payroll.apk";
+      const qrStaticPng = "downloads/aaruni-payroll-qr.png";
 
       const html = `
         <div style="font-family:-apple-system,BlinkMacSystemFont,'Inter',sans-serif;color:#0f172a;max-width:500px;margin:0 auto;text-align:center;">
