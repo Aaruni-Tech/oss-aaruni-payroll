@@ -1,0 +1,52 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 240" width="100%" height="100%">
+  <defs>
+    <linearGradient id="dawnGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FE5F01" />
+      <stop offset="100%" stop-color="#EA580C" />
+    </linearGradient>
+    <linearGradient id="cloudGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#ffffff" stop-opacity="0.95" />
+      <stop offset="100%" stop-color="#cbd5e1" stop-opacity="0.75" />
+    </linearGradient>
+    <filter id="glow" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="8" result="blur" />
+      <feComposite in="SourceGraphic" in2="blur" operator="over" />
+    </filter>
+  </defs>
+
+  <!-- Background Dark Slate Card -->
+  <rect width="800" height="240" rx="24" fill="#090D16" />
+  <rect x="1.5" y="1.5" width="797" height="237" rx="22.5" fill="none" stroke="#1e293b" stroke-width="3" />
+
+  <!-- Cloud + Stylized 'A' Icon -->
+  <g transform="translate(50, 40)">
+    <!-- Ambient Cloud Glow -->
+    <path d="M 80 130 C 50 130 25 105 25 75 C 25 48 44 26 70 21 C 82 8 100 0 120 0 C 148 0 171 16 181 39 C 190 35 200 33 210 33 C 235 33 255 53 255 78 C 255 104 235 125 210 125 Z" fill="url(#dawnGrad)" opacity="0.2" filter="url(#glow)" />
+    
+    <!-- Outer Cloud Shell -->
+    <path d="M 70 120 C 45 120 25 100 25 75 C 25 53 40 35 62 31 C 72 13 92 0 115 0 C 144 0 167 18 174 44 C 182 40 191 38 200 38 C 222 38 240 56 240 78 C 240 101 222 120 200 120 Z" fill="#0f172a" stroke="url(#dawnGrad)" stroke-width="4" />
+
+    <!-- Stylized Aaruni 'A' Apex radiating from inside cloud -->
+    <path d="M 115 28 L 155 105 L 132 105 L 123 85 L 107 85 L 98 105 L 75 105 Z" fill="url(#dawnGrad)" />
+    <polygon points="115,48 102,74 128,74" fill="#090D16" />
+    <circle cx="115" cy="30" r="4" fill="#ffffff" />
+  </g>
+
+  <!-- Brand Typography -->
+  <g transform="translate(340, 75)">
+    <text x="0" y="46" font-family="-apple-system, BlinkMacSystemFont, 'Inter', 'Geist', sans-serif" font-size="48" font-weight="900" fill="#ffffff" letter-spacing="-1px">
+      Aaruni<tspan fill="url(#dawnGrad)">Cloud</tspan>
+    </text>
+    <text x="2" y="82" font-family="-apple-system, BlinkMacSystemFont, 'Inter', 'Geist', sans-serif" font-size="14" font-weight="700" fill="#94a3b8" letter-spacing="3px">
+      ENTERPRISE AUTONOMOUS COMPUTE &amp; AI
+    </text>
+    <g transform="translate(0, 98)">
+      <rect width="56" height="20" rx="6" fill="#FE5F01" fill-opacity="0.2" stroke="#FE5F01" stroke-width="1" />
+      <text x="28" y="14" font-family="monospace" font-size="10" font-weight="800" fill="#FE5F01" text-anchor="middle">ATC</text>
+      
+      <text x="70" y="14" font-family="-apple-system, BlinkMacSystemFont, sans-serif" font-size="11" font-weight="600" fill="#64748b">
+        ACE Compute &bull; ACS Storage &bull; Voice AI
+      </text>
+    </g>
+  </g>
+</svg>
