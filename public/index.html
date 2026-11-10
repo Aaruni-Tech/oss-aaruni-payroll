@@ -190,7 +190,7 @@
 
       <div class="flex items-center gap-1.5 flex-wrap">
         <button onclick="openInstallMobileAppModal()" class="brand-grad text-white text-[11px] font-bold px-2.5 py-1.5 rounded-lg shadow cursor-pointer">
-          📱 Horilla Mobile App &amp; QR
+          📱 Download Mobile App &amp; QR
         </button>
         <div class="at-theme-switcher" title="Theme">
           <button id="themeBtnLight" onclick="setAaruniTheme('light')" class="at-theme-btn">☀️</button>
@@ -1107,7 +1107,7 @@
                       All Aaruni Tech employees log daily attendance and view payslips primarily on the <strong>Horilla HRMS Mobile App</strong> (or install this portal on phone).
                     </p>
                     <button type="button" onclick="openInstallMobileAppModal()" class="w-full py-2 px-3 rounded-lg brand-grad text-white font-bold text-xs transition-all cursor-pointer">
-                      📱 Scan QR to Install App &amp; View Server Credentials
+                      📱 Scan QR to Download APK &amp; View Portal
                     </button>
                   </div>
                 </div>
@@ -3794,6 +3794,7 @@
 
     function getStaffLoginUrl(empId) {
       const base = (state.baseAppUrl || "https://aaruni-payroll.pages.dev").replace(/\/+$/, "");
+      if (empId === "APK") return `${base}/downloads/aaruni-payroll.apk`;
       if (!empId || empId === "MAIN") return base;
       if (empId === "ADMIN") return `${base}/?emp=ADMIN`;
       return `${base}/?emp=${encodeURIComponent(empId)}`;
@@ -3999,7 +4000,7 @@
                 </div>
               </div>
               <div style="display:flex;flex-wrap:wrap;gap:6px;">
-                ${[["MAIN", "Main Portal"], ["ADMIN", "Admin"], ["AAR-0004", "Nandini"], ["AAR-0005", "Janhavi"], ["AAR-0006", "Ramya"], ["AAR-0008", "Ali"]].map(([id, label]) => `
+                ${[["MAIN", "Main Portal"], ["APK", "📦 Download APK"], ["ADMIN", "Admin"], ["AAR-0004", "Nandini"], ["AAR-0005", "Janhavi"], ["AAR-0006", "Ramya"], ["AAR-0008", "Ali"]].map(([id, label]) => `
                   <button onclick="selectQrTarget('${id}')" style="padding:5px 10px;border-radius:6px;font-size:11px;font-weight:700;border:1px solid #0a0a0a;background:${targetId===id?'#0a0a0a':'#fff'};color:${targetId===id?'#fff':'#0a0a0a'};cursor:pointer;">
                     ${label}
                   </button>
@@ -4113,10 +4114,11 @@ function updateQrBaseUrl(val) {
     }
 
     function openInstallMobileAppModal(selectedId = "ALL") {
-      const portalUrl = (state.baseAppUrl || window.location.origin || "https://aaruni-payroll.pages.dev").trim();
+      const portalUrl = (state.baseAppUrl || window.location.origin || "https://aaruni-payroll.pages.dev").trim().replace(/\/+$/, "");
       const qrPortalSvg = generateQRCodeSVG(portalUrl + "/?tab=timesheet&source=qr", 160);
-      const apkReleaseUrl = "https://github.com/Aaruni-Tech/oss-aaruni-payroll/releases";
-      const qrApkSvg = generateQRCodeSVG(apkReleaseUrl, 140);
+      const apkDirectUrl = portalUrl + "/downloads/aaruni-payroll.apk";
+      const qrApkSvg = generateQRCodeSVG(apkDirectUrl, 160);
+      const apkReleaseUrl = "https://github.com/Aaruni-Tech/oss-aaruni-payroll/releases/tag/v1.0.0";
       const flutterRepoUrl = "https://github.com/Aaruni-Tech/oss-horilla-hr-mobile";
       const qrFlutterSvg = generateQRCodeSVG(flutterRepoUrl, 140);
 
@@ -4136,8 +4138,8 @@ function updateQrBaseUrl(val) {
           <div style="background:#0f172a;color:#ffffff;border-radius:16px;padding:20px;margin-bottom:18px;box-shadow:0 8px 24px rgba(15,23,42,0.25);">
             <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;border-bottom:1px solid #334155;padding-bottom:14px;margin-bottom:16px;">
               <div>
-                <span style="background:#10b981;color:#ffffff;font-size:11px;font-weight:800;padding:3px 8px;border-radius:6px;text-transform:uppercase;letter-spacing:0.05em;">Verified Mobile Client</span>
-                <h3 style="font-size:18px;font-weight:900;margin:6px 0 2px 0;color:#ffffff;">📲 Aaruni Tech Mobile App & PWA Hub</h3>
+                <span style="background:#10b981;color:#ffffff;font-size:11px;font-weight:800;padding:3px 8px;border-radius:6px;text-transform:uppercase;letter-spacing:0.05em;">Verified Mobile Client &amp; APK</span>
+                <h3 style="font-size:18px;font-weight:900;margin:6px 0 2px 0;color:#ffffff;">📲 Aaruni Tech Mobile App &amp; APK Hub</h3>
                 <p style="font-size:12px;color:#94a3b8;margin:0;">Attendance check-in/out, live daily accrued salary tracking, and instant self-service HR documents.</p>
               </div>
               <div style="font-size:11px;color:#cbd5e1;background:#1e293b;border:1px solid #475569;border-radius:8px;padding:6px 12px;">
@@ -4148,14 +4150,14 @@ function updateQrBaseUrl(val) {
             <!-- 3 DOWNLOAD / SCAN OPTIONS: PWA, ANDROID APK & FLUTTER OSS -->
             <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px;margin-bottom:18px;">
               
-              <!-- 1. PWA INSTANT INSTALL (RECOMMENDED) -->
-              <div style="background:#1e293b;border:2px solid #38bdf8;border-radius:12px;padding:14px;text-align:center;">
-                <div style="font-size:11px;font-weight:800;color:#38bdf8;text-transform:uppercase;letter-spacing:0.05em;margin-bottom:4px;">⭐ 1. Recommended (Instant Install)</div>
+              <!-- 1. PWA INSTANT INSTALL -->
+              <div style="background:#1e293b;border:1px solid #334155;border-radius:12px;padding:14px;text-align:center;">
+                <div style="font-size:11px;font-weight:800;color:#38bdf8;text-transform:uppercase;letter-spacing:0.05em;margin-bottom:4px;">🌐 1. Instant Mobile Web App</div>
                 <div style="font-size:14px;font-weight:800;color:#ffffff;margin-bottom:8px;">📱 Mobile PWA Client</div>
                 <div style="background:#ffffff;padding:8px;border-radius:10px;display:inline-block;margin-bottom:10px;">
                   ${qrPortalSvg}
                 </div>
-                <div style="font-size:11px;color:#94a3b8;margin-bottom:10px;">Scan with phone camera to open on mobile immediately.</div>
+                <div style="font-size:11px;color:#94a3b8;margin-bottom:10px;">Scan with phone camera to open on mobile browser.</div>
                 <div style="display:flex;gap:6px;justify-content:center;">
                   <button onclick="triggerNativePwaInstall()" style="background:#38bdf8;color:#0f172a;font-weight:800;font-size:11px;padding:6px 12px;border-radius:8px;border:none;cursor:pointer;">
                     📲 Add to Home Screen
@@ -4166,25 +4168,37 @@ function updateQrBaseUrl(val) {
                 </div>
               </div>
 
-              <!-- 2. ANDROID TWA / APK RELEASE -->
-              <div style="background:#1e293b;border:1px solid #334155;border-radius:12px;padding:14px;text-align:center;">
-                <div style="font-size:11px;font-weight:800;color:#34d399;text-transform:uppercase;letter-spacing:0.05em;margin-bottom:4px;">🤖 Android Play Store / APK</div>
-                <div style="font-size:14px;font-weight:800;color:#ffffff;margin-bottom:8px;">com.aarunitech.payroll</div>
+              <!-- 2. ANDROID APK DIRECT DOWNLOAD FROM AARUNI SERVER (ATC-SS) -->
+              <div style="background:#1e293b;border:2px solid #FE5F01;border-radius:12px;padding:14px;text-align:center;position:relative;box-shadow:0 0 20px rgba(254,95,1,0.2);">
+                <div style="position:absolute;top:-10px;left:50%;transform:translateX(-50%);background:#FE5F01;color:#ffffff;font-size:10px;font-weight:800;padding:2px 10px;border-radius:10px;letter-spacing:0.05em;white-space:nowrap;">
+                  ⭐ RECOMMENDED FOR ANDROID
+                </div>
+                <div style="font-size:11px;font-weight:800;color:#FE5F01;text-transform:uppercase;letter-spacing:0.05em;margin-top:4px;margin-bottom:4px;">🤖 Direct APK Package</div>
+                <div style="font-size:14px;font-weight:800;color:#ffffff;margin-bottom:2px;">aaruni-payroll.apk</div>
+                <div style="font-size:10px;color:#94a3b8;font-family:monospace;margin-bottom:8px;">com.aarunitech.payroll (124 KB)</div>
                 <div style="background:#ffffff;padding:8px;border-radius:10px;display:inline-block;margin-bottom:10px;">
                   ${qrApkSvg}
                 </div>
-                <div style="font-size:11px;color:#94a3b8;margin-bottom:10px;">Direct Android APK package from GitHub releases.</div>
-                <div>
-                  <a href="${apkReleaseUrl}" target="_blank" rel="noopener" style="display:inline-block;background:#10b981;color:#ffffff;font-weight:800;font-size:11px;padding:6px 12px;border-radius:8px;text-decoration:none;">
-                    ⬇️ Download Android APK
+                <div style="font-size:11px;color:#cbd5e1;margin-bottom:10px;line-height:1.4;">
+                  📷 <strong>Scan with Android camera</strong> to download APK directly from Aaruni Server!
+                </div>
+                <div style="display:flex;flex-direction:column;gap:6px;align-items:center;">
+                  <a href="${apkDirectUrl}" download="aaruni-payroll.apk" style="display:inline-block;background:linear-gradient(135deg, #FE5F01 0%, #EA580C 100%);color:#ffffff;font-weight:800;font-size:11px;padding:8px 16px;border-radius:8px;text-decoration:none;box-shadow:0 4px 12px rgba(254,95,1,0.35);cursor:pointer;">
+                    ⬇️ Download APK (From Aaruni Server)
                   </a>
+                  <a href="${apkReleaseUrl}" target="_blank" rel="noopener" style="font-size:10px;color:#94a3b8;text-decoration:underline;">
+                    GitHub Release v1.0.0 Mirror
+                  </a>
+                  <div style="font-size:10px;color:#64748b;margin-top:2px;">
+                    ☁️ Synced to ATC-SS: Synology NAS &bull; Google Drive &bull; Cloudflare CDN
+                  </div>
                 </div>
               </div>
 
               <!-- 3. FLUTTER OSS APP -->
               <div style="background:#1e293b;border:1px solid #334155;border-radius:12px;padding:14px;text-align:center;">
                 <div style="font-size:11px;font-weight:800;color:#a78bfa;text-transform:uppercase;letter-spacing:0.05em;margin-bottom:4px;">💻 Open Source Mobile App</div>
-                <div style="font-size:14px;font-weight:800;color:#ffffff;margin-bottom:8px;">Flutter iOS & Android</div>
+                <div style="font-size:14px;font-weight:800;color:#ffffff;margin-bottom:8px;">Flutter iOS &amp; Android</div>
                 <div style="background:#ffffff;padding:8px;border-radius:10px;display:inline-block;margin-bottom:10px;">
                   ${qrFlutterSvg}
                 </div>
