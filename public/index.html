@@ -1,6 +1,9 @@
 <!DOCTYPE html>
 <html lang="en" data-theme="light">
 <head>
+  <link rel="icon" type="image/png" href="aaruni_square_logo.png" />
+  <link rel="apple-touch-icon" href="aaruni_square_logo.png" />
+  <link rel="stylesheet" href="aaruni-brand.css" />
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
   <title>Aaruni Tech — HR, Timesheet & Encrypted Payroll Portal</title>
@@ -16,35 +19,37 @@
     [data-theme="light"] {
       --at-bg: #f8fafc;
       --at-surface: #ffffff;
-      --at-surface-muted: #f1f5f9;
-      --at-surface-hover: #e2e8f0;
+      --at-surface-muted: #fff7ed;
+      --at-surface-hover: #ffedd5;
       --at-text: #0f172a;
       --at-text-secondary: #334155;
       --at-text-muted: #64748b;
-      --at-border: #e2e8f0;
-      --at-border-strong: #0f172a;
-      --at-primary: #2563eb;
+      --at-border: #fed7aa;
+      --at-border-strong: #fe5f01;
+      --at-primary: #fe5f01;
+      --at-primary-hover: #ea580c;
       --at-primary-fg: #ffffff;
-      --at-badge-bg: #f1f5f9;
-      --at-badge-fg: #0f172a;
-      --at-shadow: 0 1px 3px rgba(15,23,42,0.06), 0 1px 2px rgba(15,23,42,0.04);
+      --at-badge-bg: #fff7ed;
+      --at-badge-fg: #c2410c;
+      --at-shadow: 0 1px 3px rgba(15,23,42,0.06), 0 4px 14px rgba(254,95,1,0.10);
       color-scheme: light;
     }
     [data-theme="dark"] {
-      --at-bg: #09090b;
-      --at-surface: #121215;
-      --at-surface-muted: #18181b;
-      --at-surface-hover: #27272a;
+      --at-bg: #090d16;
+      --at-surface: #0f172a;
+      --at-surface-muted: #1e293b;
+      --at-surface-hover: #293548;
       --at-text: #fafafa;
-      --at-text-secondary: #d4d4d8;
-      --at-text-muted: #a1a1aa;
-      --at-border: #27272a;
-      --at-border-strong: #fafafa;
-      --at-primary: #3b82f6;
+      --at-text-secondary: #cbd5e1;
+      --at-text-muted: #94a3b8;
+      --at-border: #1e293b;
+      --at-border-strong: #fe5f01;
+      --at-primary: #fe5f01;
+      --at-primary-hover: #ff7824;
       --at-primary-fg: #ffffff;
-      --at-badge-bg: #27272a;
-      --at-badge-fg: #fafafa;
-      --at-shadow: 0 2px 8px rgba(0,0,0,0.45);
+      --at-badge-bg: rgba(254, 95, 1, 0.15);
+      --at-badge-fg: #ff8533;
+      --at-shadow: 0 4px 16px rgba(0,0,0,0.5), 0 0 20px rgba(254,95,1,0.12);
       color-scheme: dark;
     }
     * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
@@ -71,15 +76,22 @@
     [data-theme="dark"] .brand-grad,
     [data-theme="light"] .brand-grad.text-white,
     [data-theme="dark"] .brand-grad.text-white {
-      background-color: var(--at-primary) !important;
-      background-image: none !important;
+      background: linear-gradient(135deg, #fe5f01 0%, #ea580c 100%) !important;
       color: #ffffff !important;
-      border: 1px solid var(--at-primary) !important;
+      border: 1px solid #ea580c !important;
+      font-weight: 700;
+      box-shadow: 0 2px 10px rgba(254, 95, 1, 0.32) !important;
+      transition: all 0.15s ease;
     }
     .brand-grad *,
     [data-theme="light"] .brand-grad *,
     [data-theme="dark"] .brand-grad * {
       color: #ffffff !important;
+    }
+    .brand-grad:hover {
+      opacity: 0.95;
+      transform: translateY(-1px);
+      box-shadow: 0 4px 16px rgba(254, 95, 1, 0.45) !important;
     }
     [data-theme="light"] .bg-slate-900,
     [data-theme="light"] .bg-slate-900\/95,
@@ -94,11 +106,11 @@
     [data-theme="light"] .bg-slate-800\/80,
     [data-theme="light"] .bg-slate-800\/70,
     [data-theme="light"] .bg-slate-800\/60 {
-      background-color: #f1f5f9 !important;
+      background-color: #fff7ed !important;
       color: #0f172a !important;
     }
     [data-theme="light"] .bg-slate-700 {
-      background-color: #e2e8f0 !important;
+      background-color: #ffedd5 !important;
       color: #0f172a !important;
     }
     [data-theme="light"] .text-white:not(.brand-grad),
@@ -109,19 +121,12 @@
     [data-theme="light"] .text-slate-300 { color: #334155 !important; }
     [data-theme="light"] .text-slate-400 { color: #64748b !important; }
     [data-theme="light"] .border-slate-800,
-    [data-theme="light"] .border-slate-700 { border-color: #cbd5e1 !important; }
-    [data-theme="light"] .from-slate-900,
-    [data-theme="light"] .via-slate-900,
-    [data-theme="light"] .to-orange-950\/30 {
-      --tw-gradient-from: #ffffff !important;
-      --tw-gradient-to: #f1f5f9 !important;
-      --tw-gradient-stops: #ffffff, #f1f5f9 !important;
+    [data-theme="light"] .border-slate-700 { border-color: #fed7aa !important; }
+    .text-orange-500, .text-orange-400, .text-orange-300 {
+      color: #fe5f01 !important;
     }
-    .text-orange-500, .text-orange-400, .text-orange-300, .text-sky-400, .text-sky-300 {
-      color: var(--at-primary) !important;
-    }
-    .border-orange-500, .border-orange-500\/40, .border-orange-500\/50, .border-sky-500\/30 {
-      border-color: var(--at-primary) !important;
+    .border-orange-500, .border-orange-500\/40, .border-orange-500\/50 {
+      border-color: #fe5f01 !important;
     }
     .bg-orange-500, .bg-orange-500\/20, .bg-orange-500\/15, .bg-orange-500\/10 {
       background-color: var(--at-badge-bg) !important;
@@ -145,14 +150,13 @@
       background: transparent;
       color: var(--at-text-muted);
       cursor: pointer;
+      transition: all 0.15s ease;
     }
     .at-theme-btn.active {
-      background-color: var(--at-primary);
-      color: #ffffff !important;
+      background: linear-gradient(135deg, #fe5f01 0%, #ea580c 100%);
+      color: #ffffff;
+      box-shadow: 0 2px 6px rgba(254, 95, 1, 0.3);
     }
-    .hide-scroll::-webkit-scrollbar { display: none; }
-    .hide-scroll { -ms-overflow-style: none; scrollbar-width: none; }
-    .hidden { display: none !important; }
     @media print {
       body * { visibility: hidden; }
       #printModalContent, #printModalContent * { visibility: visible; }
@@ -175,11 +179,8 @@
   <header class="sticky top-0 z-40 bg-slate-900/95 border-b border-slate-800 backdrop-blur-md px-3 py-2">
     <div class="max-w-5xl mx-auto flex items-center justify-between gap-2 flex-wrap">
       <div class="flex items-center gap-2">
-        <div class="w-8 h-8 rounded-lg bg-slate-800 border border-slate-700 flex items-center justify-center">
-          <svg width="20" height="18" viewBox="0 0 60 52" fill="none">
-            <path d="M8 46L26 8H35L17 46H8Z" fill="currentColor"/>
-            <path d="M27 8L46 46H36L22 18L27 8Z" fill="currentColor" opacity="0.65"/>
-          </svg>
+        <div class="flex items-center gap-2">
+          <img src="aaruni_square_logo.png" alt="Aaruni Tech" class="w-9 h-9 rounded-xl shadow object-contain" />
         </div>
         <div>
           <span class="text-sm font-extrabold tracking-tight text-white block leading-tight">Aaruni Tech</span>
@@ -1048,10 +1049,9 @@
         <div class="max-w-sm mx-auto mt-10 mb-12">
           <div class="glass-card rounded-2xl p-6 md:p-7">
             <div class="flex flex-col items-center text-center mb-5">
-              <div class="w-10 h-10 rounded-xl brand-grad flex items-center justify-center font-black text-sm mb-2.5">
-                AT
-              </div>
-              <h2 class="text-base font-bold text-white">Aaruni Tech</h2>
+              <img src="aaruni_square_logo.png" alt="Aaruni Tech" class="w-16 h-16 rounded-2xl shadow-xl mb-3 object-contain border border-orange-500/30" />
+              <h2 class="text-lg font-black tracking-tight text-white">Aaruni Tech</h2>
+              <span class="text-[11px] font-bold text-orange-400">HR, Timesheet &amp; Encrypted Payroll</span>
             </div>
 
             <div class="grid grid-cols-2 gap-1 p-1 rounded-xl bg-slate-900 border border-slate-800 mb-5 text-xs">
@@ -1101,12 +1101,12 @@
                 </button>
 
                 <div class="pt-4 mt-2 border-t border-slate-800">
-                  <div class="p-3 rounded-xl bg-blue-950/40 border border-blue-500/40 text-center">
-                    <div class="text-[11px] font-extrabold text-blue-400 uppercase tracking-wider mb-1">📲 Mobile-First Company Policy</div>
+                  <div class="p-3 rounded-xl bg-orange-950/30 border border-orange-500/40 text-center">
+                    <div class="text-[11px] font-extrabold text-orange-400 uppercase tracking-wider mb-1">📲 Mobile-First Company Policy</div>
                     <p class="text-xs text-slate-300 leading-relaxed mb-2.5">
                       All Aaruni Tech employees log daily attendance and view payslips primarily on the <strong>Horilla HRMS Mobile App</strong> (or install this portal on phone).
                     </p>
-                    <button type="button" onclick="openInstallMobileAppModal()" class="w-full py-2 px-3 rounded-lg bg-blue-600 hover:bg-blue-500 text-white font-bold text-xs transition-all cursor-pointer">
+                    <button type="button" onclick="openInstallMobileAppModal()" class="w-full py-2 px-3 rounded-lg brand-grad text-white font-bold text-xs transition-all cursor-pointer">
                       📱 Scan QR to Install App &amp; View Server Credentials
                     </button>
                   </div>
@@ -3521,10 +3521,7 @@
       const letterhead = `
         <div style="display:flex;justify-content:space-between;align-items:center;border-bottom:2px solid #ea580c;padding-bottom:14px;margin-bottom:22px;">
           <div style="display:flex;align-items:center;gap:12px;">
-            <svg width="44" height="40" viewBox="0 0 60 52" fill="none">
-              <path d="M8 46L26 8H35L17 46H8Z" fill="#111827"/>
-              <path d="M27 8L46 46H36L22 18L27 8Z" fill="#EA580C"/>
-            </svg>
+            <img src="aaruni_square_logo.png" alt="Aaruni Tech" style="width:48px;height:48px;border-radius:10px;object-fit:contain;margin-right:8px;" />
             <div>
               <div style="font-size:20px;font-weight:800;color:#0f172a;">Aaruni Tech (Aarunitech Private Limited)</div>
               <div style="font-size:12px;color:#475569;">Villa 257 Chaitanya Nagar Colony, Praneeth Pranav Knight Woods, Beeramguda, Telangana - 502319</div>

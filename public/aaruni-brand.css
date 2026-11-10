@@ -1,8 +1,8 @@
 /**
  * ============================================================================
- * AARUNI TECH — OFFICIAL INTERNAL TOOLS MONOCHROME DESIGN SYSTEM (aaruni-brand.css)
- * High-contrast Black & White aesthetic with Day / Night / Auto theme engine.
- * Designed for all Aaruni Tech internal tools (HR, Payroll, Attendance, Tax, Admin).
+ * AARUNI TECH — OFFICIAL BRAND DESIGN SYSTEM (aaruni-brand.css)
+ * Signature Aaruni Dawn Orange (#FE5F01) & Carbon Slate Theme Engine
+ * Designed for all Aaruni Tech internal & staff portals (HR, Payroll, Tax).
  * ============================================================================
  */
 
@@ -10,36 +10,38 @@
 [data-theme="light"] {
   --at-bg: #f8fafc;
   --at-surface: #ffffff;
-  --at-surface-muted: #f1f5f9;
-  --at-surface-hover: #e2e8f0;
+  --at-surface-muted: #fff7ed;
+  --at-surface-hover: #ffedd5;
   --at-text: #0f172a;
   --at-text-secondary: #334155;
   --at-text-muted: #64748b;
-  --at-border: #e2e8f0;
-  --at-border-strong: #0f172a;
-  --at-primary: #2563eb;
+  --at-border: #fed7aa;
+  --at-border-strong: #fe5f01;
+  --at-primary: #fe5f01;
+  --at-primary-hover: #ea580c;
   --at-primary-fg: #ffffff;
-  --at-badge-bg: #f1f5f9;
-  --at-badge-fg: #0f172a;
-  --at-shadow: 0 1px 3px rgba(15, 23, 42, 0.06), 0 1px 2px rgba(15, 23, 42, 0.04);
+  --at-badge-bg: #fff7ed;
+  --at-badge-fg: #c2410c;
+  --at-shadow: 0 1px 3px rgba(15, 23, 42, 0.06), 0 4px 14px rgba(254, 95, 1, 0.10);
   color-scheme: light;
 }
 
 [data-theme="dark"] {
-  --at-bg: #09090b;
-  --at-surface: #121215;
-  --at-surface-muted: #18181b;
-  --at-surface-hover: #27272a;
+  --at-bg: #090d16;
+  --at-surface: #0f172a;
+  --at-surface-muted: #1e293b;
+  --at-surface-hover: #293548;
   --at-text: #fafafa;
-  --at-text-secondary: #d4d4d8;
-  --at-text-muted: #a1a1aa;
-  --at-border: #27272a;
-  --at-border-strong: #fafafa;
-  --at-primary: #3b82f6;
+  --at-text-secondary: #cbd5e1;
+  --at-text-muted: #94a3b8;
+  --at-border: #1e293b;
+  --at-border-strong: #fe5f01;
+  --at-primary: #fe5f01;
+  --at-primary-hover: #ff7824;
   --at-primary-fg: #ffffff;
-  --at-badge-bg: #27272a;
-  --at-badge-fg: #fafafa;
-  --at-shadow: 0 2px 8px rgba(0, 0, 0, 0.45);
+  --at-badge-bg: rgba(254, 95, 1, 0.15);
+  --at-badge-fg: #ff8533;
+  --at-shadow: 0 4px 16px rgba(0, 0, 0, 0.5), 0 0 20px rgba(254, 95, 1, 0.12);
   color-scheme: dark;
 }
 
@@ -68,19 +70,19 @@ body {
   backdrop-filter: none !important;
 }
 
-/* Primary CTA Button */
+/* Official Aaruni Dawn Orange Primary CTA Button & Gradients */
 .brand-grad,
 .at-btn-primary,
 [data-theme="light"] .brand-grad,
 [data-theme="dark"] .brand-grad,
 [data-theme="light"] .brand-grad.text-white,
 [data-theme="dark"] .brand-grad.text-white {
-  background-color: var(--at-primary) !important;
-  background-image: none !important;
+  background: linear-gradient(135deg, #fe5f01 0%, #ea580c 100%) !important;
   color: #ffffff !important;
-  border: 1px solid var(--at-primary) !important;
+  border: 1px solid #ea580c !important;
   font-weight: 700;
-  transition: opacity 0.15s ease, transform 0.1s ease;
+  box-shadow: 0 2px 10px rgba(254, 95, 1, 0.32) !important;
+  transition: all 0.15s ease;
 }
 
 .brand-grad *,
@@ -91,7 +93,9 @@ body {
 
 .brand-grad:hover,
 .at-btn-primary:hover {
-  opacity: 0.9;
+  opacity: 0.95;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 16px rgba(254, 95, 1, 0.45) !important;
 }
 
 /* Secondary Button */
@@ -116,12 +120,12 @@ body {
 [data-theme="light"] .bg-slate-800\/80,
 [data-theme="light"] .bg-slate-800\/70,
 [data-theme="light"] .bg-slate-800\/60 {
-  background-color: #f1f5f9 !important;
+  background-color: #fff7ed !important;
   color: #0f172a !important;
 }
 
 [data-theme="light"] .bg-slate-700 {
-  background-color: #e2e8f0 !important;
+  background-color: #ffedd5 !important;
   color: #0f172a !important;
 }
 
@@ -141,23 +145,20 @@ body {
 
 [data-theme="light"] .border-slate-800,
 [data-theme="light"] .border-slate-700 {
-  border-color: #cbd5e1 !important;
+  border-color: #fed7aa !important;
 }
 
-/* Monochrome accent overrides across both themes */
+/* Aaruni Orange Accents */
 .text-orange-500,
 .text-orange-400,
-.text-orange-300,
-.text-sky-400,
-.text-sky-300 {
-  color: var(--at-text) !important;
+.text-orange-300 {
+  color: #fe5f01 !important;
 }
 
 .border-orange-500,
 .border-orange-500\/40,
-.border-orange-500\/50,
-.border-sky-500\/30 {
-  border-color: var(--at-border-strong) !important;
+.border-orange-500\/50 {
+  border-color: #fe5f01 !important;
 }
 
 .bg-orange-500,
@@ -192,8 +193,9 @@ body {
 }
 
 .at-theme-btn.active {
-  background-color: var(--at-primary);
-  color: var(--at-primary-fg);
+  background: linear-gradient(135deg, #fe5f01 0%, #ea580c 100%);
+  color: #ffffff;
+  box-shadow: 0 2px 6px rgba(254, 95, 1, 0.3);
 }
 
 @media print {
