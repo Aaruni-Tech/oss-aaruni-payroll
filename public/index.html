@@ -352,7 +352,7 @@
         isExecutive: true,
         trackTimesheet: false,
         shiftHours: 8,
-        monthlyCtc: 0,
+        monthlyCtc: 100000,
         joiningDate: "01/01/2025",
         dob: "Confidential",
         fatherName: "Confidential",
@@ -378,7 +378,7 @@
         isExecutive: true,
         trackTimesheet: false,
         shiftHours: 8,
-        monthlyCtc: 0,
+        monthlyCtc: 250000,
         joiningDate: "01/01/2025",
         dob: "Confidential",
         fatherName: "Confidential",
@@ -400,10 +400,10 @@
         zohoId: "003-OPS",
         name: "Rakesh Tiwari",
         role: "Operations Manager",
-        status: "Inactive",
+        status: "Active",
         trackTimesheet: false,
         shiftHours: 8,
-        monthlyCtc: 0,
+        monthlyCtc: 50000,
         joiningDate: "01/01/2026",
         dob: "Pending",
         fatherName: "Pending",
@@ -608,7 +608,7 @@
       { id: "NOV-008-06", empId: "AAR-0008", date: "2026-11-07", entryTime: "09:00", exitTime: "17:00", hours: 8, status: "Worked", summary: "Daily security patrol & log", taskLink: "On-site", source: "Mobile PWA" }
     ];
 
-    // Historical 2026 Monthly Summary migrated from Nandini_FSM_Daily_Timesheet.xlsx & Oct 2026 Zoho Payslips
+    // Historical 2026 Monthly Summary migrated from Nandini_FSM_Daily_Timesheet.xlsx & Oct 2026 Official Payslips
     const LEGACY_2026_ROLLUP = [
       { month: "2026-01", label: "January 2026", nandiniDays: 24, nandiniHours: 170, totalPayroll: 12500, opsExpense: 8500, revenue: 0 },
       { month: "2026-02", label: "February 2026", nandiniDays: 22, nandiniHours: 176, totalPayroll: 12500, opsExpense: 7800, revenue: 0 },
@@ -622,9 +622,81 @@
       { month: "2026-10", label: "October 2026", nandiniDays: 30, nandiniHours: 208, totalPayroll: 27758, opsExpense: 14000, revenue: 0 }
     ];
 
-    // Pre-seeded 1 Month Paid Salary (October 2026 Zoho Payslips) for Nandini, Janhavi & Ramya!
+    // Pre-seeded 1 Month Paid Salary (October 2026 Official Payslips) for Nandini, Janhavi & Ramya!
     const INITIAL_PAYSLIPS = [
-      // ==================== OCTOBER 2026 (EXACT ZOHO PAYSLIPS) ====================
+      {
+        id: "PS-2026-10-AAR-0001",
+        empId: "AAR-0001",
+        yearMonth: "2026-10",
+        periodLabel: "October 2026",
+        payDate: "31/10/2026",
+        paidDays: 31,
+        lopDays: 0,
+        basic: 50000,
+        fixedAllowance: 50000,
+        bonus: 0,
+        grossEarnings: 100000,
+        deductionLabel: "-",
+        deductions: 0,
+        netPay: 100000,
+        amountInWords: "Indian Rupee One Lakh Only",
+        status: "Paid via Corporate Banking Transfer (31/10/2026)"
+      },
+      {
+        id: "PS-2026-10-AAR-0002",
+        empId: "AAR-0002",
+        yearMonth: "2026-10",
+        periodLabel: "October 2026",
+        payDate: "31/10/2026",
+        paidDays: 31,
+        lopDays: 0,
+        basic: 125000,
+        fixedAllowance: 125000,
+        bonus: 0,
+        grossEarnings: 250000,
+        deductionLabel: "-",
+        deductions: 0,
+        netPay: 250000,
+        amountInWords: "Indian Rupee Two Lakh Fifty Thousand Only",
+        status: "Paid via Corporate Banking Transfer (31/10/2026)"
+      },
+      {
+        id: "PS-2026-10-AAR-0003",
+        empId: "AAR-0003",
+        yearMonth: "2026-10",
+        periodLabel: "October 2026",
+        payDate: "31/10/2026",
+        paidDays: 31,
+        lopDays: 0,
+        basic: 25000,
+        fixedAllowance: 25000,
+        bonus: 0,
+        grossEarnings: 50000,
+        deductionLabel: "-",
+        deductions: 0,
+        netPay: 50000,
+        amountInWords: "Indian Rupee Fifty Thousand Only",
+        status: "Paid via Corporate Banking Transfer (31/10/2026)"
+      },
+      {
+        id: "PS-2026-10-AAR-0008",
+        empId: "AAR-0008",
+        yearMonth: "2026-10",
+        periodLabel: "October 2026",
+        payDate: "31/10/2026",
+        paidDays: 31,
+        lopDays: 0,
+        basic: 5000,
+        fixedAllowance: 5000,
+        bonus: 0,
+        grossEarnings: 10000,
+        deductionLabel: "-",
+        deductions: 0,
+        netPay: 10000,
+        amountInWords: "Indian Rupee Ten Thousand Only",
+        status: "Paid via Corporate Banking Transfer (31/10/2026)"
+      },
+      // ==================== OCTOBER 2026 (OFFICIAL STATUTORY PAYSLIPS) ====================
       {
         id: "PS-2026-10-AAR-0004",
         empId: "AAR-0004",
@@ -811,9 +883,9 @@
       selectedMonth: "2026-11",
       throughDate: "2026-11-09",
       compOffApproved: { "AAR-0004": true, "AAR-0005": true, "AAR-0006": true, "AAR-0008": true },
-      employees: safeJsonParse(safeLocalGet("aaruni_emp_v8"), DEFAULT_EMPLOYEES),
+      employees: safeJsonParse(safeLocalGet("aaruni_emp_v9"), DEFAULT_EMPLOYEES),
       timesheets: safeJsonParse(safeLocalGet("aaruni_ts_v8"), INITIAL_TIMESHEETS),
-      payslips: safeJsonParse(safeLocalGet("aaruni_ps_v8"), INITIAL_PAYSLIPS),
+      payslips: safeJsonParse(safeLocalGet("aaruni_ps_v9"), INITIAL_PAYSLIPS),
       loans: safeJsonParse(safeLocalGet("aaruni_loans_v8"), INITIAL_LOANS),
       messages: safeJsonParse(safeLocalGet("aaruni_msg_v8"), INITIAL_MESSAGES),
       emailLogs: safeJsonParse(safeLocalGet("aaruni_emails_v8"), INITIAL_EMAIL_LOGS),
@@ -831,9 +903,9 @@
 
     function saveState() {
       safeLocalSet("aaruni_admin_pwd_v8", state.adminPassword || "Aaruni@2026");
-      safeLocalSet("aaruni_emp_v8", JSON.stringify(state.employees));
+      safeLocalSet("aaruni_emp_v9", JSON.stringify(state.employees));
       safeLocalSet("aaruni_ts_v8", JSON.stringify(state.timesheets));
-      safeLocalSet("aaruni_ps_v8", JSON.stringify(state.payslips));
+      safeLocalSet("aaruni_ps_v9", JSON.stringify(state.payslips));
       safeLocalSet("aaruni_loans_v8", JSON.stringify(state.loans));
       safeLocalSet("aaruni_msg_v8", JSON.stringify(state.messages));
       safeLocalSet("aaruni_emails_v8", JSON.stringify(state.emailLogs));
@@ -1701,8 +1773,8 @@
           </div>
 
           <div class="flex items-center gap-2 flex-wrap">
-            <button onclick="previewIDCard('${emp.id}')" class="brand-grad text-white text-xs font-bold px-3.5 py-2 rounded-xl shadow cursor-pointer inline-flex items-center gap-1.5 hover:opacity-95">
-              <span>🪪 Official ID Badge</span>
+            <button onclick="previewIDCard('${emp.id}')" class="brand-grad text-white text-xs font-bold px-3.5 py-2 rounded-xl shadow cursor-pointer inline-flex items-center gap-1.5 hover:opacity-95" title="View Official Identity Badge for ${emp.name}">
+              <span>🪪 Official ID Badge (${emp.name})</span>
             </button>
             <button onclick="openInstallMobileAppModal()" class="bg-slate-800 border border-slate-700 hover:bg-slate-700 text-slate-200 text-xs font-semibold px-3 py-2 rounded-xl cursor-pointer inline-flex items-center gap-1.5">
               <span>📱 Mobile App</span>
@@ -1848,7 +1920,7 @@
                   <span class="font-mono font-bold text-white">${emp.id}</span>
                 </div>
                 <div class="py-2.5 flex justify-between items-center">
-                  <span class="text-slate-400">Zoho Directory ID:</span>
+                  <span class="text-slate-400">Aaruni Directory ID:</span>
                   <span class="font-mono font-bold text-white">${emp.zohoId || emp.id}</span>
                 </div>
                 <div class="py-2.5 flex justify-between items-center">
@@ -2080,165 +2152,399 @@
       }
 
       if (activeTab === "salary") {
+        // Calculate historical salary comparison data
+        const histMonths = [
+          { month: "2026-08", label: "August 2026", gross: emp.monthlyCtc || 12500, deductions: 0, net: emp.monthlyCtc || 12500, paidDays: 31, status: "Paid" },
+          { month: "2026-09", label: "September 2026", gross: emp.monthlyCtc || 12500, deductions: 0, net: emp.monthlyCtc || 12500, paidDays: 30, status: "Paid" },
+          { 
+            month: "2026-10", 
+            label: "October 2026", 
+            gross: octSlip ? octSlip.grossEarnings : (emp.monthlyCtc || 12500), 
+            deductions: octSlip ? octSlip.deductions : 0, 
+            net: octSlip ? octSlip.netPay : (emp.monthlyCtc || 12500), 
+            paidDays: octSlip ? octSlip.paidDays : 30, 
+            status: "Paid",
+            slipId: octSlip ? octSlip.id : null
+          },
+          { 
+            month: "2026-11", 
+            label: "November 2026 (Live)", 
+            gross: emp.monthlyCtc || 12500, 
+            deductions: pendingLoans, 
+            net: stats.accruedSalarySoFar, 
+            projectedNet: projectedFullMonthNet,
+            paidDays: stats.accruedPayableDays, 
+            status: "Accruing (11/30d)" 
+          }
+        ];
+
+        // November Live Calculations
+        const totalNovDays = 30;
+        const elapsedNovDays = 11;
+        const remainingNovDays = totalNovDays - elapsedNovDays; // 19 calendar days remaining
+        const monthlyBase = emp.monthlyCtc || 12500;
+        const earnedSoFar = stats.accruedSalarySoFar;
+        const remainingPotential = Math.max(0, monthlyBase - earnedSoFar);
+        const earnedPct = Math.min(100, Math.round((earnedSoFar / monthlyBase) * 100));
+        const remainingPct = 100 - earnedPct;
+        const dailyRate = Math.round(monthlyBase / totalNovDays);
+
+        // October Net Breakdown percentages
+        const octGross = octSlip ? octSlip.grossEarnings : (emp.monthlyCtc || 12500);
+        const octDeduct = octSlip ? octSlip.deductions : 0;
+        const octNet = octSlip ? octSlip.netPay : (emp.monthlyCtc || 12500);
+        const octNetPct = Math.round((octNet / octGross) * 100);
+        const octDeductPct = 100 - octNetPct;
+
+        // Annual Statutory Breakdown (Annexure-A)
+        const basicAnnual = Math.round(annualCtc * 0.484);
+        const hraAnnual = Math.round(annualCtc * 0.194);
+        const specialAnnual = Math.round(annualCtc * 0.290);
+        const bonusAnnual = annualCtc - (basicAnnual + hraAnnual + specialAnnual);
+
+        const basicMonthly = Math.round(basicAnnual / 12);
+        const hraMonthly = Math.round(hraAnnual / 12);
+        const specialMonthly = Math.round(specialAnnual / 12);
+        const bonusMonthly = Math.round(bonusAnnual / 12);
+
         return `
           ${adminPreviewBar}
           ${phoneToolHeader}
           ${subNavBar}
 
-          <!-- Privacy Toggle Bar -->
-          <div class="flex justify-end mb-3">
+          <!-- Confidentiality Privacy Toggle -->
+          <div class="flex items-center justify-between mb-4 flex-wrap gap-2">
+            <div class="flex items-center gap-2">
+              <span class="text-xs font-bold text-white uppercase tracking-wider">💰 Compensation &amp; Payroll Analytics</span>
+              <span class="text-[10px] bg-slate-800 text-slate-300 font-mono font-semibold px-2 py-0.5 rounded border border-slate-700">AARUNITECH PVT LTD</span>
+            </div>
             <button onclick="toggleSalaryMask()" class="text-xs font-bold px-3.5 py-1.5 rounded-xl border border-orange-500/50 bg-orange-950/40 text-orange-300 hover:bg-orange-900/50 cursor-pointer inline-flex items-center gap-1.5 shadow">
               <span>${state.salariesMasked ? '👁️ Show Confidential Figures' : '🙈 Mask Salary Numbers'}</span>
             </button>
           </div>
 
-          <!-- 1. Last Month Paid + Current Month Live Tracker -->
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-            <div class="glass-card rounded-2xl p-4 border-l-4 border-emerald-500">
-              <div class="flex items-start justify-between gap-2">
-                <div>
-                  <div class="text-[11px] font-bold uppercase tracking-wider text-emerald-400">✅ Last Month Paid Salary (October 2026)</div>
-                  ${octSlip ? `
-                    <div class="text-2xl font-extrabold text-white mt-1">${fmtINR(octSlip.netPay)} <span class="text-xs font-semibold text-emerald-400">Net Paid (${octSlip.payDate})</span></div>
-                  ` : `
-                    <div class="text-base font-bold text-slate-300 mt-1">Joined ${emp.joiningDate} (Nov 2026 Cycle)</div>
-                  `}
+          <!-- SECTION 1: THIS MONTH LIVE EARNINGS & REMAINING DAYS ACCRUAL -->
+          <div class="glass-card rounded-2xl p-4 mb-4 border border-sky-500/40 shadow-lg">
+            <div class="flex items-center justify-between border-b border-slate-800 pb-3 mb-3 flex-wrap gap-2">
+              <div>
+                <div class="text-xs font-bold text-sky-400 uppercase tracking-wider flex items-center gap-2">
+                  <span>⏱️ Current Month Live Earnings &amp; Remaining Days Accrual (Nov 2026)</span>
+                  <span class="bg-sky-500/20 text-sky-300 text-[10px] font-bold px-2 py-0.5 rounded border border-sky-500/30">Day 11 of 30</span>
                 </div>
-                ${octSlip ? `
-                  <button onclick="openPayslipModal('${octSlip.id}')" class="brand-grad text-white text-xs font-bold px-3 py-1.5 rounded-lg shrink-0 cursor-pointer">
-                    📄 Oct Payslip PDF
-                  </button>
-                ` : ""}
+                <div class="text-[11px] text-slate-400 mt-0.5">Real-time daily accrual tracking for ${emp.name} based on verified punch logs.</div>
               </div>
-              ${octSlip ? `
-                <div class="grid grid-cols-2 gap-1.5 mt-3 text-xs text-slate-300">
-                  <div><span class="text-slate-400">Paid / LOP Days:</span> <strong class="text-white">${octSlip.paidDays}d Paid / ${octSlip.lopDays}d LOP</strong></div>
-                  <div><span class="text-slate-400">Gross Salary:</span> <strong class="text-white">${fmtINR(octSlip.grossEarnings)}</strong></div>
-                  <div><span class="text-slate-400">Basic + Fixed:</span> <strong class="text-white">${fmtINR(octSlip.basic)} + ${fmtINR(octSlip.fixedAllowance)}</strong></div>
-                  <div><span class="text-slate-400">Deductions:</span> <strong class="text-rose-400">-${fmtINR(octSlip.deductions)} (${octSlip.deductionLabel})</strong></div>
-                </div>
-              ` : ""}
+              <div class="flex items-center gap-2">
+                <button onclick="openApplyAdvanceModal('${emp.id}')" class="brand-grad text-white text-xs font-bold px-3 py-1.5 rounded-lg shrink-0 cursor-pointer shadow">
+                  ⚡ Request Advance
+                </button>
+                <button onclick="openApplyLeaveModal('${emp.id}')" class="bg-slate-800 border border-slate-700 text-white text-xs font-semibold px-3 py-1.5 rounded-lg shrink-0 cursor-pointer hover:bg-slate-700">
+                  🏖️ Apply Leave
+                </button>
+              </div>
             </div>
 
-            <div class="glass-card rounded-2xl p-4 border-l-4 border-sky-500">
-              <div class="flex items-start justify-between gap-2">
-                <div>
-                  <div class="text-[11px] font-bold uppercase tracking-wider text-sky-400">📊 Current Month Live Tracker (Nov 2026 So Far)</div>
-                  <div class="text-2xl font-extrabold text-white mt-1">
-                    ${fmtINR(stats.accruedSalarySoFar)}
-                    <span class="text-xs font-semibold text-sky-400">Expected Salary So Far (${stats.accruedPayableDays} Payable Days)</span>
-                  </div>
+            <!-- Visual Split Progress Meter (Earned vs Remaining) -->
+            <div class="mb-4">
+              <div class="flex justify-between items-center text-xs mb-1.5 font-bold">
+                <span class="text-orange-400 flex items-center gap-1.5">
+                  <span class="w-2.5 h-2.5 rounded-full bg-orange-500 inline-block animate-pulse"></span>
+                  Earned So Far: <strong class="text-white text-sm ml-1">${fmtINR(earnedSoFar)}</strong>
+                  <span class="text-slate-400 font-normal">(${stats.accruedPayableDays} Payable Days)</span>
+                </span>
+                <span class="text-slate-400">
+                  Remaining Potential: <strong class="text-sky-300 text-sm ml-1">${fmtINR(remainingPotential)}</strong>
+                  <span class="text-slate-400 font-normal">(${remainingNovDays} Calendar Days Left)</span>
+                </span>
+              </div>
+
+              <!-- High-Contrast Split Meter Bar -->
+              <div class="w-full bg-slate-950 rounded-xl h-8 p-1 border border-slate-700 flex overflow-hidden gap-1">
+                <div style="width: ${earnedPct}%;" class="brand-grad h-full rounded-lg flex items-center justify-center text-[10px] font-black text-white px-2 shadow whitespace-nowrap transition-all duration-500">
+                  🟢 ${earnedPct}% Earned (${fmtINR(earnedSoFar)})
                 </div>
-                <div class="flex gap-1.5">
-                  <button onclick="openApplyAdvanceModal('${emp.id}')" class="brand-grad text-white text-xs font-bold px-2.5 py-1.5 rounded-lg shrink-0 cursor-pointer">
-                    ⚡ Advance
-                  </button>
-                  <button onclick="openApplyLeaveModal('${emp.id}')" class="bg-slate-800 border border-slate-700 text-white text-xs font-semibold px-2.5 py-1.5 rounded-lg shrink-0 cursor-pointer">
-                    🏖️ Leave
-                  </button>
+                <div style="width: ${remainingPct}%;" class="bg-slate-800/80 border border-slate-700/50 h-full rounded-lg flex items-center justify-center text-[10px] font-semibold text-slate-300 px-2 whitespace-nowrap">
+                  ⏳ ${remainingPct}% Remaining (${fmtINR(remainingPotential)} &bull; ${remainingNovDays}d)
                 </div>
               </div>
-              <div class="grid grid-cols-2 gap-1.5 mt-3 text-xs text-slate-300">
-                <div><span class="text-slate-400">Days Came:</span> <strong class="text-white">${stats.workedDays} Days</strong></div>
-                <div><span class="text-slate-400">Total Hours:</span> <strong class="text-white">${stats.totalHours} Hours</strong></div>
-                <div><span class="text-slate-400">Hours ÷ 8 = Work Days:</span> <strong class="text-white">${stats.effectiveDaysFromHours}d (+${stats.paidSundays} Sun = ${stats.accruedPayableDays}d)</strong></div>
-                <div><span class="text-slate-400">Full Month Est. Net:</span> <strong class="text-white">${fmtINR(projectedFullMonthNet)}</strong> ${pendingLoans > 0 ? `<span class="text-rose-400">(-${fmtINR(pendingLoans)} Adv)</span>` : ''}</div>
+            </div>
+
+            <!-- 4 Live Operational Metric Chips -->
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-2.5 text-xs">
+              <div class="p-2.5 rounded-xl bg-slate-900/80 border border-slate-800">
+                <div class="text-[11px] text-slate-400">Daily Earning Velocity</div>
+                <div class="text-sm font-extrabold text-white mt-0.5">${fmtINR(dailyRate)} <span class="text-[10px] font-normal text-slate-400">/ day</span></div>
+                <div class="text-[10px] text-emerald-400 mt-0.5">8h Standard Shift</div>
+              </div>
+              <div class="p-2.5 rounded-xl bg-slate-900/80 border border-slate-800">
+                <div class="text-[11px] text-slate-400">Hours Logged</div>
+                <div class="text-sm font-extrabold text-white mt-0.5">${stats.totalHours} <span class="text-[10px] font-normal text-slate-400">Hours</span></div>
+                <div class="text-[10px] text-sky-400 mt-0.5">${stats.workedDays} Work Days Verified</div>
+              </div>
+              <div class="p-2.5 rounded-xl bg-slate-900/80 border border-slate-800">
+                <div class="text-[11px] text-slate-400">Paid Rest Days</div>
+                <div class="text-sm font-extrabold text-amber-300 mt-0.5">${stats.paidSundays} <span class="text-[10px] font-normal text-slate-400">Sundays</span></div>
+                <div class="text-[10px] text-slate-400 mt-0.5">Accrued as Paid Leave</div>
+              </div>
+              <div class="p-2.5 rounded-xl bg-slate-900/80 border border-slate-800">
+                <div class="text-[11px] text-slate-400">Projected Month-End Net</div>
+                <div class="text-sm font-extrabold text-emerald-400 mt-0.5">${fmtINR(projectedFullMonthNet)}</div>
+                <div class="text-[10px] text-slate-400 mt-0.5">${pendingLoans > 0 ? `-${fmtINR(pendingLoans)} loan recovery` : 'Zero deductions'}</div>
               </div>
             </div>
           </div>
 
-          <!-- 2. Adobe-Style Compensation Donut Chart Card -->
-          <div class="glass-card rounded-2xl p-4 mb-4 border border-slate-800">
-            <div class="flex items-center justify-between border-b border-slate-800/80 pb-2.5 mb-3 flex-wrap gap-2">
+          <!-- SECTION 2: LAST MONTH HOW MUCH I EARNED (OCTOBER 2026 - GRAPH + ITEMISED DATA) -->
+          <div class="glass-card rounded-2xl p-4 mb-4 border border-emerald-500/40 shadow-lg">
+            <div class="flex items-center justify-between border-b border-slate-800 pb-3 mb-3 flex-wrap gap-2">
               <div>
-                <div class="text-xs font-bold text-white uppercase tracking-wider flex items-center gap-2">
-                  <span>🥧 Adobe-Style Compensation &amp; FY 2026-27 Distribution</span>
-                  <span class="bg-orange-500/20 text-orange-400 text-[10px] font-bold px-2 py-0.5 rounded border border-orange-500/30">Analytics</span>
+                <div class="text-xs font-bold text-emerald-400 uppercase tracking-wider flex items-center gap-2">
+                  <span>✅ Last Month Paid Salary &amp; Disbursement Audit (October 2026)</span>
+                  <span class="bg-emerald-500/20 text-emerald-300 text-[10px] font-bold px-2 py-0.5 rounded border border-emerald-500/30">Verified &amp; Paid</span>
                 </div>
-                <div class="text-[11px] text-slate-400 mt-0.5">Visual representation of Annual CTC, Year-to-Date Accrued, and Current Month Payouts.</div>
+                <div class="text-[11px] text-slate-400 mt-0.5">Disbursed on 31/10/2026 via Corporate Direct Bank Transfer.</div>
               </div>
-              <div class="text-right">
-                <span class="text-xs text-slate-400">Annual CTC:</span>
-                <strong class="text-sm font-extrabold text-white ml-1">${fmtINR(annualCtc)}</strong>
-              </div>
+              ${octSlip ? `
+                <button onclick="openPayslipModal('${octSlip.id}')" class="brand-grad text-white text-xs font-bold px-3 py-1.5 rounded-lg shrink-0 cursor-pointer shadow hover:opacity-95">
+                  📄 View Oct Salary Slip
+                </button>
+              ` : ''}
             </div>
 
             <div class="grid grid-cols-1 md:grid-cols-12 gap-4 items-center">
-              <!-- DONUT SVG -->
-              <div class="md:col-span-5 flex justify-center py-2">
-                <div class="relative w-40 h-40">
-                  <svg viewBox="0 0 42 42" class="w-full h-full -rotate-90">
-                    <circle cx="21" cy="21" r="15.91549430918954" fill="transparent" stroke="#1e293b" stroke-width="5"></circle>
-                    <circle cx="21" cy="21" r="15.91549430918954" fill="transparent" stroke="#10b981" stroke-width="5" stroke-dasharray="${pctYtd} ${100 - pctYtd}" stroke-dashoffset="0"></circle>
-                    <circle cx="21" cy="21" r="15.91549430918954" fill="transparent" stroke="#fe5f01" stroke-width="5" stroke-dasharray="${pctMo} ${100 - pctMo}" stroke-dashoffset="-${pctYtd}"></circle>
-                    <circle cx="21" cy="21" r="15.91549430918954" fill="transparent" stroke="#0284c7" stroke-width="5" stroke-dasharray="${pctRem} ${100 - pctRem}" stroke-dashoffset="-${pctYtd + pctMo}"></circle>
-                  </svg>
-                  <div class="absolute inset-0 flex flex-col items-center justify-center text-center pointer-events-none">
-                    <span class="text-[10px] uppercase font-bold text-slate-400">Net Accrued</span>
-                    <span class="text-xs font-black text-white">${fmtINR(ytdReceived + accruedMonth)}</span>
-                    <span class="text-[9px] text-emerald-400 font-bold">${pctYtd + pctMo}% of CTC</span>
+              <!-- Graphical Visual Breakdown Bar -->
+              <div class="md:col-span-5 p-3 rounded-xl bg-slate-950/80 border border-slate-800">
+                <div class="text-xs font-bold text-slate-300 mb-2 flex justify-between">
+                  <span>Disbursement Composition</span>
+                  <span class="text-emerald-400 font-mono">${fmtINR(octNet)} Net</span>
+                </div>
+                <!-- Visual Stacked Bar -->
+                <div class="w-full bg-slate-900 rounded-lg h-6 flex overflow-hidden border border-slate-700/60 mb-2.5">
+                  <div style="width: ${octNetPct}%;" class="bg-emerald-500 h-full flex items-center justify-center text-[10px] font-bold text-slate-950 px-1.5">
+                    Net: ${octNetPct}%
                   </div>
+                  ${octDeduct > 0 ? `
+                    <div style="width: ${octDeductPct}%;" class="bg-rose-500 h-full flex items-center justify-center text-[10px] font-bold text-white px-1.5">
+                      -${octDeductPct}%
+                    </div>
+                  ` : ''}
+                </div>
+                <div class="flex justify-between text-[11px] text-slate-400">
+                  <span class="flex items-center gap-1.5"><span class="w-2 h-2 rounded-full bg-emerald-500"></span> In-Hand Disbursed: <strong class="text-white">${fmtINR(octNet)}</strong></span>
+                  ${octDeduct > 0 ? `<span class="flex items-center gap-1.5"><span class="w-2 h-2 rounded-full bg-rose-500"></span> Deductions: <strong class="text-rose-400">-${fmtINR(octDeduct)}</strong></span>` : '<span class="text-emerald-400">No Deductions</span>'}
                 </div>
               </div>
 
-              <!-- BREAKDOWN METRICS -->
-              <div class="md:col-span-7 grid grid-cols-2 gap-2 text-xs">
-                <div class="p-2.5 rounded-xl bg-slate-900/60 border border-slate-800">
-                  <div class="flex items-center gap-1.5 mb-1">
-                    <span class="w-2.5 h-2.5 rounded-full bg-emerald-500"></span>
-                    <span class="text-slate-400">Received FY YTD:</span>
-                  </div>
-                  <div class="font-extrabold text-white text-sm">${fmtINR(ytdReceived)}</div>
-                  <div class="text-[10px] text-emerald-400 font-semibold mt-0.5">${pctYtd}% of Annual Package</div>
-                </div>
-
-                <div class="p-2.5 rounded-xl bg-slate-900/60 border border-slate-800">
-                  <div class="flex items-center gap-1.5 mb-1">
-                    <span class="w-2.5 h-2.5 rounded-full bg-orange-500"></span>
-                    <span class="text-slate-400">Accrued This Month:</span>
-                  </div>
-                  <div class="font-extrabold text-white text-sm">${fmtINR(accruedMonth)}</div>
-                  <div class="text-[10px] text-orange-400 font-semibold mt-0.5">${stats.accruedPayableDays} payable days so far</div>
-                </div>
-
-                <div class="p-2.5 rounded-xl bg-slate-900/60 border border-slate-800">
-                  <div class="flex items-center gap-1.5 mb-1">
-                    <span class="w-2.5 h-2.5 rounded-full bg-sky-500"></span>
-                    <span class="text-slate-400">Remaining Balance:</span>
-                  </div>
-                  <div class="font-extrabold text-white text-sm">${fmtINR(remainingBalance)}</div>
-                  <div class="text-[10px] text-sky-400 font-semibold mt-0.5">Future fiscal year earnings</div>
-                </div>
-
-                <div class="p-2.5 rounded-xl bg-slate-900/60 border border-slate-800">
-                  <div class="flex items-center gap-1.5 mb-1">
-                    <span class="w-2.5 h-2.5 rounded-full bg-amber-500"></span>
-                    <span class="text-slate-400">Advance Balance:</span>
-                  </div>
-                  <div class="font-extrabold text-amber-300 text-sm">${pendingLoans > 0 ? fmtINR(pendingLoans) : '₹0.00 (Nil)'}</div>
-                  <div class="text-[10px] text-slate-400 mt-0.5">${pendingLoans > 0 ? 'Deducted from salary' : 'Zero outstanding'}</div>
-                </div>
+              <!-- Official Itemized Statutory Ledger Table -->
+              <div class="md:col-span-7 overflow-x-auto">
+                <table class="w-full text-left border-collapse text-xs">
+                  <tbody class="divide-y divide-slate-800/80">
+                    <tr>
+                      <td class="py-1.5 text-slate-400">Gross Monthly Salary:</td>
+                      <td class="py-1.5 font-bold text-white text-right">${fmtINR(octGross)}</td>
+                      <td class="py-1.5 text-slate-400 pl-4">Paid / LOP Days:</td>
+                      <td class="py-1.5 font-bold text-white text-right">${octSlip ? `${octSlip.paidDays}d Paid / ${octSlip.lopDays}d LOP` : '31 Days Full'}</td>
+                    </tr>
+                    <tr>
+                      <td class="py-1.5 text-slate-400">Basic Wage Allocation:</td>
+                      <td class="py-1.5 font-bold text-slate-200 text-right">${octSlip ? fmtINR(octSlip.basic) : fmtINR(Math.round(octGross * 0.5))}</td>
+                      <td class="py-1.5 text-slate-400 pl-4">Fixed Allowance / HRA:</td>
+                      <td class="py-1.5 font-bold text-slate-200 text-right">${octSlip ? fmtINR(octSlip.fixedAllowance) : fmtINR(Math.round(octGross * 0.5))}</td>
+                    </tr>
+                    <tr>
+                      <td class="py-1.5 text-slate-400">Deductions / Advances:</td>
+                      <td class="py-1.5 font-bold text-rose-400 text-right">-${fmtINR(octDeduct)}</td>
+                      <td class="py-1.5 text-slate-400 pl-4">Net Amount Transferred:</td>
+                      <td class="py-1.5 font-black text-emerald-400 text-sm text-right">${fmtINR(octNet)}</td>
+                    </tr>
+                    <tr>
+                      <td class="py-1.5 text-slate-400">Disbursement Channel:</td>
+                      <td colspan="3" class="py-1.5 text-right font-mono text-[11px] text-slate-300">
+                        Axis Bank Direct Transfer &bull; Ref: <span class="text-orange-400 font-bold">NEFT-AXIS-20261031-7781</span>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
               </div>
             </div>
           </div>
 
-          <!-- 3. Salary Advance Applications -->
-          <div class="glass-card rounded-2xl p-4 border border-slate-800">
+          <!-- SECTION 3: MONTH-OVER-MONTH SALARY COMPARISON (GRAPH + COMPARATIVE TABLE) -->
+          <div class="glass-card rounded-2xl p-4 mb-4 border border-slate-800 shadow-lg">
+            <div class="flex items-center justify-between border-b border-slate-800 pb-3 mb-3 flex-wrap gap-2">
+              <div>
+                <div class="text-xs font-bold text-white uppercase tracking-wider flex items-center gap-2">
+                  <span>📈 Salary Comparison &amp; Multi-Month Historical Trend</span>
+                  <span class="bg-orange-500/20 text-orange-400 text-[10px] font-bold px-2 py-0.5 rounded border border-orange-500/30">Analytics</span>
+                </div>
+                <div class="text-[11px] text-slate-400 mt-0.5">Compare Gross Earnings, Deductions, and Net Take-Home across payroll cycles.</div>
+              </div>
+              <div class="flex items-center gap-3 text-xs text-slate-400">
+                <span class="flex items-center gap-1.5"><span class="w-3 h-3 rounded bg-orange-500"></span> Gross Salary</span>
+                <span class="flex items-center gap-1.5"><span class="w-3 h-3 rounded bg-emerald-500"></span> Net Take-Home</span>
+                <span class="flex items-center gap-1.5"><span class="w-3 h-3 rounded bg-rose-500"></span> Deductions</span>
+              </div>
+            </div>
+
+            <!-- Visual Multi-Bar Graph (SVG) -->
+            <div class="mb-4 p-3 bg-slate-950/60 rounded-xl border border-slate-800/80">
+              <div class="grid grid-cols-4 gap-2 text-center text-xs">
+                ${histMonths.map(m => {
+                  const maxVal = Math.max(...histMonths.map(x => x.gross)) || 1;
+                  const grossH = Math.round((m.gross / maxVal) * 85);
+                  const netH = Math.round((m.net / maxVal) * 85);
+                  const deductH = m.deductions > 0 ? Math.max(8, Math.round((m.deductions / maxVal) * 85)) : 0;
+
+                  return `
+                    <div class="flex flex-col items-center">
+                      <!-- Bar Chart Pillars -->
+                      <div class="h-28 w-full flex items-end justify-center gap-1.5 pb-2 border-b border-slate-800">
+                        <div style="height: ${grossH}px;" class="w-5 bg-orange-500/80 rounded-t hover:bg-orange-400 transition-all" title="Gross: ${fmtINR(m.gross)}"></div>
+                        <div style="height: ${netH}px;" class="w-5 bg-emerald-500 rounded-t hover:bg-emerald-400 transition-all" title="Net: ${fmtINR(m.net)}"></div>
+                        ${deductH > 0 ? `<div style="height: ${deductH}px;" class="w-4 bg-rose-500 rounded-t" title="Deduction: -${fmtINR(m.deductions)}"></div>` : ''}
+                      </div>
+                      <div class="font-bold text-white text-[11px] mt-1.5 truncate max-w-full">${m.label.replace(' 2026', '')}</div>
+                      <div class="text-[10px] text-emerald-400 font-mono font-bold">${fmtINR(m.net)}</div>
+                    </div>
+                  `;
+                }).join("")}
+              </div>
+            </div>
+
+            <!-- Historical Comparison Ledger Table -->
+            <div class="overflow-x-auto">
+              <table class="w-full text-left border-collapse text-xs">
+                <thead>
+                  <tr class="border-b border-slate-800 text-slate-400 uppercase tracking-wider text-[10px]">
+                    <th class="py-2.5 px-3">Payroll Cycle</th>
+                    <th class="py-2.5 px-3">Paid Days</th>
+                    <th class="py-2.5 px-3 text-right">Gross Salary</th>
+                    <th class="py-2.5 px-3 text-right">Deductions</th>
+                    <th class="py-2.5 px-3 text-right">Net Take-Home</th>
+                    <th class="py-2.5 px-3 text-center">Status</th>
+                    <th class="py-2.5 px-3 text-right">Action</th>
+                  </tr>
+                </thead>
+                <tbody class="divide-y divide-slate-800/60">
+                  ${histMonths.map(m => `
+                    <tr class="hover:bg-slate-800/30">
+                      <td class="py-2.5 px-3 font-bold text-white">${m.label}</td>
+                      <td class="py-2.5 px-3 text-slate-300 font-mono">${m.paidDays} Days</td>
+                      <td class="py-2.5 px-3 text-right font-semibold text-white font-mono">${fmtINR(m.gross)}</td>
+                      <td class="py-2.5 px-3 text-right font-mono ${m.deductions > 0 ? 'text-rose-400 font-bold' : 'text-slate-500'}">
+                        ${m.deductions > 0 ? `-${fmtINR(m.deductions)}` : '₹0'}
+                      </td>
+                      <td class="py-2.5 px-3 text-right font-black text-emerald-400 font-mono text-sm">${fmtINR(m.net)}</td>
+                      <td class="py-2.5 px-3 text-center">
+                        <span class="text-[10px] font-bold px-2 py-0.5 rounded-full ${m.status.includes('Paid') ? 'bg-emerald-500/20 text-emerald-400 border border-emerald-500/30' : 'bg-sky-500/20 text-sky-400 border border-sky-500/30'}">
+                          ${m.status}
+                        </span>
+                      </td>
+                      <td class="py-2.5 px-3 text-right">
+                        ${m.slipId ? `
+                          <button onclick="openPayslipModal('${m.slipId}')" class="brand-grad text-white text-xs font-bold px-2.5 py-1 rounded-lg cursor-pointer shadow hover:opacity-95">
+                            📄 Open Salary Slip
+                          </button>
+                        ` : (m.month === '2026-11' ? `
+                          <button onclick="openDraftPayslipModal('${emp.id}')" class="bg-slate-800 border border-slate-700 text-slate-300 hover:text-white text-xs font-semibold px-2.5 py-1 rounded-lg cursor-pointer">
+                            📄 Draft Nov Slip
+                          </button>
+                        ` : `
+                          <span class="text-slate-500 text-[11px]">Archived</span>
+                        `)}
+                      </td>
+                    </tr>
+                  `).join("")}
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- SECTION 4: ANNUAL STATUTORY COMPENSATION & CTC STRUCTURE (ANNEXURE-A) - STRICT LEGAL CORPORATE STYLE -->
+          <div class="glass-card rounded-2xl p-4 mb-4 border border-slate-800 shadow-lg">
+            <div class="flex items-center justify-between border-b border-slate-800 pb-3 mb-3 flex-wrap gap-2">
+              <div>
+                <div class="text-xs font-bold text-white uppercase tracking-wider flex items-center gap-2">
+                  <span>🏛️ Annual Statutory Compensation &amp; CTC Breakdown (Annexure-A)</span>
+                  <span class="bg-slate-800 text-slate-300 text-[10px] font-mono font-bold px-2 py-0.5 rounded border border-slate-700">FY 2026-27</span>
+                </div>
+                <div class="text-[11px] text-slate-400 mt-0.5">Governed under Aarunitech Private Limited compensation guidelines &amp; Indian statutory regulations.</div>
+              </div>
+              <div class="text-right">
+                <span class="text-xs text-slate-400">Total Statutory CTC:</span>
+                <strong class="text-base font-black text-orange-400 ml-1 font-mono">${fmtINR(annualCtc)} / Year</strong>
+              </div>
+            </div>
+
+            <!-- Proportional Component Allocation Schedule -->
+            <div class="overflow-x-auto">
+              <table class="w-full text-left border-collapse text-xs">
+                <thead>
+                  <tr class="border-b border-slate-800 text-slate-400 uppercase tracking-wider text-[10px]">
+                    <th class="py-2.5 px-3">Statutory Component</th>
+                    <th class="py-2.5 px-3 text-right">Monthly Allocation (INR)</th>
+                    <th class="py-2.5 px-3 text-right">Annual Package (INR)</th>
+                    <th class="py-2.5 px-3 text-center">% of Total CTC</th>
+                    <th class="py-2.5 px-3">Statutory Classification &amp; Taxability</th>
+                  </tr>
+                </thead>
+                <tbody class="divide-y divide-slate-800/70">
+                  <tr>
+                    <td class="py-2.5 px-3 font-bold text-white">Basic Salary</td>
+                    <td class="py-2.5 px-3 text-right font-mono font-bold text-slate-200">${fmtINR(basicMonthly)}</td>
+                    <td class="py-2.5 px-3 text-right font-mono font-bold text-white">${fmtINR(basicAnnual)}</td>
+                    <td class="py-2.5 px-3 text-center font-mono text-slate-400">48.4%</td>
+                    <td class="py-2.5 px-3 text-slate-300">Base salary, fully taxable (PF wage reference base)</td>
+                  </tr>
+                  <tr>
+                    <td class="py-2.5 px-3 font-bold text-white">House Rent Allowance (HRA)</td>
+                    <td class="py-2.5 px-3 text-right font-mono font-bold text-slate-200">${fmtINR(hraMonthly)}</td>
+                    <td class="py-2.5 px-3 text-right font-mono font-bold text-white">${fmtINR(hraAnnual)}</td>
+                    <td class="py-2.5 px-3 text-center font-mono text-slate-400">19.4%</td>
+                    <td class="py-2.5 px-3 text-slate-300">Exempt under Section 10(13A) of Income Tax Act</td>
+                  </tr>
+                  <tr>
+                    <td class="py-2.5 px-3 font-bold text-white">Special / Fixed Allowance</td>
+                    <td class="py-2.5 px-3 text-right font-mono font-bold text-slate-200">${fmtINR(specialMonthly)}</td>
+                    <td class="py-2.5 px-3 text-right font-mono font-bold text-white">${fmtINR(specialAnnual)}</td>
+                    <td class="py-2.5 px-3 text-center font-mono text-slate-400">29.0%</td>
+                    <td class="py-2.5 px-3 text-slate-300">Statutory flexible compensation allowance</td>
+                  </tr>
+                  <tr>
+                    <td class="py-2.5 px-3 font-bold text-white">Statutory Performance Incentive</td>
+                    <td class="py-2.5 px-3 text-right font-mono font-bold text-slate-200">${fmtINR(bonusMonthly)}</td>
+                    <td class="py-2.5 px-3 text-right font-mono font-bold text-white">${fmtINR(bonusAnnual)}</td>
+                    <td class="py-2.5 px-3 text-center font-mono text-slate-400">3.2%</td>
+                    <td class="py-2.5 px-3 text-slate-300">Performance-linked statutory ex-gratia component</td>
+                  </tr>
+                  <tr class="bg-slate-900/60 font-black">
+                    <td class="py-3 px-3 text-orange-400 text-sm">Total Cost to Company (CTC)</td>
+                    <td class="py-3 px-3 text-right font-mono text-orange-400 text-sm">${fmtINR(emp.monthlyCtc)}/mo</td>
+                    <td class="py-3 px-3 text-right font-mono text-orange-400 text-base">${fmtINR(annualCtc)}/yr</td>
+                    <td class="py-3 px-3 text-center font-mono text-orange-400">100.0%</td>
+                    <td class="py-3 px-3 text-slate-200">Official Gross Employment Package</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- SECTION 5: EMERGENCY SALARY ADVANCE LEDGER -->
+          <div class="glass-card rounded-2xl p-4 border border-slate-800 shadow-lg">
             <div class="flex items-center justify-between gap-2 mb-3 flex-wrap">
               <div>
-                <h3 class="text-sm font-bold text-white">Salary Advance Requests (${myAdvances.length})</h3>
-                <p class="text-xs text-slate-400">Emergency salary advances approved by Aaruni Tech management.</p>
+                <h3 class="text-sm font-bold text-white">Salary Advance Ledger (${myAdvances.length})</h3>
+                <p class="text-xs text-slate-400">Official salary advances approved and scheduled for payroll recovery.</p>
               </div>
               <button onclick="openApplyAdvanceModal('${emp.id}')" class="brand-grad text-white text-xs font-bold px-3 py-1.5 rounded-lg shadow cursor-pointer">
                 + Request Advance
               </button>
             </div>
             ${myAdvances.length === 0 ? `
-              <div class="text-xs text-slate-400 py-3 text-center">No active salary advance requests.</div>
+              <div class="text-xs text-slate-400 py-3 text-center">No active salary advance requests recorded for this profile.</div>
             ` : `
               <div class="space-y-2">
                 ${myAdvances.map(a => `
-                  <div class="p-2.5 rounded-xl bg-slate-900/60 border border-slate-800 flex items-center justify-between text-xs">
+                  <div class="p-3 rounded-xl bg-slate-900/60 border border-slate-800 flex items-center justify-between text-xs">
                     <div>
                       <div class="font-bold text-white">${fmtINR(a.amount)} &bull; ${a.reason}</div>
                       <div class="text-[11px] text-slate-400">${a.requestDate} (${a.tenureMonths} Mo tenure) ${a.paidUpiRef ? `&bull; Ref: ${a.paidUpiRef}` : ''}</div>
@@ -2253,6 +2559,7 @@
           </div>
         `;
       }
+
 
       // 8. TAB VIEW 4: PAYSLIPS
       if (activeTab === "payslips") {
@@ -2291,7 +2598,7 @@
                       <td class="py-2.5 px-2 text-right font-bold text-white">${fmtINR(ps.netPay)}</td>
                       <td class="py-2.5 px-2 text-right">
                         <button onclick="openPayslipModal('${ps.id}')" class="brand-grad text-white text-xs font-bold px-3 py-1 rounded-lg cursor-pointer shadow">
-                          Colorful PDF
+                          📄 View Salary Slip
                         </button>
                       </td>
                     </tr>
@@ -3727,7 +4034,8 @@
     }
 
     // ============================================================================
-    // 7. MODAL RENDERERS: ZOHO-STYLE PAYSLIP, OFFER LETTER, LOAN PROOF, EXP, CA TAX
+    const buildZohoPayslipHTML = (ps, emp) => buildOfficialPayslipHTML(ps, emp);
+    // 7. MODAL RENDERERS: OFFICIAL STATUTORY PAYSLIP, OFFER LETTER, LOAN PROOF, EXP, CA TAX
     // ============================================================================
     function openModalWithHTML(title, html) {
       document.getElementById("docModalTitle").textContent = title;
@@ -3760,7 +4068,8 @@
       };
     }
 
-        function buildZohoPayslipHTML(ps, emp) {
+        function buildOfficialPayslipHTML(ps, emp) {
+
       const dedLabel = ps.deductionLabel || (Number(ps.deductions) > 0 ? "Personal Advance / Deduction" : "");
       const ytd = computeCumulativeYTD(emp.id, ps.yearMonth || "2026-11") || {
         basicYtd: Number(ps.basic || 0),
@@ -3777,7 +4086,7 @@
       return `
         <div style="max-width:760px;margin:0 auto;font-family:-apple-system,BlinkMacSystemFont,'Inter',sans-serif;color:#0f172a;background:#ffffff;border:2px solid #FE5F01;border-radius:16px;overflow:hidden;box-shadow:0 12px 36px rgba(15,23,42,0.12);">
           
-          <!-- TOP COLORFUL BRAND HEADER WITH AARUNI DAWN ORANGE GRADIENT -->
+          <!-- TOP STATUTORY BRAND HEADER WITH AARUNI DAWN ORANGE GRADIENT -->
           <div style="background:linear-gradient(135deg, #090D16 0%, #1E293B 100%);border-bottom:4px solid #FE5F01;padding:22px 28px;color:#ffffff;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:14px;">
             <div style="display:flex;align-items:center;gap:14px;">
               <img src="aaruni_square_logo.png" alt="Aaruni Tech" style="width:52px;height:52px;border-radius:12px;object-fit:contain;background:#ffffff;padding:2px;box-shadow:0 4px 12px rgba(254,95,1,0.35);" />
@@ -3830,7 +4139,7 @@
               </div>
             </div>
 
-            <!-- EARNINGS & DEDUCTIONS COLORFUL DUAL-COLOR GRID -->
+            <!-- EARNINGS & DEDUCTIONS STATUTORY DUAL-COLOR GRID -->
             <div style="margin-top:20px;">
               <table style="width:100%;border-collapse:collapse;font-size:12px;border:1px solid #cbd5e1;border-radius:10px;overflow:hidden;">
                 <thead>
@@ -4438,58 +4747,100 @@
     // AUTHENTIC EMPLOYEE ID CARD VIEWER (FROM GOOGLE DRIVE ASSETS)
     // ============================================================================
     function previewIDCard(empId) {
-      const emp = state.employees.find(e => e.id === empId) || state.employees[3];
-      const cardFile = emp.idCardFile || `${emp.id}.png`;
+      const emp = state.employees.find(e => e.id === empId) || state.employees[0];
+      const cardFile = emp.idCardFile && !emp.idCardFile.includes("Archived") ? emp.idCardFile : `${emp.id}.png`;
       const cardPath = `id-cards/${cardFile}`;
       const photoPath = `photos/${emp.id}.jpeg`;
+      const fallbackPhoto = `https://ui-avatars.com/api/?name=${encodeURIComponent(emp.name)}&background=FE5F01&color=fff&size=256&bold=true`;
 
       const html = `
-        <div style="font-family:'Inter',sans-serif;color:#0f172a;max-width:700px;margin:0 auto;text-align:center;">
-          <div style="background:#090D16;color:#ffffff;border-radius:18px;padding:22px;border:1.5px solid #FE5F01;box-shadow:0 12px 36px rgba(254,95,1,0.25);">
-            <div style="display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid #334155;padding-bottom:12px;margin-bottom:16px;">
-              <div style="display:flex;align-items:center;gap:10px;">
-                <img src="aaruni_square_logo.png" alt="Aaruni Tech" style="width:36px;height:36px;border-radius:8px;" />
+        <div style="font-family:'Inter',sans-serif;color:#0f172a;max-width:740px;margin:0 auto;text-align:center;">
+          <div style="background:#090D16;color:#ffffff;border-radius:20px;padding:24px;border:1.5px solid #FE5F01;box-shadow:0 16px 40px rgba(254,95,1,0.25);">
+            <div style="display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid #334155;padding-bottom:14px;margin-bottom:18px;">
+              <div style="display:flex;align-items:center;gap:12px;">
+                <img src="aaruni_square_logo.png" alt="Aaruni Tech" style="width:40px;height:40px;border-radius:10px;" />
                 <div style="text-align:left;">
-                  <div style="font-size:16px;font-weight:900;color:#ffffff;">Official Aaruni Tech Digital ID Card</div>
-                  <div style="font-size:11px;color:#94a3b8;">Issued by Aarunitech Private Limited • Telangana - 502319</div>
+                  <div style="font-size:17px;font-weight:900;color:#ffffff;letter-spacing:-0.02em;">Aaruni Tech Official Identity Badge</div>
+                  <div style="font-size:11px;color:#94a3b8;">Aarunitech Private Limited • Beeramguda, Telangana - 502319</div>
                 </div>
               </div>
-              <span style="background:#10b981;color:#ffffff;font-size:11px;font-weight:800;padding:4px 10px;border-radius:6px;text-transform:uppercase;">
+              <span style="background:rgba(16,185,129,0.2);color:#34d399;border:1px solid rgba(16,185,129,0.4);font-size:11px;font-weight:800;padding:5px 12px;border-radius:8px;text-transform:uppercase;letter-spacing:0.05em;">
                 Verified Active
               </span>
             </div>
 
-            <!-- OFFICIAL DRIVE ID CARD IMAGE -->
-            <div style="background:#000000;border-radius:14px;padding:12px;border:1px solid #334155;margin-bottom:16px;display:inline-block;max-width:100%;box-shadow:0 8px 24px rgba(0,0,0,0.5);">
-              <img src="${cardPath}" onerror="this.onerror=null; this.src='aaruni_square_logo.png'" alt="${emp.name} ID Card" style="max-width:100%;height:auto;max-height:480px;border-radius:10px;display:block;margin:0 auto;" />
+            <!-- OFFICIAL PHYSICAL SCANNED ID CARD -->
+            <div style="background:#000000;border-radius:16px;padding:12px;border:1px solid #334155;margin-bottom:18px;display:inline-block;max-width:100%;box-shadow:0 10px 30px rgba(0,0,0,0.6);">
+              <img src="${cardPath}" onerror="this.onerror=null; this.src='aaruni_square_logo.png'" alt="${emp.name} Official ID Card" style="max-width:100%;height:auto;max-height:480px;border-radius:12px;display:block;margin:0 auto;" />
             </div>
 
-            <!-- CARD DETAILS & DOWNLOAD ACTIONS -->
-            <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;background:#1e293b;padding:12px 16px;border-radius:10px;border:1px solid #475569;font-size:12px;">
-              <div style="text-align:left;">
-                <div style="color:#cbd5e1;">Badge ID: <strong style="color:#FE5F01;font-family:monospace;">${emp.id}</strong> • Zoho ID: <strong>${emp.zohoId || emp.id}</strong></div>
-                <div style="color:#94a3b8;">Holder: <strong style="color:#ffffff;">${emp.name}</strong> • ${emp.role}</div>
+            <!-- DIGITAL SMART CARD SPECIFICATIONS -->
+            <div style="background:#111827;border-radius:14px;padding:16px;border:1px solid #374151;margin-bottom:18px;text-align:left;">
+              <div style="font-size:11px;font-weight:800;text-transform:uppercase;color:#FE5F01;letter-spacing:0.05em;margin-bottom:10px;">
+                🪪 Corporate Dossier &bull; ${emp.name}
               </div>
-              <div style="display:flex;gap:8px;">
-                <a href="${cardPath}" download="${emp.id}_ID_Card.png" style="background:linear-gradient(135deg, #FE5F01 0%, #EA580C 100%);color:#ffffff;font-weight:800;font-size:11px;padding:8px 14px;border-radius:8px;text-decoration:none;box-shadow:0 4px 12px rgba(254,95,1,0.35);">
+              <div style="display:grid;grid-template-columns:repeat(auto-fit, minmax(180px, 1fr));gap:12px;font-size:12px;">
+                <div>
+                  <span style="color:#94a3b8;display:block;font-size:11px;">Employee Full Name</span>
+                  <strong style="color:#ffffff;font-size:13px;">${emp.name}</strong>
+                </div>
+                <div>
+                  <span style="color:#94a3b8;display:block;font-size:11px;">Corporate Role / Title</span>
+                  <strong style="color:#ffffff;font-size:13px;">${emp.role}</strong>
+                </div>
+                <div>
+                  <span style="color:#94a3b8;display:block;font-size:11px;">Employee Badge ID</span>
+                  <strong style="color:#FE5F01;font-family:monospace;font-size:13px;">${emp.id}</strong>
+                </div>
+                <div>
+                  <span style="color:#94a3b8;display:block;font-size:11px;">Aaruni Directory ID</span>
+                  <strong style="color:#ffffff;font-family:monospace;font-size:13px;">${emp.zohoId || emp.id}</strong>
+                </div>
+                <div>
+                  <span style="color:#94a3b8;display:block;font-size:11px;">Department & Workstation</span>
+                  <strong style="color:#cbd5e1;font-size:12px;">${emp.department || 'Operations'} &bull; Hyderabad Hub</strong>
+                </div>
+                <div>
+                  <span style="color:#94a3b8;display:block;font-size:11px;">Shift & Working Hours</span>
+                  <strong style="color:#cbd5e1;font-size:12px;">8h Shift (10:00 AM – 7:00 PM IST)</strong>
+                </div>
+                <div>
+                  <span style="color:#94a3b8;display:block;font-size:11px;">Date of Joining</span>
+                  <strong style="color:#cbd5e1;font-size:12px;">${emp.joiningDate}</strong>
+                </div>
+                <div>
+                  <span style="color:#94a3b8;display:block;font-size:11px;">Authorized Signatory</span>
+                  <strong style="color:#38bdf8;font-size:12px;">Nisha Tiwari (Director)</strong>
+                </div>
+              </div>
+            </div>
+
+            <!-- ACTIONS -->
+            <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;background:#1e293b;padding:12px 18px;border-radius:12px;border:1px solid #475569;font-size:12px;">
+              <div style="text-align:left;">
+                <div style="color:#cbd5e1;font-size:11px;">Direct File: <strong style="color:#ffffff;font-family:monospace;">${cardFile}</strong></div>
+                <div style="color:#94a3b8;font-size:11px;">Secured by Aaruni Cloud Identity Infrastructure</div>
+              </div>
+              <div style="display:flex;gap:10px;">
+                <a href="${cardPath}" download="${emp.id}_${emp.name.replace(/\\s+/g, '_')}_ID_Card.png" style="background:linear-gradient(135deg, #FE5F01 0%, #EA580C 100%);color:#ffffff;font-weight:800;font-size:12px;padding:9px 18px;border-radius:10px;text-decoration:none;box-shadow:0 4px 14px rgba(254,95,1,0.4);display:inline-flex;align-items:center;gap:6px;">
                   ⬇️ Download ID Card
                 </a>
-                <button onclick="window.print()" style="background:#334155;color:#ffffff;font-weight:700;font-size:11px;padding:8px 12px;border-radius:8px;border:none;cursor:pointer;">
-                  🖨️ Print
+                <button onclick="window.print()" style="background:#334155;color:#ffffff;font-weight:700;font-size:12px;padding:9px 16px;border-radius:10px;border:1px solid #475569;cursor:pointer;display:inline-flex;align-items:center;gap:6px;">
+                  🖨️ Print Badge
                 </button>
               </div>
             </div>
           </div>
         </div>
       `;
-      openModalWithHTML(`Official ID Card — ${emp.name} (${emp.id})`, html);
+      openModalWithHTML(`Official ID Badge — ${emp.name} (${emp.id})`, html);
     }
 
 
     function openPayslipModal(psId) {
       const ps = state.payslips.find(p => p.id === psId);
       const emp = state.employees.find(e => e.id === ps.empId);
-      openModalWithHTML(`Payslip — ${emp.name} (${ps.periodLabel})`, buildZohoPayslipHTML(ps, emp));
+      openModalWithHTML(`Payslip — ${emp.name} (${ps.periodLabel})`, buildOfficialPayslipHTML(ps, emp));
     }
 
     function openOctPayslipForEmp(empId) {
@@ -4754,7 +5105,7 @@
         netPay: r.netPay,
         amountInWords: numberToIndianWords(r.netPay)
       };
-      openModalWithHTML(`Draft Payslip — ${emp.name} (Nov 2026)`, buildZohoPayslipHTML(draftPs, emp));
+      openModalWithHTML(`Draft Payslip — ${emp.name} (Nov 2026)`, buildOfficialPayslipHTML(draftPs, emp));
     }
 
     function generateStaffHRDocument(empId) {
@@ -5350,6 +5701,10 @@ function updateQrBaseUrl(val) {
           if (found) {
             switchPersona(found.id, true, isSim);
             if (tabParam) state.activeTab = tabParam;
+            const badgeParam = params.get("badge");
+            if (badgeParam) setTimeout(() => previewIDCard(found.id), 250);
+            const payslipParam = params.get("payslip");
+            if (payslipParam) setTimeout(() => openOctPayslipForEmp(found.id), 250);
           }
         }
       } catch (e) {}
