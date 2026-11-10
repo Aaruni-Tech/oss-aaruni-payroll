@@ -312,7 +312,7 @@
         isExecutive: true,
         trackTimesheet: false,
         shiftHours: 8,
-        monthlyCtc: 100000,
+        monthlyCtc: 0,
         joiningDate: "01/01/2025",
         dob: "Confidential",
         fatherName: "Confidential",
@@ -338,7 +338,7 @@
         isExecutive: true,
         trackTimesheet: false,
         shiftHours: 8,
-        monthlyCtc: 250000,
+        monthlyCtc: 0,
         joiningDate: "01/01/2025",
         dob: "Confidential",
         fatherName: "Confidential",
@@ -360,10 +360,10 @@
         zohoId: "003-OPS",
         name: "Rakesh Tiwari",
         role: "Operations Manager",
-        status: "Active",
+        status: "Inactive",
         trackTimesheet: false,
         shiftHours: 8,
-        monthlyCtc: 50000,
+        monthlyCtc: 0,
         joiningDate: "01/01/2026",
         dob: "Pending",
         fatherName: "Pending",
@@ -584,60 +584,9 @@
 
     // Pre-seeded 1 Month Paid Salary (October 2026 Official Payslips) for Nandini, Janhavi & Ramya!
     const INITIAL_PAYSLIPS = [
-      {
-        id: "PS-2026-10-AAR-0001",
-        empId: "AAR-0001",
-        yearMonth: "2026-10",
-        periodLabel: "October 2026",
-        payDate: "31/10/2026",
-        paidDays: 31,
-        lopDays: 0,
-        basic: 50000,
-        fixedAllowance: 50000,
-        bonus: 0,
-        grossEarnings: 100000,
-        deductionLabel: "-",
-        deductions: 0,
-        netPay: 100000,
-        amountInWords: "Indian Rupee One Lakh Only",
-        status: "Paid via Corporate Banking Transfer (31/10/2026)"
-      },
-      {
-        id: "PS-2026-10-AAR-0002",
-        empId: "AAR-0002",
-        yearMonth: "2026-10",
-        periodLabel: "October 2026",
-        payDate: "31/10/2026",
-        paidDays: 31,
-        lopDays: 0,
-        basic: 125000,
-        fixedAllowance: 125000,
-        bonus: 0,
-        grossEarnings: 250000,
-        deductionLabel: "-",
-        deductions: 0,
-        netPay: 250000,
-        amountInWords: "Indian Rupee Two Lakh Fifty Thousand Only",
-        status: "Paid via Corporate Banking Transfer (31/10/2026)"
-      },
-      {
-        id: "PS-2026-10-AAR-0003",
-        empId: "AAR-0003",
-        yearMonth: "2026-10",
-        periodLabel: "October 2026",
-        payDate: "31/10/2026",
-        paidDays: 31,
-        lopDays: 0,
-        basic: 25000,
-        fixedAllowance: 25000,
-        bonus: 0,
-        grossEarnings: 50000,
-        deductionLabel: "-",
-        deductions: 0,
-        netPay: 50000,
-        amountInWords: "Indian Rupee Fifty Thousand Only",
-        status: "Paid via Corporate Banking Transfer (31/10/2026)"
-      },
+      
+      
+      
       {
         id: "PS-2026-10-AAR-0008",
         empId: "AAR-0008",
@@ -828,8 +777,8 @@
 
     // Load or initialize state (strictly defaulting to LOGIN so the gate is 100% auth-protected)
     let state = {
-      persona: safeSessionGet("aaruni_session_persona_v9") || "LOGIN", // "LOGIN" | "ADMIN" | empId
-      isAdminPreviewing: safeSessionGet("aaruni_admin_preview_v9") === "1",
+      persona: safeSessionGet("aaruni_session_persona_v10") || "LOGIN", // "LOGIN" | "ADMIN" | empId
+      isAdminPreviewing: safeSessionGet("aaruni_admin_preview_v10") === "1",
       mobileSimulatorMode: safeSessionGet("aaruni_mobile_sim_v9") === "1",
       loginMode: "signin", // "signin" | "register"
       adminPassword: safeLocalGet("aaruni_admin_pwd_v8") || "Aaruni@2026",
@@ -843,9 +792,9 @@
       selectedMonth: "2026-11",
       throughDate: "2026-11-09",
       compOffApproved: { "AAR-0004": true, "AAR-0005": true, "AAR-0006": true, "AAR-0008": true },
-      employees: safeJsonParse(safeLocalGet("aaruni_emp_v9"), DEFAULT_EMPLOYEES),
+      employees: safeJsonParse(safeLocalGet("aaruni_emp_v10"), DEFAULT_EMPLOYEES),
       timesheets: safeJsonParse(safeLocalGet("aaruni_ts_v8"), INITIAL_TIMESHEETS),
-      payslips: safeJsonParse(safeLocalGet("aaruni_ps_v9"), INITIAL_PAYSLIPS),
+      payslips: safeJsonParse(safeLocalGet("aaruni_ps_v10"), INITIAL_PAYSLIPS),
       loans: safeJsonParse(safeLocalGet("aaruni_loans_v8"), INITIAL_LOANS),
       messages: safeJsonParse(safeLocalGet("aaruni_msg_v8"), INITIAL_MESSAGES),
       emailLogs: safeJsonParse(safeLocalGet("aaruni_emails_v8"), INITIAL_EMAIL_LOGS),
@@ -863,9 +812,9 @@
 
     function saveState() {
       safeLocalSet("aaruni_admin_pwd_v8", state.adminPassword || "Aaruni@2026");
-      safeLocalSet("aaruni_emp_v9", JSON.stringify(state.employees));
+      safeLocalSet("aaruni_emp_v10", JSON.stringify(state.employees));
       safeLocalSet("aaruni_ts_v8", JSON.stringify(state.timesheets));
-      safeLocalSet("aaruni_ps_v9", JSON.stringify(state.payslips));
+      safeLocalSet("aaruni_ps_v10", JSON.stringify(state.payslips));
       safeLocalSet("aaruni_loans_v8", JSON.stringify(state.loans));
       safeLocalSet("aaruni_msg_v8", JSON.stringify(state.messages));
       safeLocalSet("aaruni_emails_v8", JSON.stringify(state.emailLogs));
@@ -1073,8 +1022,8 @@
       if (typeof mobileMode === "boolean") {
         state.mobileSimulatorMode = mobileMode;
       }
-      safeSessionSet("aaruni_session_persona_v9", val);
-      safeSessionSet("aaruni_admin_preview_v9", fromAdminPreview ? "1" : "0");
+      safeSessionSet("aaruni_session_persona_v10", val);
+      safeSessionSet("aaruni_admin_preview_v10", fromAdminPreview ? "1" : "0");
       safeSessionSet("aaruni_mobile_sim_v9", state.mobileSimulatorMode ? "1" : "0");
       if (val === "ADMIN") {
         state.activeTab = "roster";
@@ -1107,8 +1056,8 @@
     function signOutPortal() {
       state.persona = "LOGIN";
       state.isAdminPreviewing = false;
-      safeSessionRemove("aaruni_session_persona_v9");
-      safeSessionRemove("aaruni_admin_preview_v9");
+      safeSessionRemove("aaruni_session_persona_v10");
+      safeSessionRemove("aaruni_admin_preview_v10");
       renderApp();
     }
 
@@ -3145,36 +3094,40 @@
                 <span>💼 Aaruni Tech Corporate Payroll Liquidity &amp; Bank Runway</span>
                 <span class="bg-emerald-500/20 text-emerald-300 text-[10px] font-bold px-2 py-0.5 rounded border border-emerald-500/30">Executive Financial Audit</span>
               </div>
-              <div class="text-[11px] text-slate-400 mt-0.5">Real-time statutory payroll liabilities and cash requirements for Aarunitech Private Limited.</div>
+              <div class="text-[11px] text-slate-400 mt-0.5">
+                4 Active Team Members &bull; 2 Inactive/Relieved (Rakesh, Sonali) &bull; 2 Founders Zero Drawing (Rupesh, Nisha)
+              </div>
             </div>
-            <button onclick="openACSTaxDossierModal()" class="brand-grad text-white text-xs font-bold px-3.5 py-2 rounded-xl shadow cursor-pointer inline-flex items-center gap-1.5">
-              <span>🏛️ ACS Corporate Tax Vault</span>
-            </button>
+            <div class="flex items-center gap-2">
+              <button onclick="openACSTaxDossierModal()" class="brand-grad text-white text-xs font-bold px-3.5 py-2 rounded-xl shadow cursor-pointer inline-flex items-center gap-1.5">
+                <span>🏛️ ACS Corporate Tax Vault</span>
+              </button>
+            </div>
           </div>
 
           <div class="grid grid-cols-1 md:grid-cols-3 gap-3.5">
             <!-- 1. Last Month Disbursed -->
             <div class="p-3.5 rounded-xl bg-slate-950/80 border border-slate-800">
               <div class="text-[11px] font-bold text-slate-400 uppercase tracking-wider">✅ Last Month Disbursed (Oct 2026)</div>
-              <div class="text-2xl font-black text-white mt-1">₹4,32,587</div>
-              <div class="text-[11px] text-emerald-400 font-semibold mt-1">100% Paid via Corporate Banking</div>
-              <div class="text-[10px] text-slate-400 mt-0.5">Across 7 Active Employees &bull; Zero Pending</div>
+              <div class="text-2xl font-black text-white mt-1">₹32,587</div>
+              <div class="text-[11px] text-emerald-400 font-semibold mt-1">100% Paid via Corporate Banking &bull; 0 Pending</div>
+              <div class="text-[10px] text-slate-400 mt-0.5">Nandini (₹7.5k), Janhavi (₹8.1k), Ramya (₹7.0k), Ali (₹10k)</div>
             </div>
 
             <!-- 2. This Month Accrued So Far -->
             <div class="p-3.5 rounded-xl bg-slate-950/80 border border-slate-800">
               <div class="text-[11px] font-bold text-slate-400 uppercase tracking-wider">⏱️ Accrued to Date (Nov 2026 &bull; Day 11/30)</div>
-              <div class="text-2xl font-black text-sky-400 mt-1">₹1,62,400</div>
-              <div class="text-[11px] text-sky-300 font-semibold mt-1">36.5% of Monthly Cycle Elapsed</div>
-              <div class="text-[10px] text-slate-400 mt-0.5">Includes Daily Punches + Verified Paid Rest</div>
+              <div class="text-2xl font-black text-sky-400 mt-1">₹12,900</div>
+              <div class="text-[11px] text-sky-300 font-semibold mt-1">36.7% of Monthly Payroll Cycle Elapsed</div>
+              <div class="text-[10px] text-slate-400 mt-0.5">Calculated from verified employee entry/exit punch logs</div>
             </div>
 
             <!-- 3. Required Bank Balance by Month-End -->
             <div class="p-3.5 rounded-xl bg-slate-950/80 border border-orange-500/50">
               <div class="text-[11px] font-bold text-orange-400 uppercase tracking-wider">🏦 Required Bank Balance (By 30 Nov)</div>
-              <div class="text-2xl font-black text-orange-400 mt-1">₹4,39,500</div>
-              <div class="text-[11px] text-amber-300 font-semibold mt-1">Net Disbursement Liability on 30/11</div>
-              <div class="text-[10px] text-slate-400 mt-0.5">Maintain ₹4.50L in Axis Bank (A/C: xxxx3409)</div>
+              <div class="text-2xl font-black text-orange-400 mt-1">₹43,000</div>
+              <div class="text-[11px] text-amber-300 font-semibold mt-1">Total Net Monthly Liability to Pay Staff</div>
+              <div class="text-[10px] text-slate-400 mt-0.5">Maintain ₹45,000 in Axis Bank (A/C: xxxx3409)</div>
             </div>
           </div>
         </div>
@@ -3289,36 +3242,40 @@
                 <span>💼 Aaruni Tech Corporate Payroll Liquidity &amp; Bank Runway</span>
                 <span class="bg-emerald-500/20 text-emerald-300 text-[10px] font-bold px-2 py-0.5 rounded border border-emerald-500/30">Executive Financial Audit</span>
               </div>
-              <div class="text-[11px] text-slate-400 mt-0.5">Real-time statutory payroll liabilities and cash requirements for Aarunitech Private Limited.</div>
+              <div class="text-[11px] text-slate-400 mt-0.5">
+                4 Active Team Members &bull; 2 Inactive/Relieved (Rakesh, Sonali) &bull; 2 Founders Zero Drawing (Rupesh, Nisha)
+              </div>
             </div>
-            <button onclick="openACSTaxDossierModal()" class="brand-grad text-white text-xs font-bold px-3.5 py-2 rounded-xl shadow cursor-pointer inline-flex items-center gap-1.5">
-              <span>🏛️ ACS Corporate Tax Vault</span>
-            </button>
+            <div class="flex items-center gap-2">
+              <button onclick="openACSTaxDossierModal()" class="brand-grad text-white text-xs font-bold px-3.5 py-2 rounded-xl shadow cursor-pointer inline-flex items-center gap-1.5">
+                <span>🏛️ ACS Corporate Tax Vault</span>
+              </button>
+            </div>
           </div>
 
           <div class="grid grid-cols-1 md:grid-cols-3 gap-3.5">
             <!-- 1. Last Month Disbursed -->
             <div class="p-3.5 rounded-xl bg-slate-950/80 border border-slate-800">
               <div class="text-[11px] font-bold text-slate-400 uppercase tracking-wider">✅ Last Month Disbursed (Oct 2026)</div>
-              <div class="text-2xl font-black text-white mt-1">₹4,32,587</div>
-              <div class="text-[11px] text-emerald-400 font-semibold mt-1">100% Paid via Corporate Banking</div>
-              <div class="text-[10px] text-slate-400 mt-0.5">Across 7 Active Employees &bull; Zero Pending</div>
+              <div class="text-2xl font-black text-white mt-1">₹32,587</div>
+              <div class="text-[11px] text-emerald-400 font-semibold mt-1">100% Paid via Corporate Banking &bull; 0 Pending</div>
+              <div class="text-[10px] text-slate-400 mt-0.5">Nandini (₹7.5k), Janhavi (₹8.1k), Ramya (₹7.0k), Ali (₹10k)</div>
             </div>
 
             <!-- 2. This Month Accrued So Far -->
             <div class="p-3.5 rounded-xl bg-slate-950/80 border border-slate-800">
               <div class="text-[11px] font-bold text-slate-400 uppercase tracking-wider">⏱️ Accrued to Date (Nov 2026 &bull; Day 11/30)</div>
-              <div class="text-2xl font-black text-sky-400 mt-1">₹1,62,400</div>
-              <div class="text-[11px] text-sky-300 font-semibold mt-1">36.5% of Monthly Cycle Elapsed</div>
-              <div class="text-[10px] text-slate-400 mt-0.5">Includes Daily Punches + Verified Paid Rest</div>
+              <div class="text-2xl font-black text-sky-400 mt-1">₹12,900</div>
+              <div class="text-[11px] text-sky-300 font-semibold mt-1">36.7% of Monthly Payroll Cycle Elapsed</div>
+              <div class="text-[10px] text-slate-400 mt-0.5">Calculated from verified employee entry/exit punch logs</div>
             </div>
 
             <!-- 3. Required Bank Balance by Month-End -->
             <div class="p-3.5 rounded-xl bg-slate-950/80 border border-orange-500/50">
               <div class="text-[11px] font-bold text-orange-400 uppercase tracking-wider">🏦 Required Bank Balance (By 30 Nov)</div>
-              <div class="text-2xl font-black text-orange-400 mt-1">₹4,39,500</div>
-              <div class="text-[11px] text-amber-300 font-semibold mt-1">Net Disbursement Liability on 30/11</div>
-              <div class="text-[10px] text-slate-400 mt-0.5">Maintain ₹4.50L in Axis Bank (A/C: xxxx3409)</div>
+              <div class="text-2xl font-black text-orange-400 mt-1">₹43,000</div>
+              <div class="text-[11px] text-amber-300 font-semibold mt-1">Total Net Monthly Liability to Pay Staff</div>
+              <div class="text-[10px] text-slate-400 mt-0.5">Maintain ₹45,000 in Axis Bank (A/C: xxxx3409)</div>
             </div>
           </div>
         </div>
@@ -3398,36 +3355,40 @@
                 <span>💼 Aaruni Tech Corporate Payroll Liquidity &amp; Bank Runway</span>
                 <span class="bg-emerald-500/20 text-emerald-300 text-[10px] font-bold px-2 py-0.5 rounded border border-emerald-500/30">Executive Financial Audit</span>
               </div>
-              <div class="text-[11px] text-slate-400 mt-0.5">Real-time statutory payroll liabilities and cash requirements for Aarunitech Private Limited.</div>
+              <div class="text-[11px] text-slate-400 mt-0.5">
+                4 Active Team Members &bull; 2 Inactive/Relieved (Rakesh, Sonali) &bull; 2 Founders Zero Drawing (Rupesh, Nisha)
+              </div>
             </div>
-            <button onclick="openACSTaxDossierModal()" class="brand-grad text-white text-xs font-bold px-3.5 py-2 rounded-xl shadow cursor-pointer inline-flex items-center gap-1.5">
-              <span>🏛️ ACS Corporate Tax Vault</span>
-            </button>
+            <div class="flex items-center gap-2">
+              <button onclick="openACSTaxDossierModal()" class="brand-grad text-white text-xs font-bold px-3.5 py-2 rounded-xl shadow cursor-pointer inline-flex items-center gap-1.5">
+                <span>🏛️ ACS Corporate Tax Vault</span>
+              </button>
+            </div>
           </div>
 
           <div class="grid grid-cols-1 md:grid-cols-3 gap-3.5">
             <!-- 1. Last Month Disbursed -->
             <div class="p-3.5 rounded-xl bg-slate-950/80 border border-slate-800">
               <div class="text-[11px] font-bold text-slate-400 uppercase tracking-wider">✅ Last Month Disbursed (Oct 2026)</div>
-              <div class="text-2xl font-black text-white mt-1">₹4,32,587</div>
-              <div class="text-[11px] text-emerald-400 font-semibold mt-1">100% Paid via Corporate Banking</div>
-              <div class="text-[10px] text-slate-400 mt-0.5">Across 7 Active Employees &bull; Zero Pending</div>
+              <div class="text-2xl font-black text-white mt-1">₹32,587</div>
+              <div class="text-[11px] text-emerald-400 font-semibold mt-1">100% Paid via Corporate Banking &bull; 0 Pending</div>
+              <div class="text-[10px] text-slate-400 mt-0.5">Nandini (₹7.5k), Janhavi (₹8.1k), Ramya (₹7.0k), Ali (₹10k)</div>
             </div>
 
             <!-- 2. This Month Accrued So Far -->
             <div class="p-3.5 rounded-xl bg-slate-950/80 border border-slate-800">
               <div class="text-[11px] font-bold text-slate-400 uppercase tracking-wider">⏱️ Accrued to Date (Nov 2026 &bull; Day 11/30)</div>
-              <div class="text-2xl font-black text-sky-400 mt-1">₹1,62,400</div>
-              <div class="text-[11px] text-sky-300 font-semibold mt-1">36.5% of Monthly Cycle Elapsed</div>
-              <div class="text-[10px] text-slate-400 mt-0.5">Includes Daily Punches + Verified Paid Rest</div>
+              <div class="text-2xl font-black text-sky-400 mt-1">₹12,900</div>
+              <div class="text-[11px] text-sky-300 font-semibold mt-1">36.7% of Monthly Payroll Cycle Elapsed</div>
+              <div class="text-[10px] text-slate-400 mt-0.5">Calculated from verified employee entry/exit punch logs</div>
             </div>
 
             <!-- 3. Required Bank Balance by Month-End -->
             <div class="p-3.5 rounded-xl bg-slate-950/80 border border-orange-500/50">
               <div class="text-[11px] font-bold text-orange-400 uppercase tracking-wider">🏦 Required Bank Balance (By 30 Nov)</div>
-              <div class="text-2xl font-black text-orange-400 mt-1">₹4,39,500</div>
-              <div class="text-[11px] text-amber-300 font-semibold mt-1">Net Disbursement Liability on 30/11</div>
-              <div class="text-[10px] text-slate-400 mt-0.5">Maintain ₹4.50L in Axis Bank (A/C: xxxx3409)</div>
+              <div class="text-2xl font-black text-orange-400 mt-1">₹43,000</div>
+              <div class="text-[11px] text-amber-300 font-semibold mt-1">Total Net Monthly Liability to Pay Staff</div>
+              <div class="text-[10px] text-slate-400 mt-0.5">Maintain ₹45,000 in Axis Bank (A/C: xxxx3409)</div>
             </div>
           </div>
         </div>
@@ -3503,36 +3464,40 @@
                 <span>💼 Aaruni Tech Corporate Payroll Liquidity &amp; Bank Runway</span>
                 <span class="bg-emerald-500/20 text-emerald-300 text-[10px] font-bold px-2 py-0.5 rounded border border-emerald-500/30">Executive Financial Audit</span>
               </div>
-              <div class="text-[11px] text-slate-400 mt-0.5">Real-time statutory payroll liabilities and cash requirements for Aarunitech Private Limited.</div>
+              <div class="text-[11px] text-slate-400 mt-0.5">
+                4 Active Team Members &bull; 2 Inactive/Relieved (Rakesh, Sonali) &bull; 2 Founders Zero Drawing (Rupesh, Nisha)
+              </div>
             </div>
-            <button onclick="openACSTaxDossierModal()" class="brand-grad text-white text-xs font-bold px-3.5 py-2 rounded-xl shadow cursor-pointer inline-flex items-center gap-1.5">
-              <span>🏛️ ACS Corporate Tax Vault</span>
-            </button>
+            <div class="flex items-center gap-2">
+              <button onclick="openACSTaxDossierModal()" class="brand-grad text-white text-xs font-bold px-3.5 py-2 rounded-xl shadow cursor-pointer inline-flex items-center gap-1.5">
+                <span>🏛️ ACS Corporate Tax Vault</span>
+              </button>
+            </div>
           </div>
 
           <div class="grid grid-cols-1 md:grid-cols-3 gap-3.5">
             <!-- 1. Last Month Disbursed -->
             <div class="p-3.5 rounded-xl bg-slate-950/80 border border-slate-800">
               <div class="text-[11px] font-bold text-slate-400 uppercase tracking-wider">✅ Last Month Disbursed (Oct 2026)</div>
-              <div class="text-2xl font-black text-white mt-1">₹4,32,587</div>
-              <div class="text-[11px] text-emerald-400 font-semibold mt-1">100% Paid via Corporate Banking</div>
-              <div class="text-[10px] text-slate-400 mt-0.5">Across 7 Active Employees &bull; Zero Pending</div>
+              <div class="text-2xl font-black text-white mt-1">₹32,587</div>
+              <div class="text-[11px] text-emerald-400 font-semibold mt-1">100% Paid via Corporate Banking &bull; 0 Pending</div>
+              <div class="text-[10px] text-slate-400 mt-0.5">Nandini (₹7.5k), Janhavi (₹8.1k), Ramya (₹7.0k), Ali (₹10k)</div>
             </div>
 
             <!-- 2. This Month Accrued So Far -->
             <div class="p-3.5 rounded-xl bg-slate-950/80 border border-slate-800">
               <div class="text-[11px] font-bold text-slate-400 uppercase tracking-wider">⏱️ Accrued to Date (Nov 2026 &bull; Day 11/30)</div>
-              <div class="text-2xl font-black text-sky-400 mt-1">₹1,62,400</div>
-              <div class="text-[11px] text-sky-300 font-semibold mt-1">36.5% of Monthly Cycle Elapsed</div>
-              <div class="text-[10px] text-slate-400 mt-0.5">Includes Daily Punches + Verified Paid Rest</div>
+              <div class="text-2xl font-black text-sky-400 mt-1">₹12,900</div>
+              <div class="text-[11px] text-sky-300 font-semibold mt-1">36.7% of Monthly Payroll Cycle Elapsed</div>
+              <div class="text-[10px] text-slate-400 mt-0.5">Calculated from verified employee entry/exit punch logs</div>
             </div>
 
             <!-- 3. Required Bank Balance by Month-End -->
             <div class="p-3.5 rounded-xl bg-slate-950/80 border border-orange-500/50">
               <div class="text-[11px] font-bold text-orange-400 uppercase tracking-wider">🏦 Required Bank Balance (By 30 Nov)</div>
-              <div class="text-2xl font-black text-orange-400 mt-1">₹4,39,500</div>
-              <div class="text-[11px] text-amber-300 font-semibold mt-1">Net Disbursement Liability on 30/11</div>
-              <div class="text-[10px] text-slate-400 mt-0.5">Maintain ₹4.50L in Axis Bank (A/C: xxxx3409)</div>
+              <div class="text-2xl font-black text-orange-400 mt-1">₹43,000</div>
+              <div class="text-[11px] text-amber-300 font-semibold mt-1">Total Net Monthly Liability to Pay Staff</div>
+              <div class="text-[10px] text-slate-400 mt-0.5">Maintain ₹45,000 in Axis Bank (A/C: xxxx3409)</div>
             </div>
           </div>
         </div>
@@ -3622,36 +3587,40 @@
                 <span>💼 Aaruni Tech Corporate Payroll Liquidity &amp; Bank Runway</span>
                 <span class="bg-emerald-500/20 text-emerald-300 text-[10px] font-bold px-2 py-0.5 rounded border border-emerald-500/30">Executive Financial Audit</span>
               </div>
-              <div class="text-[11px] text-slate-400 mt-0.5">Real-time statutory payroll liabilities and cash requirements for Aarunitech Private Limited.</div>
+              <div class="text-[11px] text-slate-400 mt-0.5">
+                4 Active Team Members &bull; 2 Inactive/Relieved (Rakesh, Sonali) &bull; 2 Founders Zero Drawing (Rupesh, Nisha)
+              </div>
             </div>
-            <button onclick="openACSTaxDossierModal()" class="brand-grad text-white text-xs font-bold px-3.5 py-2 rounded-xl shadow cursor-pointer inline-flex items-center gap-1.5">
-              <span>🏛️ ACS Corporate Tax Vault</span>
-            </button>
+            <div class="flex items-center gap-2">
+              <button onclick="openACSTaxDossierModal()" class="brand-grad text-white text-xs font-bold px-3.5 py-2 rounded-xl shadow cursor-pointer inline-flex items-center gap-1.5">
+                <span>🏛️ ACS Corporate Tax Vault</span>
+              </button>
+            </div>
           </div>
 
           <div class="grid grid-cols-1 md:grid-cols-3 gap-3.5">
             <!-- 1. Last Month Disbursed -->
             <div class="p-3.5 rounded-xl bg-slate-950/80 border border-slate-800">
               <div class="text-[11px] font-bold text-slate-400 uppercase tracking-wider">✅ Last Month Disbursed (Oct 2026)</div>
-              <div class="text-2xl font-black text-white mt-1">₹4,32,587</div>
-              <div class="text-[11px] text-emerald-400 font-semibold mt-1">100% Paid via Corporate Banking</div>
-              <div class="text-[10px] text-slate-400 mt-0.5">Across 7 Active Employees &bull; Zero Pending</div>
+              <div class="text-2xl font-black text-white mt-1">₹32,587</div>
+              <div class="text-[11px] text-emerald-400 font-semibold mt-1">100% Paid via Corporate Banking &bull; 0 Pending</div>
+              <div class="text-[10px] text-slate-400 mt-0.5">Nandini (₹7.5k), Janhavi (₹8.1k), Ramya (₹7.0k), Ali (₹10k)</div>
             </div>
 
             <!-- 2. This Month Accrued So Far -->
             <div class="p-3.5 rounded-xl bg-slate-950/80 border border-slate-800">
               <div class="text-[11px] font-bold text-slate-400 uppercase tracking-wider">⏱️ Accrued to Date (Nov 2026 &bull; Day 11/30)</div>
-              <div class="text-2xl font-black text-sky-400 mt-1">₹1,62,400</div>
-              <div class="text-[11px] text-sky-300 font-semibold mt-1">36.5% of Monthly Cycle Elapsed</div>
-              <div class="text-[10px] text-slate-400 mt-0.5">Includes Daily Punches + Verified Paid Rest</div>
+              <div class="text-2xl font-black text-sky-400 mt-1">₹12,900</div>
+              <div class="text-[11px] text-sky-300 font-semibold mt-1">36.7% of Monthly Payroll Cycle Elapsed</div>
+              <div class="text-[10px] text-slate-400 mt-0.5">Calculated from verified employee entry/exit punch logs</div>
             </div>
 
             <!-- 3. Required Bank Balance by Month-End -->
             <div class="p-3.5 rounded-xl bg-slate-950/80 border border-orange-500/50">
               <div class="text-[11px] font-bold text-orange-400 uppercase tracking-wider">🏦 Required Bank Balance (By 30 Nov)</div>
-              <div class="text-2xl font-black text-orange-400 mt-1">₹4,39,500</div>
-              <div class="text-[11px] text-amber-300 font-semibold mt-1">Net Disbursement Liability on 30/11</div>
-              <div class="text-[10px] text-slate-400 mt-0.5">Maintain ₹4.50L in Axis Bank (A/C: xxxx3409)</div>
+              <div class="text-2xl font-black text-orange-400 mt-1">₹43,000</div>
+              <div class="text-[11px] text-amber-300 font-semibold mt-1">Total Net Monthly Liability to Pay Staff</div>
+              <div class="text-[10px] text-slate-400 mt-0.5">Maintain ₹45,000 in Axis Bank (A/C: xxxx3409)</div>
             </div>
           </div>
         </div>
