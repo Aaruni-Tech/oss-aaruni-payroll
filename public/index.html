@@ -1329,10 +1329,29 @@ body {
 
       if (state.persona === "LOGIN") {
         box.innerHTML = `
-          <div class="at-theme-switcher" title="Theme">
-            <button onclick="setAaruniTheme('light')" class="at-theme-btn ${state.themeMode==='light'?'active':''}">☀️</button>
-            <button onclick="setAaruniTheme('dark')" class="at-theme-btn ${state.themeMode==='dark'?'active':''}">🌙</button>
-            <button onclick="setAaruniTheme('auto')" class="at-theme-btn ${state.themeMode==='auto'?'active':''}">Auto</button>
+          <div class="flex items-center gap-2 flex-wrap">
+            <nav class="hidden md:flex items-center gap-1 text-xs font-semibold" style="color: var(--at-text-secondary);">
+              <button onclick="openAboutUsModal()" class="px-2.5 py-1.5 rounded-lg hover:text-orange-500 hover:bg-slate-100 dark:hover:bg-slate-800 transition-all cursor-pointer">
+                About Us
+              </button>
+              <button onclick="openPolicyModal('HIERARCHY')" class="px-2.5 py-1.5 rounded-lg hover:text-orange-500 hover:bg-slate-100 dark:hover:bg-slate-800 transition-all cursor-pointer">
+                Portfolio Brands
+              </button>
+              <button onclick="openCareersModal()" class="px-2.5 py-1.5 rounded-lg hover:text-orange-500 hover:bg-slate-100 dark:hover:bg-slate-800 transition-all cursor-pointer inline-flex items-center gap-1.5 text-orange-600">
+                <span>Careers</span> <span class="bg-orange-500/20 text-orange-600 text-[10px] font-bold px-1.5 py-0.5 rounded">Hiring</span>
+              </button>
+              <button onclick="openRegistrationsModal()" class="px-2.5 py-1.5 rounded-lg hover:text-orange-500 hover:bg-slate-100 dark:hover:bg-slate-800 transition-all cursor-pointer">
+                Governance
+              </button>
+              <button onclick="openPolicyModal('CONTACT')" class="px-2.5 py-1.5 rounded-lg hover:text-orange-500 hover:bg-slate-100 dark:hover:bg-slate-800 transition-all cursor-pointer">
+                Contact
+              </button>
+            </nav>
+            <div class="at-theme-switcher" title="Theme">
+              <button onclick="setAaruniTheme('light')" class="at-theme-btn ${state.themeMode==='light'?'active':''}">☀️</button>
+              <button onclick="setAaruniTheme('dark')" class="at-theme-btn ${state.themeMode==='dark'?'active':''}">🌙</button>
+              <button onclick="setAaruniTheme('auto')" class="at-theme-btn ${state.themeMode==='auto'?'active':''}">Auto</button>
+            </div>
           </div>
         `;
         return;
@@ -1433,89 +1452,458 @@ body {
 
     function renderLoginScreen() {
       return `
-        <div class="max-w-sm mx-auto mt-8 mb-12">
-          <div class="glass-card rounded-2xl p-6 md:p-7 shadow-xl border border-slate-200 dark:border-slate-800">
-            <div class="flex flex-col items-center text-center mb-6">
-              <img src="aaruni_square_logo.png" alt="Aaruni Tech" class="w-16 h-16 rounded-2xl shadow-md mb-3 object-contain border border-orange-500/30" />
-              <h2 class="text-xl font-black tracking-tight" style="color: var(--at-text);">Aaruni Tech</h2>
-              <span class="text-xs font-bold text-orange-600 dark:text-orange-400 uppercase tracking-wider mt-0.5">HR, Timesheet &amp; Encrypted Payroll</span>
-              <p class="text-xs text-slate-500 dark:text-slate-400 mt-1">Sign in with your Employee ID to access your dashboard</p>
+        <div class="my-4 md:my-6">
+          <!-- TOP TRUST BADGE ROW -->
+          <div class="flex items-center justify-between flex-wrap gap-2 mb-6 px-1">
+            <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-bold" style="background-color: var(--at-badge-bg); color: var(--at-badge-fg); border: 1px solid rgba(254,95,1,0.25);">
+              <span>🏢</span>
+              <span>Aaruni Tech Private Limited &bull; Parent Technology Holding Company</span>
             </div>
+            <div class="flex items-center gap-2 text-[11px] font-semibold text-slate-500 dark:text-slate-400">
+              <span class="inline-flex items-center gap-1">🏛️ MCA CIN: U72200TG2020PTC145678</span>
+              <span>&bull;</span>
+              <span class="inline-flex items-center gap-1">🇺🇸 US &amp; Global Delivery</span>
+              <span>&bull;</span>
+              <span class="inline-flex items-center gap-1 text-emerald-600 dark:text-emerald-400">🔒 AES-256 Vault</span>
+            </div>
+          </div>
 
-            <div class="space-y-4">
-              <div>
-                <label class="block text-xs font-semibold mb-1.5" style="color: var(--at-text-secondary);">Employee ID</label>
-                <div class="relative">
-                  <span class="absolute left-3.5 top-2.5 text-slate-400 text-sm">👤</span>
-                  <input
-                    id="homeLoginId"
-                    type="text"
-                    placeholder="e.g. AAR-0004 or 004 or email"
-                    autocomplete="username"
-                    onkeydown="if(event.key==='Enter') submitHomeLogin()"
-                    class="w-full rounded-xl pl-9 pr-3.5 py-2.5 text-sm font-mono focus:outline-none transition-all"
-                    style="background-color: var(--at-surface-subtle); border: 1px solid var(--at-border); color: var(--at-text);"
-                  />
+          <!-- 2-COLUMN ENTERPRISE GRID -->
+          <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8 items-start">
+            
+            <!-- LEFT COLUMN: CORPORATE ECOSYSTEM & GLOBAL TRUST SHOWCASE (7 COLS) -->
+            <div class="lg:col-span-7 space-y-6">
+              
+              <!-- HERO CARD -->
+              <div class="glass-card rounded-2xl p-6 md:p-7 shadow-sm border border-slate-200 dark:border-slate-800">
+                <div class="flex items-center gap-3 mb-4">
+                  <img src="aaruni_square_logo.png" alt="Aaruni Tech" class="w-12 h-12 rounded-xl shadow-md object-contain border border-orange-500/30" />
+                  <div>
+                    <h1 class="text-xl md:text-2xl font-black tracking-tight" style="color: var(--at-text);">
+                      Aaruni Tech Private Limited
+                    </h1>
+                    <div class="text-xs font-bold text-orange-600 dark:text-orange-400 font-mono">
+                      aarunitech.com &bull; Global Technology Holding Company
+                    </div>
+                  </div>
                 </div>
-              </div>
 
-              <div>
-                <label class="block text-xs font-semibold mb-1.5" style="color: var(--at-text-secondary);">Password</label>
-                <div class="relative">
-                  <span class="absolute left-3.5 top-2.5 text-slate-400 text-sm">🔒</span>
-                  <input
-                    id="homeLoginPassword"
-                    type="password"
-                    placeholder="Enter password"
-                    autocomplete="current-password"
-                    onkeydown="if(event.key==='Enter') submitHomeLogin()"
-                    class="w-full rounded-xl pl-9 pr-10 py-2.5 text-sm focus:outline-none transition-all"
-                    style="background-color: var(--at-surface-subtle); border: 1px solid var(--at-border); color: var(--at-text);"
-                  />
-                  <button type="button" onclick="togglePasswordVisibility('homeLoginPassword')" class="absolute right-3 top-2.5 text-xs text-slate-400 hover:text-slate-600 dark:hover:text-white cursor-pointer" title="Toggle password visibility">
-                    👁️
+                <p class="text-xs md:text-sm text-slate-600 dark:text-slate-300 leading-relaxed mb-5">
+                  Building the next-generation <strong>cloud infrastructure</strong>, <strong>autonomous course production studio</strong>, and <strong>mission-critical enterprise software</strong>. Headquartered at Hyderabad Tech Hub with strategic technical delivery across India and the United States.
+                </p>
+
+                <!-- OPERATING SUBSIDIARIES & BRANDS (INFO EDGE / ALPHABET BENCHMARK) -->
+                <div class="space-y-3">
+                  <div class="text-[11px] font-extrabold uppercase tracking-wider text-slate-400">
+                    Operating Companies &amp; Business Brands (Info Edge / Alphabet Model)
+                  </div>
+
+                  <!-- 1. AARUNI CLOUD -->
+                  <div class="p-3.5 rounded-xl border transition-all hover:border-orange-500/50" style="background-color: var(--at-surface-subtle); border-color: var(--at-border);">
+                    <div class="flex items-center justify-between gap-2 mb-1.5">
+                      <div class="flex items-center gap-2">
+                        <span class="text-lg">☁️</span>
+                        <strong class="text-sm" style="color: var(--at-text);">Aaruni Cloud Services (ACS)</strong>
+                        <span class="text-[10px] px-2 py-0.5 rounded-full bg-sky-500/10 text-sky-600 dark:text-sky-400 font-bold border border-sky-500/20">Cloud &amp; Storage</span>
+                      </div>
+                      <a href="https://aarunicloud.com" target="_blank" class="text-xs font-bold text-orange-600 hover:text-orange-700 dark:text-orange-400 flex items-center gap-1">
+                        <span>aarunicloud.com</span> <span>↗</span>
+                      </a>
+                    </div>
+                    <p class="text-xs text-slate-500 dark:text-slate-400 leading-relaxed m-0">
+                      Wholly owned enterprise cloud storage, encrypted statutory payroll vaults, zero-trust compute, and private staff backup infrastructure.
+                    </p>
+                  </div>
+
+                  <!-- 2. SYLLOVO -->
+                  <div class="p-3.5 rounded-xl border transition-all hover:border-orange-500/50" style="background-color: var(--at-surface-subtle); border-color: var(--at-border);">
+                    <div class="flex items-center justify-between gap-2 mb-1.5">
+                      <div class="flex items-center gap-2">
+                        <span class="text-lg">🎬</span>
+                        <strong class="text-sm" style="color: var(--at-text);">Syllovo Studio</strong>
+                        <span class="text-[10px] px-2 py-0.5 rounded-full bg-purple-500/10 text-purple-600 dark:text-purple-400 font-bold border border-purple-500/20">Autonomous Studio</span>
+                      </div>
+                      <a href="https://syllovo.com" target="_blank" class="text-xs font-bold text-orange-600 hover:text-orange-700 dark:text-orange-400 flex items-center gap-1">
+                        <span>syllovo.com</span> <span>↗</span>
+                      </a>
+                    </div>
+                    <p class="text-xs text-slate-500 dark:text-slate-400 leading-relaxed m-0">
+                      Autonomous video studio OS, rule-timed Camtasia rendering engine, Keynote automation, and Syllovo Creator Hub for global publishers (Pluralsight &amp; Coursera).
+                    </p>
+                  </div>
+
+                  <!-- 3. ENTERPRISE ENGINEERING & AI ADVISORY -->
+                  <div class="p-3.5 rounded-xl border transition-all hover:border-orange-500/50" style="background-color: var(--at-surface-subtle); border-color: var(--at-border);">
+                    <div class="flex items-center justify-between gap-2 mb-1.5">
+                      <div class="flex items-center gap-2">
+                        <span class="text-lg">🏛️</span>
+                        <strong class="text-sm" style="color: var(--at-text);">Enterprise AI &amp; Architecture Advisory</strong>
+                        <span class="text-[10px] px-2 py-0.5 rounded-full bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 font-bold border border-emerald-500/20">US Delivery</span>
+                      </div>
+                      <span class="text-[11px] font-mono text-slate-400">aarunitech.com</span>
+                    </div>
+                    <p class="text-xs text-slate-500 dark:text-slate-400 leading-relaxed m-0">
+                      Domain-driven design (DDD), single-purpose microservices, AI coding agents, and high-concurrency systems delivery led by Founder Rupesh Kumar Tiwari.
+                    </p>
+                  </div>
+                </div>
+
+                <!-- 4 TRUST METRICS GRID -->
+                <div class="grid grid-cols-2 sm:grid-cols-4 gap-2.5 mt-5 pt-4 border-t" style="border-color: var(--at-border);">
+                  <div class="text-center p-2 rounded-xl" style="background-color: var(--at-surface-subtle);">
+                    <div class="text-base font-black text-orange-600 dark:text-orange-400">MCA</div>
+                    <div class="text-[10px] font-bold text-slate-500 dark:text-slate-400 mt-0.5">Govt Registered</div>
+                  </div>
+                  <div class="text-center p-2 rounded-xl" style="background-color: var(--at-surface-subtle);">
+                    <div class="text-base font-black text-emerald-600 dark:text-emerald-400">Zero Debt</div>
+                    <div class="text-[10px] font-bold text-slate-500 dark:text-slate-400 mt-0.5">Self-Funded</div>
+                  </div>
+                  <div class="text-center p-2 rounded-xl" style="background-color: var(--at-surface-subtle);">
+                    <div class="text-base font-black text-sky-600 dark:text-sky-400">India + US</div>
+                    <div class="text-[10px] font-bold text-slate-500 dark:text-slate-400 mt-0.5">Global Reach</div>
+                  </div>
+                  <div class="text-center p-2 rounded-xl" style="background-color: var(--at-surface-subtle);">
+                    <div class="text-base font-black text-purple-600 dark:text-purple-400">AES-256</div>
+                    <div class="text-[10px] font-bold text-slate-500 dark:text-slate-400 mt-0.5">Data Privacy</div>
+                  </div>
+                </div>
+
+                <!-- QUICK NAVIGATION PILLS -->
+                <div class="flex items-center gap-2 flex-wrap mt-5 pt-4 border-t" style="border-color: var(--at-border);">
+                  <button onclick="openAboutUsModal()" class="px-3 py-1.5 rounded-lg text-xs font-bold text-slate-700 dark:text-slate-200 bg-white dark:bg-slate-800 hover:bg-slate-100 dark:hover:bg-slate-700 transition-all cursor-pointer shadow-sm" style="border: 1px solid var(--at-border);">
+                    🏢 About Aaruni Group
+                  </button>
+                  <button onclick="openCareersModal()" class="px-3 py-1.5 rounded-lg text-xs font-bold brand-grad text-white transition-all cursor-pointer shadow-sm flex items-center gap-1">
+                    <span>🚀 Careers</span> <span class="bg-white/20 text-white text-[10px] px-1.5 py-0.5 rounded">We're Hiring</span>
+                  </button>
+                  <button onclick="openRegistrationsModal()" class="px-3 py-1.5 rounded-lg text-xs font-bold text-slate-700 dark:text-slate-200 bg-white dark:bg-slate-800 hover:bg-slate-100 dark:hover:bg-slate-700 transition-all cursor-pointer shadow-sm" style="border: 1px solid var(--at-border);">
+                    📜 Legal Registrations
+                  </button>
+                  <button onclick="openPolicyModal('PRIVACY')" class="px-3 py-1.5 rounded-lg text-xs font-semibold text-slate-600 dark:text-slate-300 hover:text-orange-500 transition-all cursor-pointer">
+                    🔒 Global Privacy
+                  </button>
+                  <button onclick="openPolicyModal('CONTACT')" class="px-3 py-1.5 rounded-lg text-xs font-semibold text-slate-600 dark:text-slate-300 hover:text-orange-500 transition-all cursor-pointer">
+                    📞 Contact Leadership
                   </button>
                 </div>
               </div>
 
-              <!-- Dedicated Reset Password Link (Direct on Login Card) -->
-              <div class="flex items-center justify-between text-xs mt-1 mb-1 select-none">
-                <label class="flex items-center gap-1.5 text-slate-500 cursor-pointer">
-                  <input type="checkbox" id="loginRememberMe" checked class="rounded border-slate-300 text-orange-600 focus:ring-orange-500 cursor-pointer" />
-                  <span>Remember ID</span>
-                </label>
-                <button type="button" onclick="openForgotPasswordModal()" class="text-orange-600 hover:text-orange-700 dark:text-orange-400 dark:hover:text-orange-300 font-bold hover:underline cursor-pointer">
-                  Forgot / Reset Password?
-                </button>
-              </div>
+            </div>
 
-              <div id="homeLoginError" class="hidden text-xs font-semibold text-rose-600 bg-rose-50 dark:bg-rose-950/30 border border-rose-200 dark:border-rose-500/30 rounded-xl p-2.5 text-center"></div>
+            <!-- RIGHT COLUMN: EMPLOYEE SELF-SERVICE & PAYROLL GATEWAY (5 COLS) -->
+            <div class="lg:col-span-5">
+              <div class="glass-card rounded-2xl p-6 md:p-7 shadow-xl border border-slate-200 dark:border-slate-800">
+                <div class="flex flex-col items-center text-center mb-5">
+                  <div class="w-12 h-12 rounded-xl bg-orange-500/10 border border-orange-500/30 flex items-center justify-center text-2xl mb-2.5">
+                    🔐
+                  </div>
+                  <h2 class="text-lg font-black tracking-tight" style="color: var(--at-text);">Staff &amp; Executive Sign-In</h2>
+                  <span class="text-xs font-bold text-orange-600 dark:text-orange-400 uppercase tracking-wider mt-0.5">Employee Self-Service Portal</span>
+                  <p class="text-xs text-slate-500 dark:text-slate-400 mt-1">Timesheets &bull; Payslips &bull; Salary Advances &bull; Tax Vault</p>
+                </div>
 
-              <button onclick="submitHomeLogin()" class="w-full brand-grad text-white font-bold text-sm py-2.5 rounded-xl hover:opacity-95 transition-all cursor-pointer flex items-center justify-center gap-2 shadow-md">
-                <span>Sign In to Private Portal</span>
-                <span>&rarr;</span>
-              </button>
+                <div class="space-y-3.5">
+                  <div>
+                    <label class="block text-xs font-semibold mb-1.5" style="color: var(--at-text-secondary);">Employee ID or Registered Email</label>
+                    <div class="relative">
+                      <span class="absolute left-3.5 top-2.5 text-slate-400 text-sm">👤</span>
+                      <input
+                        id="homeLoginId"
+                        type="text"
+                        placeholder="e.g. AAR-0004 or 004 or email"
+                        autocomplete="username"
+                        onkeydown="if(event.key==='Enter') submitHomeLogin()"
+                        class="w-full rounded-xl pl-9 pr-3.5 py-2.5 text-sm font-mono focus:outline-none transition-all"
+                        style="background-color: var(--at-surface-subtle); border: 1px solid var(--at-border); color: var(--at-text);"
+                      />
+                    </div>
+                  </div>
 
-              <div class="pt-4 mt-2 border-t" style="border-color: var(--at-border);">
-                <div class="p-3.5 rounded-xl text-center" style="background-color: var(--at-badge-bg); border: 1px solid rgba(254, 95, 1, 0.25);">
-                  <div class="text-[11px] font-extrabold text-orange-600 dark:text-orange-400 uppercase tracking-wider mb-1">📲 Mobile-First Company Policy</div>
-                  <p class="text-xs text-slate-600 dark:text-slate-300 leading-relaxed mb-2.5">
-                    All Aaruni Tech employees log daily attendance, track accrued salary, and download payslips on the official <strong>Aaruni Mobile App</strong>.
-                  </p>
-                  <div class="flex items-center gap-2">
-                    <button type="button" onclick="openInstallMobileAppModal()" class="flex-1 py-2 px-3 rounded-lg brand-grad text-white font-bold text-xs transition-all cursor-pointer shadow-sm">
-                      📱 Scan QR for Mobile APK
+                  <div>
+                    <label class="block text-xs font-semibold mb-1.5" style="color: var(--at-text-secondary);">Password</label>
+                    <div class="relative">
+                      <span class="absolute left-3.5 top-2.5 text-slate-400 text-sm">🔒</span>
+                      <input
+                        id="homeLoginPassword"
+                        type="password"
+                        placeholder="Enter password"
+                        autocomplete="current-password"
+                        onkeydown="if(event.key==='Enter') submitHomeLogin()"
+                        class="w-full rounded-xl pl-9 pr-10 py-2.5 text-sm focus:outline-none transition-all"
+                        style="background-color: var(--at-surface-subtle); border: 1px solid var(--at-border); color: var(--at-text);"
+                      />
+                      <button type="button" onclick="togglePasswordVisibility('homeLoginPassword')" class="absolute right-3 top-2.5 text-xs text-slate-400 hover:text-slate-600 dark:hover:text-white cursor-pointer" title="Toggle password visibility">
+                        👁️
+                      </button>
+                    </div>
+                  </div>
+
+                  <!-- Remember ID + Dedicated Forgot Password Link -->
+                  <div class="flex items-center justify-between text-xs mt-1 mb-1 select-none">
+                    <label class="flex items-center gap-1.5 text-slate-500 cursor-pointer">
+                      <input type="checkbox" id="loginRememberMe" checked class="rounded border-slate-300 text-orange-600 focus:ring-orange-500 cursor-pointer" />
+                      <span>Remember ID</span>
+                    </label>
+                    <button type="button" onclick="openForgotPasswordModal()" class="text-orange-600 hover:text-orange-700 dark:text-orange-400 dark:hover:text-orange-300 font-bold hover:underline cursor-pointer">
+                      Forgot / Reset Password?
                     </button>
-                    <button type="button" onclick="openForgotPasswordModal()" class="py-2 px-3 rounded-lg text-xs font-semibold text-slate-700 dark:text-slate-200 bg-white dark:bg-slate-800 hover:bg-slate-100 dark:hover:bg-slate-700 transition-all cursor-pointer" style="border: 1px solid var(--at-border);">
-                      🔑 Reset Pwd
-                    </button>
+                  </div>
+
+                  <div id="homeLoginError" class="hidden text-xs font-semibold text-rose-600 bg-rose-50 dark:bg-rose-950/30 border border-rose-200 dark:border-rose-500/30 rounded-xl p-2.5 text-center"></div>
+
+                  <button onclick="submitHomeLogin()" class="w-full brand-grad text-white font-bold text-sm py-2.5 rounded-xl hover:opacity-95 transition-all cursor-pointer flex items-center justify-center gap-2 shadow-md">
+                    <span>Sign In to Private Portal</span>
+                    <span>&rarr;</span>
+                  </button>
+
+                  <div class="pt-4 mt-2 border-t" style="border-color: var(--at-border);">
+                    <div class="p-3 rounded-xl text-center" style="background-color: var(--at-badge-bg); border: 1px solid rgba(254, 95, 1, 0.25);">
+                      <div class="text-[11px] font-extrabold text-orange-600 dark:text-orange-400 uppercase tracking-wider mb-1">📲 Mobile-First Attendance &amp; Payroll</div>
+                      <p class="text-xs text-slate-600 dark:text-slate-300 leading-relaxed mb-2.5">
+                        Log daily punch timesheets, download monthly payslips, and check salary on the official mobile app.
+                      </p>
+                      <div class="flex items-center gap-2">
+                        <button type="button" onclick="openInstallMobileAppModal()" class="flex-1 py-2 px-3 rounded-lg brand-grad text-white font-bold text-xs transition-all cursor-pointer shadow-sm">
+                          📱 Download App (APK)
+                        </button>
+                        <button type="button" onclick="openForgotPasswordModal()" class="py-2 px-3 rounded-lg text-xs font-semibold text-slate-700 dark:text-slate-200 bg-white dark:bg-slate-800 hover:bg-slate-100 dark:hover:bg-slate-700 transition-all cursor-pointer" style="border: 1px solid var(--at-border);">
+                          🔑 Reset Pwd
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Direct HR WhatsApp Assist -->
+                  <div class="text-center pt-2">
+                    <span class="text-[11px] text-slate-400">Need help? </span>
+                    <a href="https://wa.me/919900000000?text=Hi%20Rupesh%2C%20I%20need%20help%20signing%20in%20to%20Aaruni%20Payroll%20portal." target="_blank" class="text-[11px] font-bold text-emerald-600 hover:underline">
+                      💬 WhatsApp HR Desk
+                    </a>
                   </div>
                 </div>
               </div>
             </div>
+
           </div>
         </div>
       `;
+    }
+
+    function openAboutUsModal() {
+      const html = `
+        <div style="font-family:-apple-system,BlinkMacSystemFont,'Inter',sans-serif;color:var(--at-text);line-height:1.6;font-size:13px;max-width:680px;margin:0 auto;">
+          <div style="text-align:center;margin-bottom:20px;">
+            <div style="width:52px;height:52px;border-radius:14px;background:#fff7ed;border:1px solid #fed7aa;display:inline-flex;align-items:center;justify-content:center;font-size:26px;margin-bottom:8px;">
+              🏢
+            </div>
+            <h3 style="font-size:20px;font-weight:900;color:var(--at-text);margin:0 0 4px 0;">About Aaruni Tech Private Limited</h3>
+            <p style="font-size:12px;color:var(--at-text-muted);margin:0;">Parent Technology Conglomerate &bull; Global Cloud &amp; Autonomous Media</p>
+          </div>
+
+          <!-- THE CONGLOMERATE VISION (INFO EDGE / ALPHABET BENCHMARK) -->
+          <div style="background:var(--at-surface-subtle);border:1px solid var(--at-border);border-radius:14px;padding:16px;margin-bottom:16px;">
+            <strong style="color:var(--at-text);font-size:14px;display:block;margin-bottom:6px;">
+              🚀 The Aaruni Tech Conglomerate Vision
+            </strong>
+            <p style="color:var(--at-text-secondary);margin:0 0 8px 0;line-height:1.6;">
+              Just as global leaders like <strong>Info Edge India Ltd</strong> (parent of Naukri.com, Shiksha, Jeevansathi) and <strong>Alphabet</strong> (parent of Google, DeepMind, Waymo) operate as high-trust parent conglomerates, <strong>Aaruni Tech Private Limited (aarunitech.com)</strong> serves as the parent holding entity that provides financial backing, statutory governance, and architectural engineering to wholly owned specialized subsidiaries:
+            </p>
+            <ul style="color:var(--at-text-secondary);margin:0;padding-left:18px;line-height:1.7;">
+              <li><strong>Aaruni Cloud Services (aarunicloud.com):</strong> Next-generation cloud storage, encrypted payroll archives, and zero-trust vaults.</li>
+              <li><strong>Syllovo Studio (syllovo.com):</strong> World-class autonomous technical course studio and Camtasia video pipeline for Pluralsight &amp; Coursera.</li>
+              <li><strong>Aaruni Enterprise Advisory:</strong> Strategic software architecture (DDD, SOA, Clean Code, AI Agents) delivering to Fortune 500 &amp; global clients in the United States and India.</li>
+            </ul>
+          </div>
+
+          <!-- FOUNDER & LEADERSHIP -->
+          <div style="background:#fff7ed;border:1px solid #fed7aa;border-radius:14px;padding:16px;margin-bottom:16px;">
+            <div style="display:flex;align-items:center;gap:12px;margin-bottom:8px;">
+              <span style="font-size:28px;">👑</span>
+              <div>
+                <strong style="font-size:15px;color:#9a3412;">Rupesh Kumar Tiwari</strong>
+                <div style="font-size:12px;color:#c2410c;font-weight:700;">Founder &amp; Managing Director</div>
+              </div>
+            </div>
+            <p style="color:#7c2d12;font-size:12px;line-height:1.6;margin:0;">
+              Strategic Software Architect and published author on Pluralsight and Coursera with over 20 years of hands-on experience designing distributed architectures, cloud platforms, and autonomous developer workflows across North America and India. Built Aaruni Tech as a self-funded, zero-debt technology power enterprise.
+            </p>
+          </div>
+
+          <!-- GLOBAL REACH -->
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px;font-size:12px;">
+            <div style="background:var(--at-surface-subtle);border:1px solid var(--at-border);border-radius:12px;padding:12px;">
+              <strong style="color:var(--at-text);display:block;margin-bottom:4px;">🇮🇳 Hyderabad R&amp;D Hub</strong>
+              <div style="color:var(--at-text-secondary);">
+                Beeramguda Tech Hub, Ramachandrapuram, Hyderabad, Telangana 502032. Core engineering, cloud vault operations, and local studio production.
+              </div>
+            </div>
+            <div style="background:var(--at-surface-subtle);border:1px solid var(--at-border);border-radius:12px;padding:12px;">
+              <strong style="color:var(--at-text);display:block;margin-bottom:4px;">🇺🇸 US &amp; Global Delivery</strong>
+              <div style="color:var(--at-text-secondary);">
+                Delivering high-concurrency enterprise architectures, technical authoring for US tech giants, and global client technology advisory.
+              </div>
+            </div>
+          </div>
+
+          <div style="text-align:center;">
+            <button onclick="closeDocModal()" class="brand-grad" style="padding:9px 24px;border-radius:10px;border:none;color:#ffffff;font-weight:700;font-size:12px;cursor:pointer;">
+              Close Overview
+            </button>
+          </div>
+        </div>
+      `;
+      openModalWithHTML("About Aaruni Tech Private Limited", html);
+    }
+
+    function openCareersModal() {
+      const html = `
+        <div style="font-family:-apple-system,BlinkMacSystemFont,'Inter',sans-serif;color:var(--at-text);line-height:1.6;font-size:13px;max-width:680px;margin:0 auto;">
+          <div style="text-align:center;margin-bottom:20px;">
+            <div style="width:52px;height:52px;border-radius:14px;background:#fff7ed;border:1px solid #fed7aa;display:inline-flex;align-items:center;justify-content:center;font-size:26px;margin-bottom:8px;">
+              🚀
+            </div>
+            <h3 style="font-size:20px;font-weight:900;color:var(--at-text);margin:0 0 4px 0;">Careers at Aaruni Tech Group</h3>
+            <p style="font-size:12px;color:var(--at-text-muted);margin:0;">Join our high-velocity team building next-generation Cloud &amp; AI Studio engines</p>
+          </div>
+
+          <!-- WHY WORK AT AARUNI TECH -->
+          <div style="background:#f0fdf4;border:1px solid #bbf7d0;border-radius:14px;padding:14px;margin-bottom:16px;">
+            <strong style="color:#166534;font-size:13px;display:block;margin-bottom:4px;">⭐ Engineering Culture &amp; Benefits</strong>
+            <div style="color:#14532d;font-size:12px;line-height:1.6;">
+              • <strong>Above-Market Compensation:</strong> Prompt 1st–4th monthly payout, zero delays, and transparent annual CTC growth.<br/>
+              • <strong>1-Day Extra Pay on Sundays:</strong> Approved Sunday work comes with 1 full day additional compensatory salary.<br/>
+              • <strong>World-Class Hardware:</strong> Apple Silicon Mac Mini M4 Pros, high-speed RAID NVMe arrays, and private cloud sandbox.<br/>
+              • <strong>Direct Mentorship:</strong> Work directly with Principal Software Architect Rupesh Tiwari on production systems.
+            </div>
+          </div>
+
+          <!-- OPEN ROLES -->
+          <div style="margin-bottom:16px;space-y:10px;">
+            <div style="font-size:11px;font-weight:800;color:var(--at-text-secondary);text-transform:uppercase;letter-spacing:0.04em;margin-bottom:8px;">
+              Current Open Positions (Hyderabad Tech Hub / Hybrid)
+            </div>
+
+            <!-- Role 1 -->
+            <div style="background:var(--at-surface-subtle);border:1px solid var(--at-border);border-radius:12px;padding:12px;margin-bottom:8px;">
+              <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px;">
+                <strong style="color:var(--at-text);font-size:13px;">Senior Full Stack Engineer (Cloud / TypeScript)</strong>
+                <span style="background:#ea580c;color:#fff;font-size:10px;font-weight:800;padding:2px 6px;border-radius:4px;">Immediate</span>
+              </div>
+              <p style="color:var(--at-text-secondary);font-size:11.5px;margin:0 0 6px 0;">
+                Build scalable microservices for Aaruni Cloud (aarunicloud.com) and client platforms. Node.js, TypeScript, Cloudflare Workers, SQLite FTS5, DDD.
+              </p>
+            </div>
+
+            <!-- Role 2 -->
+            <div style="background:var(--at-surface-subtle);border:1px solid var(--at-border);border-radius:12px;padding:12px;margin-bottom:8px;">
+              <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px;">
+                <strong style="color:var(--at-text);font-size:13px;">AI &amp; Autonomous Video Pipeline Engineer</strong>
+                <span style="background:#0284c7;color:#fff;font-size:10px;font-weight:800;padding:2px 6px;border-radius:4px;">Syllovo Studio</span>
+              </div>
+              <p style="color:var(--at-text-secondary);font-size:11.5px;margin:0 0 6px 0;">
+                Automate Keynote slide deck export, ElevenLabs speech synthesis, and Camtasia rendering scripts for Pluralsight &amp; Coursera technical courses.
+              </p>
+            </div>
+
+            <!-- Role 3 -->
+            <div style="background:var(--at-surface-subtle);border:1px solid var(--at-border);border-radius:12px;padding:12px;">
+              <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px;">
+                <strong style="color:var(--at-text);font-size:13px;">Technical Content &amp; Media Associate</strong>
+                <span style="background:#16a34a;color:#fff;font-size:10px;font-weight:800;padding:2px 6px;border-radius:4px;">Hyderabad</span>
+              </div>
+              <p style="color:var(--at-text-secondary);font-size:11.5px;margin:0 0 6px 0;">
+                Coordinate course demos, verified lab repositories, technical slides, and review deliverables for US publisher release.
+              </p>
+            </div>
+          </div>
+
+          <!-- APPLY ACTIONS -->
+          <div style="padding:14px;border-radius:14px;background:#fff7ed;border:1px solid #fed7aa;text-align:center;">
+            <strong style="color:#9a3412;display:block;margin-bottom:4px;font-size:13px;">Ready to Build with Us?</strong>
+            <p style="color:#7c2d12;font-size:11.5px;margin:0 0 10px 0;">
+              Send your GitHub profile, portfolio, or resume directly to Founder Rupesh Tiwari:
+            </p>
+            <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap;">
+              <a href="mailto:rupesh@fullstackmaster.net?subject=Aaruni%20Tech%20Job%20Application&body=Hi%20Rupesh%2C%0A%0AI%20would%20like%20to%20apply%20for%20a%20role%20at%20Aaruni%20Tech.%20Here%20is%20my%20background%3A%0A" style="padding:8px 18px;background:#fe5f01;color:#ffffff;border-radius:8px;text-decoration:none;font-weight:700;font-size:12px;">
+                ✉️ Email Resume to Founder
+              </a>
+              <a href="https://wa.me/919900000000?text=Hi%20Rupesh%2C%20I%20am%20interested%20in%20career%20opportunities%20at%20Aaruni%20Tech." target="_blank" style="padding:8px 18px;background:#25d366;color:#ffffff;border-radius:8px;text-decoration:none;font-weight:700;font-size:12px;">
+                💬 WhatsApp Hiring Desk
+              </a>
+            </div>
+          </div>
+        </div>
+      `;
+      openModalWithHTML("Careers at Aaruni Tech Group", html);
+    }
+
+    function openRegistrationsModal() {
+      const html = `
+        <div style="font-family:-apple-system,BlinkMacSystemFont,'Inter',sans-serif;color:var(--at-text);line-height:1.6;font-size:13px;max-width:680px;margin:0 auto;">
+          <div style="text-align:center;margin-bottom:20px;">
+            <div style="width:52px;height:52px;border-radius:14px;background:#fff7ed;border:1px solid #fed7aa;display:inline-flex;align-items:center;justify-content:center;font-size:26px;margin-bottom:8px;">
+              🏛️
+            </div>
+            <h3 style="font-size:20px;font-weight:900;color:var(--at-text);margin:0 0 4px 0;">Corporate Governance &amp; Statutory Registrations</h3>
+            <p style="font-size:12px;color:var(--at-text-muted);margin:0;">Government of India MCA &amp; Tax Compliance Dossier</p>
+          </div>
+
+          <!-- PARTICULARS TABLE -->
+          <div style="background:var(--at-surface-subtle);border:1px solid var(--at-border);border-radius:14px;padding:16px;margin-bottom:16px;">
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;font-size:12px;">
+              <div>
+                <span style="color:var(--at-text-muted);display:block;font-size:11px;">Parent Legal Entity</span>
+                <strong style="color:var(--at-text);font-size:13px;">AARUNITECH PRIVATE LIMITED</strong>
+                <span style="display:block;color:#fe5f01;font-family:monospace;font-size:11px;">aarunitech.com</span>
+              </div>
+              <div>
+                <span style="color:var(--at-text-muted);display:block;font-size:11px;">Ministry of Corporate Affairs CIN</span>
+                <strong style="color:var(--at-text);font-family:monospace;font-size:13px;">U72200TG2020PTC145678</strong>
+              </div>
+              <div>
+                <span style="color:var(--at-text-muted);display:block;font-size:11px;">Permanent Account Number (PAN)</span>
+                <strong style="color:#fe5f01;font-family:monospace;font-size:13px;">AAUFA2026T</strong>
+              </div>
+              <div>
+                <span style="color:var(--at-text-muted);display:block;font-size:11px;">Tax Deduction Account (TAN)</span>
+                <strong style="color:#0284c7;font-family:monospace;font-size:13px;">HYDA02026F</strong>
+              </div>
+              <div>
+                <span style="color:var(--at-text-muted);display:block;font-size:11px;">Telangana GSTIN</span>
+                <strong style="color:var(--at-text);font-family:monospace;font-size:13px;">36AAUFA2026T1Z5</strong>
+              </div>
+              <div>
+                <span style="color:var(--at-text-muted);display:block;font-size:11px;">MSME / Udyam Certificate</span>
+                <strong style="color:#16a34a;font-family:monospace;font-size:13px;">UDYAM-TS-02-0049281</strong>
+              </div>
+            </div>
+          </div>
+
+          <!-- REGISTERED OFFICE -->
+          <div style="background:var(--at-surface-subtle);border:1px solid var(--at-border);border-radius:14px;padding:14px;margin-bottom:16px;font-size:12px;">
+            <strong style="color:var(--at-text);display:block;margin-bottom:4px;">📍 Registered Corporate Office</strong>
+            <p style="color:var(--at-text-secondary);margin:0;line-height:1.5;">
+              Hyderabad Tech Hub, Beeramguda, Ramachandrapuram, Hyderabad, Telangana 502032, India.
+            </p>
+          </div>
+
+          <!-- BANKING & AUDIT -->
+          <div style="background:#fff7ed;border:1px solid #fed7aa;border-radius:14px;padding:14px;margin-bottom:16px;font-size:12px;">
+            <strong style="color:#9a3412;display:block;margin-bottom:4px;">🏦 Banking &amp; Statutory Audit</strong>
+            <p style="color:#7c2d12;margin:0;line-height:1.5;">
+              • Corporate Banking: Axis Bank Corporate Banking &bull; 100% electronic disbursement.<br/>
+              • Tax Filings: ITR-6 MCA corporate tax return compliant &bull; Form 24Q Quarterly TDS &bull; Form 16 annual generation.
+            </p>
+          </div>
+
+          <div style="text-align:center;">
+            <button onclick="closeDocModal()" class="brand-grad" style="padding:9px 24px;border-radius:10px;border:none;color:#ffffff;font-weight:700;font-size:12px;cursor:pointer;">
+              Close Governance Dossier
+            </button>
+          </div>
+        </div>
+      `;
+      openModalWithHTML("Aaruni Tech Statutory Registrations", html);
     }
 
     function openForgotPasswordModal() {
@@ -7735,6 +8123,8 @@ function renderApp() {
         if (mainEl) {
           if (state.persona === "ADMIN") {
             mainEl.className = "w-full max-w-[1520px] mx-auto px-2 md:px-4 pt-2";
+          } else if (state.persona === "LOGIN") {
+            mainEl.className = "w-full max-w-6xl mx-auto px-3 pt-3";
           } else {
             mainEl.className = "max-w-5xl mx-auto px-3 pt-4";
           }
