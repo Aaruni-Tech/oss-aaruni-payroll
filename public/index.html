@@ -16,6 +16,7 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
   <meta name="apple-mobile-web-app-title" content="Aaruni HR" />
   <script src="https://www.gstatic.com/antigravity/web/dev/tailwindcss.min.js"></script>
+  <script src="qrcode.min.js"></script>
   <style>
     :root,
     [data-theme="light"] {
@@ -1520,7 +1521,7 @@
           </div>
           <div class="flex items-center gap-3 shrink-0">
             <div class="hidden sm:block text-center bg-white p-1 rounded-lg shadow-md cursor-pointer" onclick="openInstallMobileAppModal()" title="Click to enlarge QR">
-              ${generateQRCodeSVG(portalUrl + "/downloads/aaruni-payroll.apk", 64)}
+              <img src="downloads/aaruni-payroll-qr.png" alt="APK QR" style="width:64px;height:64px;display:block;margin:0 auto;border-radius:4px;" />
             </div>
             <div class="flex flex-col gap-1.5">
               <a href="downloads/aaruni-payroll.apk" download="aaruni-payroll.apk" class="brand-grad text-white font-bold text-xs px-3.5 py-1.5 rounded-lg shadow inline-flex items-center gap-1.5 hover:opacity-95 transition-all">
@@ -4776,6 +4777,231 @@ function updateQrBaseUrl(val) {
         navigator.serviceWorker.register("sw.js").catch(() => {});
       }
     } catch (e) {}
+
+    function triggerNativePwaInstall() {
+      if (_deferredPwaPrompt) {
+        _deferredPwaPrompt.prompt();
+        _deferredPwaPrompt.userChoice.finally(() => { _deferredPwaPrompt = null; });
+      } else {
+        showToast("Install on Mobile", "On Android Chrome: tap ⋮ Menu → 'Add to Home screen' / 'Install app'. On iPhone Safari: tap Share ⬆️ → 'Add to Home Screen'.");
+      }
+    }
+
+    function openInstallMobileAppModal(selectedId = "ALL") {
+      const portalUrl = (state.baseAppUrl || window.location.origin || "https://payroll.aaruni.in").trim().replace(/\/+$/, "");
+      const apkDirectUrl = portalUrl + "/downloads/aaruni-payroll.apk";
+      const qrStaticPng = (portalUrl.includes("payroll.aaruni.in")) ? "downloads/aaruni-payroll-custom-qr.png" : "downloads/aaruni-payroll-qr.png";
+      const apkReleaseUrl = "https://github.com/Aaruni-Tech/oss-aaruni-payroll/releases/tag/v1.0.0";
+
+      const staffList = [
+        { id: "AAR-0002", name: "Rupesh Kumar Tiwari", role: "Admin / Advisor", email: "rupesh@fullstackmaster.net" },
+        { id: "AAR-0001", name: "Nisha Tiwari", role: "Proprietor", email: "nisha.tiwari.mail@gmail.com" },
+        { id: "AAR-0004", name: "Chukka Nandini", role: "Technical Team Lead", email: "nandini.chukka.fsm@gmail.com" },
+        { id: "AAR-0005", name: "Janhavi Varma", role: "Technical Associate", email: "janvi.varma.fsm@gmail.com" },
+        { id: "AAR-0006", name: "Koppula Ramya", role: "Technical Associate", email: "koppula.ramya.fsm@gmail.com" },
+        { id: "AAR-0008", name: "Shaik Ali Moulali", role: "Security Operations", email: "ali.moulali.fsm@gmail.com" }
+      ];
+
+      const html = `
+        <div style="font-family:-apple-system,BlinkMacSystemFont,'Inter',sans-serif;color:#0f172a;max-width:680px;margin:0 auto;">
+          
+          <!-- MODAL HEADER -->
+          <div style="background:#090D16;color:#ffffff;border-radius:18px;padding:24px;margin-bottom:18px;box-shadow:0 12px 32px rgba(9,13,22,0.4);border:1px solid #1e293b;">
+            <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;border-bottom:1px solid #1e293b;padding-bottom:16px;margin-bottom:20px;">
+              <div style="display:flex;align-items:center;gap:12px;">
+                <img src="aaruni_square_logo.png" alt="Aaruni Logo" style="width:44px;height:44px;border-radius:10px;object-fit:contain;background:#000;padding:2px;border:1px solid #FE5F01;" />
+                <div>
+                  <div style="display:flex;align-items:center;gap:8px;">
+                    <h3 style="font-size:18px;font-weight:900;margin:0;color:#ffffff;">Aaruni Tech Mobile App</h3>
+                    <span style="background:#FE5F01;color:#ffffff;font-size:10px;font-weight:800;padding:2px 8px;border-radius:6px;text-transform:uppercase;">v1.0.0 Stable</span>
+                  </div>
+                  <p style="font-size:12px;color:#94a3b8;margin:2px 0 0 0;">Official Android APK Installer &bull; Direct Download &bull; No Store Required</p>
+                </div>
+              </div>
+              <div style="font-size:11px;color:#cbd5e1;background:#1e293b;border:1px solid #334155;border-radius:8px;padding:6px 12px;">
+                🏢 Organization: <strong>Aaruni-Tech (OSS)</strong>
+              </div>
+            </div>
+
+            <!-- SINGLE HERO QR SCANNER CARD (NO CONFUSING DUPLICATES) -->
+            <div style="background:linear-gradient(180deg, #131d2e 0%, #0c121e 100%);border:2px solid #FE5F01;border-radius:16px;padding:24px;text-align:center;position:relative;box-shadow:0 0 30px rgba(254,95,1,0.25);">
+              
+              <div style="display:inline-block;background:#FE5F01;color:#ffffff;font-size:11px;font-weight:900;padding:4px 14px;border-radius:20px;letter-spacing:0.06em;text-transform:uppercase;margin-bottom:12px;box-shadow:0 4px 12px rgba(254,95,1,0.4);">
+                ★ DIRECT SCAN-TO-DOWNLOAD
+              </div>
+              
+              <div style="font-size:17px;font-weight:900;color:#ffffff;margin-bottom:4px;">
+                Scan with Phone Camera to Install Mobile App
+              </div>
+              <p style="font-size:12px;color:#94a3b8;max-width:440px;margin:0 auto 16px auto;line-height:1.4;">
+                Point your Android phone camera or Google Lens at this QR code. It will <strong style="color:#FE5F01;">directly download aaruni-payroll.apk</strong> to your device.
+              </p>
+
+              <!-- QR CODE DISPLAY WITH WHITE QUIET ZONE FOR 100% SCAN COMPLIANCE -->
+              <div style="background:#ffffff;padding:16px;border-radius:16px;display:inline-block;margin:0 auto 16px auto;box-shadow:0 8px 24px rgba(0,0,0,0.5);">
+                <div id="apkModalQrCanvas" style="display:flex;justify-content:center;align-items:center;">
+                  <img src="${qrStaticPng}" alt="Scan to Download APK" style="width:220px;height:220px;display:block;border-radius:6px;" />
+                </div>
+              </div>
+
+              <!-- ACTION BUTTONS -->
+              <div style="display:flex;flex-direction:column;gap:8px;max-width:360px;margin:0 auto;">
+                <a href="${apkDirectUrl}" download="aaruni-payroll.apk" style="display:flex;align-items:center;justify-content:center;gap:8px;background:linear-gradient(135deg, #FE5F01 0%, #EA580C 100%);color:#ffffff;font-weight:900;font-size:13px;padding:12px 20px;border-radius:10px;text-decoration:none;box-shadow:0 6px 16px rgba(254,95,1,0.4);transition:all 0.2s;cursor:pointer;">
+                  <span>⬇️ Download APK Directly (124 KB)</span>
+                </a>
+                <div style="display:flex;gap:6px;justify-content:center;">
+                  <button onclick="navigator.clipboard.writeText('${apkDirectUrl}'); showToast('Copied','Direct APK download link copied to clipboard.');" style="background:#1e293b;border:1px solid #475569;color:#e2e8f0;font-size:11px;font-weight:700;padding:8px 14px;border-radius:8px;cursor:pointer;flex:1;">
+                    📋 Copy Direct APK Link
+                  </button>
+                  <a href="${apkReleaseUrl}" target="_blank" rel="noopener" style="background:#1e293b;border:1px solid #475569;color:#e2e8f0;font-size:11px;font-weight:700;padding:8px 14px;border-radius:8px;text-decoration:none;display:flex;align-items:center;justify-content:center;gap:4px;">
+                    ⭐ GitHub Mirror
+                  </a>
+                </div>
+              </div>
+
+              <!-- QUICK 3-STEP INSTALL GUIDE -->
+              <div style="margin-top:18px;padding-top:14px;border-top:1px solid #1e293b;display:grid;grid-template-columns:repeat(3,1fr);gap:10px;text-align:left;">
+                <div style="background:#090D16;padding:10px;border-radius:8px;border:1px solid #1e293b;">
+                  <div style="font-size:10px;font-weight:800;color:#FE5F01;">STEP 1</div>
+                  <div style="font-size:11px;color:#e2e8f0;font-weight:600;margin-top:2px;">Scan QR or Tap Download</div>
+                </div>
+                <div style="background:#090D16;padding:10px;border-radius:8px;border:1px solid #1e293b;">
+                  <div style="font-size:10px;font-weight:800;color:#FE5F01;">STEP 2</div>
+                  <div style="font-size:11px;color:#e2e8f0;font-weight:600;margin-top:2px;">Open Downloaded File</div>
+                </div>
+                <div style="background:#090D16;padding:10px;border-radius:8px;border:1px solid #1e293b;">
+                  <div style="font-size:10px;font-weight:800;color:#FE5F01;">STEP 3</div>
+                  <div style="font-size:11px;color:#e2e8f0;font-weight:600;margin-top:2px;">Tap Install &amp; Launch</div>
+                </div>
+              </div>
+            </div>
+
+            <!-- ATC-SS PUBLIC INSTALLER VERSION DIRECTORY (AARUNI TECH CLOUD STORAGE SERVICE) -->
+            <div style="background:#090D16;border:1px solid #334155;border-radius:14px;padding:16px;margin-top:16px;">
+              <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;margin-bottom:12px;">
+                <div style="display:flex;align-items:center;gap:8px;">
+                  <span style="font-size:14px;">☁️</span>
+                  <span style="font-size:13px;font-weight:800;color:#ffffff;">ATC-SS Public Installer Version Directory</span>
+                </div>
+                <span style="background:#059669;color:#ffffff;font-size:10px;font-weight:800;padding:2px 8px;border-radius:4px;">All Mirrors Online</span>
+              </div>
+              <p style="font-size:11px;color:#94a3b8;margin:0 0 12px 0;">All official Aaruni Tech mobile app releases are publicly hosted across the 3 tiers of ATC-SS:</p>
+              
+              <div style="overflow-x:auto;">
+                <table style="width:100%;font-size:11px;text-align:left;border-collapse:collapse;color:#cbd5e1;">
+                  <thead>
+                    <tr style="border-bottom:1px solid #334155;color:#94a3b8;">
+                      <th style="padding:6px 8px;">Version</th>
+                      <th style="padding:6px 8px;">Package / File</th>
+                      <th style="padding:6px 8px;">Size</th>
+                      <th style="padding:6px 8px;">Architecture</th>
+                      <th style="padding:6px 8px;text-align:right;">ATC-SS Download</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr style="border-bottom:1px solid #1e293b;">
+                      <td style="padding:8px;font-weight:700;color:#ffffff;">v1.0.0 <span style="background:rgba(16,185,129,0.2);color:#10b981;font-size:9px;padding:1px 5px;border-radius:3px;">Latest</span></td>
+                      <td style="padding:8px;font-family:monospace;color:#f97316;">aaruni-payroll.apk<br/><span style="color:#64748b;font-size:10px;">com.aarunitech.payroll</span></td>
+                      <td style="padding:8px;">124 KB</td>
+                      <td style="padding:8px;color:#94a3b8;">Universal (ARM64 / x86_64)</td>
+                      <td style="padding:8px;text-align:right;">
+                        <a href="${apkDirectUrl}" download="aaruni-payroll.apk" style="display:inline-block;background:#FE5F01;color:#ffffff;font-weight:800;padding:4px 10px;border-radius:6px;text-decoration:none;">⬇️ Direct</a>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+
+              <div style="margin-top:12px;padding-top:10px;border-top:1px solid #1e293b;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;font-size:10px;color:#64748b;">
+                <div>
+                  <strong>Storage Law Tiers:</strong> Tier 1: Synology DS224+ (8TB) &bull; Tier 2: Google Drive (30TB) &bull; Tier 3: Cloudflare CDN
+                </div>
+                <div style="font-family:monospace;">
+                  SHA-256 Release Signed &bull; API 24+ (Android 7.0 to 14)
+                </div>
+              </div>
+            </div>
+
+            <!-- LOGIN INSTRUCTIONS -->
+            <div style="background:#1e293b;border:1px solid #334155;border-radius:12px;padding:14px;margin-top:16px;">
+              <div style="font-size:12px;font-weight:800;color:#93c5fd;text-transform:uppercase;letter-spacing:0.05em;margin-bottom:8px;">
+                🔒 Staff Login Credentials:
+              </div>
+              <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:8px;font-size:11px;">
+                <div style="background:#090D16;padding:8px 12px;border-radius:6px;border:1px solid #334155;">
+                  <span style="color:#94a3b8;display:block;">1. Server URL:</span>
+                  <strong style="color:#38bdf8;font-family:monospace;">${portalUrl}</strong>
+                </div>
+                <div style="background:#090D16;padding:8px 12px;border-radius:6px;border:1px solid #334155;">
+                  <span style="color:#94a3b8;display:block;">2. Employee ID:</span>
+                  <strong style="color:#ffffff;">e.g. AAR-0004</strong>
+                </div>
+                <div style="background:#090D16;padding:8px 12px;border-radius:6px;border:1px solid #334155;">
+                  <span style="color:#94a3b8;display:block;">3. Password:</span>
+                  <strong style="color:#10b981;">Private Password</strong>
+                </div>
+              </div>
+            </div>
+
+          </div>
+
+          <!-- FULL STAFF DIRECTORY -->
+          <div style="border:1px solid #cbd5e1;border-radius:14px;overflow:hidden;background:#ffffff;">
+            <div style="background:#f1f5f9;padding:12px 16px;border-bottom:1px solid #cbd5e1;display:flex;justify-content:space-between;align-items:center;">
+              <div>
+                <strong style="font-size:13px;color:#0f172a;">📋 Aaruni Tech Active Staff Directory</strong>
+                <div style="font-size:11px;color:#64748b;">Staff sign in using their unique Employee ID and private password.</div>
+              </div>
+            </div>
+            <table style="width:100%;font-size:12px;text-align:left;border-collapse:collapse;">
+              <thead style="background:#f8fafc;color:#64748b;font-size:11px;border-bottom:1px solid #e2e8f0;">
+                <tr>
+                  <th style="padding:10px 14px;">Emp ID</th>
+                  <th style="padding:10px 14px;">Staff Member</th>
+                  <th style="padding:10px 14px;">Role</th>
+                  <th style="padding:10px 14px;">Official Email</th>
+                  <th style="padding:10px 14px;text-align:right;">Access</th>
+                </tr>
+              </thead>
+              <tbody>
+                ${staffList.map((s, idx) => `
+                  <tr style="border-bottom:1px solid #f1f5f9;background:${s.id === selectedId ? '#fff7ed' : (idx % 2 === 0 ? '#ffffff' : '#fafafa')};">
+                    <td style="padding:10px 14px;font-family:monospace;font-weight:800;color:${s.id === selectedId ? '#ea580c' : '#0f172a'};">${s.id}</td>
+                    <td style="padding:10px 14px;font-weight:700;">${s.name}</td>
+                    <td style="padding:10px 14px;color:#64748b;">${s.role}</td>
+                    <td style="padding:10px 14px;font-family:monospace;font-size:11px;">${s.email}</td>
+                    <td style="padding:10px 14px;text-align:right;">
+                      <button onclick="closeDocModal(); switchPersona('${s.id === 'AAR-0002' ? 'ADMIN' : s.id}', ${s.id !== 'AAR-0002'});" style="background:#0f172a;color:#ffffff;border:none;border-radius:6px;padding:4px 10px;font-size:11px;font-weight:700;cursor:pointer;">
+                        Sign In →
+                      </button>
+                    </td>
+                  </tr>
+                `).join("")}
+              </tbody>
+            </table>
+          </div>
+
+        </div>
+      `;
+
+      openModalWithHTML("Aaruni Tech Mobile App (Android APK)", html);
+
+      // Render 100% compliant QR canvas dynamically via QRCode library
+      setTimeout(() => {
+        const qrContainer = document.getElementById("apkModalQrCanvas");
+        if (qrContainer && typeof QRCode !== 'undefined') {
+          qrContainer.innerHTML = "";
+          new QRCode(qrContainer, {
+            text: apkDirectUrl,
+            width: 220,
+            height: 220,
+            colorDark: "#090D16",
+            colorLight: "#ffffff",
+            correctLevel: QRCode.CorrectLevel.M
+          });
+        }
+      }, 50);
+    }
 
     function triggerNativePwaInstall() {
       if (_deferredPwaPrompt) {
