@@ -3156,21 +3156,23 @@ console.log("Deployed:", cluster.endpoint);`
 
     function openCloudMobileModal() {
       showModal(
-        "📱 Aaruni Ecosystem Mobile Access",
-        '<div style="text-align:center;max-width:440px;margin:0 auto;">' +
-          '<div style="display:flex;justify-content:center;gap:10px;margin-bottom:16px;">' +
-            '<button type="button" class="btn-tile-secondary" id="c-qr-cloud-btn" style="min-height:36px;padding:4px 12px;font-size:12px;background:rgba(56,189,248,0.15);color:#38bdf8;border-color:#38bdf8;" onclick="switchCloudQrTab(\'cloud\')">☁️ Cloud Console</button>' +
-            '<button type="button" class="btn-tile-secondary" id="c-qr-app-btn" style="min-height:36px;padding:4px 12px;font-size:12px;" onclick="switchCloudQrTab(\'app\')">🤖 Aaruni Tech App (APK)</button>' +
+        "📱 Aaruni Mobile Ecosystem & Cloud Console",
+        '<div style="text-align:center;max-width:480px;margin:0 auto;">' +
+          '<div style="display:flex;justify-content:center;gap:6px;margin-bottom:14px;flex-wrap:wrap;">' +
+            '<button type="button" class="btn-tile-secondary" id="c-qr-cloud-apk-btn" style="min-height:34px;padding:4px 10px;font-size:11.5px;background:rgba(56,189,248,0.2);color:#38bdf8;border-color:#38bdf8;" onclick="switchCloudQrTab(\'cloud-apk\')">☁️ Cloud Console APK</button>' +
+            '<button type="button" class="btn-tile-secondary" id="c-qr-work-apk-btn" style="min-height:34px;padding:4px 10px;font-size:11.5px;" onclick="switchCloudQrTab(\'work-apk\')">👷‍♂️ Workforce APK</button>' +
+            '<button type="button" class="btn-tile-secondary" id="c-qr-hub-apk-btn" style="min-height:34px;padding:4px 10px;font-size:11.5px;" onclick="switchCloudQrTab(\'hub-apk\')">🏢 Flagship Hub APK</button>' +
+            '<button type="button" class="btn-tile-secondary" id="c-qr-web-btn" style="min-height:34px;padding:4px 10px;font-size:11.5px;" onclick="switchCloudQrTab(\'web\')">🍏 Web Console</button>' +
           '</div>' +
-          '<div style="background:#ffffff;padding:14px;border-radius:14px;display:inline-block;box-shadow:0 8px 24px rgba(0,0,0,0.4);border:1px solid #cbd5e1;margin-bottom:14px;">' +
-            '<img id="cloudQrImg" src="assets/qr_aarunicloud_mobile.png" alt="Scan QR for mobile" style="width:180px;height:180px;display:block;" />' +
+          '<div style="background:#ffffff;padding:12px;border-radius:14px;display:inline-block;box-shadow:0 8px 24px rgba(0,0,0,0.4);border:1px solid #cbd5e1;margin-bottom:12px;">' +
+            '<img id="cloudQrImg" src="assets/qr_aarunicloud_console_apk.png" alt="Scan QR for mobile" style="width:175px;height:175px;display:block;" />' +
           '</div>' +
-          '<div id="cloudQrDesc" style="font-size:12.5px;color:var(--ac-text-muted);margin-bottom:16px;line-height:1.5;">' +
-            'Scan with your phone to open the <strong>Aaruni Cloud Console &amp; Neural Voice Workbench</strong> on mobile.' +
+          '<div id="cloudQrDesc" style="font-size:12px;color:var(--ac-text-muted);margin-bottom:14px;line-height:1.5;">' +
+            'Scan with your Android camera to download <strong>AaruniCloud-Console-v1.0.0.apk</strong> (116 KB) for Cloud Infrastructure &amp; D1 Database Monitoring.' +
           '</div>' +
-          '<div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap;">' +
-            '<a href="https://my.aarunitech.com/downloads/aaruni-payroll.apk" download="AaruniTech-v2.4.0.apk" class="btn-dawn" style="min-height:38px;text-decoration:none;font-size:12px;padding:0 16px;display:inline-flex;align-items:center;">📥 Download Android APK</a>' +
-            '<a href="https://aarunitech.com" target="_blank" class="btn-tile-secondary" style="min-height:38px;text-decoration:none;font-size:12px;padding:0 16px;display:inline-flex;align-items:center;">Aaruni Tech Home ↗</a>' +
+          '<div style="display:flex;gap:8px;justify-content:center;flex-wrap:wrap;">' +
+            '<a id="cloudModalDownloadBtn" href="/downloads/aarunicloud-console.apk" download="AaruniCloud-Console-v1.0.0.apk" class="btn-dawn" style="min-height:36px;text-decoration:none;font-size:11.5px;padding:0 14px;display:inline-flex;align-items:center;">📥 Download Cloud Console APK</a>' +
+            '<a id="cloudModalLaunchBtn" href="https://aarunicloud.com/?source=mobile_modal" target="_blank" class="btn-tile-secondary" style="min-height:36px;text-decoration:none;font-size:11.5px;padding:0 14px;display:inline-flex;align-items:center;">Launch Web Console ↗</a>' +
           '</div>' +
         '</div>'
       );
@@ -3179,19 +3181,45 @@ console.log("Deployed:", cluster.endpoint);`
     function switchCloudQrTab(type) {
       const img = document.getElementById("cloudQrImg");
       const desc = document.getElementById("cloudQrDesc");
-      const bCloud = document.getElementById("c-qr-cloud-btn");
-      const bApp = document.getElementById("c-qr-app-btn");
+      const dBtn = document.getElementById("cloudModalDownloadBtn");
+      const lBtn = document.getElementById("cloudModalLaunchBtn");
+      const bCloudApk = document.getElementById("c-qr-cloud-apk-btn");
+      const bWorkApk = document.getElementById("c-qr-work-apk-btn");
+      const bHubApk = document.getElementById("c-qr-hub-apk-btn");
+      const bWeb = document.getElementById("c-qr-web-btn");
       if (!img || !desc) return;
-      if (type === 'app') {
-        img.src = "assets/qr_aarunitech_app_apk.png";
-        desc.innerHTML = "Scan with Android to download the official <strong>Aaruni Tech App</strong> (.apk) for Timesheet, Attendance &amp; Payroll.";
-        if (bApp) { bApp.style.background = "rgba(254,95,1,0.15)"; bApp.style.color = "#fe5f01"; bApp.style.borderColor = "#fe5f01"; }
-        if (bCloud) { bCloud.style.background = ""; bCloud.style.color = ""; bCloud.style.borderColor = ""; }
-      } else {
+
+      const resetBtns = () => {
+        [bCloudApk, bWorkApk, bHubApk, bWeb].forEach(b => {
+          if (b) { b.style.background = ""; b.style.color = ""; b.style.borderColor = ""; }
+        });
+      };
+      resetBtns();
+
+      if (type === 'work-apk') {
+        img.src = "assets/qr_aaruni_workforce_apk.png";
+        desc.innerHTML = "Scan with Android to download <strong>AaruniTech-Workforce-v2.4.0.apk</strong> (116 KB) for Attendance, Timesheet &amp; Payroll.";
+        if (bWorkApk) { bWorkApk.style.background = "rgba(254,95,1,0.15)"; bWorkApk.style.color = "#fe5f01"; bWorkApk.style.borderColor = "#fe5f01"; }
+        if (dBtn) { dBtn.href = "/downloads/aaruni-payroll.apk"; dBtn.setAttribute("download", "AaruniTech-Workforce-v2.4.0.apk"); dBtn.innerHTML = "📥 Download Workforce APK"; dBtn.style.display = "inline-flex"; }
+        if (lBtn) { lBtn.href = "https://my.aarunitech.com/?source=mobile_modal"; lBtn.innerHTML = "Open Workforce Portal ↗"; }
+      } else if (type === 'hub-apk') {
+        img.src = "assets/qr_aarunitech_hub_apk.png";
+        desc.innerHTML = "Scan with Android to download <strong>AaruniTech-Flagship-v1.0.0.apk</strong> (116 KB) for the parent conglomerate mobile hub.";
+        if (bHubApk) { bHubApk.style.background = "rgba(16,185,129,0.15)"; bHubApk.style.color = "#10b981"; bHubApk.style.borderColor = "#10b981"; }
+        if (dBtn) { dBtn.href = "/downloads/aarunitech-hub.apk"; dBtn.setAttribute("download", "AaruniTech-Flagship-v1.0.0.apk"); dBtn.innerHTML = "📥 Download Flagship Hub APK"; dBtn.style.display = "inline-flex"; }
+        if (lBtn) { lBtn.href = "https://aarunitech.com/?source=mobile_modal"; lBtn.innerHTML = "Open Corporate Flagship ↗"; }
+      } else if (type === 'web') {
         img.src = "assets/qr_aarunicloud_mobile.png";
-        desc.innerHTML = "Scan with your phone to open the <strong>Aaruni Cloud Console &amp; Neural Voice Workbench</strong> on mobile.";
-        if (bCloud) { bCloud.style.background = "rgba(56,189,248,0.15)"; bCloud.style.color = "#38bdf8"; bCloud.style.borderColor = "#38bdf8"; }
-        if (bApp) { bApp.style.background = ""; bApp.style.color = ""; bApp.style.borderColor = ""; }
+        desc.innerHTML = "Scan with your phone camera to launch <strong>aarunicloud.com</strong> in browser. On iPhone: tap Share ⬆️ &rarr; <em>Add to Home Screen</em>.";
+        if (bWeb) { bWeb.style.background = "rgba(56,189,248,0.2)"; bWeb.style.color = "#38bdf8"; bWeb.style.borderColor = "#38bdf8"; }
+        if (dBtn) { dBtn.style.display = "none"; }
+        if (lBtn) { lBtn.href = "https://aarunicloud.com/?source=mobile_modal"; lBtn.innerHTML = "Launch Web Console ↗"; }
+      } else {
+        img.src = "assets/qr_aarunicloud_console_apk.png";
+        desc.innerHTML = "Scan with your Android camera to download <strong>AaruniCloud-Console-v1.0.0.apk</strong> (116 KB) for Cloud Infrastructure &amp; D1 Database Monitoring.";
+        if (bCloudApk) { bCloudApk.style.background = "rgba(56,189,248,0.2)"; bCloudApk.style.color = "#38bdf8"; bCloudApk.style.borderColor = "#38bdf8"; }
+        if (dBtn) { dBtn.href = "/downloads/aarunicloud-console.apk"; dBtn.setAttribute("download", "AaruniCloud-Console-v1.0.0.apk"); dBtn.innerHTML = "📥 Download Cloud Console APK"; dBtn.style.display = "inline-flex"; }
+        if (lBtn) { lBtn.href = "https://aarunicloud.com/?source=mobile_modal"; lBtn.innerHTML = "Launch Web Console ↗"; }
       }
     }
 

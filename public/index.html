@@ -2030,14 +2030,20 @@
               <span>Cloud &amp; Studio Switcher</span>
             </div>
           </div>
-          <div style="display:flex; gap:12px; flex-wrap:wrap;">
-            <a href="/downloads/aaruni-payroll.apk" download="AaruniTech-v2.4.0.apk" class="btn btn-dawn" style="padding:11px 20px;">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" x2="12" y1="15" y2="3"/></svg>
-              <span>Download Android APK (124 KB)</span>
+          <div style="display:flex; gap:10px; flex-wrap:wrap; align-items:center;">
+            <a href="/downloads/aaruni-payroll.apk" download="AaruniTech-Workforce-v2.4.0.apk" class="btn btn-dawn" style="padding:10px 18px; font-size:0.86rem;" title="1-Tap Punch In/Out, Timesheet, Salary Slip">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" x2="12" y1="15" y2="3"/></svg>
+              <span>Workforce APK (116 KB)</span>
             </a>
-            <a href="https://my.aarunitech.com/?source=mobile_qr" target="_blank" class="btn btn-outline" style="padding:11px 18px;">
-              <span>Launch Web App (iPhone / Android) ↗</span>
+            <a href="/downloads/aarunicloud-console.apk" download="AaruniCloud-Console-v1.0.0.apk" class="btn btn-outline" style="padding:10px 18px; font-size:0.86rem; border-color:var(--primary-blue); color:var(--primary-blue);" title="Aaruni Cloud Console, D1 Storage, Worker Metrics">
+              <span>☁️ Cloud Console APK</span>
             </a>
+            <a href="/downloads/aarunitech-hub.apk" download="AaruniTech-Flagship-v1.0.0.apk" class="btn btn-outline" style="padding:10px 18px; font-size:0.86rem;" title="Aaruni Tech Corporate Flagship Hub">
+              <span>🏢 Flagship Hub APK</span>
+            </a>
+            <button onclick="openMobileAppModal()" class="btn btn-outline" style="padding:10px 16px; font-size:0.86rem; border-color:var(--dawn-orange); color:var(--dawn-orange);">
+              <span>📱 Scan All App QRs</span>
+            </button>
           </div>
         </div>
 
@@ -2487,26 +2493,28 @@
         Access 1-tap Attendance Punch In/Out, Monthly Timesheet Approvals, and Encrypted Salary Payslips directly on your phone.
       </p>
 
-      <!-- QR Tab Switcher -->
-      <div style="display:flex; justify-content:center; gap:8px; margin-bottom:16px;">
-        <button id="qrTabApkBtn" onclick="switchQrCodeTab('apk')" class="btn btn-dawn" style="padding:6px 14px; font-size:0.82rem;">🤖 Android APK</button>
-        <button id="qrTabPwaBtn" onclick="switchQrCodeTab('pwa')" class="btn btn-outline" style="padding:6px 14px; font-size:0.82rem;">🍏 iPhone / Web App (PWA)</button>
+      <!-- QR Tab Switcher (Workforce, Cloud, Flagship, iOS) -->
+      <div style="display:flex; justify-content:center; gap:6px; margin-bottom:16px; flex-wrap:wrap;">
+        <button id="qrTabWorkforceBtn" onclick="switchQrCodeTab('workforce')" class="btn btn-dawn" style="padding:6px 12px; font-size:0.8rem;">👷‍♂️ Workforce APK</button>
+        <button id="qrTabCloudBtn" onclick="switchQrCodeTab('cloud')" class="btn btn-outline" style="padding:6px 12px; font-size:0.8rem;">☁️ Cloud Console APK</button>
+        <button id="qrTabHubBtn" onclick="switchQrCodeTab('hub')" class="btn btn-outline" style="padding:6px 12px; font-size:0.8rem;">🏢 Flagship Hub APK</button>
+        <button id="qrTabPwaBtn" onclick="switchQrCodeTab('pwa')" class="btn btn-outline" style="padding:6px 12px; font-size:0.8rem;">🍏 iPhone / PWA</button>
       </div>
 
       <!-- Scannable QR Container -->
       <div style="background:#ffffff; padding:14px; border-radius:14px; display:inline-block; box-shadow:var(--shadow-md); border:1px solid #cbd5e1; margin-bottom:14px;">
-        <img id="qrModalImage" src="assets/qr_aarunitech_app_apk.png" alt="Aaruni Tech Mobile QR Code" style="width:190px; height:190px; display:block;" />
+        <img id="qrModalImage" src="assets/qr_aaruni_workforce_apk.png" alt="Aaruni Tech Mobile QR Code" style="width:185px; height:185px; display:block;" />
       </div>
 
       <div id="qrModalInstruction" style="font-size:0.82rem; color:var(--text-muted); margin-bottom:20px; line-height:1.5;">
-        Scan this QR code with your Android camera to download <strong>AaruniTech-v2.4.0.apk</strong> (124 KB).
+        Scan with Android camera to download <strong>AaruniTech-Workforce-v2.4.0.apk</strong> (116 KB) for Attendance &amp; Payroll.
       </div>
 
       <div style="display:flex; gap:10px; justify-content:center; flex-wrap:wrap;">
-        <a href="/downloads/aaruni-payroll.apk" download="AaruniTech-v2.4.0.apk" class="btn btn-dawn" style="font-size:0.88rem; padding:10px 18px;">
-          <span>📥 Download APK Directly</span>
+        <a id="qrModalDownloadBtn" href="/downloads/aaruni-payroll.apk" download="AaruniTech-Workforce-v2.4.0.apk" class="btn btn-dawn" style="font-size:0.88rem; padding:10px 18px;">
+          <span>📥 Download Selected APK (116 KB)</span>
         </a>
-        <a href="https://my.aarunitech.com/?source=mobile_modal" target="_blank" class="btn btn-outline" style="font-size:0.88rem; padding:10px 18px;">
+        <a id="qrModalLaunchBtn" href="https://my.aarunitech.com/?source=mobile_modal" target="_blank" class="btn btn-outline" style="font-size:0.88rem; padding:10px 18px;">
           <span>Open Web App on Phone ↗</span>
         </a>
       </div>
@@ -2928,20 +2936,46 @@
     function switchQrCodeTab(type) {
       var img = document.getElementById("qrModalImage");
       var txt = document.getElementById("qrModalInstruction");
-      var btnApk = document.getElementById("qrTabApkBtn");
-      var btnPwa = document.getElementById("qrTabPwaBtn");
+      var dBtn = document.getElementById("qrModalDownloadBtn");
+      var lBtn = document.getElementById("qrModalLaunchBtn");
+      var bWork = document.getElementById("qrTabWorkforceBtn");
+      var bCloud = document.getElementById("qrTabCloudBtn");
+      var bHub = document.getElementById("qrTabHubBtn");
+      var bPwa = document.getElementById("qrTabPwaBtn");
       if (!img || !txt) return;
 
-      if (type === 'apk') {
-        img.src = "assets/qr_aarunitech_app_apk.png";
-        txt.innerHTML = "Scan with your Android camera to download <strong>AaruniTech-v2.4.0.apk</strong> (124 KB).";
-        btnApk.className = "btn btn-dawn";
-        btnPwa.className = "btn btn-outline";
-      } else {
+      var resetButtons = function() {
+        if (bWork) bWork.className = "btn btn-outline";
+        if (bCloud) bCloud.className = "btn btn-outline";
+        if (bHub) bHub.className = "btn btn-outline";
+        if (bPwa) bPwa.className = "btn btn-outline";
+      };
+      resetButtons();
+
+      if (type === 'cloud') {
+        img.src = "assets/qr_aarunicloud_console_apk.png";
+        txt.innerHTML = "Scan with Android to download <strong>AaruniCloud-Console-v1.0.0.apk</strong> (116 KB) for Cloud Infrastructure &amp; D1 Database Monitoring.";
+        if (bCloud) bCloud.className = "btn btn-dawn";
+        if (dBtn) { dBtn.href = "/downloads/aarunicloud-console.apk"; dBtn.setAttribute("download", "AaruniCloud-Console-v1.0.0.apk"); dBtn.innerHTML = "<span>📥 Download Cloud Console APK</span>"; dBtn.style.display = "inline-flex"; }
+        if (lBtn) { lBtn.href = "https://aarunicloud.com/?source=mobile_modal"; lBtn.innerHTML = "<span>Launch Cloud Console ↗</span>"; }
+      } else if (type === 'hub') {
+        img.src = "assets/qr_aarunitech_hub_apk.png";
+        txt.innerHTML = "Scan with Android to download <strong>AaruniTech-Flagship-v1.0.0.apk</strong> (116 KB) for the parent conglomerate mobile hub.";
+        if (bHub) bHub.className = "btn btn-dawn";
+        if (dBtn) { dBtn.href = "/downloads/aarunitech-hub.apk"; dBtn.setAttribute("download", "AaruniTech-Flagship-v1.0.0.apk"); dBtn.innerHTML = "<span>📥 Download Flagship Hub APK</span>"; dBtn.style.display = "inline-flex"; }
+        if (lBtn) { lBtn.href = "https://aarunitech.com/?source=mobile_modal"; lBtn.innerHTML = "<span>Launch Corporate Hub ↗</span>"; }
+      } else if (type === 'pwa') {
         img.src = "assets/qr_aarunitech_mobile_launch.png";
-        txt.innerHTML = "Scan with iPhone or Android camera to launch <strong>my.aarunitech.com</strong>. On iPhone: tap Share ⬆️ &rarr; <em>Add to Home Screen</em>.";
-        btnApk.className = "btn btn-outline";
-        btnPwa.className = "btn btn-dawn";
+        txt.innerHTML = "Scan with iPhone or Android camera to launch <strong>my.aarunitech.com</strong>. On iOS Safari: tap Share ⬆️ &rarr; <em>Add to Home Screen</em> to install.";
+        if (bPwa) bPwa.className = "btn btn-dawn";
+        if (dBtn) { dBtn.style.display = "none"; }
+        if (lBtn) { lBtn.href = "https://my.aarunitech.com/?source=mobile_modal"; lBtn.innerHTML = "<span>Open Web App on Phone ↗</span>"; }
+      } else {
+        img.src = "assets/qr_aaruni_workforce_apk.png";
+        txt.innerHTML = "Scan with Android to download <strong>AaruniTech-Workforce-v2.4.0.apk</strong> (116 KB) for Timesheet, Attendance &amp; Payroll.";
+        if (bWork) bWork.className = "btn btn-dawn";
+        if (dBtn) { dBtn.href = "/downloads/aaruni-payroll.apk"; dBtn.setAttribute("download", "AaruniTech-Workforce-v2.4.0.apk"); dBtn.innerHTML = "<span>📥 Download Workforce APK</span>"; dBtn.style.display = "inline-flex"; }
+        if (lBtn) { lBtn.href = "https://my.aarunitech.com/?source=mobile_modal"; lBtn.innerHTML = "<span>Open Web App on Phone ↗</span>"; }
       }
     }
   </script>
