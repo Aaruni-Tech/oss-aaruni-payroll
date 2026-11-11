@@ -2,6 +2,13 @@
 <html lang="en" data-theme="light">
 <head>
   <script>
+    // Global Employee Photo Resolver with Cache-Buster & Ali Executive Suit ID Photo
+    function getEmployeePhoto(empId, isSelfAdmin = false) {
+      if (isSelfAdmin) return 'photos/002.jpeg?v=20261111_v5';
+      if (empId === 'AAR-0008') return 'photos/AAR-0008_v2.jpeg?v=20261111_v5';
+      return `photos/${empId}.jpeg?v=20261111_v5`;
+    }
+
     if (typeof window !== "undefined" && (/^(www\.)?aarunicloud\.com$/i.test(window.location.hostname) || new URLSearchParams(window.location.search).get("site") === "cloud")) {
       window.location.replace("/cloud.html" + window.location.search + window.location.hash);
     }
@@ -614,6 +621,87 @@ button, a.button {
 }
 [data-theme="dark"] .app-qr-download-card .app-btn-secondary:hover {
   background: #334155 !important;
+}
+
+/* ========================================================================= */
+/* AARUNI NATIVE MOBILE & SIMULATOR CONTAINER ENGINE (TRUE ZERO-OVERFLOW)   */
+/* ========================================================================= */
+#mobileSimulatorScreen {
+  width: 100% !important;
+  max-width: 100% !important;
+  box-sizing: border-box !important;
+  overflow-x: hidden !important;
+}
+
+#mobileSimulatorScreen * {
+  box-sizing: border-box !important;
+  min-width: 0;
+}
+
+/* Force 1-column layouts inside phone simulator even on desktop browser viewports */
+#mobileSimulatorScreen .grid.md\:grid-cols-2,
+#mobileSimulatorScreen .grid.md\:grid-cols-3,
+#mobileSimulatorScreen .grid.md\:grid-cols-4,
+#mobileSimulatorScreen .grid.md\:grid-cols-5,
+#mobileSimulatorScreen .grid.md\:grid-cols-6 {
+  grid-template-columns: 1fr !important;
+}
+
+#mobileSimulatorScreen .md\:flex-row {
+  flex-direction: column !important;
+}
+
+#mobileSimulatorScreen .md\:items-center {
+  align-items: stretch !important;
+}
+
+#mobileSimulatorScreen .md\:justify-between {
+  justify-content: flex-start !important;
+}
+
+#mobileSimulatorScreen .md\:hidden {
+  display: block !important;
+}
+
+#mobileSimulatorScreen .hidden.md\:block,
+#mobileSimulatorScreen .hidden.md\:table,
+#mobileSimulatorScreen .hidden.md\:flex,
+#mobileSimulatorScreen .hidden.md\:inline-flex {
+  display: none !important;
+}
+
+/* In simulator, hide the desktop 5-column timesheet feed table and show mobile cards */
+#mobileSimulatorScreen .timesheet-feed-desktop-table {
+  display: none !important;
+}
+
+#mobileSimulatorScreen .timesheet-feed-mobile-cards {
+  display: flex !important;
+  flex-direction: column !important;
+}
+
+/* Ensure inputs, cards, and text never overflow in simulator */
+#mobileSimulatorScreen input,
+#mobileSimulatorScreen button,
+#mobileSimulatorScreen .glass-card {
+  max-width: 100% !important;
+  word-break: break-word;
+}
+
+#mobileSimulatorScreen input[type="text"],
+#mobileSimulatorScreen input[type="time"] {
+  width: 100% !important;
+}
+
+/* Native Mobile Viewport Overrides (Real Phones < 768px) */
+@media (max-width: 768px) {
+  .timesheet-feed-desktop-table {
+    display: none !important;
+  }
+  .timesheet-feed-mobile-cards {
+    display: flex !important;
+    flex-direction: column !important;
+  }
 }
 </style>
 </head>
@@ -1728,7 +1816,7 @@ button, a.button {
 
       const isAdmin = (state.persona === "ADMIN");
       const emp = isAdmin ? state.employees[1] : (state.employees.find(e => e.id === state.persona) || state.employees[3]);
-      const photoFile = (isAdmin && !state.isAdminPreviewing) ? 'photos/002.jpeg' : `photos/${emp.id}.jpeg`;
+      const photoFile = getEmployeePhoto(emp.id, (isAdmin && !state.isAdminPreviewing));
       const displayName = isAdmin ? 'Rupesh (Admin)' : emp.name;
       const roleBadge = isAdmin ? '👑 Admin' : (emp.role || 'Staff');
       const roleBadgeClass = isAdmin ? 'bg-orange-500/20 text-orange-300 border border-orange-500/40' : 'bg-slate-800 text-slate-300 border border-slate-700';
@@ -2857,7 +2945,7 @@ button, a.button {
       const pctMo = Math.min(100 - pctYtd, Math.round((accruedMonth / annualCtc) * 100)) || 0;
       const pctRem = Math.max(0, 100 - pctYtd - pctMo);
 
-      const photoFile = `photos/${emp.id}.jpeg`;
+      const photoFile = getEmployeePhoto(emp.id);
       const idCardFile = `id-cards/${emp.idCardFile || emp.id + '.png'}`;
       const myAdvances = (state.advanceRequests || []).filter(a => a.empId === emp.id);
       const myLeaves = (state.leaveRequests || []).filter(l => l.empId === emp.id);
@@ -3142,23 +3230,25 @@ button, a.button {
               </button>
             </div>
 
-            <!-- Direct Quick Input Row -->
-            <div class="grid grid-cols-1 md:grid-cols-4 gap-2.5 items-end">
-              <div>
-                <label class="block text-[11px] font-bold text-slate-400 mb-1">Check-In Time</label>
-                <input type="time" id="tsIn" value="${todayLog ? todayLog.entryTime : '10:00'}" class="w-full at-form-input font-mono" />
+            <!-- Direct Quick Input Row (Fully Responsive — Zero Mobile Squishing) -->
+            <div class="${isInsideSimulator ? 'space-y-2.5' : 'grid grid-cols-1 md:grid-cols-4 gap-2.5 items-end'}">
+              <div class="${isInsideSimulator ? 'grid grid-cols-2 gap-2' : 'contents md:contents'}">
+                <div>
+                  <label class="block text-[11px] font-bold text-slate-400 mb-1">Check-In Time</label>
+                  <input type="time" id="tsIn" value="${todayLog ? todayLog.entryTime : '10:00'}" class="w-full at-form-input font-mono" />
+                </div>
+                <div>
+                  <label class="block text-[11px] font-bold text-slate-400 mb-1">Check-Out Time</label>
+                  <input type="time" id="tsOut" value="${todayLog ? todayLog.exitTime : '19:00'}" class="w-full at-form-input font-mono" />
+                </div>
               </div>
-              <div>
-                <label class="block text-[11px] font-bold text-slate-400 mb-1">Check-Out Time</label>
-                <input type="time" id="tsOut" value="${todayLog ? todayLog.exitTime : '19:00'}" class="w-full at-form-input font-mono" />
-              </div>
-              <div>
+              <div class="${isInsideSimulator ? 'w-full' : ''}">
                 <label class="block text-[11px] font-bold text-slate-400 mb-1">Work Tasks / Deliverables</label>
-                <input type="text" id="tsSummary" value="${todayLog ? todayLog.summary : ''}" placeholder="Coursera demo recording, Zap project review..." class="w-full at-form-input" />
+                <input type="text" id="tsSummary" value="${todayLog ? (todayLog.summary || '') : ''}" placeholder="Security operations and office facility management..." class="w-full at-form-input" />
                 <input type="hidden" id="tsDate" value="2026-11-11" />
                 <input type="hidden" id="tsLink" value="Direct Entry" />
               </div>
-              <div>
+              <div class="${isInsideSimulator ? 'w-full pt-1' : ''}">
                 <button onclick="submitStaffTimesheet('${emp.id}')" class="w-full brand-grad text-white font-bold text-xs py-2.5 px-4 rounded-xl shadow cursor-pointer hover:opacity-90 flex items-center justify-center gap-1.5">
                   <span>${todaySubmitted ? '🔄 Update Today Timesheet' : '💾 Submit Today Timesheet'}</span>
                 </button>
@@ -3183,8 +3273,8 @@ button, a.button {
               </div>
             </div>
 
-            <!-- Table of recent logged days for this employee -->
-            <div class="overflow-x-auto">
+            <!-- Table of recent logged days for this employee (Desktop Table) -->
+            <div class="timesheet-feed-desktop-table ${isInsideSimulator ? 'hidden' : 'hidden md:block overflow-x-auto'}">
               <table class="w-full text-left border-collapse text-xs">
                 <thead>
                   <tr class="border-b border-slate-800 text-slate-400 uppercase tracking-wider text-[10px]">
@@ -3202,13 +3292,13 @@ button, a.button {
                         ${t.date}
                       </td>
                       <td class="py-2.5 px-3 whitespace-nowrap font-mono text-slate-400">
-                        ${t.entryTime || '10:00'} &ndash; ${t.exitTime || '18:00'}
+                        ${t.entryTime || '10:00'} &ndash; ${t.exitTime || '19:00'}
                       </td>
                       <td class="py-2.5 px-3 whitespace-nowrap font-bold text-emerald-500">
                         ${t.hours}h
                       </td>
                       <td class="py-2.5 px-3 text-slate-300">
-                        <span class="font-medium">${t.summary || 'Engineering & Operations'}</span>
+                        <span class="font-medium">${t.summary || 'Security Operations'}</span>
                       </td>
                       <td class="py-2.5 px-3 text-right whitespace-nowrap">
                         <span class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-500 border border-emerald-500/30">
@@ -3220,10 +3310,32 @@ button, a.button {
                 </tbody>
               </table>
             </div>
+
+            <!-- Mobile Card Feed for Mobile Simulator & Phone Viewports (Zero horizontal scroll, zero squishing) -->
+            <div class="timesheet-feed-mobile-cards ${isInsideSimulator ? 'block space-y-2.5' : 'md:hidden space-y-2.5'}">
+              ${(state.timesheets || []).filter(t => t.empId === emp.id).sort((a,b) => b.date.localeCompare(a.date)).slice(0, 6).map(t => `
+                <div class="p-3 rounded-xl border border-slate-700/60 bg-slate-900/60 space-y-2">
+                  <div class="flex items-center justify-between">
+                    <div class="flex items-center gap-2">
+                      <span class="font-bold text-white text-xs">${t.date}</span>
+                      <span class="font-mono text-[11px] text-slate-400">${t.entryTime || '10:00'} &ndash; ${t.exitTime || '19:00'}</span>
+                    </div>
+                    <div class="flex items-center gap-1.5">
+                      <span class="font-bold text-xs text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded border border-emerald-500/30">${t.hours}h</span>
+                      <span class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-400 border border-emerald-500/30">🟢 Verified</span>
+                    </div>
+                  </div>
+                  <div class="text-xs text-slate-300 bg-slate-950/40 p-2.5 rounded-lg border border-slate-800">
+                    <span class="text-slate-400 text-[10px] font-semibold block mb-0.5 uppercase tracking-wider">Deliverable / Tasks</span>
+                    <span class="font-medium text-slate-200 leading-relaxed">${t.summary || 'Security operations and office facility management'}</span>
+                  </div>
+                </div>
+              `).join('')}
+            </div>
           </div>
 
           <!-- CORPORATE WORK & SHAREABLE DIRECTORY PROFILE (ZERO SENSITIVE DATA — SAFE TO SHARE) -->
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+          <div class="${isInsideSimulator ? 'space-y-4 mb-4' : 'grid grid-cols-1 md:grid-cols-2 gap-4 mb-4'}">
             <!-- 🏢 Work & Role Information Card -->
             <div class="glass-card rounded-2xl p-4 border border-slate-800">
               <div class="text-xs font-bold text-orange-400 uppercase tracking-wider mb-3 flex items-center gap-2">
@@ -3269,7 +3381,7 @@ button, a.button {
               <div class="divide-y divide-slate-800/60 text-xs">
                 <div class="py-2.5 flex justify-between items-center">
                   <span class="text-slate-400">Official Email:</span>
-                  <a href="mailto:${emp.email}" class="font-bold text-orange-400 hover:underline">${emp.email}</a>
+                  <a href="mailto:${emp.email}" class="font-bold text-orange-400 hover:underline break-all truncate max-w-[200px] text-right">${emp.email}</a>
                 </div>
                 <div class="py-2.5 flex justify-between items-center">
                   <span class="text-slate-400">Employee ID:</span>
@@ -3316,12 +3428,12 @@ button, a.button {
               </div>
             </div>
 
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 items-center">
+            <div class="${isInsideSimulator ? 'space-y-4 items-center' : 'grid grid-cols-1 md:grid-cols-2 gap-4 items-center'}">
               <div>
                 <div class="mb-3">
                   <label class="block text-[11px] font-bold text-slate-400 mb-1">Your Personal UPI ID (VPA)</label>
                   <div class="flex gap-2">
-                    <input type="text" id="staffUpiInput_${emp.id}" value="${emp.upiId || ''}" placeholder="e.g. 8143088771@ybl or yourname@okaxis" class="flex-1 bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-xs text-white font-mono focus:border-orange-500 focus:outline-none" />
+                    <input type="text" id="staffUpiInput_${emp.id}" value="${emp.upiId || ''}" placeholder="e.g. 8143088771@ybl or yourname@okaxis" class="flex-1 min-w-0 bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-xs text-white font-mono focus:border-orange-500 focus:outline-none" />
                     <button onclick="handleStaffUPIIdUpdate('${emp.id}', document.getElementById('staffUpiInput_${emp.id}').value)" class="brand-grad text-white text-xs font-bold px-3 py-2 rounded-xl shadow cursor-pointer">
                       Save UPI
                     </button>
@@ -4905,7 +5017,7 @@ button, a.button {
                   <!-- CARD HEADER: PHOTO + NAME + ID BADGE + PAYMENT STATUS -->
                   <div class="flex items-start justify-between gap-2.5 mb-2.5">
                     <div class="flex items-center gap-2.5 min-w-0">
-                      <img src="photos/${e.id}.jpeg" onerror="this.onerror=null; this.src='aaruni_square_logo.png'" class="w-11 h-11 rounded-xl object-cover border-2 border-orange-500/50 bg-slate-950 shrink-0 shadow" alt="${e.name}" />
+                      <img src="${getEmployeePhoto(e.id)}" onerror="this.onerror=null; this.src='aaruni_square_logo.png'" class="w-11 h-11 rounded-xl object-cover border-2 border-orange-500/50 bg-slate-950 shrink-0 shadow" alt="${e.name}" />
                       <div class="min-w-0">
                         <div class="flex items-center gap-1.5 flex-wrap">
                           <button onclick="switchPersona('${e.id}', true)" class="font-extrabold text-white hover:text-orange-400 text-xs sm:text-sm cursor-pointer text-left truncate">
@@ -5020,7 +5132,7 @@ button, a.button {
                       <td class="py-3 px-2 font-mono font-bold text-white">${e.id}</td>
                       <td class="py-3 px-2">
                         <div class="flex items-center gap-2">
-                          <img src="photos/${e.id}.jpeg" onerror="this.onerror=null; this.src='aaruni_square_logo.png'" class="w-8 h-8 rounded-xl object-cover border border-orange-500/50 bg-slate-950 shrink-0" />
+                          <img src="${getEmployeePhoto(e.id)}" onerror="this.onerror=null; this.src='aaruni_square_logo.png'" class="w-8 h-8 rounded-xl object-cover border border-orange-500/50 bg-slate-950 shrink-0" />
                           <div>
                             <button onclick="switchPersona('${e.id}', true)" class="font-bold text-white hover:underline text-left cursor-pointer flex items-center gap-1">
                               <span>${e.name}</span>
@@ -7019,7 +7131,7 @@ button, a.button {
                 <div class="p-4 rounded-xl bg-slate-950/80 border border-slate-800 hover:border-orange-500/50 transition-all">
                   <div class="flex items-center justify-between gap-2 mb-3">
                     <div class="flex items-center gap-2.5">
-                      <img src="photos/${emp.id}.jpeg" onerror="this.onerror=null; this.src='aaruni_square_logo.png'" class="w-10 h-10 rounded-xl object-cover border border-orange-500/40" />
+                      <img src="${getEmployeePhoto(emp.id)}" onerror="this.onerror=null; this.src='aaruni_square_logo.png'" class="w-10 h-10 rounded-xl object-cover border border-orange-500/40" />
                       <div>
                         <div class="font-extrabold text-white text-sm">${emp.name}</div>
                         <div class="text-[11px] text-slate-400">${emp.role} &bull; <span class="font-mono text-orange-400 font-bold">${emp.id}</span></div>
@@ -7476,7 +7588,7 @@ button, a.button {
       const amount = Number(defaultAmount || emp.monthlyCtc || 10000);
       const note = defaultNote || `AaruniTech_Salary_${emp.id}_Nov2026`;
       
-      const photoPath = `photos/${emp.id}.jpeg`;
+      const photoPath = getEmployeePhoto(emp.id);
       const photoHtml = `<img src="${photoPath}" onerror="this.onerror=null; this.src='aaruni_square_logo.png'" alt="${emp.name}" style="width:52px;height:52px;border-radius:12px;object-fit:cover;border:2px solid #FE5F01;background:#090D16;" />`;
       
       const hasAuthenticQr = !!emp.upiQrImage;
@@ -7773,7 +7885,7 @@ button, a.button {
       const emp = state.employees.find(e => e.id === empId) || state.employees[0];
       const cardFile = emp.idCardFile && !emp.idCardFile.includes("Archived") ? emp.idCardFile : `${emp.id}.png`;
       const cardPath = `id-cards/${cardFile}`;
-      const photoPath = `photos/${emp.id}.jpeg`;
+      const photoPath = getEmployeePhoto(emp.id);
       const fallbackPhoto = `https://ui-avatars.com/api/?name=${encodeURIComponent(emp.name)}&background=FE5F01&color=fff&size=256&bold=true`;
 
       const html = `
@@ -9271,7 +9383,7 @@ function updateQrBaseUrl(val) {
               </div>
 
               <!-- Phone Screen Content (Scrollable) -->
-              <div class="flex-1 overflow-y-auto px-3 py-3 space-y-3 custom-scrollbar" id="mobileSimulatorScreen" style="overscroll-behavior: contain;">
+              <div class="flex-1 overflow-y-auto px-3 py-3 space-y-3 custom-scrollbar" id="mobileSimulatorScreen" style="overscroll-behavior: contain; overflow-x: hidden;">
                 ${innerHtml}
               </div>
 
