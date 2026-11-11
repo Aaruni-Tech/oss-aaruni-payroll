@@ -1,6 +1,11 @@
 <!DOCTYPE html>
 <html lang="en" data-theme="light">
 <head>
+  <script>
+    if (typeof window !== "undefined" && (/^(www\.)?aarunicloud\.com$/i.test(window.location.hostname) || new URLSearchParams(window.location.search).get("site") === "cloud")) {
+      window.location.replace("/cloud.html" + window.location.search + window.location.hash);
+    }
+  </script>
     <link rel="icon" type="image/png" sizes="32x32" href="aaruni_square_logo.png" />
   <link rel="icon" type="image/png" sizes="16x16" href="aaruni_square_logo.png" />
   <link rel="shortcut icon" href="aaruni_square_logo.png" />

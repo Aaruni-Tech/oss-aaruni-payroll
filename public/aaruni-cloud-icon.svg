@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="none">
+  <defs>
+    <linearGradient id="ac-bg" x1="0" y1="0" x2="64" y2="64" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#0B1120"/>
+      <stop offset="100%" stop-color="#1E293B"/>
+    </linearGradient>
+    <linearGradient id="ac-blue" x1="10" y1="14" x2="40" y2="50" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#38BDF8"/>
+      <stop offset="100%" stop-color="#0284C7"/>
+    </linearGradient>
+    <linearGradient id="ac-dawn" x1="30" y1="14" x2="54" y2="50" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#FF7A29"/>
+      <stop offset="100%" stop-color="#EA580C"/>
+    </linearGradient>
+  </defs>
+  <rect width="64" height="64" rx="16" fill="url(#ac-bg)"/>
+  <rect x="1" y="1" width="62" height="62" rx="15" stroke="#38BDF8" stroke-opacity="0.28" stroke-width="2"/>
+  <!-- Cloud horizon base -->
+  <path d="M18 46H45.5C50.194 46 54 42.194 54 37.5C54 33.198 50.805 29.642 46.654 29.078C45.146 22.73 39.438 18 32.6 18C25.125 18 18.969 23.679 18.235 30.963C14.156 31.693 11 35.242 11 39.5C11 43.09 13.91 46 17.5 46H18Z" fill="#0F172A" stroke="url(#ac-blue)" stroke-width="2.6" stroke-linejoin="round"/>
+  <!-- Aaruni split geometric 'A' peak inside cloud -->
+  <path d="M23.5 41L31.2 24.5H34.2L27.8 41H23.5Z" fill="url(#ac-blue)"/>
+  <path d="M31.8 24.5H34.8L42.5 41H38.2L31.8 24.5Z" fill="url(#ac-dawn)"/>
+  <circle cx="33" cy="36.5" r="2.2" fill="#F8FAFC"/>
+</svg>
