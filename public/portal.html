@@ -5802,6 +5802,9 @@ button, a.button {
                         </button>
                       `}
                     ` : ''}
+                    <button onclick="openUpdateSalaryModal('${e.id}')" class="flex-1 bg-amber-500/20 hover:bg-amber-500/30 border border-amber-500/40 text-amber-300 text-[11px] font-bold py-1.5 px-2 rounded-lg cursor-pointer inline-flex items-center justify-center gap-1" title="Update Salary / CTC">
+                      <span>✏️ Salary</span>
+                    </button>
                     <button onclick="switchPersona('${e.id}', true)" class="flex-1 bg-slate-800 hover:bg-slate-700 border border-slate-700 text-slate-200 text-[11px] font-semibold py-1.5 px-2 rounded-lg cursor-pointer inline-flex items-center justify-center gap-1">
                       <span>👁️ Portal</span>
                     </button>
@@ -5910,6 +5913,9 @@ button, a.button {
                               </button>
                             `}
                           ` : ''}
+                          <button onclick="openUpdateSalaryModal('${e.id}')" class="bg-amber-500/20 hover:bg-amber-500/30 border border-amber-500/40 text-amber-300 text-[11px] font-bold px-2.5 py-1.5 rounded-lg cursor-pointer inline-flex items-center gap-1" title="Update Salary / CTC">
+                            <span>✏️ Salary</span>
+                          </button>
                           <button onclick="switchPersona('${e.id}', true)" class="bg-slate-800 hover:bg-slate-700 border border-slate-700 text-slate-200 text-[11px] font-semibold px-2 py-1.5 rounded-lg cursor-pointer" title="View Full Employee Portal">
                             👁️ View
                           </button>
@@ -8023,6 +8029,128 @@ button, a.button {
     }
 
     // ============================================================================
+    
+    // ============================================================================
+    // SALARY REVISION & CTC MANAGEMENT MODAL (ADMIN ONLY)
+    // ============================================================================
+    function openUpdateSalaryModal(empId) {
+      const emp = state.employees.find(e => e.id === empId);
+      if (!emp) return;
+      const currentCtc = Number(emp.monthlyCtc || 0);
+      const currentAnnual = currentCtc * 12;
+
+      const html = `
+        <div style="max-width:540px;margin:0 auto;font-family:'Inter',sans-serif;color:#0a0a0a;">
+          <div style="background:#f8fafc;padding:14px;border-radius:12px;border:1px solid #e2e8f0;margin-bottom:16px;">
+            <div style="display:flex;align-items:center;gap:12px;">
+              <img src="${getEmployeePhoto(emp.id)}" onerror="this.onerror=null; this.src='aaruni_square_logo.png'" style="width:48px;height:48px;border-radius:10px;object-fit:cover;border:2px solid #ea580c;" />
+              <div>
+                <div style="font-weight:800;font-size:15px;color:#0f172a;">${emp.name}</div>
+                <div style="font-size:12px;color:#64748b;">${emp.role || 'Staff'} &bull; <span style="font-family:monospace;font-weight:700;color:#ea580c;">${emp.id}</span></div>
+                <div style="font-size:11px;color:#94a3b8;margin-top:2px;">Current CTC: <strong style="color:#0f172a;">₹${currentCtc.toLocaleString('en-IN')}/mo</strong> (₹${currentAnnual.toLocaleString('en-IN')}/yr)</div>
+              </div>
+            </div>
+          </div>
+
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;font-size:12px;">
+            <div style="grid-column: span 2;">
+              <label style="font-weight:700;display:block;margin-bottom:4px;color:#0f172a;">New Monthly Gross CTC (₹)</label>
+              <input id="updMonthlyCtc" type="number" value="${currentCtc}" step="500" min="0" oninput="recalcSalaryPreview()" style="width:100%;padding:10px 12px;border:2px solid #ea580c;border-radius:8px;font-family:monospace;font-size:16px;font-weight:800;color:#0f172a;outline:none;background:#fff;" />
+              <div style="font-size:11px;color:#64748b;margin-top:4px;">Enter total monthly gross salary. Basic (50%) &amp; Fixed Allowance (50%) will auto-rebalance.</div>
+            </div>
+
+            <div>
+              <label style="font-weight:700;display:block;margin-bottom:4px;color:#0f172a;">Effective Date</label>
+              <input id="updEffectiveDate" type="date" value="2026-11-01" style="width:100%;padding:8px 10px;border:1px solid #d4d4d8;border-radius:8px;font-size:12px;" />
+            </div>
+
+            <div>
+              <label style="font-weight:700;display:block;margin-bottom:4px;color:#0f172a;">Revision Reason</label>
+              <select id="updRevisionReason" style="width:100%;padding:8px 10px;border:1px solid #d4d4d8;border-radius:8px;font-size:12px;">
+                <option value="Annual Performance Revision">Annual Performance Revision</option>
+                <option value="Role Promotion &amp; Band Hike">Role Promotion &amp; Band Hike</option>
+                <option value="Probation Confirmation Revision">Probation Confirmation Revision</option>
+                <option value="Statutory &amp; Cost Adjustment">Statutory &amp; Cost Adjustment</option>
+                <option value="Joining Offer Correction">Joining Offer Correction</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- Real-Time Salary Breakdown Preview -->
+          <div style="margin-top:14px;background:#f1f5f9;border-radius:10px;padding:12px;border:1px solid #cbd5e1;font-size:12px;">
+            <div style="font-weight:700;font-size:11px;text-transform:uppercase;color:#475569;margin-bottom:8px;letter-spacing:0.5px;">Live Structure Recalculation</div>
+            <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;text-align:center;">
+              <div style="background:#fff;padding:8px;border-radius:8px;border:1px solid #e2e8f0;">
+                <div style="font-size:10px;color:#64748b;">Annual CTC</div>
+                <div id="prevAnnualCtc" style="font-weight:800;font-size:13px;color:#0f172a;margin-top:2px;">₹${(currentCtc * 12).toLocaleString('en-IN')}</div>
+              </div>
+              <div style="background:#fff;padding:8px;border-radius:8px;border:1px solid #e2e8f0;">
+                <div style="font-size:10px;color:#64748b;">Basic (50%)</div>
+                <div id="prevBasicMo" style="font-weight:800;font-size:13px;color:#2563eb;margin-top:2px;">₹${Math.round(currentCtc * 0.5).toLocaleString('en-IN')}/mo</div>
+              </div>
+              <div style="background:#fff;padding:8px;border-radius:8px;border:1px solid #e2e8f0;">
+                <div style="font-size:10px;color:#64748b;">Fixed Allow. (50%)</div>
+                <div id="prevFixedMo" style="font-weight:800;font-size:13px;color:#16a34a;margin-top:2px;">₹${(currentCtc - Math.round(currentCtc * 0.5)).toLocaleString('en-IN')}/mo</div>
+              </div>
+            </div>
+          </div>
+
+          <div style="margin-top:18px;display:flex;justify-content:flex-end;gap:10px;">
+            <button onclick="closeDocModal()" style="padding:9px 16px;border-radius:8px;border:1px solid #d4d4d8;background:#fff;font-weight:700;font-size:12px;color:#475569;cursor:pointer;">Cancel</button>
+            <button onclick="saveSalaryUpdate('${emp.id}')" style="padding:9px 20px;border-radius:8px;border:none;background:#ea580c;color:#fff;font-weight:800;font-size:12px;cursor:pointer;box-shadow:0 2px 6px rgba(234,88,12,0.35);">💾 Save &amp; Update Salary</button>
+          </div>
+        </div>
+      `;
+      openModalWithHTML(`Update Compensation &bull; ${emp.name} (${emp.id})`, html);
+    }
+
+    function recalcSalaryPreview() {
+      const val = Number(document.getElementById("updMonthlyCtc")?.value || 0);
+      const annual = val * 12;
+      const basic = Math.round(val * 0.5);
+      const fixed = val - basic;
+      const elAnnual = document.getElementById("prevAnnualCtc");
+      const elBasic = document.getElementById("prevBasicMo");
+      const elFixed = document.getElementById("prevFixedMo");
+      if (elAnnual) elAnnual.textContent = "₹" + annual.toLocaleString("en-IN");
+      if (elBasic) elBasic.textContent = "₹" + basic.toLocaleString("en-IN") + "/mo";
+      if (elFixed) elFixed.textContent = "₹" + fixed.toLocaleString("en-IN") + "/mo";
+    }
+
+    function saveSalaryUpdate(empId) {
+      const emp = state.employees.find(e => e.id === empId);
+      if (!emp) return;
+      const newCtc = Number(document.getElementById("updMonthlyCtc")?.value || 0);
+      const effectiveDate = document.getElementById("updEffectiveDate")?.value || "2026-11-01";
+      const reason = document.getElementById("updRevisionReason")?.value || "Annual Performance Revision";
+
+      const oldCtc = emp.monthlyCtc || 0;
+      emp.monthlyCtc = newCtc;
+      emp.annualCtc = newCtc * 12;
+      emp.trackTimesheet = newCtc > 0;
+
+      // Update active disbursement record if exists
+      if (state.novDisbursements && state.novDisbursements[empId] && !state.novDisbursements[empId].paid) {
+        state.novDisbursements[empId].amount = newCtc;
+      }
+
+      // Add a system audit message
+      state.messages = state.messages || [];
+      state.messages.unshift({
+        id: "MSG-" + Date.now(),
+        from: "System Audit (HR)",
+        to: emp.name,
+        date: new Date().toISOString().split("T")[0],
+        subject: `Salary Revision: ₹${oldCtc.toLocaleString('en-IN')} ➔ ₹${newCtc.toLocaleString('en-IN')}`,
+        body: `Salary for ${emp.name} (${emp.id}) revised from ₹${oldCtc.toLocaleString('en-IN')}/mo to ₹${newCtc.toLocaleString('en-IN')}/mo effective ${effectiveDate}. Reason: ${reason}.`
+      });
+
+      saveState();
+      closeDocModal();
+      renderApp();
+      alert(`✅ Salary for ${emp.name} (${emp.id}) successfully updated to ₹${newCtc.toLocaleString('en-IN')}/month!`);
+    }
+
     const buildZohoPayslipHTML = (ps, emp) => buildOfficialPayslipHTML(ps, emp);
     // 7. MODAL RENDERERS: OFFICIAL STATUTORY PAYSLIP, OFFER LETTER, LOAN PROOF, EXP, CA TAX
     // ============================================================================
@@ -8914,7 +9042,10 @@ button, a.button {
               </div>
             </div>
 
-            <div style="font-weight:800;font-size:14px;margin:16px 0 10px;">Salary Structure</div>
+            <div style="display:flex;justify-content:space-between;align-items:center;margin:16px 0 10px;">
+              <div style="font-weight:800;font-size:14px;">Salary Structure</div>
+              <button onclick="openUpdateSalaryModal('${emp.id}')" style="background:#ea580c;color:#fff;font-size:11px;font-weight:700;padding:5px 12px;border-radius:6px;border:none;cursor:pointer;box-shadow:0 2px 4px rgba(234,88,12,0.3);">✏️ Revise Salary / CTC</button>
+            </div>
             <table style="width:100%;border-collapse:collapse;font-size:13px;border:1px solid #d4d4d8;">
               <thead>
                 <tr style="background:#f4f4f5;border-bottom:1px solid #d4d4d8;text-align:left;">
