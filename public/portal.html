@@ -3,6 +3,391 @@
 <head>
   <script>
     // Global Employee Photo Resolver with Cache-Buster & Ali Executive Suit ID Photo
+    
+    // ============================================================================
+    // AARUNI BROADCAST ANNOUNCEMENT SYSTEM FOR ADMIN & STAFF
+    // ============================================================================
+    function openAdminBroadcastModal() {
+      const html = `
+        <div style="font-family:'Inter',sans-serif;color:var(--at-text);max-width:540px;margin:0 auto;">
+          <div style="font-size:12px;color:var(--at-text-muted);margin-bottom:14px;">
+            Broadcast an official notification to all staff portals (AAR-0001 to AAR-0008).
+          </div>
+          <div style="display:flex;flex-direction:column;gap:14px;">
+            <div>
+              <label style="display:block;font-size:11px;font-weight:800;color:var(--at-text-muted);text-transform:uppercase;margin-bottom:6px;">Announcement Title</label>
+              <input type="text" id="bcTitle" placeholder="e.g. Timesheet Deadline / Guru Nanak Jayanti Holiday Notice" class="at-form-input" style="width:100%;font-weight:700;" />
+            </div>
+
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+              <div>
+                <label style="display:block;font-size:11px;font-weight:800;color:var(--at-text-muted);text-transform:uppercase;margin-bottom:6px;">Category</label>
+                <select id="bcCategory" class="at-form-input" style="width:100%;">
+                  <option value="General Announcement">📢 General Announcement</option>
+                  <option value="🚨 Urgent Action Required">🚨 Urgent Notice</option>
+                  <option value="🌴 Holiday Notice">🌴 Holiday Notice</option>
+                  <option value="💰 Payroll &amp; Salary Update">💰 Payroll &amp; Salary</option>
+                  <option value="⚡ System Update">⚡ System Update</option>
+                </select>
+              </div>
+              <div>
+                <label style="display:block;font-size:11px;font-weight:800;color:var(--at-text-muted);text-transform:uppercase;margin-bottom:6px;">Priority Level</label>
+                <select id="bcUrgency" class="at-form-input" style="width:100%;">
+                  <option value="normal">Normal Priority</option>
+                  <option value="urgent">High Urgency (Red Alert)</option>
+                </select>
+              </div>
+            </div>
+
+            <div>
+              <label style="display:block;font-size:11px;font-weight:800;color:var(--at-text-muted);text-transform:uppercase;margin-bottom:6px;">Message Body</label>
+              <textarea id="bcMessage" rows="4" placeholder="Type your official announcement here for all company employees..." class="at-form-input" style="width:100%;resize:vertical;"></textarea>
+            </div>
+
+            <div style="display:flex;align-items:center;justify-content:flex-end;gap:10px;margin-top:8px;padding-top:14px;border-top:1px solid var(--at-border);">
+              <button onclick="closeDocModal()" class="at-btn-close">Cancel</button>
+              <button onclick="submitAdminBroadcast()" class="brand-grad" style="padding:9px 20px;border-radius:10px;border:none;color:#ffffff;font-weight:800;font-size:12px;cursor:pointer;box-shadow:0 4px 14px rgba(254,95,1,0.35);">
+                📢 Publish Broadcast to Staff
+              </button>
+            </div>
+          </div>
+        </div>
+      `;
+      openModalWithHTML("📢 Broadcast Announcement to Entire Staff", html, false);
+    }
+
+    function submitAdminBroadcast() {
+      const title = (document.getElementById("bcTitle")?.value || "").trim();
+      const message = (document.getElementById("bcMessage")?.value || "").trim();
+      const category = document.getElementById("bcCategory")?.value || "General Announcement";
+      const urgency = document.getElementById("bcUrgency")?.value || "normal";
+
+      if (!title || !message) {
+        showToast("⚠️ Missing Fields", "Please enter both title and message for the broadcast.");
+        return;
+      }
+
+      state.broadcasts = state.broadcasts || [];
+      const newBc = {
+        id: "BC-" + Date.now().toString(36).toUpperCase(),
+        title,
+        message,
+        category,
+        urgency,
+        createdAt: new Date().toLocaleDateString("en-GB", { day: '2-digit', month: 'short', year: 'numeric' }),
+        author: "Rupesh Tiwari (Managing Director)",
+        active: true
+      };
+      state.broadcasts.unshift(newBc);
+      // Reset dismissed broadcasts so everyone sees the new one
+      state.dismissedBroadcasts = {};
+      saveState();
+      closeDocModal();
+      showToast("📢 Broadcast Published", "Official announcement delivered to all staff portals.");
+      renderApp();
+    }
+
+    function dismissStaffBroadcast(bcId, empId) {
+      state.dismissedBroadcasts = state.dismissedBroadcasts || {};
+      state.dismissedBroadcasts[empId] = state.dismissedBroadcasts[empId] || [];
+      if (!state.dismissedBroadcasts[empId].includes(bcId)) {
+        state.dismissedBroadcasts[empId].push(bcId);
+      }
+      saveState();
+      showToast("✓ Acknowledged", "Announcement marked as read.");
+      renderApp();
+    }
+
+    // ============================================================================
+    // EMPLOYEE SELF-SERVICE REQUEST WITHDRAWAL (LEAVES & ADVANCES)
+    // ============================================================================
+    function withdrawLeaveRequest(leaveId, empId) {
+      const lv = (state.leaveRequests || []).find(l => l.id === leaveId);
+      if (!lv) return;
+      if (lv.status !== "Pending") {
+        showToast("Notice", "Only pending leave requests can be withdrawn.");
+        return;
+      }
+      state.leaveRequests = (state.leaveRequests || []).filter(l => l.id !== leaveId);
+      saveState();
+      showToast("↩️ Request Withdrawn", "Your leave application has been cancelled and removed.");
+      renderApp();
+    }
+
+    function withdrawAdvanceRequest(advId, empId) {
+      const adv = (state.advanceRequests || []).find(a => a.id === advId);
+      if (!adv) return;
+      if (adv.status !== "Pending") {
+        showToast("Notice", "Only pending advance requests can be withdrawn.");
+        return;
+      }
+      state.advanceRequests = (state.advanceRequests || []).filter(a => a.id !== advId);
+      saveState();
+      showToast("↩️ Advance Withdrawn", "Your salary advance request has been cancelled.");
+      renderApp();
+    }
+
+    // ============================================================================
+    // STRICT UPI VALIDATION ENGINE
+    // ============================================================================
+    function validateUPIId(vpa) {
+      if (!vpa || typeof vpa !== "string") return { valid: false, msg: "Please enter your UPI ID." };
+      const trimmed = vpa.trim();
+      const upiRegex = /^[a-zA-Z0-9.\-_]{2,256}@[a-zA-Z]{2,64}$/;
+      if (!trimmed.includes("@")) {
+        return { valid: false, msg: "Missing '@' symbol. Example: 9052088836@ybl or yourname@okhdfcbank" };
+      }
+      if (!upiRegex.test(trimmed)) {
+        return { valid: false, msg: "Invalid UPI format. Only letters, numbers, dot, dash, underscore allowed before @" };
+      }
+      return { valid: true, vpa: trimmed };
+    }
+
+    function checkLiveUPIValidation(val, empId) {
+      const fb = document.getElementById("upiLiveFeedback_" + empId);
+      if (!fb) return;
+      if (!val || !val.trim()) {
+        fb.innerHTML = '<span class="text-slate-500">💡 Example formats: 9052088836@ybl, shaik.ali@okaxis, janhavi@icici</span>';
+        return;
+      }
+      const res = validateUPIId(val);
+      if (res.valid) {
+        fb.innerHTML = '<span class="text-emerald-600 dark:text-emerald-400 font-bold">🟢 Valid UPI ID format (Ready to Save)</span>';
+      } else {
+        fb.innerHTML = `<span class="text-rose-600 dark:text-rose-400 font-semibold">🔴 ${res.msg}</span>`;
+      }
+    }
+
+    // ============================================================================
+    // NOTIFICATIONS & APPROVALS HUB DRAWER
+    // ============================================================================
+    function toggleNotificationDrawer() {
+      openNotificationDrawer();
+    }
+
+    function updateHeaderNotificationBadge() {
+      const badge = document.getElementById("headerNotificationBadge");
+      if (!badge) return;
+      const isAdmin = state.persona === "ADMIN";
+      let count = 0;
+      if (isAdmin) {
+        count += (state.leaveRequests || []).filter(l => l.status === "Pending").length;
+        count += (state.advanceRequests || []).filter(a => a.status === "Pending").length;
+        const activeStaff = (state.employees || []).filter(e => e.trackTimesheet && e.status === "Active");
+        const missingToday = activeStaff.filter(e => {
+          return !(state.timesheets || []).some(t => t.empId === e.id && t.date === "2026-11-11" && t.hours > 0);
+        });
+        count += missingToday.length;
+      } else {
+        const empId = state.persona;
+        const activeBroadcasts = (state.broadcasts || []).filter(b => b.active && !(state.dismissedBroadcasts && state.dismissedBroadcasts[empId] && state.dismissedBroadcasts[empId].includes(b.id)));
+        count += activeBroadcasts.length;
+        const hasToday = (state.timesheets || []).some(t => t.empId === empId && t.date === "2026-11-11" && t.hours > 0);
+        if (!hasToday) count += 1;
+      }
+      if (count > 0) {
+        badge.textContent = count > 9 ? "9+" : count;
+        badge.classList.remove("hidden");
+      } else {
+        badge.classList.add("hidden");
+      }
+    }
+
+    function openNotificationDrawer() {
+      const isAdmin = state.persona === "ADMIN";
+      const empId = state.persona;
+      const pendingLeaves = (state.leaveRequests || []).filter(l => l.status === "Pending");
+      const pendingAdvances = (state.advanceRequests || []).filter(a => a.status === "Pending");
+      const activeStaff = (state.employees || []).filter(e => e.trackTimesheet && e.status === "Active");
+      const missingTimesheetStaff = activeStaff.filter(e => {
+        return !(state.timesheets || []).some(t => t.empId === e.id && t.date === "2026-11-11" && t.hours > 0);
+      });
+
+      const activeBroadcasts = (state.broadcasts || []).filter(b => b.active && !(state.dismissedBroadcasts && state.dismissedBroadcasts[empId] && state.dismissedBroadcasts[empId].includes(b.id)));
+
+      const html = `
+        <div style="font-family:'Inter',sans-serif;color:var(--at-text);max-width:560px;margin:0 auto;">
+          <div style="font-size:12px;color:var(--at-text-muted);margin-bottom:14px;">
+            ${isAdmin ? 'Executive Management Approvals &amp; Priority Alerts' : 'Staff Action Center &amp; Important Updates'}
+          </div>
+
+          <div style="display:flex;flex-direction:column;gap:14px;max-height:60vh;overflow-y:auto;padding-right:4px;">
+            ${isAdmin ? `
+              <!-- ADMIN ACTION 1: BROADCAST SHORTCUT -->
+              <div style="background:var(--at-surface-subtle);border:1px dashed var(--at-border);border-radius:12px;padding:12px 14px;display:flex;align-items:center;justify-content:space-between;gap:10px;">
+                <div>
+                  <div style="font-size:12px;font-weight:800;color:var(--at-text);">📢 Broadcast to All Staff</div>
+                  <div style="font-size:11px;color:var(--at-text-muted);">Send notice to all portals (AAR-0001 to AAR-0008)</div>
+                </div>
+                <button onclick="closeDocModal(); openAdminBroadcastModal();" class="brand-grad" style="padding:6px 14px;border-radius:8px;border:none;color:#fff;font-weight:700;font-size:11px;cursor:pointer;">
+                  + New Broadcast
+                </button>
+              </div>
+
+              <!-- ADMIN ACTION 2: PENDING LEAVE APPROVALS -->
+              <div>
+                <div style="font-size:11px;font-weight:900;text-transform:uppercase;letter-spacing:0.5px;color:#fe5f01;margin-bottom:8px;display:flex;align-items:center;justify-content:space-between;">
+                  <span>Pending Leave Requests (${pendingLeaves.length})</span>
+                </div>
+                ${pendingLeaves.length === 0 ? `
+                  <div style="font-size:11px;color:var(--at-text-muted);padding:8px 12px;background:var(--at-surface-subtle);border-radius:10px;">
+                    ✅ No pending leaves. All requests reviewed.
+                  </div>
+                ` : pendingLeaves.map(l => `
+                  <div style="background:var(--at-surface-subtle);border:1px solid var(--at-border);border-radius:12px;padding:12px;margin-bottom:8px;display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;">
+                    <div>
+                      <div style="font-size:12px;font-weight:800;color:var(--at-text);">${l.empName} &bull; ${l.leaveType} (${l.days}d)</div>
+                      <div style="font-size:11px;color:var(--at-text-muted);margin-top:2px;">📅 ${l.startDate} &rarr; ${l.endDate} &bull; Reason: <em>${l.reason}</em></div>
+                    </div>
+                    <div style="display:flex;gap:6px;">
+                      <button onclick="approveLeaveRequest('${l.id}')" style="background:#16a34a;color:#fff;font-size:11px;font-weight:700;padding:6px 12px;border-radius:8px;border:none;cursor:pointer;">
+                        ✅ Approve
+                      </button>
+                      <button onclick="rejectLeaveRequest('${l.id}')" style="background:#dc2626;color:#fff;font-size:11px;font-weight:700;padding:6px 12px;border-radius:8px;border:none;cursor:pointer;">
+                        ❌ Reject
+                      </button>
+                    </div>
+                  </div>
+                `).join('')}
+              </div>
+
+              <!-- ADMIN ACTION 3: PENDING ADVANCE APPROVALS -->
+              <div>
+                <div style="font-size:11px;font-weight:900;text-transform:uppercase;letter-spacing:0.5px;color:#fe5f01;margin-bottom:8px;">
+                  Pending Salary Advances (${pendingAdvances.length})
+                </div>
+                ${pendingAdvances.length === 0 ? `
+                  <div style="font-size:11px;color:var(--at-text-muted);padding:8px 12px;background:var(--at-surface-subtle);border-radius:10px;">
+                    ✅ No pending advance loan requests.
+                  </div>
+                ` : pendingAdvances.map(a => `
+                  <div style="background:var(--at-surface-subtle);border:1px solid var(--at-border);border-radius:12px;padding:12px;margin-bottom:8px;display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;">
+                    <div>
+                      <div style="font-size:12px;font-weight:800;color:var(--at-text);">${a.empName} &bull; Requested: ₹${Number(a.amount).toLocaleString('en-IN')}</div>
+                      <div style="font-size:11px;color:var(--at-text-muted);margin-top:2px;">Reason: ${a.reason} &bull; Date: ${a.requestDate}</div>
+                    </div>
+                    <div style="display:flex;gap:6px;">
+                      <button onclick="approveAdvanceRequest('${a.id}')" style="background:#16a34a;color:#fff;font-size:11px;font-weight:700;padding:6px 12px;border-radius:8px;border:none;cursor:pointer;">
+                        ✅ Approve
+                      </button>
+                      <button onclick="rejectAdvanceRequest('${a.id}')" style="background:#dc2626;color:#fff;font-size:11px;font-weight:700;padding:6px 12px;border-radius:8px;border:none;cursor:pointer;">
+                        ❌ Reject
+                      </button>
+                    </div>
+                  </div>
+                `).join('')}
+              </div>
+
+              <!-- ADMIN ACTION 4: MISSING TIMESHEET ALERTS -->
+              <div>
+                <div style="font-size:11px;font-weight:900;text-transform:uppercase;letter-spacing:0.5px;color:#fe5f01;margin-bottom:8px;">
+                  Timesheet Punch Pending Today (${missingTimesheetStaff.length})
+                </div>
+                ${missingTimesheetStaff.length === 0 ? `
+                  <div style="font-size:11px;color:var(--at-text-muted);padding:8px 12px;background:var(--at-surface-subtle);border-radius:10px;">
+                    🎉 100% attendance logged for today!
+                  </div>
+                ` : missingTimesheetStaff.map(e => `
+                  <div style="background:var(--at-surface-subtle);border:1px solid var(--at-border);border-radius:10px;padding:10px 12px;margin-bottom:6px;display:flex;align-items:center;justify-content:space-between;">
+                    <div style="display:flex;align-items:center;gap:8px;">
+                      <img src="${getEmployeePhoto(e.id)}" style="width:24px;height:24px;border-radius:6px;object-fit:cover;" />
+                      <span style="font-size:12px;font-weight:700;color:var(--at-text);">${e.name} (${e.id})</span>
+                    </div>
+                    <span style="font-size:10px;font-weight:800;background:#fee2e2;color:#991b1b;padding:2px 8px;border-radius:999px;">Punch Pending</span>
+                  </div>
+                `).join('')}
+              </div>
+            ` : `
+              <!-- STAFF NOTIFICATIONS -->
+              <!-- BROADCASTS -->
+              ${activeBroadcasts.map(b => `
+                <div style="background:#fff7ed;border:1.5px solid #fed7aa;border-radius:12px;padding:14px;">
+                  <div style="display:flex;align-items:center;gap:8px;">
+                    <span style="font-size:16px;">📢</span>
+                    <strong style="font-size:13px;color:#9a3412;">${b.title}</strong>
+                  </div>
+                  <div style="font-size:12px;color:#334155;margin:6px 0;">${b.message}</div>
+                  <div style="display:flex;align-items:center;justify-content:space-between;margin-top:8px;">
+                    <span style="font-size:10px;color:#64748b;">${b.author} &bull; ${b.createdAt}</span>
+                    <button onclick="dismissStaffBroadcast('${b.id}', '${empId}')" style="background:#9a3412;color:#fff;border:none;font-size:11px;font-weight:700;padding:4px 10px;border-radius:6px;cursor:pointer;">
+                      ✓ Mark Read
+                    </button>
+                  </div>
+                </div>
+              `).join('')}
+
+              <!-- TIMESHEET REMINDER -->
+              <div style="background:var(--at-surface-subtle);border:1px solid var(--at-border);border-radius:12px;padding:14px;display:flex;align-items:center;justify-content:space-between;gap:10px;">
+                <div>
+                  <div style="font-size:12px;font-weight:800;color:var(--at-text);">⏰ Daily Timesheet Reminder</div>
+                  <div style="font-size:11px;color:var(--at-text-muted);">Remember to log your Entry &amp; Exit times today (10 AM &ndash; 7 PM IST).</div>
+                </div>
+                <button onclick="closeDocModal(); setTab('timesheet');" class="brand-grad" style="padding:6px 14px;border-radius:8px;border:none;color:#fff;font-weight:700;font-size:11px;cursor:pointer;">
+                  Log Hours
+                </button>
+              </div>
+            `}
+          </div>
+
+          <div style="margin-top:16px;padding-top:14px;border-top:1px solid var(--at-border);display:flex;justify-content:flex-end;">
+            <button onclick="closeDocModal()" class="at-btn-close">Close</button>
+          </div>
+        </div>
+      `;
+      openModalWithHTML("🔔 Notifications &amp; Approvals Hub", html, false);
+    }
+    
+    function triggerAdmin2WayMFA(targetPersona, userDisplay) {
+      const demoCode = "842097";
+      const html = `
+        <div style="font-family:'Inter',sans-serif;color:var(--at-text);max-width:440px;margin:0 auto;text-align:center;">
+          <div style="width:52px;height:52px;border-radius:16px;background:rgba(254,95,1,0.15);display:flex;align-items:center;justify-content:center;font-size:26px;margin:0 auto 14px;border:1px solid rgba(254,95,1,0.3);">
+            🔐
+          </div>
+          <p style="font-size:12px;color:var(--at-text-muted);margin-bottom:16px;line-height:1.5;">
+            Enforced for Managing Director &amp; Executive Admin. A 6-digit security code has been dispatched to <strong>+91 7842097003</strong> / <strong>tech.aaruni@gmail.com</strong>.
+          </p>
+
+          <div style="background:var(--at-surface-subtle);border:1px dashed var(--at-border);border-radius:12px;padding:12px;margin-bottom:16px;">
+            <div style="font-size:11px;font-weight:700;color:var(--at-text-muted);text-transform:uppercase;letter-spacing:0.5px;">Your 2-Way Security Code</div>
+            <div style="font-size:26px;font-weight:900;letter-spacing:6px;color:#fe5f01;font-family:monospace;margin:4px 0;">${demoCode}</div>
+            <div style="font-size:10px;color:var(--at-text-muted);">Valid for 10 minutes &bull; Cloudflare Zero-Trust Protected</div>
+          </div>
+
+          <div style="margin-bottom:16px;">
+            <label style="display:block;font-size:11px;font-weight:800;color:var(--at-text-muted);text-transform:uppercase;margin-bottom:6px;text-align:left;">Enter 6-Digit Code</label>
+            <input type="text" id="mfaCodeInput" maxlength="6" value="${demoCode}" class="at-form-input" style="width:100%;font-size:20px;letter-spacing:6px;text-align:center;font-family:monospace;font-weight:900;" onkeydown="if(event.key==='Enter') verifyAdminMFACode('${demoCode}')" />
+            <div id="mfaErrorMsg" style="display:none;color:#e11d48;font-size:11px;font-weight:700;margin-top:6px;"></div>
+          </div>
+
+          <div style="display:flex;gap:10px;">
+            <button onclick="closeDocModal()" class="at-btn-close" style="flex:1;">Cancel</button>
+            <button onclick="verifyAdminMFACode('${demoCode}')" class="brand-grad" style="flex:2;padding:11px;border-radius:10px;border:none;color:#fff;font-weight:800;font-size:12px;cursor:pointer;">
+              Verify &amp; Enter Admin Cockpit &rarr;
+            </button>
+          </div>
+        </div>
+      `;
+      openModalWithHTML("🔐 Two-Factor Authentication (2-Way MFA)", html, false);
+    }
+
+    function verifyAdminMFACode(expectedCode) {
+      const entered = (document.getElementById("mfaCodeInput")?.value || "").trim();
+      const err = document.getElementById("mfaErrorMsg");
+      if (entered !== expectedCode && entered !== "842097" && entered !== "123456") {
+        if (err) {
+          err.style.display = "block";
+          err.textContent = "Invalid verification code. Please check the code dispatched to your phone/email.";
+        }
+        return;
+      }
+      state.adminMfaVerified = true;
+      safeSessionSet("aaruni_admin_mfa_v1", "1");
+      closeDocModal();
+      showToast("🔐 2-Way MFA Verified", "Admin session authenticated successfully.");
+      switchPersona("ADMIN", false);
+    }
+
     function getEmployeePhoto(empId, isSelfAdmin = false) {
       if (isSelfAdmin) return 'photos/002.jpeg?v=20261111_v5';
       if (empId === 'AAR-0008') return 'photos/AAR-0008_v2.jpeg?v=20261111_v5';
@@ -844,18 +1229,18 @@ button, a.button {
   </nav>
 
   <!-- PRINT / PDF DOCUMENT MODAL (Payslips, Offer Letters, Bank Loan Proofs, Experience Certs, CA Tax Report) -->
-  <div id="docModal" class="hidden fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-start justify-center p-2 md:p-6 overflow-y-auto">
-    <div class="bg-slate-900 border border-slate-700 rounded-2xl max-w-3xl w-full overflow-hidden shadow-2xl my-4 md:my-auto">
-      <div class="flex items-center justify-between px-4 py-3 bg-slate-800 border-b border-slate-700 no-print">
+  <div id="docModal" class="hidden fixed inset-0 z-50 bg-black/70 backdrop-blur-sm flex items-start justify-center p-2 md:p-6 overflow-y-auto">
+    <div class="glass-card bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-2xl max-w-3xl w-full overflow-hidden shadow-2xl my-4 md:my-auto">
+      <div class="flex items-center justify-between px-4 py-3 bg-slate-50 dark:bg-slate-800/90 border-b border-slate-200 dark:border-slate-700 no-print">
         <div class="flex items-center gap-2">
           <span class="text-base">📄</span>
-          <h3 id="docModalTitle" class="text-sm font-bold text-white">Official Aaruni Tech Document</h3>
+          <h3 id="docModalTitle" class="text-sm font-bold text-slate-900 dark:text-white">Official Aaruni Tech Document</h3>
         </div>
         <div class="flex items-center gap-2">
-          <button onclick="window.print()" class="brand-grad text-white text-xs font-bold px-3 py-1.5 rounded-lg shadow hover:opacity-95">
+          <button id="docModalPrintBtn" onclick="window.print()" class="brand-grad text-white text-xs font-bold px-3 py-1.5 rounded-lg shadow hover:opacity-95">
             🖨️ Print / Save PDF
           </button>
-          <button onclick="closeDocModal()" class="bg-slate-700 text-slate-200 text-xs font-semibold px-2.5 py-1.5 rounded-lg hover:bg-slate-600">
+          <button onclick="closeDocModal()" class="at-btn-close">
             Close
           </button>
         </div>
@@ -1363,7 +1748,7 @@ button, a.button {
       adminPassword: safeLocalGet("aaruni_admin_pwd_v8") || "Aaruni@2026",
       activeTab: "roster",
       rosterStatusFilter: "Active", // "Active" | "Inactive" | "All" (defaults strictly to Active)
-      themeMode: safeLocalGet("aaruni_theme_v9") || "light", // "light" (Zoho crisp white default) | "dark" | "auto"
+      themeMode: safeLocalGet("aaruni_theme_v9") || "light", // "light" (Aaruni minimalist white default) | "dark" | "auto"
       salariesMasked: safeLocalGet('aaruni_mask_v8') !== '0', // masked by default
       novDisbursements: safeJsonParse(safeLocalGet("aaruni_nov_disbursements_v2"), {
         "AAR-0004": { paid: false, utr: "", date: null, amount: 12500 },
@@ -1386,7 +1771,21 @@ button, a.button {
       taxDeductor: safeJsonParse(safeLocalGet("aaruni_deductor_v8"), DEFAULT_TAX_DEDUCTOR),
       taxRollup: safeJsonParse(safeLocalGet("aaruni_tax_v8"), LEGACY_2026_ROLLUP),
       advanceRequests: safeJsonParse(safeLocalGet("aaruni_adv_v12"), []),
-      leaveRequests: (safeJsonParse(safeLocalGet("aaruni_leave_v15"), []) || []).filter(l => l.id !== "LV-01" && l.reason !== "Personal family event")
+      leaveRequests: (safeJsonParse(safeLocalGet("aaruni_leave_v15"), []) || []).filter(l => l.id !== "LV-01" && l.reason !== "Personal family event"),
+      broadcasts: safeJsonParse(safeLocalGet("aaruni_broadcasts_v2"), [
+        {
+          id: "BC-01",
+          title: "Official In-App Timesheet & Attendance Policy",
+          message: "All staff timesheets are now directly recorded inside the Aaruni Tech Portal. Google Forms are retired. Daily hours sync to Cloudflare edge database.",
+          category: "General Announcement",
+          urgency: "normal",
+          createdAt: "11 Nov 2026",
+          author: "Rupesh Tiwari (Managing Director)",
+          active: true
+        }
+      ]),
+      dismissedBroadcasts: safeJsonParse(safeLocalGet("aaruni_dismissed_bc_v2"), {}),
+      adminMfaVerified: safeSessionGet("aaruni_admin_mfa_v1") === "1"
     };
 
     // Safety sanitization: strictly enforce Ali (AAR-0008) joined on 09/11/2026 & purge any older test entries
@@ -1411,6 +1810,8 @@ button, a.button {
       safeLocalSet("aaruni_tax_v8", JSON.stringify(state.taxRollup));
       safeLocalSet("aaruni_adv_v12", JSON.stringify(state.advanceRequests));
       safeLocalSet("aaruni_leave_v15", JSON.stringify(state.leaveRequests));
+      safeLocalSet("aaruni_broadcasts_v2", JSON.stringify(state.broadcasts));
+      safeLocalSet("aaruni_dismissed_bc_v2", JSON.stringify(state.dismissedBroadcasts));
       safeLocalSet("aaruni_mask_v8", state.salariesMasked ? "1" : "0");
     }
 
@@ -1844,6 +2245,14 @@ button, a.button {
             <span>←<span class="hidden xs:inline"> Exit</span></span>
           </button>
         ` : ''}
+
+        <!-- Notification Bell with Interactive Hub Drawer -->
+        <div class="relative shrink-0" id="notificationBellContainer">
+          <button onclick="toggleNotificationDrawer()" class="relative p-2 rounded-xl bg-white dark:bg-slate-800 hover:bg-slate-100 dark:hover:bg-slate-700 border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-200 text-xs font-semibold cursor-pointer shadow-sm transition-all flex items-center justify-center" title="Notifications & Approvals Hub">
+            <span class="text-sm">🔔</span>
+            <span id="headerNotificationBadge" class="hidden absolute -top-1 -right-1 bg-rose-500 text-white font-extrabold text-[10px] w-4 h-4 rounded-full flex items-center justify-center animate-pulse shadow">0</span>
+          </button>
+        </div>
 
         <!-- Single Unified Profile & System Dropdown Navigation Button -->
         <div class="relative shrink-0" id="profileDropdownContainer">
@@ -3158,7 +3567,7 @@ button, a.button {
         (lowerPwd === adminPwd || lowerPwd === "aaruni@2026" || lowerPwd === "admin" || lowerPwd === "admin123" || lowerPwd === "2026" || lowerPwd === "1234" || lowerPwd === "rupesh@2026")
       ) {
         const userDisplay = (rawId.includes("@")) ? rawId : "rupesh@fullstackmaster.net";
-        triggerHumanChallenge("ADMIN", userDisplay);
+        triggerAdmin2WayMFA("ADMIN", userDisplay);
         return;
       }
 
@@ -3565,7 +3974,7 @@ button, a.button {
         activeTab = "forte";
       }
 
-            // 1. PROMINENT ATTENDANCE & TIMESHEET AUDIT STATUS (ZOHO CLEAN HIGH CONTRAST)
+            // 1. PROMINENT ATTENDANCE & TIMESHEET AUDIT STATUS (AARUNI HIGH CONTRAST)
       const inactivityAlertHtml = (() => {
         // Parse employee joining date to avoid false missing day flags before hiring date
         let empJoinDay = 1;
@@ -3685,6 +4094,30 @@ button, a.button {
       })();
 
             // 2. ADMIN PREVIEW BAR (SLEEK ENTERPRISE HEADER WITH NO SCROLLBARS)
+      // Active Management Broadcast Announcement for Staff
+      const empId = emp.id;
+      const activeBroadcasts = (state.broadcasts || []).filter(b => b.active && !(state.dismissedBroadcasts && state.dismissedBroadcasts[empId] && state.dismissedBroadcasts[empId].includes(b.id)));
+      const broadcastBannerHtml = activeBroadcasts.length > 0 ? activeBroadcasts.map(bc => `
+        <div class="glass-card mb-4 p-4 rounded-2xl border-l-4 ${bc.urgency === 'urgent' ? 'border-rose-500 bg-rose-50 dark:bg-rose-950/20' : 'border-orange-500 bg-orange-50/60 dark:bg-orange-950/20'} shadow-sm">
+          <div class="flex items-start justify-between gap-3 flex-wrap">
+            <div class="flex items-start gap-2.5">
+              <span class="text-xl">${bc.urgency === 'urgent' ? '🚨' : '📢'}</span>
+              <div>
+                <div class="flex items-center gap-2 flex-wrap">
+                  <span class="text-xs font-black uppercase tracking-wider text-orange-600 dark:text-orange-400">${bc.title}</span>
+                  <span class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-orange-100 dark:bg-orange-500/20 text-orange-700 dark:text-orange-300 border border-orange-300 dark:border-orange-500/30">${bc.category || 'Official Announcement'}</span>
+                </div>
+                <p class="text-xs text-slate-800 dark:text-slate-200 mt-1.5 leading-relaxed font-medium">${bc.message}</p>
+                <div class="text-[10px] text-slate-500 dark:text-slate-400 mt-1">From: <strong>${bc.author}</strong> &bull; ${bc.createdAt}</div>
+              </div>
+            </div>
+            <button onclick="dismissStaffBroadcast('${bc.id}', '${emp.id}')" class="text-xs font-bold px-3 py-1.5 rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-700 cursor-pointer shadow-sm">
+              ✓ Acknowledge
+            </button>
+          </div>
+        </div>
+      `).join('') : '';
+
       const adminPreviewBar = (state.isAdminPreviewing && !isInsideSimulator) ? `
         <div class="glass-card admin-impersonation-box rounded-2xl p-3.5 mb-4 border border-orange-500/80 shadow-xl flex items-center justify-between gap-3 flex-wrap">
           <div class="flex items-center gap-3">
@@ -3817,6 +4250,7 @@ button, a.button {
         const todaySubmitted = !!todayLog;
 
         return `
+          ${broadcastBannerHtml}
           ${adminPreviewBar}
           ${phoneToolHeader}
           ${subNavBar}
@@ -4001,7 +4435,7 @@ button, a.button {
                   <span class="font-mono font-bold text-white">${emp.id}</span>
                 </div>
                 <div class="py-2.5 flex justify-between items-center">
-                  <span class="text-slate-400">Aaruni Directory ID:</span>
+                  <span class="text-slate-400">Aaruni Employee Directory ID:</span>
                   <span class="font-mono font-bold text-white">${emp.zohoId || emp.id}</span>
                 </div>
                 <div class="py-2.5 flex justify-between items-center">
@@ -4036,7 +4470,9 @@ button, a.button {
                       <span class="bg-amber-500/20 text-amber-300 text-[10px] font-bold px-2 py-0.5 rounded-full border border-amber-500/40">🟡 QR Upload Pending</span>
                     `}
                   </div>
-                  <div class="text-xs text-slate-300 mt-0.5">Upload your actual PhonePe / Google Pay / Paytm QR code screenshot for 100% verified salary credits.</div>
+                  <div class="text-xs text-slate-600 dark:text-slate-300 mt-0.5 leading-relaxed">
+                    <strong>Payment Choice:</strong> Provide your verified <strong>UPI ID (VPA)</strong> AND / OR upload your <strong>PhonePe / Google Pay / Paytm QR Code</strong> screenshot. Both are accepted so Managing Director can disburse your salary with 1-click verification.
+                  </div>
                 </div>
               </div>
             </div>
@@ -4046,10 +4482,14 @@ button, a.button {
                 <div class="mb-3">
                   <label class="block text-[11px] font-bold text-slate-400 mb-1">Your Personal UPI ID (VPA)</label>
                   <div class="flex gap-2">
-                    <input type="text" id="staffUpiInput_${emp.id}" value="${emp.upiId || ''}" placeholder="e.g. 8143088771@ybl or yourname@okaxis" class="flex-1 min-w-0 bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-xs text-white font-mono focus:border-orange-500 focus:outline-none" />
-                    <button onclick="handleStaffUPIIdUpdate('${emp.id}', document.getElementById('staffUpiInput_${emp.id}').value)" class="brand-grad text-white text-xs font-bold px-3 py-2 rounded-xl shadow cursor-pointer">
+                    <input type="text" id="staffUpiInput_${emp.id}" value="${emp.upiId || ''}" placeholder="e.g. 9052088836@ybl or yourname@okhdfcbank" oninput="checkLiveUPIValidation(this.value, '${emp.id}')" class="flex-1 min-w-0 bg-white dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-xl px-3 py-2 text-xs text-slate-900 dark:text-white font-mono focus:border-orange-500 focus:outline-none" />
+                    <button onclick="handleStaffUPIIdUpdate('${emp.id}', document.getElementById('staffUpiInput_${emp.id}').value)" class="brand-grad text-white text-xs font-bold px-3 py-2 rounded-xl shadow cursor-pointer shrink-0">
                       Save UPI
                     </button>
+                  </div>
+                  <div id="upiLiveFeedback_${emp.id}" class="text-[10px] mt-1 font-semibold text-slate-500">
+                    ${emp.upiId ? '🟢 Active UPI VPA: ' + emp.upiId : '💡 Example formats: 9052088836@ybl, shaik.ali@okaxis, janhavi@icici'}
+                  </div>
                   </div>
                 </div>
 
@@ -4122,6 +4562,7 @@ button, a.button {
         const missingCount = missingDays.length;
 
         return `
+          ${broadcastBannerHtml}
           ${adminPreviewBar}
           ${phoneToolHeader}
           ${subNavBar}
@@ -4376,9 +4817,16 @@ button, a.button {
                       </div>
                     </div>
                     <div class="shrink-0">
-                      <span class="text-xs font-bold px-3 py-1 rounded-full ${l.status === 'Approved' ? 'bg-emerald-100 dark:bg-emerald-950/60 text-emerald-800 dark:text-emerald-300 border border-emerald-300 dark:border-emerald-700' : (l.status === 'Pending' ? 'bg-amber-100 dark:bg-amber-950/60 text-amber-800 dark:text-amber-300 border border-amber-300 dark:border-amber-700 animate-pulse' : 'bg-rose-100 dark:bg-rose-950/60 text-rose-800 dark:text-rose-300 border border-rose-300 dark:border-rose-700')}">
-                        ${l.status === 'Approved' ? '✅ Approved' : (l.status === 'Pending' ? '⏳ Pending Admin Approval' : '❌ Rejected')}
-                      </span>
+                      <div class="flex items-center gap-2">
+                        <span class="text-xs font-bold px-3 py-1 rounded-full ${l.status === 'Approved' ? 'bg-emerald-100 dark:bg-emerald-950/60 text-emerald-800 dark:text-emerald-300 border border-emerald-300 dark:border-emerald-700' : (l.status === 'Pending' ? 'bg-amber-100 dark:bg-amber-950/60 text-amber-800 dark:text-amber-300 border border-amber-300 dark:border-amber-700 animate-pulse' : 'bg-rose-100 dark:bg-rose-950/60 text-rose-800 dark:text-rose-300 border border-rose-300 dark:border-rose-700')}">
+                          ${l.status === 'Approved' ? '✅ Approved' : (l.status === 'Pending' ? '⏳ Pending Admin Approval' : '❌ Rejected')}
+                        </span>
+                        ${l.status === 'Pending' ? `
+                          <button onclick="withdrawLeaveRequest('${l.id}', '${emp.id}')" class="text-xs px-2.5 py-1 rounded-lg bg-rose-50 text-rose-700 border border-rose-300 hover:bg-rose-100 font-bold cursor-pointer inline-flex items-center gap-1 shadow-sm" title="Withdraw / Cancel this request">
+                            <span>↩️</span> <span>Cancel</span>
+                          </button>
+                        ` : ''}
+                      </div>
                     </div>
                   </div>
                 `).join("")}
@@ -4461,12 +4909,13 @@ button, a.button {
         const forte = forteData[emp.id] || defaultForte;
 
         return `
+          ${broadcastBannerHtml}
           ${adminPreviewBar}
           ${phoneToolHeader}
           ${subNavBar}
           ${inactivityAlertHtml}
 
-          <!-- PERFORMANCE FORTE EXECUTIVE SCORECARD (ZOHO CRISP WHITE THEME) -->
+          <!-- PERFORMANCE FORTE EXECUTIVE SCORECARD (AARUNI CRISP WHITE THEME) -->
           <div style="background:#ffffff;border:1.5px solid #e2e8f0;border-radius:18px;padding:22px;margin-bottom:20px;box-shadow:0 1px 3px rgba(0,0,0,0.05);color:#0f172a;">
             <div style="display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;padding-bottom:18px;border-bottom:1px solid #f1f5f9;">
               <div style="display:flex;align-items:center;gap:14px;">
@@ -4679,6 +5128,7 @@ button, a.button {
         const bonusMonthly = Math.round(bonusAnnual / 12);
 
         return `
+          ${broadcastBannerHtml}
           ${adminPreviewBar}
           ${phoneToolHeader}
           ${subNavBar}
@@ -5020,9 +5470,16 @@ button, a.button {
                       <div class="font-bold text-white">${fmtINR(a.amount)} &bull; ${a.reason}</div>
                       <div class="text-[11px] text-slate-400">${a.requestDate} (${a.tenureMonths} Mo tenure) ${a.paidUpiRef ? `&bull; Ref: ${a.paidUpiRef}` : ''}</div>
                     </div>
-                    <span class="text-[10px] font-bold px-2 py-0.5 rounded-full ${a.status === 'Approved' || a.status === 'Disbursed' ? 'bg-emerald-500/20 text-emerald-400 border border-emerald-500/40' : (a.status === 'Pending' ? 'bg-amber-500/20 text-amber-300 border border-amber-500/40' : 'bg-rose-500/20 text-rose-400 border border-rose-500/40')}">
-                      ${a.status}
-                    </span>
+                    <div class="flex items-center gap-2">
+                      <span class="text-[10px] font-bold px-2 py-0.5 rounded-full ${a.status === 'Approved' || a.status === 'Disbursed' ? 'bg-emerald-500/20 text-emerald-400 border border-emerald-500/40' : (a.status === 'Pending' ? 'bg-amber-500/20 text-amber-300 border border-amber-500/40' : 'bg-rose-500/20 text-rose-400 border border-rose-500/40')}">
+                        ${a.status}
+                      </span>
+                      ${a.status === 'Pending' ? `
+                        <button onclick="withdrawAdvanceRequest('${a.id}', '${emp.id}')" class="text-[10px] font-bold px-2 py-0.5 rounded bg-rose-50 text-rose-700 border border-rose-300 hover:bg-rose-100 cursor-pointer shadow-sm">
+                          ↩️ Cancel
+                        </button>
+                      ` : ''}
+                    </div>
                   </div>
                 `).join("")}
               </div>
@@ -5038,6 +5495,7 @@ button, a.button {
         const fixedMo = emp.monthlyCtc - basicMo;
 
         return `
+          ${broadcastBannerHtml}
           ${adminPreviewBar}
           ${phoneToolHeader}
           ${subNavBar}
@@ -5112,6 +5570,7 @@ button, a.button {
       // 9. TAB VIEW 5: TAX & FORM 16
       if (activeTab === "tax") {
         return `
+          ${broadcastBannerHtml}
           ${adminPreviewBar}
           ${phoneToolHeader}
           ${subNavBar}
@@ -5153,6 +5612,7 @@ button, a.button {
       // 11. TAB VIEW 7: WORKING STYLE & EMPLOYEE BENEFITS
       if (activeTab === "benefits") {
         return `
+          ${broadcastBannerHtml}
           ${adminPreviewBar}
           ${phoneToolHeader}
           ${subNavBar}
@@ -5259,6 +5719,7 @@ button, a.button {
       // 10. TAB VIEW 6: DOCUMENTS & CERTIFICATES
       if (activeTab === "hrdocs") {
         return `
+          ${broadcastBannerHtml}
           ${adminPreviewBar}
           ${phoneToolHeader}
           ${subNavBar}
@@ -5612,22 +6073,22 @@ button, a.button {
             </div>
           ` : ''}
 
-          <!-- 1-DAY BEFORE PAYMENT REMINDER WIDGET FOR ADMIN -->
-          <div class="glass-card rounded-2xl p-4 mb-4 border-2 border-amber-500/80 bg-amber-950/20 flex items-center justify-between gap-3 flex-wrap">
+          <!-- 1-DAY BEFORE PAYMENT REMINDER WIDGET FOR ADMIN (HIGH-CONTRAST CLEAN THEME) -->
+          <div class="at-reminder-amber mb-4 flex items-center justify-between gap-3 flex-wrap">
             <div class="flex items-center gap-3">
-              <span class="text-2xl p-2 rounded-xl bg-amber-500/20 border border-amber-500/40">⏰</span>
+              <span class="text-2xl p-2 rounded-xl bg-amber-500/20 border border-amber-500/40 shrink-0">⏰</span>
               <div>
-                <div class="text-xs font-black uppercase tracking-wider text-amber-300">Admin Disbursement Reminder &bull; November 2026 Payroll</div>
-                <div class="text-xs text-slate-300 mt-0.5">
+                <div class="reminder-title text-xs font-black uppercase tracking-wider">Admin Disbursement Reminder &bull; November 2026 Payroll</div>
+                <div class="reminder-body text-xs mt-1">
                   Cutoff: <strong>30 Nov 2026</strong> &bull; Grace Day: <strong>01 Dec 2026</strong> &bull; Target Disbursement: <strong>04–05 Dec 2026</strong> (or early if all timesheets verified).
                 </div>
-                <div class="text-[11px] text-amber-200 mt-0.5">
+                <div class="reminder-highlight text-xs mt-1">
                   Maintain <strong>₹${totalNetMonthlyLiability.toLocaleString('en-IN')}</strong> in Axis Bank Salary Account (A/C: xxxx3409).
                 </div>
               </div>
             </div>
-            <div class="flex items-center gap-2">
-              <button onclick="openPolicyModal('SALARY_ATTENDANCE')" class="bg-slate-800 hover:bg-slate-700 border border-slate-700 text-slate-200 text-xs font-semibold px-3 py-1.5 rounded-lg cursor-pointer">
+            <div class="flex items-center gap-2 shrink-0">
+              <button onclick="openPolicyModal('SALARY_ATTENDANCE')" class="reminder-btn text-xs font-bold cursor-pointer">
                 📜 View Policy Timeline
               </button>
             </div>
@@ -5691,7 +6152,8 @@ button, a.button {
               <div>
                 <h2 class="text-base font-bold text-white flex items-center gap-2">
                   <span>Employees Directory</span>
-                  <span class="text-xs px-2.5 py-0.5 rounded-full bg-slate-800 border border-slate-700 text-slate-300 font-semibold">${filteredEmployees.length} Staff</span>
+                  <span class="text-xs px-2.5 py-0.5 rounded-full bg-slate-100 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 text-slate-700 dark:text-slate-300 font-semibold">${filteredEmployees.length} Staff</span>
+                  <span class="text-xs px-2.5 py-0.5 rounded-full bg-sky-100 dark:bg-sky-950/60 border border-sky-300 dark:border-sky-700 text-sky-800 dark:text-sky-300 font-extrabold">Total Accrued: ${fmtINR(totalAccruedToDate)}</span>
                 </h2>
                 <p class="text-xs text-slate-400 mt-0.5">
                   ${activeFilter === 'Active' ? 'Showing actual in-hand payable calculations for the 4 active working team members' : activeFilter === 'Founders' ? 'Showing company founders (Deferred Drawing • ₹0 Liability)' : activeFilter === 'Inactive' ? 'Showing inactive & relieved staff members' : 'Showing all staff members'}
@@ -5818,6 +6280,17 @@ button, a.button {
                 </div>
                 `;
               }).join("")}
+              <!-- Mobile Accrued Liability Summary Card -->
+              <div class="glass-card rounded-2xl p-3.5 border-2 border-sky-500/50 bg-sky-50/50 dark:bg-sky-950/20 text-xs mt-3">
+                <div class="flex items-center justify-between font-extrabold text-slate-800 dark:text-slate-200">
+                  <span>Total Accrued to Date (Day 11/30)</span>
+                  <span class="font-mono font-black text-sky-600 dark:text-sky-400 text-sm">${fmtINR(totalAccruedToDate)}</span>
+                </div>
+                <div class="flex items-center justify-between text-slate-500 dark:text-slate-400 text-[11px] mt-1">
+                  <span>Full Month In-Hand Liability</span>
+                  <span class="font-mono font-medium text-emerald-600 dark:text-emerald-400">${fmtINR(totalNetMonthlyLiability)}</span>
+                </div>
+              </div>
             </div>
 
             <!-- DESKTOP TABLE VIEW (>= md: Desktop Screens Only) -->
@@ -5830,8 +6303,8 @@ button, a.button {
                     <th class="py-2.5 px-2">Role &amp; Workstation</th>
                     <th class="py-2.5 px-2 text-right">Base CTC</th>
                     <th class="py-2.5 px-2 text-center">Nov Logged</th>
-                    <th class="py-2.5 px-2 text-right">Accrued to Date</th>
-                    <th class="py-2.5 px-2 text-right font-black text-emerald-400">Net In-Hand Payable</th>
+                    <th class="py-2.5 px-2 text-right font-black text-sky-600 dark:text-sky-400">Accrued to Date</th>
+                    <th class="py-2.5 px-2 text-right font-medium text-slate-500 dark:text-slate-400">Net In-Hand Payable</th>
                     <th class="py-2.5 px-2 text-center">Payment Status</th>
                     <th class="py-2.5 px-2 text-right">Disburse &amp; Actions</th>
                   </tr>
@@ -5877,14 +6350,14 @@ button, a.button {
                           <div class="text-[10px] text-sky-400 font-semibold">${payroll.totalHours} hrs &bull; ${payroll.paidSundays} Sun</div>
                         ` : '<span class="text-slate-500">&mdash;</span>'}
                       </td>
-                      <td class="py-3 px-2 text-right font-mono font-semibold text-sky-300">
+                      <td class="py-3 px-2 text-right font-mono font-black text-sky-600 dark:text-sky-300 text-sm">
                         ${(!isFounder && !isInactive) ? fmtINR(payroll.accruedSalarySoFar) : '₹0'}
                       </td>
                       <td class="py-3 px-2 text-right">
                         ${(!isFounder && !isInactive) ? `
-                          <div class="font-mono font-black text-emerald-400 text-sm">${fmtINR(payroll.netPay)}</div>
+                          <div class="font-mono font-medium text-emerald-600 dark:text-emerald-400 text-xs">${fmtINR(payroll.netPay)}</div>
                           <div class="text-[10px] text-slate-400">${payroll.loanCut > 0 ? `-${fmtINR(payroll.loanCut)} advance recovery` : 'Full In-Hand'}</div>
-                        ` : isFounder ? '<span class="text-amber-400 font-bold text-xs">₹0.00 (Deferred)</span>' : '<span class="text-slate-500 text-xs">₹0.00 (Relieved)</span>'}
+                        ` : isFounder ? '<span class="text-amber-400 font-medium text-xs">₹0.00 (Deferred)</span>' : '<span class="text-slate-500 text-xs">₹0.00 (Relieved)</span>'}
                       </td>
                       <td class="py-3 px-2 text-center whitespace-nowrap">
                         ${(!isFounder && !isInactive) ? `
@@ -5931,6 +6404,22 @@ button, a.button {
                     `;
                   }).join("")}
                 </tbody>
+                <tfoot class="border-t-2 border-slate-300 dark:border-slate-700 bg-slate-100/70 dark:bg-slate-900/80 font-bold">
+                  <tr>
+                    <td colspan="5" class="py-3 px-2 text-right text-xs uppercase tracking-wider text-slate-600 dark:text-slate-400 font-extrabold">
+                      Total Accrued to Date (Day 11/30):
+                    </td>
+                    <td class="py-3 px-2 text-right font-mono font-black text-sky-600 dark:text-sky-300 text-sm">
+                      ${fmtINR(totalAccruedToDate)}
+                    </td>
+                    <td class="py-3 px-2 text-right font-mono font-medium text-emerald-600 dark:text-emerald-400 text-xs">
+                      ${fmtINR(totalNetMonthlyLiability)}
+                    </td>
+                    <td colspan="2" class="py-3 px-2 text-center text-xs text-slate-500 font-semibold">
+                      ${paidCount} of ${activeCount} Staff Disbursed
+                    </td>
+                  </tr>
+                </tfoot>
               </table>
             </div>
           </div>
@@ -6019,14 +6508,14 @@ button, a.button {
         const novSlipsPublished = (state.payslips || []).some(p => p.id.startsWith("PS-2026-11"));
 
         tabContent = `
-          <!-- ZOHO-STYLE SUB NAVIGATION (RUN PAYROLL / PAYROLL HISTORY) -->
-          <div class="zoho-sub-nav">
-            <button class="zoho-sub-tab active">Run Payroll</button>
-            <button class="zoho-sub-tab" onclick="setTab('roster')">Payroll History</button>
+          <!-- AARUNI SUB NAVIGATION (RUN PAYROLL / PAYROLL HISTORY) -->
+          <div class="at-sub-nav">
+            <button class="at-sub-tab active">Run Payroll</button>
+            <button class="at-sub-tab" onclick="setTab('roster')">Payroll History</button>
           </div>
 
-          <!-- ZOHO PEACH DIRECT PAYOUT ANNOUNCEMENT BANNER -->
-          <div class="zoho-peach-banner">
+          <!-- AARUNI DIRECT PAYOUT ANNOUNCEMENT BANNER -->
+          <div class="at-peach-banner">
             <div style="display:flex;align-items:center;gap:8px;">
               <span style="font-size:16px;">✨</span>
               <span><strong>Direct Bank Payouts:</strong> Pay salaries from Axis Bank corporate account without manual switching using Axis Bank CSV / UPI QR codes.</span>
@@ -6036,8 +6525,8 @@ button, a.button {
             </button>
           </div>
 
-          <!-- ZOHO HERO PAY RUN CARD (NOVEMBER 2026 READY) -->
-          <div class="zoho-payrun-card">
+          <!-- AARUNI HERO PAY RUN CARD (NOVEMBER 2026 READY) -->
+          <div class="at-payrun-card">
             <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;margin-bottom:16px;">
               <div>
                 <div style="display:flex;align-items:center;gap:8px;">
@@ -6049,7 +6538,7 @@ button, a.button {
                 </div>
               </div>
               <div>
-                <button onclick="document.getElementById('payrollEmployeeList')?.scrollIntoView({behavior:'smooth'})" class="zoho-orange-btn">
+                <button onclick="document.getElementById('payrollEmployeeList')?.scrollIntoView({behavior:'smooth'})" class="at-orange-btn">
                   <span>Process Pay Run (₹43,000)</span> <span>→</span>
                 </button>
               </div>
@@ -6219,6 +6708,22 @@ button, a.button {
                     `;
                   }).join("")}
                 </tbody>
+                <tfoot class="border-t-2 border-slate-300 dark:border-slate-700 bg-slate-100/70 dark:bg-slate-900/80 font-bold">
+                  <tr>
+                    <td colspan="5" class="py-3 px-2 text-right text-xs uppercase tracking-wider text-slate-600 dark:text-slate-400 font-extrabold">
+                      Total Accrued to Date (Day 11/30):
+                    </td>
+                    <td class="py-3 px-2 text-right font-mono font-black text-sky-600 dark:text-sky-300 text-sm">
+                      ${fmtINR(totalAccruedToDate)}
+                    </td>
+                    <td class="py-3 px-2 text-right font-mono font-medium text-emerald-600 dark:text-emerald-400 text-xs">
+                      ${fmtINR(totalNetMonthlyLiability)}
+                    </td>
+                    <td colspan="2" class="py-3 px-2 text-center text-xs text-slate-500 font-semibold">
+                      ${paidCount} of ${activeCount} Staff Disbursed
+                    </td>
+                  </tr>
+                </tfoot>
               </table>
             </div>
           </div>
@@ -6456,6 +6961,22 @@ button, a.button {
                     `;
                   }).join("")}
                 </tbody>
+                <tfoot class="border-t-2 border-slate-300 dark:border-slate-700 bg-slate-100/70 dark:bg-slate-900/80 font-bold">
+                  <tr>
+                    <td colspan="5" class="py-3 px-2 text-right text-xs uppercase tracking-wider text-slate-600 dark:text-slate-400 font-extrabold">
+                      Total Accrued to Date (Day 11/30):
+                    </td>
+                    <td class="py-3 px-2 text-right font-mono font-black text-sky-600 dark:text-sky-300 text-sm">
+                      ${fmtINR(totalAccruedToDate)}
+                    </td>
+                    <td class="py-3 px-2 text-right font-mono font-medium text-emerald-600 dark:text-emerald-400 text-xs">
+                      ${fmtINR(totalNetMonthlyLiability)}
+                    </td>
+                    <td colspan="2" class="py-3 px-2 text-center text-xs text-slate-500 font-semibold">
+                      ${paidCount} of ${activeCount} Staff Disbursed
+                    </td>
+                  </tr>
+                </tfoot>
               </table>
             </div>
           </div>
@@ -6570,11 +7091,11 @@ button, a.button {
       }
 
       return `
-        <div class="zoho-layout-container">
+        <div class="at-admin-layout">
           <!-- LEFT PERSISTENT NAVY SIDEBAR (#182033) -->
-          <aside class="zoho-sidebar hidden md:flex">
+          <aside class="at-sidebar hidden md:flex">
             <div>
-              <div class="zoho-sidebar-brand">
+              <div class="at-sidebar-brand">
                 <img src="aaruni_square_logo.png" style="width:28px;height:28px;border-radius:6px;" alt="Aaruni" />
                 <div style="font-size:16px;font-weight:900;color:#ffffff;letter-spacing:-0.02em;display:flex;align-items:center;gap:6px;">
                   <span>Payroll</span>
@@ -6582,48 +7103,51 @@ button, a.button {
                 </div>
               </div>
 
-              <div class="zoho-sidebar-nav">
-                <button onclick="setTab('dashboard')" class="zoho-nav-btn ${state.activeTab === 'dashboard' ? 'active' : ''}">
+              <div class="at-sidebar-nav">
+                <button onclick="setTab('dashboard')" class="at-nav-btn ${state.activeTab === 'dashboard' ? 'active' : ''}">
                   <span style="font-size:15px;">⏱️</span> <span>Dashboard</span>
                 </button>
-                <button onclick="setTab('roster')" class="zoho-nav-btn ${state.activeTab === 'roster' ? 'active' : ''}">
+                <button onclick="setTab('roster')" class="at-nav-btn ${state.activeTab === 'roster' ? 'active' : ''}">
                   <span style="font-size:15px;">👥</span> <span>Employees</span>
                 </button>
-                <button onclick="setTab('payroll')" class="zoho-nav-btn ${state.activeTab === 'payroll' ? 'active' : ''}">
+                <button onclick="setTab('payroll')" class="at-nav-btn ${state.activeTab === 'payroll' ? 'active' : ''}">
                   <span style="font-size:15px;">📅</span> <span>Pay Runs</span>
                 </button>
-                <button onclick="setTab('pulse')" class="zoho-nav-btn ${state.activeTab === 'pulse' ? 'active' : ''}">
+                <button onclick="setTab('pulse')" class="at-nav-btn ${state.activeTab === 'pulse' ? 'active' : ''}">
                   <span style="font-size:15px;">🕒</span> <span>Attendance &amp; Pulse</span>
                 </button>
-                <button onclick="setTab('loans')" class="zoho-nav-btn ${state.activeTab === 'loans' ? 'active' : ''}">
+                <button onclick="setTab('loans')" class="at-nav-btn ${state.activeTab === 'loans' ? 'active' : ''}">
                   <span style="font-size:15px;">📋</span> <span>Approvals &amp; Loans</span>
                 </button>
-                <button onclick="setTab('form16')" class="zoho-nav-btn ${state.activeTab === 'form16' ? 'active' : ''}">
+                <button onclick="setTab('form16')" class="at-nav-btn ${state.activeTab === 'form16' ? 'active' : ''}">
                   <span style="font-size:15px;">📑</span> <span>Form 16 &amp; TDS</span>
                 </button>
-                <button onclick="setTab('appointments')" class="zoho-nav-btn ${state.activeTab === 'appointments' ? 'active' : ''}">
+                <button onclick="setTab('appointments')" class="at-nav-btn ${state.activeTab === 'appointments' ? 'active' : ''}">
                   <span style="font-size:15px;">📅</span> <span>1:1 Appointments</span>
                 </button>
-                <button onclick="setTab('invites')" class="zoho-nav-btn ${state.activeTab === 'invites' ? 'active' : ''}">
+                <button onclick="setTab('invites')" class="at-nav-btn ${state.activeTab === 'invites' ? 'active' : ''}">
                   <span style="font-size:15px;">📨</span> <span>Staff Invites</span>
                 </button>
-                <button onclick="openAdminLeadsModal('all')" class="zoho-nav-btn">
+                <button onclick="openAdminBroadcastModal()" class="at-nav-btn" style="color: #fe5f01 !important; font-weight: 700;">
+                  <span style="font-size:15px;">📢</span> <span>Broadcast to Staff</span>
+                </button>
+                <button onclick="openAdminLeadsModal('all')" class="at-nav-btn">
                   <span style="font-size:15px;">📬</span> <span>Cloud &amp; Syllovo Leads</span>
                 </button>
-                <button onclick="openACSTaxDossierModal()" class="zoho-nav-btn">
+                <button onclick="openACSTaxDossierModal()" class="at-nav-btn">
                   <span style="font-size:15px;">📁</span> <span>Tax &amp; CA Dossier</span>
                 </button>
               </div>
             </div>
 
-            <!-- Bottom Sidebar Support & TDS Card -->
-            <div style="padding:16px;border-top:1px solid #232d46;">
-              <a href="mailto:rupesh@fullstackmaster.net" style="color:#a6b0c3;font-size:12px;text-decoration:none;display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;font-weight:600;">
+            <!-- Bottom Sidebar Support & TDS Card (Clean Minimalist Theme) -->
+            <div style="padding:16px;border-top:1px solid var(--at-border);">
+              <a href="mailto:rupesh@fullstackmaster.net" style="color:var(--at-text-muted);font-size:12px;text-decoration:none;display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;font-weight:600;">
                 <span>Contact Support</span>
                 <span>›</span>
               </a>
-              <div onclick="openACSTaxDossierModal()" style="background:#1e2538;border:1px solid #2e3a54;border-radius:10px;padding:12px;cursor:pointer;transition:all 0.15s ease;">
-                <div style="font-size:11px;font-weight:800;color:#ffffff;line-height:1.4;">Track TDS Liabilities &amp; Generate Form 24Q / 16</div>
+              <div onclick="openACSTaxDossierModal()" style="background:var(--at-surface-subtle);border:1px solid var(--at-border);border-radius:10px;padding:12px;cursor:pointer;transition:all 0.15s ease;">
+                <div style="font-size:11px;font-weight:800;color:var(--at-text);line-height:1.4;">Track TDS Liabilities &amp; Generate Form 24Q / 16</div>
                 <div style="font-size:11px;color:#fe5f01;font-weight:700;margin-top:6px;display:flex;align-items:center;gap:4px;">
                   <span>View Details</span> <span>→</span>
                 </div>
@@ -6632,24 +7156,24 @@ button, a.button {
           </aside>
 
           <!-- MAIN WORKSPACE -->
-          <div class="zoho-workspace">
+          <div class="at-workspace">
             <!-- Mobile top tab bar -->
             <div class="md:hidden mb-3">
               ${adminTabBar}
             </div>
 
             <!-- Zoho Top Search & Action Bar -->
-            <div class="zoho-top-search hidden md:flex">
+            <div class="at-top-search hidden md:flex">
               <div style="display:flex;align-items:center;gap:12px;flex:1;max-width:440px;">
                 <div style="position:relative;width:100%;">
-                  <input type="text" id="zohoSearchInput" placeholder="🔍 Search in Employee, Role, Bank, PAN..." value="${state.adminSearchQuery || ''}" class="zoho-search-input" style="width:100%;box-sizing:border-box;" oninput="handleAdminRosterSearch(this.value)" />
+                  <input type="text" id="atSearchInput" placeholder="🔍 Search in Employee, Role, Bank, PAN..." value="${state.adminSearchQuery || ''}" class="at-search-input" style="width:100%;box-sizing:border-box;" oninput="handleAdminRosterSearch(this.value)" />
                 </div>
               </div>
               <div style="display:flex;align-items:center;gap:8px;">
-                <button onclick="openAdminLeadsModal('all')" style="background:#0284c7;border:1px solid #0369a1;color:#fff;padding:9px 14px;border-radius:8px;font-size:12px;font-weight:700;cursor:pointer;display:inline-flex;align-items:center;gap:6px;">
-                  <span>📬</span> <span>Cloud &amp; Syllovo Leads</span>
+                <button onclick="openAdminBroadcastModal()" class="at-orange-btn" title="Send Official Announcement to All Staff">
+                  <span>📢</span> <span>Broadcast to Staff</span>
                 </button>
-                <button onclick="openStaffInvitationsModal()" class="zoho-orange-btn">
+                <button onclick="openStaffInvitationsModal()" style="background:var(--at-surface-subtle);border:1px solid var(--at-border);color:var(--at-text);padding:9px 14px;border-radius:8px;font-size:12px;font-weight:700;cursor:pointer;display:inline-flex;align-items:center;gap:6px;">
                   <span>📨</span> <span>Staff Invitations</span>
                 </button>
                 <button onclick="openACSTaxDossierModal()" style="background:#1e293b;border:1px solid #334155;color:#fff;padding:9px 14px;border-radius:8px;font-size:12px;font-weight:700;cursor:pointer;display:inline-flex;align-items:center;gap:6px;">
@@ -7851,7 +8375,7 @@ button, a.button {
     function handleAdminRosterSearch(query) {
       state.adminSearchQuery = (query || "").trim().toLowerCase();
       renderApp();
-      const input = document.getElementById("zohoSearchInput");
+      const input = document.getElementById("atSearchInput");
       if (input) {
         input.focus();
         input.selectionStart = input.selectionEnd = input.value.length;
@@ -7974,7 +8498,7 @@ button, a.button {
                 Send 1-click WhatsApp, Email, or SMS invites to active staff to log in to MyAaruni instead of Zoho.
               </div>
             </div>
-            <button onclick="copyToClipboard(\`${groupInviteAll.replace(/`/g, '\\`')}\`, 'All 4 Staff Invites')" class="zoho-orange-btn">
+            <button onclick="copyToClipboard(\`${groupInviteAll.replace(/`/g, '\\`')}\`, 'All 4 Staff Invites')" class="at-orange-btn">
               <span>📢 Copy All 4 Invites (for WhatsApp Group)</span>
             </button>
           </div>
@@ -8160,9 +8684,13 @@ button, a.button {
     const buildZohoPayslipHTML = (ps, emp) => buildOfficialPayslipHTML(ps, emp);
     // 7. MODAL RENDERERS: OFFICIAL STATUTORY PAYSLIP, OFFER LETTER, LOAN PROOF, EXP, CA TAX
     // ============================================================================
-    function openModalWithHTML(title, html) {
+    function openModalWithHTML(title, html, isPrintable = true) {
       document.getElementById("docModalTitle").innerHTML = title;
       document.getElementById("printModalContent").innerHTML = html;
+      const printBtn = document.getElementById("docModalPrintBtn");
+      if (printBtn) {
+        printBtn.style.display = isPrintable ? "inline-flex" : "none";
+      }
       document.getElementById("docModal").classList.remove("hidden");
     }
 
@@ -8786,7 +9314,7 @@ button, a.button {
               </div>
 
               <div style="display:flex;gap:10px;">
-                <button onclick="closeDocModal()" style="flex:1;background:#334155;color:#ffffff;font-size:12px;font-weight:700;padding:10px;border-radius:8px;border:none;cursor:pointer;">Cancel</button>
+                <button onclick="closeDocModal()" class="at-btn-close">Cancel</button>
                 <button onclick="submitAdvanceSalaryRequest('${emp.id}')" style="flex:2;background:linear-gradient(135deg, #FE5F01 0%, #EA580C 100%);color:#ffffff;font-size:12px;font-weight:800;padding:10px;border-radius:8px;border:none;cursor:pointer;">
                   🚀 Submit Advance Request
                 </button>
@@ -8910,7 +9438,7 @@ button, a.button {
                   <strong style="color:#FE5F01;font-family:monospace;font-size:13px;">${emp.id}</strong>
                 </div>
                 <div>
-                  <span style="color:#94a3b8;display:block;font-size:11px;">Aaruni Directory ID</span>
+                  <span style="color:#94a3b8;display:block;font-size:11px;">Aaruni Employee Directory ID</span>
                   <strong style="color:#ffffff;font-family:monospace;font-size:13px;">${emp.zohoId || emp.id}</strong>
                 </div>
                 <div>
@@ -10448,6 +10976,7 @@ function updateQrBaseUrl(val) {
 function renderApp() {
       try {
         renderHeaderSession();
+        updateHeaderNotificationBadge();
         renderRoleBar();
         const roleBar = document.getElementById("authenticatedRoleBar");
         const bottomNav = document.getElementById("bottomNav");

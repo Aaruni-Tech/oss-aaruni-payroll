@@ -344,6 +344,17 @@ export default {
     // DOMAIN & HOST ROUTING
     // =========================================================================
 
+    // 0. Aaruni Cloud Console Host (console.aarunicloud.com)
+    const isConsoleHost =
+      host === "console.aarunicloud.com" ||
+      host === "www.console.aarunicloud.com" ||
+      url.searchParams.get("site") === "console";
+
+    if (isConsoleHost && (url.pathname === "/" || url.pathname === "/index.html")) {
+      const consoleUrl = new URL("/console" + url.search + url.hash, request.url);
+      return env.ASSETS.fetch(new Request(consoleUrl.toString(), request));
+    }
+
     // 1. Aaruni Cloud Host
     const isCloudHost =
       host === "aarunicloud.com" ||

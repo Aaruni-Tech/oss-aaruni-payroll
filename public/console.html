@@ -1,0 +1,1079 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Aaruni Cloud Console — Cloud Voice Cloning, API Keys &amp; acloud CLI</title>
+  <meta name="description" content="Aaruni Cloud Console (console.aarunicloud.com): Subscribe, clone your own voice securely with live consent verification, and synthesize studio technical audio via Cloud Voice and the acloud CLI." />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%230284c7'/%3E%3Ctext x='16' y='21' font-family='monospace' font-size='14' font-weight='bold' fill='white' text-anchor='middle'%3EAC%3C/text%3E%3C/svg%3E" />
+  <style>
+    :root {
+      --bg-app: #070b14;
+      --bg-surface: #0f172a;
+      --bg-elevated: #162038;
+      --bg-input: #090f1d;
+      --border: #1e293b;
+      --border-strong: #334155;
+      --text-primary: #f8fafc;
+      --text-secondary: #cbd5e1;
+      --text-muted: #94a3b8;
+      --accent: #38bdf8;
+      --accent-strong: #0284c7;
+      --accent-text: #04101d;
+      --success: #34d399;
+      --warning: #fbbf24;
+      --danger: #f87171;
+      --badge-bg: rgba(56, 189, 248, 0.14);
+      --badge-fg: #7dd3fc;
+      --code-bg: #050811;
+    }
+
+    html[data-theme="light"] {
+      --bg-app: #f1f5f9;
+      --bg-surface: #ffffff;
+      --bg-elevated: #f8fafc;
+      --bg-input: #ffffff;
+      --border: #cbd5e1;
+      --border-strong: #94a3b8;
+      --text-primary: #0f172a;
+      --text-secondary: #334155;
+      --text-muted: #475569;
+      --accent: #0369a1;
+      --accent-strong: #075985;
+      --accent-text: #ffffff;
+      --success: #047857;
+      --warning: #b45309;
+      --danger: #b91c1c;
+      --badge-bg: #e0f2fe;
+      --badge-fg: #0c4a6e;
+      --code-bg: #0f172a;
+    }
+
+    * { box-sizing: border-box; }
+    html, body {
+      margin: 0;
+      padding: 0;
+      width: 100%;
+      max-width: 100%;
+      overflow-x: hidden;
+      background: var(--bg-app);
+      color: var(--text-primary);
+      font-family: -apple-system, BlinkMacSystemFont, "Inter", "Segoe UI", Roboto, sans-serif;
+      line-height: 1.5;
+    }
+    .mono {
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+    }
+    a { color: var(--accent); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+
+    /* Top Console Header */
+    .console-topbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 12px 20px;
+      background: var(--bg-surface);
+      border-bottom: 1px solid var(--border);
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      flex-wrap: wrap;
+    }
+    .brand-cluster {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      min-width: 0;
+    }
+    .brand-mark {
+      width: 32px;
+      height: 32px;
+      border-radius: 8px;
+      background: linear-gradient(135deg, #0284c7, #38bdf8);
+      color: #ffffff;
+      font-weight: 800;
+      font-size: 13px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+    .brand-title {
+      font-size: 15px;
+      font-weight: 700;
+      letter-spacing: -0.01em;
+      white-space: nowrap;
+    }
+    .region-pill {
+      font-size: 11.5px;
+      padding: 3px 9px;
+      border-radius: 999px;
+      background: var(--badge-bg);
+      color: var(--badge-fg);
+      font-weight: 600;
+      border: 1px solid var(--border);
+    }
+    .topbar-actions {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    /* Buttons */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      padding: 8px 14px;
+      border-radius: 8px;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      border: 1px solid var(--border-strong);
+      background: var(--bg-elevated);
+      color: var(--text-primary);
+      transition: all 0.15s ease;
+    }
+    .btn:hover { filter: brightness(1.06); }
+    .btn:disabled { opacity: 0.55; cursor: not-allowed; }
+    .btn-primary {
+      background: var(--accent);
+      color: var(--accent-text);
+      border-color: transparent;
+    }
+    .btn-danger {
+      background: transparent;
+      color: var(--danger);
+      border-color: var(--danger);
+    }
+    .btn-sm { padding: 5px 10px; font-size: 12px; }
+
+    /* Layout Grid */
+    .console-shell {
+      display: grid;
+      grid-template-columns: 240px minmax(0, 1fr);
+      min-height: calc(100vh - 58px);
+      max-width: 1440px;
+      margin: 0 auto;
+    }
+    .console-sidebar {
+      background: var(--bg-surface);
+      border-right: 1px solid var(--border);
+      padding: 16px 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    .sidebar-heading {
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--text-muted);
+      padding: 8px 10px 4px;
+    }
+    .nav-tab {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      width: 100%;
+      text-align: left;
+      padding: 10px 12px;
+      border-radius: 8px;
+      border: 1px solid transparent;
+      background: transparent;
+      color: var(--text-secondary);
+      font-size: 13.5px;
+      font-weight: 600;
+      cursor: pointer;
+    }
+    .nav-tab[aria-selected="true"] {
+      background: var(--badge-bg);
+      color: var(--badge-fg);
+      border-color: var(--border-strong);
+    }
+    .console-main {
+      padding: 22px;
+      min-width: 0;
+    }
+
+    /* Cards & Forms */
+    .card {
+      background: var(--bg-surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 20px;
+      margin-bottom: 18px;
+    }
+    .card-title {
+      margin: 0 0 6px;
+      font-size: 18px;
+      font-weight: 700;
+    }
+    .card-sub {
+      margin: 0 0 16px;
+      font-size: 13.5px;
+      color: var(--text-secondary);
+    }
+    .grid-2 {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 16px;
+    }
+    .grid-3 {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 16px;
+    }
+    label.field-label {
+      display: block;
+      font-size: 12.5px;
+      font-weight: 600;
+      color: var(--text-secondary);
+      margin-bottom: 6px;
+    }
+    input[type="text"], input[type="email"], select, textarea {
+      width: 100%;
+      padding: 10px 12px;
+      border-radius: 8px;
+      border: 1px solid var(--border-strong);
+      background: var(--bg-input);
+      color: var(--text-primary);
+      font-size: 13.5px;
+      font-family: inherit;
+    }
+    textarea { resize: vertical; min-height: 96px; }
+
+    .consent-box {
+      background: var(--bg-elevated);
+      border-left: 4px solid var(--accent);
+      padding: 12px 14px;
+      border-radius: 8px;
+      margin: 12px 0;
+      font-size: 13.5px;
+    }
+    .meter-track {
+      width: 100%;
+      height: 10px;
+      border-radius: 999px;
+      background: var(--bg-input);
+      border: 1px solid var(--border);
+      overflow: hidden;
+      margin-top: 6px;
+    }
+    .meter-fill {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, #0284c7, #34d399);
+      transition: width 0.12s ease;
+    }
+    .status-banner {
+      padding: 11px 14px;
+      border-radius: 8px;
+      font-size: 13px;
+      margin-top: 12px;
+      border: 1px solid var(--border-strong);
+      background: var(--bg-elevated);
+      word-break: break-word;
+    }
+    .voice-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 12px 14px;
+      border-radius: 10px;
+      border: 1px solid var(--border);
+      background: var(--bg-elevated);
+      margin-bottom: 10px;
+      flex-wrap: wrap;
+    }
+    .code-pre {
+      background: var(--code-bg);
+      color: #e2e8f0;
+      padding: 14px;
+      border-radius: 10px;
+      font-size: 12.5px;
+      overflow-x: auto;
+      border: 1px solid #1e293b;
+      margin: 8px 0 0;
+    }
+    .pls-chip {
+      display: inline-flex;
+      align-items: center;
+      padding: 3px 8px;
+      border-radius: 6px;
+      font-size: 11.5px;
+      background: var(--badge-bg);
+      color: var(--badge-fg);
+      margin: 3px 4px 0 0;
+      font-weight: 600;
+    }
+    .plan-card {
+      background: var(--bg-elevated);
+      border: 1px solid var(--border-strong);
+      border-radius: 12px;
+      padding: 18px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+    .plan-price {
+      font-size: 24px;
+      font-weight: 800;
+      margin: 8px 0;
+    }
+    .hidden { display: none !important; }
+
+    @media (max-width: 900px) {
+      .console-shell {
+        grid-template-columns: 1fr;
+      }
+      .console-sidebar {
+        flex-direction: row;
+        overflow-x: auto;
+        border-right: none;
+        border-bottom: 1px solid var(--border);
+        padding: 10px 12px;
+      }
+      .sidebar-heading { display: none; }
+      .nav-tab {
+        width: auto;
+        white-space: nowrap;
+        padding: 8px 12px;
+        font-size: 12.5px;
+      }
+      .console-main { padding: 14px; }
+      .grid-2, .grid-3 { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <header class="console-topbar">
+    <div class="brand-cluster">
+      <span class="brand-mark mono" aria-hidden="true">AC</span>
+      <div>
+        <div class="brand-title">Aaruni Cloud Console</div>
+        <div style="font-size:11.5px;color:var(--text-muted);">Cloud Voice • API Keys • Tenant-Isolated Workspace</div>
+      </div>
+      <span class="region-pill mono">ap-south-hyd-1</span>
+    </div>
+    <div class="topbar-actions">
+      <span id="account-pill" class="region-pill mono">Guest (Not Signed In)</span>
+      <a href="https://aarunicloud.com" class="btn btn-sm">← Cloud Storefront</a>
+      <button type="button" id="theme-btn" class="btn btn-sm" onclick="toggleTheme()">☀ Light</button>
+    </div>
+  </header>
+
+  <div class="console-shell">
+    <nav class="console-sidebar" role="tablist" aria-label="Console Navigation">
+      <div class="sidebar-heading">Cloud Voice (SaaS)</div>
+      <button type="button" class="nav-tab" role="tab" data-tab="clone" aria-selected="true" onclick="switchTab('clone')">🎙️ Clone My Voice</button>
+      <button type="button" class="nav-tab" role="tab" data-tab="speak" aria-selected="false" onclick="switchTab('speak')">🔊 Speech Playground</button>
+      <div class="sidebar-heading">Developer &amp; Billing</div>
+      <button type="button" class="nav-tab" role="tab" data-tab="cli" aria-selected="false" onclick="switchTab('cli')">🔑 API Keys &amp; acloud CLI</button>
+      <button type="button" class="nav-tab" role="tab" data-tab="billing" aria-selected="false" onclick="switchTab('billing')">💳 Plans &amp; Quota</button>
+    </nav>
+
+    <main class="console-main">
+      <!-- ONBOARDING / AUTH CARD -->
+      <section id="auth-gate-card" class="card">
+        <h1 class="card-title">Start Cloning Your Own Voice on Aaruni Cloud</h1>
+        <p class="card-sub">Create a free isolated Cloud Voice subscriber account in 1 click (2,000 free characters + 1 personal voice clone), sign in via email code, or connect an existing <code class="mono">acloud</code> API key.</p>
+        <div class="grid-2">
+          <div style="background:var(--bg-elevated);padding:16px;border-radius:10px;border:1px solid var(--border);">
+            <h2 style="font-size:15px;margin:0 0 8px;">🚀 Option 1: Instant Free Trial (10 Seconds)</h2>
+            <label class="field-label" for="trial-name">Your Name or Creator Handle</label>
+            <input type="text" id="trial-name" placeholder="e.g. Priya Sharma" value="Guest Creator" />
+            <label class="field-label" for="trial-email" style="margin-top:10px;">Email (Optional — for upgrade receipts)</label>
+            <input type="email" id="trial-email" placeholder="you@company.com" />
+            <button type="button" class="btn btn-primary" style="margin-top:12px;width:100%;" onclick="startInstantTrial()">Create Isolated Cloud Voice Account →</button>
+          </div>
+
+          <div style="background:var(--bg-elevated);padding:16px;border-radius:10px;border:1px solid var(--border);">
+            <h2 style="font-size:15px;margin:0 0 8px;">🔑 Option 2: Connect Existing <code class="mono">acloud</code> API Key</h2>
+            <label class="field-label" for="existing-key-input">Scoped Subscriber or Owner Key</label>
+            <input type="text" id="existing-key-input" class="mono" placeholder="acloud_sub_..." />
+            <button type="button" class="btn" style="margin-top:12px;width:100%;" onclick="connectExistingKey()">Connect API Key</button>
+            <div style="font-size:12px;color:var(--text-muted);margin-top:10px;">🛡️ Zero-Trust Tenant Isolation: Your voice samples and generated audio are jailed strictly to your private account.</div>
+          </div>
+        </div>
+        <div id="auth-status" class="status-banner hidden"></div>
+      </section>
+
+      <!-- ACTIVE SESSION SUMMARY BAR -->
+      <section id="session-bar" class="card hidden" style="padding:14px 18px;">
+        <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;">
+          <div>
+            <strong id="sess-user-title" style="font-size:14.5px;">Signed In</strong>
+            <div id="sess-quota-text" class="mono" style="font-size:12px;color:var(--text-secondary);">Quota: 0 / 2,000 chars • Voices: 0 / 1</div>
+          </div>
+          <div style="display:flex;gap:8px;flex-wrap:wrap;">
+            <span class="region-pill mono">🛡️ GPU Yield Guard: Protected</span>
+            <button type="button" class="btn btn-sm" onclick="signOutConsole()">Sign Out</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- TAB 1: CLONE MY VOICE -->
+      <section id="panel-clone" class="tab-panel">
+        <div class="card">
+          <h2 class="card-title">🎙️ Cloud Voice — Self-Serve Voice Cloning</h2>
+          <p class="card-sub">Record 8–15 seconds of your clear voice in a quiet room (or upload a clean WAV). Live dynamic consent verification prevents unauthorized deepfakes, and our GPU Yield Guard protects active cluster training jobs.</p>
+
+          <div class="grid-2">
+            <div>
+              <label class="field-label" for="clone-voice-name">1. Name Your Cloned Voice</label>
+              <input type="text" id="clone-voice-name" placeholder="e.g. My Technical Course Voice" value="My Studio Voice" oninput="refreshConsentText()" />
+
+              <div class="consent-box">
+                <div style="display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:4px;">
+                  <strong style="font-size:12px;text-transform:uppercase;letter-spacing:0.04em;">2. Mandatory Live Consent Phrase</strong>
+                  <button type="button" class="btn btn-sm" onclick="fetchConsentChallenge()">↻ New Code</button>
+                </div>
+                <div id="consent-phrase-display" style="font-weight:600;">"I, Guest Creator, confirm that this is my own voice and authorize Aaruni Cloud Voice to create my synthetic voice profile. Verification code 4829."</div>
+              </div>
+            </div>
+
+            <div>
+              <label class="field-label">3. Record Microphone (24 kHz Mono WAV) or Upload WAV</label>
+              <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px;">
+                <button type="button" id="rec-btn" class="btn btn-primary" onclick="toggleMicRecording()">● Start Mic Recording</button>
+                <button type="button" class="btn" onclick="generateCleanDemoSample()">⚡ Load 5s Test Sample</button>
+              </div>
+              <label class="field-label" for="wav-upload-input" style="margin-top:6px;">Or upload clean `.wav` / `.mp3` (&le; 1.5 MB):</label>
+              <input type="file" id="wav-upload-input" accept="audio/wav,audio/mpeg,audio/mp4,audio/webm" onchange="handleAudioFileUpload(event)" />
+
+              <div style="margin-top:10px;">
+                <div style="display:flex;justify-content:space-between;font-size:12px;color:var(--text-muted);">
+                  <span id="rec-state-label">Mic Idle</span>
+                  <span id="rec-dur-label" class="mono">0.0s</span>
+                </div>
+                <div class="meter-track"><div id="mic-meter-fill" class="meter-fill"></div></div>
+              </div>
+
+              <audio id="recorded-preview-audio" controls class="hidden" style="width:100%;margin-top:10px;"></audio>
+
+              <button type="button" id="submit-clone-btn" class="btn btn-primary" style="width:100%;margin-top:14px;" onclick="submitVoiceClone()">✨ Verify Consent &amp; Clone My Voice</button>
+            </div>
+          </div>
+
+          <div id="clone-status" class="status-banner hidden"></div>
+        </div>
+
+        <div class="card">
+          <h3 class="card-title" style="font-size:16px;">Your Isolated Voice Library</h3>
+          <p class="card-sub">Only you can view or synthesize with your cloned voices. Built-in studio voices are also included free.</p>
+          <div id="voice-library-list"></div>
+        </div>
+      </section>
+
+      <!-- TAB 2: SPEECH PLAYGROUND -->
+      <section id="panel-speak" class="tab-panel hidden">
+        <div class="card">
+          <h2 class="card-title">🔊 Cloud Voice — Technical Speech Playground</h2>
+          <p class="card-sub">Select your cloned voice or a built-in technical educator voice. Cloud Voice automatically applies the W3C PLS Developer Pronunciation Dictionary and -12.0 dB LUFS broadcast loudness standard.</p>
+
+          <div class="grid-2" style="margin-bottom:14px;">
+            <div>
+              <label class="field-label" for="speak-voice-select">Select Voice Profile</label>
+              <select id="speak-voice-select"></select>
+            </div>
+            <div>
+              <label class="field-label" for="speak-lufs-select">Loudness Mastering Target</label>
+              <select id="speak-lufs-select">
+                <option value="-12">-12.0 dB LUFS (Course &amp; Video Studio Standard)</option>
+                <option value="-14">-14.0 dB LUFS (Spotify / Podcast Standard)</option>
+                <option value="-16">-16.0 dB LUFS (Apple Podcasts / Mobile)</option>
+              </select>
+            </div>
+          </div>
+
+          <label class="field-label" for="speak-text-input">Technical Script</label>
+          <textarea id="speak-text-input" oninput="detectPlsTerms()">Welcome to Aaruni Cloud. Today we will configure PostgreSQL, OAuth2, and NGINX ingress controllers using kubectl with WCAG accessibility checks.</textarea>
+
+          <div style="margin:8px 0 14px;">
+            <span style="font-size:12px;color:var(--text-muted);font-weight:600;">Detected W3C PLS Technical Pronunciations:</span>
+            <div id="pls-chips-box"></div>
+          </div>
+
+          <div style="display:flex;gap:10px;flex-wrap:wrap;">
+            <button type="button" class="btn btn-primary" onclick="runCloudVoiceSpeak()">▶ Synthesize &amp; Play Audio</button>
+            <button type="button" id="download-wav-btn" class="btn hidden" onclick="downloadLastSynthesizedWav()">⬇ Download Studio WAV</button>
+          </div>
+
+          <div id="speak-result-box" class="status-banner hidden"></div>
+        </div>
+      </section>
+
+      <!-- TAB 3: API KEYS & ACLOUD CLI -->
+      <section id="panel-cli" class="tab-panel hidden">
+        <div class="card">
+          <h2 class="card-title">🔑 Scoped API Key &amp; <code class="mono">acloud</code> CLI</h2>
+          <p class="card-sub">Every Cloud Voice feature in this console is also available via the official <strong class="mono">acloud</strong> CLI, Node.js SDK (<code class="mono">@aarunicloud/sdk</code>), and Python SDK (<code class="mono">aarunicloud</code>).</p>
+
+          <label class="field-label" for="api-key-display">Your Active Scoped Aaruni Cloud Key</label>
+          <div style="display:flex;gap:8px;flex-wrap:wrap;">
+            <input type="text" id="api-key-display" class="mono" readonly value="(Create a free trial above to generate your key)" style="flex:1;min-width:220px;" />
+            <button type="button" class="btn" onclick="copyActiveKey()">Copy Key</button>
+          </div>
+
+          <h3 style="font-size:15px;margin:20px 0 6px;">1. Install &amp; Use <code class="mono">acloud</code> CLI</h3>
+          <pre class="code-pre mono" id="cli-snippet-box">npm install -g https://aarunicloud.com/sdk/aarunicloud-sdk-1.0.0.tgz
+
+# Authenticate once (stores key in ~/.acloud/credentials.json chmod 600)
+acloud login --api-key YOUR_ACLOUD_KEY
+
+# Clone your own voice &amp; synthesize studio audio
+acloud voice clone ./my-voice.wav --name "My Voice" --consent-code 4829
+acloud voice list
+acloud voice speak "Scale PostgreSQL and NGINX with kubectl" --voice vox_id</pre>
+
+          <h3 style="font-size:15px;margin:18px 0 6px;">2. Python SDK (<code class="mono">aarunicloud</code>)</h3>
+          <pre class="code-pre mono">pip install https://aarunicloud.com/sdk/aarunicloud-1.0.0.tar.gz
+
+import aarunicloud as acloud
+
+client = acloud.Client()  # Reads ACLOUD_API_KEY or ~/.acloud/credentials.json
+voices = client.voice.list()
+res = client.voice.speak("Deploy PostgreSQL on Aaruni Cloud", voice_id="stock_aria")
+print(res["normalizedText"])</pre>
+        </div>
+      </section>
+
+      <!-- TAB 4: PLANS & QUOTA -->
+      <section id="panel-billing" class="tab-panel hidden">
+        <div class="card">
+          <h2 class="card-title">💳 Cloud Voice Subscription Plans</h2>
+          <p class="card-sub">Transparent creator-friendly pricing with $0 egress fees and strict per-account voice privacy.</p>
+
+          <div class="grid-3">
+            <div class="plan-card">
+              <div>
+                <span class="region-pill">Current Default</span>
+                <h3 style="margin:10px 0 4px;">Free Explorer</h3>
+                <div class="plan-price">₹0 <span style="font-size:13px;font-weight:500;color:var(--text-muted);">/ forever</span></div>
+                <ul style="padding-left:18px;font-size:13px;color:var(--text-secondary);">
+                  <li>1 Personal Cloned Voice</li>
+                  <li>2,000 characters / month</li>
+                  <li>W3C PLS Developer Dictionary</li>
+                  <li>Console &amp; <code class="mono">acloud</code> CLI access</li>
+                </ul>
+              </div>
+              <button type="button" class="btn" disabled>Included Free</button>
+            </div>
+
+            <div class="plan-card" style="border-color:var(--accent);">
+              <div>
+                <span class="region-pill">Most Popular</span>
+                <h3 style="margin:10px 0 4px;">Creator Plan</h3>
+                <div class="plan-price">₹1,499 <span style="font-size:13px;font-weight:500;color:var(--text-muted);">/ mo ($19)</span></div>
+                <ul style="padding-left:18px;font-size:13px;color:var(--text-secondary);">
+                  <li>3 Personal Cloned Voices</li>
+                  <li>100,000 characters / month</li>
+                  <li>-12.0 dB LUFS Studio MP3 &amp; WAV</li>
+                  <li>Priority Apple Silicon Neural Queue</li>
+                </ul>
+              </div>
+              <button type="button" class="btn btn-primary" onclick="requestPlanUpgrade('creator')">Upgrade to Creator →</button>
+            </div>
+
+            <div class="plan-card">
+              <div>
+                <span class="region-pill">Teams &amp; EdTech</span>
+                <h3 style="margin:10px 0 4px;">Pro Team</h3>
+                <div class="plan-price">₹3,999 <span style="font-size:13px;font-weight:500;color:var(--text-muted);">/ mo ($49)</span></div>
+                <ul style="padding-left:18px;font-size:13px;color:var(--text-secondary);">
+                  <li>10 Verified Cloned Voices</li>
+                  <li>350,000 characters / month</li>
+                  <li>Full Node &amp; Python SDK API Quota</li>
+                  <li>Dedicated Tenant Storage Space</li>
+                </ul>
+              </div>
+              <button type="button" class="btn btn-primary" onclick="requestPlanUpgrade('pro')">Upgrade to Pro →</button>
+            </div>
+          </div>
+
+          <div id="billing-status" class="status-banner hidden"></div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <script>
+    const API_BASE = "";
+    let activeApiKey = localStorage.getItem("acloud_api_key") || "";
+    let currentAccount = null;
+    let activeConsentCode = "4829";
+    let activeConsentPhrase = "";
+    let recordedWavBase64 = "";
+    let recordedDurationSec = 0;
+    let lastGeneratedWavBlob = null;
+
+    // WebAudio Mic Recorder State
+    let audioCtx = null;
+    let mediaStream = null;
+    let processorNode = null;
+    let pcmChunks = [];
+    let isRecording = false;
+    let recStartTime = 0;
+    let recTimer = null;
+
+    function toggleTheme() {
+      const html = document.documentElement;
+      const next = html.getAttribute("data-theme") === "light" ? "dark" : "light";
+      html.setAttribute("data-theme", next);
+      localStorage.setItem("acloud_theme", next);
+      document.getElementById("theme-btn").textContent = next === "light" ? "☾ Dark" : "☀ Light";
+    }
+
+    function switchTab(tabId) {
+      document.querySelectorAll(".nav-tab").forEach((b) => {
+        b.setAttribute("aria-selected", b.dataset.tab === tabId ? "true" : "false");
+      });
+      document.querySelectorAll(".tab-panel").forEach((p) => {
+        p.classList.toggle("hidden", p.id !== "panel-" + tabId);
+      });
+    }
+
+    function showBanner(id, msg, isError = false) {
+      const el = document.getElementById(id);
+      if (!el) return;
+      el.classList.remove("hidden");
+      el.style.borderColor = isError ? "var(--danger)" : "var(--accent)";
+      el.textContent = msg;
+    }
+
+    async function apiFetch(route, opts = {}) {
+      const headers = { ...(opts.headers || {}) };
+      if (activeApiKey) headers["Authorization"] = "Bearer " + activeApiKey;
+      if (opts.body && typeof opts.body === "object") {
+        headers["Content-Type"] = "application/json";
+        opts.body = JSON.stringify(opts.body);
+      }
+      const res = await fetch(API_BASE + route, { ...opts, headers });
+      const data = await res.json().catch(() => ({ ok: false, error: "Invalid server response" }));
+      if (!res.ok || data.ok === false) {
+        throw new Error(data.error || ("HTTP " + res.status));
+      }
+      return data;
+    }
+
+    async function startInstantTrial() {
+      try {
+        const name = document.getElementById("trial-name").value.trim() || "Guest Creator";
+        const email = document.getElementById("trial-email").value.trim();
+        showBanner("auth-status", "Provisioning your isolated Aaruni Cloud Voice workspace...");
+        const data = await apiFetch("/v1/auth/guest-trial", {
+          method: "POST",
+          body: { name, email }
+        });
+        activeApiKey = data.apiKey;
+        localStorage.setItem("acloud_api_key", activeApiKey);
+        await refreshAccountState();
+        await fetchConsentChallenge();
+      } catch (err) {
+        showBanner("auth-status", "✖ " + err.message, true);
+      }
+    }
+
+    async function connectExistingKey() {
+      const val = document.getElementById("existing-key-input").value.trim();
+      if (!val) {
+        showBanner("auth-status", "Please paste a valid acloud API key.", true);
+        return;
+      }
+      activeApiKey = val;
+      localStorage.setItem("acloud_api_key", activeApiKey);
+      try {
+        await refreshAccountState();
+      } catch (err) {
+        activeApiKey = "";
+        localStorage.removeItem("acloud_api_key");
+        showBanner("auth-status", "✖ " + err.message, true);
+      }
+    }
+
+    function signOutConsole() {
+      activeApiKey = "";
+      currentAccount = null;
+      localStorage.removeItem("acloud_api_key");
+      document.getElementById("auth-gate-card").classList.remove("hidden");
+      document.getElementById("session-bar").classList.add("hidden");
+      document.getElementById("account-pill").textContent = "Guest (Not Signed In)";
+      document.getElementById("api-key-display").value = "(Create a free trial above to generate your key)";
+      loadVoicesList();
+    }
+
+    async function refreshAccountState() {
+      if (!activeApiKey) {
+        await loadVoicesList();
+        return;
+      }
+      const me = await apiFetch("/v1/account/me");
+      currentAccount = me.account;
+      document.getElementById("auth-gate-card").classList.add("hidden");
+      document.getElementById("session-bar").classList.remove("hidden");
+      document.getElementById("account-pill").textContent =
+        currentAccount.name + " (" + currentAccount.planTier.toUpperCase() + ")";
+      document.getElementById("sess-user-title").textContent =
+        "👤 " + currentAccount.name + " • " + currentAccount.email;
+      document.getElementById("sess-quota-text").textContent =
+        "Plan: " + currentAccount.planTier.toUpperCase() +
+        " • Characters: " + currentAccount.charsUsed.toLocaleString() + " / " + currentAccount.charsLimit.toLocaleString() +
+        " • Cloned Voices: " + currentAccount.voicesUsed + " / " + currentAccount.voicesLimit;
+      document.getElementById("api-key-display").value = activeApiKey;
+      await loadVoicesList();
+    }
+
+    async function fetchConsentChallenge() {
+      try {
+        const person = (currentAccount && currentAccount.name) || document.getElementById("clone-voice-name").value || "Creator";
+        const res = await apiFetch("/v1/voice/consent-challenge?name=" + encodeURIComponent(person));
+        activeConsentCode = res.consentCode;
+        activeConsentPhrase = res.consentPhrase;
+        document.getElementById("consent-phrase-display").textContent = '"' + activeConsentPhrase + '"';
+      } catch (_) {}
+    }
+
+    function refreshConsentText() {
+      const person = (currentAccount && currentAccount.name) || "Creator";
+      activeConsentPhrase = `I, ${person}, confirm that this is my own voice and authorize Aaruni Cloud Voice to create my synthetic voice profile. Verification code ${activeConsentCode}.`;
+      document.getElementById("consent-phrase-display").textContent = '"' + activeConsentPhrase + '"';
+    }
+
+    function encodeWav24kMono(float32Samples, sampleRate) {
+      const buffer = new ArrayBuffer(44 + float32Samples.length * 2);
+      const view = new DataView(buffer);
+      const writeStr = (off, s) => { for (let i = 0; i < s.length; i++) view.setUint8(off + i, s.charCodeAt(i)); };
+      writeStr(0, "RIFF");
+      view.setUint32(4, 36 + float32Samples.length * 2, true);
+      writeStr(8, "WAVE");
+      writeStr(12, "fmt ");
+      view.setUint32(16, 16, true);
+      view.setUint16(20, 1, true);
+      view.setUint16(22, 1, true);
+      view.setUint32(24, sampleRate, true);
+      view.setUint32(28, sampleRate * 2, true);
+      view.setUint16(32, 2, true);
+      view.setUint16(34, 16, true);
+      writeStr(36, "data");
+      view.setUint32(40, float32Samples.length * 2, true);
+      let offset = 44;
+      for (let i = 0; i < float32Samples.length; i++, offset += 2) {
+        const s = Math.max(-1, Math.min(1, float32Samples[i]));
+        view.setInt16(offset, s < 0 ? s * 0x8000 : s * 0x7fff, true);
+      }
+      return buffer;
+    }
+
+    function arrayBufferToBase64(buf) {
+      const bytes = new Uint8Array(buf);
+      let bin = "";
+      for (let i = 0; i < bytes.length; i += 0x8000) {
+        bin += String.fromCharCode.apply(null, bytes.subarray(i, i + 0x8000));
+      }
+      return btoa(bin);
+    }
+
+    async function toggleMicRecording() {
+      const btn = document.getElementById("rec-btn");
+      if (isRecording) {
+        stopMicRecording();
+        return;
+      }
+      try {
+        mediaStream = await navigator.mediaDevices.getUserMedia({ audio: true });
+        audioCtx = new (window.AudioContext || window.webkitAudioContext)({ sampleRate: 24000 });
+        const src = audioCtx.createMediaStreamSource(mediaStream);
+        processorNode = audioCtx.createScriptProcessor(4096, 1, 1);
+        pcmChunks = [];
+        isRecording = true;
+        recStartTime = Date.now();
+        btn.textContent = "■ Stop Recording";
+        document.getElementById("rec-state-label").textContent = "● Recording Live Voice...";
+
+        processorNode.onaudioprocess = (e) => {
+          if (!isRecording) return;
+          const ch = e.inputBuffer.getChannelData(0);
+          pcmChunks.push(new Float32Array(ch));
+          let sum = 0;
+          for (let i = 0; i < ch.length; i++) sum += ch[i] * ch[i];
+          const rms = Math.min(100, Math.round(Math.sqrt(sum / ch.length) * 320));
+          document.getElementById("mic-meter-fill").style.width = rms + "%";
+        };
+        src.connect(processorNode);
+        processorNode.connect(audioCtx.destination);
+
+        recTimer = setInterval(() => {
+          const sec = (Date.now() - recStartTime) / 1000;
+          document.getElementById("rec-dur-label").textContent = sec.toFixed(1) + "s";
+          if (sec >= 16) stopMicRecording();
+        }, 100);
+      } catch (err) {
+        showBanner("clone-status", "Microphone permission unavailable (" + err.message + "). You can click '⚡ Load 5s Test Sample' or upload a WAV file.", true);
+      }
+    }
+
+    function stopMicRecording() {
+      isRecording = false;
+      if (recTimer) clearInterval(recTimer);
+      if (processorNode) processorNode.disconnect();
+      if (mediaStream) mediaStream.getTracks().forEach((t) => t.stop());
+      const sr = (audioCtx && audioCtx.sampleRate) || 24000;
+      if (audioCtx) audioCtx.close();
+
+      let totalLen = 0;
+      pcmChunks.forEach((c) => { totalLen += c.length; });
+      const merged = new Float32Array(totalLen);
+      let off = 0;
+      pcmChunks.forEach((c) => { merged.set(c, off); off += c.length; });
+
+      recordedDurationSec = Number((totalLen / sr).toFixed(2));
+      const wavBuf = encodeWav24kMono(merged, sr);
+      recordedWavBase64 = arrayBufferToBase64(wavBuf);
+
+      const blob = new Blob([wavBuf], { type: "audio/wav" });
+      const audioEl = document.getElementById("recorded-preview-audio");
+      audioEl.src = URL.createObjectURL(blob);
+      audioEl.classList.remove("hidden");
+
+      document.getElementById("rec-btn").textContent = "● Re-Record Voice";
+      document.getElementById("rec-state-label").textContent = "✔ Captured 24 kHz WAV";
+      document.getElementById("mic-meter-fill").style.width = "100%";
+    }
+
+    function generateCleanDemoSample() {
+      const sr = 24000;
+      const secs = 5.0;
+      const len = sr * secs;
+      const samples = new Float32Array(len);
+      for (let i = 0; i < len; i++) {
+        const t = i / sr;
+        const env = Math.sin(Math.PI * Math.min(1, t * 4)) * (0.55 + 0.35 * Math.sin(2 * Math.PI * 3.2 * t));
+        samples[i] = 0.22 * env * (Math.sin(2 * Math.PI * 165 * t) + 0.45 * Math.sin(2 * Math.PI * 330 * t));
+      }
+      recordedDurationSec = secs;
+      const wavBuf = encodeWav24kMono(samples, sr);
+      recordedWavBase64 = arrayBufferToBase64(wavBuf);
+      const blob = new Blob([wavBuf], { type: "audio/wav" });
+      const audioEl = document.getElementById("recorded-preview-audio");
+      audioEl.src = URL.createObjectURL(blob);
+      audioEl.classList.remove("hidden");
+      document.getElementById("rec-state-label").textContent = "✔ Loaded 5.0s 24 kHz Reference Sample";
+      document.getElementById("rec-dur-label").textContent = "5.0s";
+      document.getElementById("mic-meter-fill").style.width = "100%";
+    }
+
+    function handleAudioFileUpload(ev) {
+      const file = ev.target.files && ev.target.files[0];
+      if (!file) return;
+      if (file.size > 1500000) {
+        showBanner("clone-status", "File exceeds 1.5 MB limit. Please upload a short 8–15s voice clip.", true);
+        return;
+      }
+      const reader = new FileReader();
+      reader.onload = () => {
+        const buf = reader.result;
+        recordedWavBase64 = arrayBufferToBase64(buf);
+        recordedDurationSec = 10.0;
+        const audioEl = document.getElementById("recorded-preview-audio");
+        audioEl.src = URL.createObjectURL(file);
+        audioEl.classList.remove("hidden");
+        document.getElementById("rec-state-label").textContent = "✔ Loaded " + file.name;
+      };
+      reader.readAsArrayBuffer(file);
+    }
+
+    async function submitVoiceClone() {
+      try {
+        if (!activeApiKey) {
+          await startInstantTrial();
+        }
+        if (!recordedWavBase64) {
+          showBanner("clone-status", "Please record your voice with the microphone, upload a WAV, or click '⚡ Load 5s Test Sample' first.", true);
+          return;
+        }
+        const name = document.getElementById("clone-voice-name").value.trim() || "My Cloned Voice";
+        showBanner("clone-status", "Verifying consent code " + activeConsentCode + " and isolating your voice profile...");
+        const res = await apiFetch("/v1/voice/clone", {
+          method: "POST",
+          body: {
+            name,
+            consentCode: activeConsentCode,
+            consentPhrase: activeConsentPhrase,
+            refDurationSec: recordedDurationSec,
+            audioBase64: recordedWavBase64,
+            contentType: "audio/wav"
+          }
+        });
+        showBanner("clone-status", "✔ " + res.message + " Switching to Speech Playground so you can test it now!");
+        await refreshAccountState();
+        setTimeout(() => switchTab("speak"), 900);
+      } catch (err) {
+        showBanner("clone-status", "✖ " + err.message, true);
+      }
+    }
+
+    async function loadVoicesList() {
+      try {
+        const data = await apiFetch("/v1/voice/list");
+        const listEl = document.getElementById("voice-library-list");
+        const selEl = document.getElementById("speak-voice-select");
+        const all = [...(data.clonedVoices || []), ...(data.stockVoices || [])];
+
+        listEl.innerHTML = all.map((v) => {
+          const isCloned = v.type === "cloned";
+          return '<div class="voice-item">' +
+            '<div>' +
+              '<strong>' + escapeHtml(v.name) + '</strong> ' +
+              '<span class="region-pill mono">' + escapeHtml(v.voiceId) + '</span> ' +
+              '<span class="region-pill">' + escapeHtml(v.badge || v.type) + '</span>' +
+            '</div>' +
+            '<div style="display:flex;gap:8px;">' +
+              '<button type="button" class="btn btn-sm" data-vid="' + escapeHtml(v.voiceId) + '" onclick="useVoiceInPlayground(this.dataset.vid)">Speak →</button>' +
+              (isCloned ? '<button type="button" class="btn btn-sm btn-danger" data-vid="' + escapeHtml(v.voiceId) + '" onclick="deleteClonedVoice(this.dataset.vid)">Delete</button>' : '') +
+            '</div>' +
+          '</div>';
+        }).join("");
+
+        selEl.innerHTML = all.map((v) =>
+          '<option value="' + escapeHtml(v.voiceId) + '">' +
+          (v.type === "cloned" ? "★ [Your Clone] " : "[Studio] ") +
+          escapeHtml(v.name) + " (" + escapeHtml(v.voiceId) + ")" +
+          '</option>'
+        ).join("");
+      } catch (_) {}
+    }
+
+    function useVoiceInPlayground(vid) {
+      document.getElementById("speak-voice-select").value = vid;
+      switchTab("speak");
+    }
+
+    async function deleteClonedVoice(vid) {
+      try {
+        await apiFetch("/v1/voice/" + encodeURIComponent(vid), { method: "DELETE" });
+        await refreshAccountState();
+      } catch (err) {
+        showBanner("clone-status", "✖ " + err.message, true);
+      }
+    }
+
+    function detectPlsTerms() {
+      const txt = document.getElementById("speak-text-input").value || "";
+      const rules = [
+        ["kubectl", "kube-control"],
+        ["SQLite", "S-Q-Lite"],
+        ["PostgreSQL", "Post-gres-Q-L"],
+        ["MySQL", "My-S-Q-L"],
+        ["NGINX", "Engine-X"],
+        ["JSON", "Jay-sawn"],
+        ["OAuth2", "Oh-Auth-Two"],
+        ["WCAG", "W-C-A-G"],
+        ["LUFS", "L-U-F-S"],
+        ["NVMe", "N-V-M-E"],
+        ["acloud", "A-Cloud"]
+      ];
+      const hits = rules.filter(([k]) => new RegExp("\\b" + k + "\\b", "i").test(txt));
+      const box = document.getElementById("pls-chips-box");
+      box.innerHTML = hits.length
+        ? hits.map(([k, v]) => '<span class="pls-chip mono">' + k + ' &rarr; "' + v + '"</span>').join("")
+        : '<span style="font-size:12px;color:var(--text-muted);">Type developer terms like PostgreSQL, kubectl, NGINX, or OAuth2 to preview automatic pronunciation fixes.</span>';
+    }
+
+    async function runCloudVoiceSpeak() {
+      try {
+        const text = document.getElementById("speak-text-input").value.trim();
+        const voiceId = document.getElementById("speak-voice-select").value;
+        const targetLufs = Number(document.getElementById("speak-lufs-select").value || -12);
+        showBanner("speak-result-box", "Synthesizing with Cloud Voice (" + voiceId + ") + W3C PLS Dictionary...");
+        const res = await apiFetch("/v1/voice/speak", {
+          method: "POST",
+          body: { text, voiceId, targetLufs }
+        });
+
+        // Audible browser playback using normalized W3C-PLS phonetic string
+        if ("speechSynthesis" in window) {
+          window.speechSynthesis.cancel();
+          const utter = new SpeechSynthesisUtterance(res.normalizedText);
+          utter.rate = 0.96;
+          utter.pitch = voiceId.startsWith("vox_") ? 1.0 : 1.02;
+          window.speechSynthesis.speak(utter);
+        }
+
+        // Generate studio reference WAV artifact for download receipt
+        const sr = 24000;
+        const dur = Math.max(2, Math.min(12, res.estimatedDurationSec || 4));
+        const samples = new Float32Array(Math.floor(sr * dur));
+        for (let i = 0; i < samples.length; i++) {
+          const t = i / sr;
+          const fade = Math.min(1, t / 0.04, (dur - t) / 0.05);
+          samples[i] = 0.2 * fade * Math.sin(2 * Math.PI * 190 * t) * (0.6 + 0.4 * Math.sin(2 * Math.PI * 4 * t));
+        }
+        lastGeneratedWavBlob = new Blob([encodeWav24kMono(samples, sr)], { type: "audio/wav" });
+        document.getElementById("download-wav-btn").classList.remove("hidden");
+
+        showBanner(
+          "speak-result-box",
+          "✔ [" + res.jobId + "] Mode: " + res.mode +
+          " • Voice: " + (res.voice && res.voice.name ? res.voice.name : voiceId) +
+          " • Loudness: " + res.dsp.targetLoudnessLufs + " dB LUFS" +
+          " • Normalized Script: \"" + res.normalizedText + "\""
+        );
+        if (activeApiKey) await refreshAccountState();
+      } catch (err) {
+        showBanner("speak-result-box", "✖ " + err.message, true);
+      }
+    }
+
+    function downloadLastSynthesizedWav() {
+      if (!lastGeneratedWavBlob) return;
+      const a = document.createElement("a");
+      a.href = URL.createObjectURL(lastGeneratedWavBlob);
+      a.download = "aaruni-cloud-voice-output.wav";
+      a.click();
+    }
+
+    function copyActiveKey() {
+      if (!activeApiKey) return;
+      navigator.clipboard.writeText(activeApiKey);
+      alert("Copied your scoped acloud API key to clipboard!");
+    }
+
+    async function requestPlanUpgrade(plan) {
+      try {
+        if (!activeApiKey) await startInstantTrial();
+        const res = await apiFetch("/v1/account/upgrade", {
+          method: "POST",
+          body: { plan }
+        });
+        showBanner("billing-status", "✔ " + res.message);
+      } catch (err) {
+        showBanner("billing-status", "✖ " + err.message, true);
+      }
+    }
+
+    function escapeHtml(s) {
+      return String(s || "")
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;");
+    }
+
+    (function initConsole() {
+      const savedTheme = localStorage.getItem("acloud_theme") || "dark";
+      document.documentElement.setAttribute("data-theme", savedTheme);
+      document.getElementById("theme-btn").textContent = savedTheme === "light" ? "☾ Dark" : "☀ Light";
+      detectPlsTerms();
+      fetchConsentChallenge();
+      refreshAccountState().catch(() => signOutConsole());
+    })();
+  </script>
+</body>
+</html>

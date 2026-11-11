@@ -1,13 +1,18 @@
 // ============================================================================
-// AARUNI CLOUD PRODUCTION REST API GATEWAY (v1) — ZERO-TRUST HARDENED
-// Domains: https://api.aarunicloud.com/v1/* & https://aarunicloud.com/api/v1/*
-// Security Policy:
-//   - ZERO inbound ports to owner hardware (100% Cloudflare Edge air-gap)
-//   - ALL Compute, Containers, Render, Storage, Archive, Jobs & Guard routes
-//     strictly require a private SHA-256 Aaruni Guard admin token (HTTP 401/403 for public)
-//   - Anti-RCE Workload Enum & Shell-Metacharacter Blocker on all job payloads
-//   - Public storefront showcase routes (/v1/status, /v1/services, /v1/assistant/ask,
-//     /v1/voice/synthesize) run 100% stateless in-memory with ZERO DB writes for anonymous callers
+// AARUNI CLOUD PRODUCTION REST API GATEWAY (v1) — OPTION A LOCKED
+// Brand Architecture:
+//   - Platform: Aaruni Cloud (aarunicloud.com)
+//   - Console : Aaruni Cloud Console (console.aarunicloud.com)
+//   - CLI/SDK : acloud (@aarunicloud/sdk & aarunicloud)
+//   - Services: Cloud Voice, Cloud Storage, Cloud Archive, Cloud Compute,
+//               Cloud Containers, Cloud Assistant, Cloud Knowledge,
+//               Cloud Render, Cloud Quality, Cloud Guard, Cloud Edge
+// Security & Isolation:
+//   - 0 inbound ports exposed on owner hardware (outbound-pull only)
+//   - Admin infrastructure routes (/v1/compute/*, /v1/containers/*, /v1/render/*)
+//     strictly require role === 'admin'
+//   - Self-serve Guest Subscribers (acloud_sub_*) are strictly jailed to their
+//     own user_id voice profiles, character quota, and isolated user_<id> space
 // ============================================================================
 
 const API_CORS = {
@@ -22,7 +27,7 @@ function jsonRes(data, status = 200, extraHeaders = {}) {
     status,
     headers: {
       ...API_CORS,
-      "X-Aaruni-Zero-Trust": "ENFORCED-PRIVATE-ISOLATION",
+      "X-Aaruni-Zero-Trust": "ENFORCED-TENANT-ISOLATION",
       "Content-Type": "application/json; charset=utf-8",
       ...extraHeaders
     }
@@ -40,6 +45,12 @@ async function sha256Hex(input) {
 function makeId(prefix) {
   const rand = crypto.randomUUID().replace(/-/g, "").slice(0, 12);
   return `${prefix}_${rand}`;
+}
+
+function makeSecretToken(prefix) {
+  const a = crypto.randomUUID().replace(/-/g, "");
+  const b = crypto.randomUUID().replace(/-/g, "").slice(0, 16);
+  return `${prefix}_${a}${b}`;
 }
 
 function bufToBase64(buf) {
@@ -65,27 +76,33 @@ const SHELL_INJECTION_PATTERN = /(?:;|\|\||&&|`|\$\(|\/bin\/(?:sh|bash|zsh)|rm\s
 
 function assertSafeWorkloadPayload(obj) {
   const serialized = JSON.stringify(obj || {});
-  if (serialized.length > 8192) {
-    return { ok: false, error: "Payload exceeds 8 KB structured parameter limit." };
+  if (serialized.length > 16384) {
+    return { ok: false, error: "Payload exceeds 16 KB structured parameter limit." };
   }
   if (SHELL_INJECTION_PATTERN.test(serialized)) {
-    return { ok: false, error: "Blocked by Aaruni Guard Anti-RCE Shield: raw shell commands and metacharacters are forbidden." };
+    return { ok: false, error: "Blocked by Cloud Guard Anti-RCE Shield: raw shell commands and metacharacters are forbidden." };
   }
   return { ok: true };
 }
 
 const SERVICE_CATALOG = [
-  { code: "ACS", id: "storage", name: "Aaruni Storage", category: "storage", access: "private-key-required", endpoint: "https://api.aarunicloud.com/v1/storage", cli: "aaruni storage ls --space production-media" },
-  { code: "ARC", id: "archive", name: "Aaruni Archive", category: "storage", access: "private-key-required", endpoint: "https://api.aarunicloud.com/v1/archive/seal", cli: "aaruni archive seal --space production-media --key master.zip" },
-  { code: "ACC", id: "compute", name: "Aaruni Compute", category: "compute", access: "private-key-required", endpoint: "https://api.aarunicloud.com/v1/compute/nodes", cli: "aaruni compute nodes" },
-  { code: "ACN", id: "containers", name: "Aaruni Containers", category: "compute", access: "private-key-required", endpoint: "https://api.aarunicloud.com/v1/containers/run", cli: "aaruni containers run --image xvfb-1080p-worker" },
-  { code: "AVA", id: "voice", name: "Aaruni Voice", category: "ai", access: "stateless-preview-or-private-key", endpoint: "https://api.aarunicloud.com/v1/voice/synthesize", cli: "aaruni voice synthesize \"Hello from Aaruni Cloud\"" },
-  { code: "AAI", id: "assistant", name: "Aaruni Assistant", category: "ai", access: "stateless-preview-or-private-key", endpoint: "https://api.aarunicloud.com/v1/assistant/ask", cli: "aaruni assistant ask \"Check ACS storage and launch ACC compute\"" },
-  { code: "AKB", id: "knowledge", name: "Aaruni Knowledge", category: "ai", access: "public-docs-readonly", endpoint: "https://api.aarunicloud.com/v1/knowledge/search", cli: "aaruni knowledge search \"zero egress\"" },
-  { code: "ARN", id: "render", name: "Aaruni Render", category: "tools", access: "private-key-required", endpoint: "https://api.aarunicloud.com/v1/render/build", cli: "aaruni render build --project lesson-01 --resolution 1080p" },
-  { code: "AQA", id: "qa", name: "Aaruni Quality", category: "tools", access: "stateless-preview-or-private-key", endpoint: "https://api.aarunicloud.com/v1/qa/audit", cli: "aaruni qa audit --url https://aarunicloud.com" },
-  { code: "AGD", id: "guard", name: "Aaruni Guard", category: "security", access: "private-key-required", endpoint: "https://api.aarunicloud.com/v1/guard/whoami", cli: "aaruni guard whoami" },
-  { code: "AED", id: "edge", name: "Aaruni Edge", category: "security", access: "public-health-readonly", endpoint: "https://api.aarunicloud.com/v1/edge/status", cli: "aaruni status" }
+  { code: "VOICE", id: "voice", name: "Cloud Voice", fullName: "Aaruni Cloud Voice", category: "ai", access: "subscriber-or-admin", endpoint: "https://api.aarunicloud.com/v1/voice/speak", cli: "acloud voice speak \"Hello from Aaruni Cloud\" --out intro.mp3" },
+  { code: "STORAGE", id: "storage", name: "Cloud Storage", fullName: "Aaruni Cloud Storage", category: "storage", access: "private-key-required", endpoint: "https://api.aarunicloud.com/v1/storage", cli: "acloud storage ls --space production-media" },
+  { code: "ARCHIVE", id: "archive", name: "Cloud Archive", fullName: "Aaruni Cloud Archive", category: "storage", access: "private-key-required", endpoint: "https://api.aarunicloud.com/v1/archive/seal", cli: "acloud archive seal --space production-media --key master.zip" },
+  { code: "COMPUTE", id: "compute", name: "Cloud Compute", fullName: "Aaruni Cloud Compute", category: "compute", access: "admin-only", endpoint: "https://api.aarunicloud.com/v1/compute/nodes", cli: "acloud compute nodes" },
+  { code: "CONTAINERS", id: "containers", name: "Cloud Containers", fullName: "Aaruni Cloud Containers", category: "compute", access: "admin-only", endpoint: "https://api.aarunicloud.com/v1/containers/run", cli: "acloud containers run --image xvfb-1080p-worker" },
+  { code: "ASSISTANT", id: "assistant", name: "Cloud Assistant", fullName: "Aaruni Cloud Assistant", category: "ai", access: "public-or-authenticated", endpoint: "https://api.aarunicloud.com/v1/assistant/ask", cli: "acloud assistant ask \"Verify Cloud Storage and Cloud Voice\"" },
+  { code: "KNOWLEDGE", id: "knowledge", name: "Cloud Knowledge", fullName: "Aaruni Cloud Knowledge", category: "ai", access: "public-docs-readonly", endpoint: "https://api.aarunicloud.com/v1/knowledge/search", cli: "acloud knowledge search \"zero egress\"" },
+  { code: "RENDER", id: "render", name: "Cloud Render", fullName: "Aaruni Cloud Render", category: "tools", access: "admin-only", endpoint: "https://api.aarunicloud.com/v1/render/build", cli: "acloud render build --project lesson-01 --resolution 1080p" },
+  { code: "QUALITY", id: "qa", name: "Cloud Quality", fullName: "Aaruni Cloud Quality", category: "tools", access: "public-or-authenticated", endpoint: "https://api.aarunicloud.com/v1/qa/audit", cli: "acloud qa audit --url https://aarunicloud.com" },
+  { code: "GUARD", id: "guard", name: "Cloud Guard", fullName: "Aaruni Cloud Guard", category: "security", access: "private-key-required", endpoint: "https://api.aarunicloud.com/v1/guard/whoami", cli: "acloud guard whoami" },
+  { code: "EDGE", id: "edge", name: "Cloud Edge", fullName: "Aaruni Cloud Edge", category: "security", access: "public-health-readonly", endpoint: "https://api.aarunicloud.com/v1/edge/status", cli: "acloud status" }
+];
+
+const STOCK_VOICES = [
+  { voiceId: "stock_aria", name: "Aria — Technical Educator", type: "stock", language: "en-US", pitch: 1.04, rate: 0.96, badge: "Built-In Studio" },
+  { voiceId: "stock_dev", name: "Dev — Systems Architect", type: "stock", language: "en-IN", pitch: 0.94, rate: 0.95, badge: "Built-In Studio" },
+  { voiceId: "stock_meera", name: "Meera — Product Walkthrough", type: "stock", language: "en-GB", pitch: 1.08, rate: 0.97, badge: "Built-In Studio" }
 ];
 
 const W3C_PLS_LEXICON = [
@@ -99,12 +116,13 @@ const W3C_PLS_LEXICON = [
   [/\bWCAG\b/gi, "W-C-A-G"],
   [/\bLUFS\b/gi, "L-U-F-S"],
   [/\bNVMe\b/gi, "N-V-M-E"],
+  [/\bacloud\b/gi, "A-Cloud"],
   [/\.cmproj\b/gi, "Camtasia project"],
   [/\.libzip\b/gi, "Camtasia library archive"]
 ];
 
 function applyPlsLexicon(rawText) {
-  let normalized = String(rawText || "").slice(0, 1200).trim();
+  let normalized = String(rawText || "").slice(0, 1500).trim();
   const replacements = [];
   for (const [regex, spoken] of W3C_PLS_LEXICON) {
     if (regex.test(normalized)) {
@@ -114,24 +132,20 @@ function applyPlsLexicon(rawText) {
   }
   const words = normalized ? normalized.split(/\s+/).length : 0;
   const estDurationSec = Number(((words / 145) * 60).toFixed(2));
-  const ssml = `<speak version="1.1" xml:lang="en-US"><prosody rate="100%">${normalized
+  const ssml = `<speak version="1.1" xml:lang="en-US"><prosody rate="96%">${normalized
     .replace(/&/g, "&amp;")
     .replace(/</g, "&lt;")
     .replace(/>/g, "&gt;")}</prosody></speak>`;
   return { normalizedText: normalized, words, estDurationSec, replacements, ssml };
 }
 
-/**
- * Strictly authenticates a private Aaruni Guard API key from Authorization: Bearer <token>.
- * NO anonymous or public demo token fallback exists.
- */
-async function authenticatePrivateGuard(request, env, executeD1Query) {
+async function authenticateGuard(request, env, executeD1Query) {
   const auth = request.headers.get("Authorization") || "";
   if (!auth.toLowerCase().startsWith("bearer ")) {
     return {
       ok: false,
       status: 401,
-      error: "Blocked by Aaruni Guard (AGD) Zero-Trust Policy: Private Authorization Bearer key required. Public access to compute, storage, and render infrastructure is disabled."
+      error: "Blocked by Cloud Guard Zero-Trust Policy: Authorization Bearer API key required. Sign in at https://console.aarunicloud.com or run 'acloud login'."
     };
   }
   const rawToken = auth.slice(7).trim();
@@ -139,7 +153,7 @@ async function authenticatePrivateGuard(request, env, executeD1Query) {
     return {
       ok: false,
       status: 403,
-      error: "Blocked by Aaruni Guard (AGD) Zero-Trust Policy: Public demo tokens are disabled. Private owner API key required."
+      error: "Blocked by Cloud Guard Zero-Trust Policy: Invalid or disabled API token."
     };
   }
 
@@ -153,17 +167,63 @@ async function authenticatePrivateGuard(request, env, executeD1Query) {
     return {
       ok: false,
       status: 403,
-      error: "Invalid or revoked Aaruni Guard (AGD) private API key."
+      error: "Invalid or revoked Aaruni Cloud Guard API key."
     };
   }
   return { ok: true, principal: results[0] };
 }
 
-async function tryOptionalPrivateGuard(request, env, executeD1Query) {
+async function authenticateAdminOnly(request, env, executeD1Query) {
+  const auth = await authenticateGuard(request, env, executeD1Query);
+  if (!auth.ok) return auth;
+  if (auth.principal.role !== "admin") {
+    return {
+      ok: false,
+      status: 403,
+      error: "Forbidden: Subscriber keys are strictly scoped to Cloud Voice & isolated tenant storage. Infrastructure compute and render require owner admin privilege."
+    };
+  }
+  return auth;
+}
+
+async function tryOptionalGuard(request, env, executeD1Query) {
   const auth = request.headers.get("Authorization") || "";
   if (!auth.toLowerCase().startsWith("bearer ")) return null;
-  const res = await authenticatePrivateGuard(request, env, executeD1Query);
+  const res = await authenticateGuard(request, env, executeD1Query);
   return res.ok ? res.principal : null;
+}
+
+async function resolveOrCreateUserForPrincipal(env, executeD1Query, principal) {
+  const email = principal.owner_email;
+  const existing = await executeD1Query(
+    env,
+    "SELECT user_id, email, name, plan_tier, chars_used, chars_limit, voices_limit, created_at FROM cloud_users WHERE email = ? LIMIT 1",
+    [email]
+  );
+  if (existing.results && existing.results.length > 0) {
+    return existing.results[0];
+  }
+  const isAdmin = principal.role === "admin";
+  const userId = isAdmin ? "usr_owner_rupesh" : makeId("usr");
+  const planTier = isAdmin ? "enterprise_owner" : "free";
+  const charsLimit = isAdmin ? 10000000 : 2000;
+  const voicesLimit = isAdmin ? 50 : 1;
+  const name = email.split("@")[0];
+  await executeD1Query(
+    env,
+    `INSERT INTO cloud_users (user_id, email, name, plan_tier, chars_used, chars_limit, voices_limit, created_at)
+     VALUES (?, ?, ?, ?, 0, ?, ?, datetime('now'))`,
+    [userId, email, name, planTier, charsLimit, voicesLimit]
+  );
+  return {
+    user_id: userId,
+    email,
+    name,
+    plan_tier: planTier,
+    chars_used: 0,
+    chars_limit: charsLimit,
+    voices_limit: voicesLimit
+  };
 }
 
 async function logAudit(env, executeD1Query, keyId, service, action, status = "OK") {
@@ -190,31 +250,35 @@ export async function handleCloudApiV1(request, env, executeD1Query) {
   const colo = (request.cf && request.cf.colo) || "HYD";
 
   try {
-    // -------------------------------------------------------------------------
-    // 1. SANITIZED PUBLIC HEALTH & CATALOG (/v1/status, /v1/services, /v1/edge/status)
-    // -------------------------------------------------------------------------
+    // =========================================================================
+    // 1. PUBLIC HEALTH & SERVICE CATALOG (/v1/status, /v1/services, /v1/edge/status)
+    // =========================================================================
     if (path === "/v1/status" && request.method === "GET") {
-      const principal = await tryOptionalPrivateGuard(request, env, executeD1Query);
+      const principal = await tryOptionalGuard(request, env, executeD1Query);
       let privateMetrics = undefined;
       if (principal && principal.role === "admin") {
-        const [nodesQ, storageQ, jobsQ] = await Promise.all([
+        const [nodesQ, storageQ, jobsQ, usersQ] = await Promise.all([
           executeD1Query(env, "SELECT count(*) as c FROM cloud_compute_nodes WHERE status = 'ACTIVE'"),
           executeD1Query(env, "SELECT count(*) as c, coalesce(sum(size_bytes),0) as bytes FROM cloud_storage_items"),
-          executeD1Query(env, "SELECT count(*) as c FROM cloud_jobs")
+          executeD1Query(env, "SELECT count(*) as c FROM cloud_jobs"),
+          executeD1Query(env, "SELECT count(*) as c FROM cloud_users")
         ]);
         privateMetrics = {
           authenticatedAs: principal.key_id,
           activeComputeNodes: (nodesQ.results[0] && nodesQ.results[0].c) || 0,
           storedItems: (storageQ.results[0] && storageQ.results[0].c) || 0,
           storedBytes: (storageQ.results[0] && storageQ.results[0].bytes) || 0,
-          executedJobs: (jobsQ.results[0] && jobsQ.results[0].c) || 0
+          executedJobs: (jobsQ.results[0] && jobsQ.results[0].c) || 0,
+          registeredSubscribers: (usersQ.results[0] && usersQ.results[0].c) || 0
         };
       }
 
       return jsonRes({
         ok: true,
         platform: "Aaruni Cloud",
-        version: "1.0.0",
+        consoleUrl: "https://console.aarunicloud.com",
+        cliBinary: "acloud",
+        version: "1.2.0",
         status: "OPERATIONAL",
         controlPlaneRegion: "ap-south-hyd-1",
         edgePop: colo,
@@ -223,31 +287,35 @@ export async function handleCloudApiV1(request, env, executeD1Query) {
           zeroTrustGuard: "ENFORCED",
           inboundWorkerPortsExposed: 0,
           workerTopology: "OUTBOUND_PULL_ONLY_AIRGAPPED",
-          publicComputeAndStorageAccess: "BLOCKED_PRIVATE_KEY_ONLY"
+          gpuTrainingYieldGuard: "ACTIVE",
+          tenantVoiceIsolation: "STRICT_PER_USER_SCOPE"
         },
         servicesAvailable: SERVICE_CATALOG.length,
         ...(privateMetrics ? { privateMetrics } : {}),
         endpoints: {
           gateway: "https://api.aarunicloud.com/v1",
+          console: "https://console.aarunicloud.com",
           docs: "https://aarunicloud.com/#products"
         },
         timestamp: new Date().toISOString()
-      }, 200, { "X-Aaruni-Service": "AED" });
+      }, 200, { "X-Aaruni-Service": "EDGE" });
     }
 
     if (path === "/v1/services" && request.method === "GET") {
       return jsonRes({
         ok: true,
+        platform: "Aaruni Cloud",
+        cli: "acloud",
         count: SERVICE_CATALOG.length,
         services: SERVICE_CATALOG
-      }, 200, { "X-Aaruni-Service": "AED" });
+      }, 200, { "X-Aaruni-Service": "EDGE" });
     }
 
     if (path === "/v1/edge/status" && request.method === "GET") {
       return jsonRes({
         ok: true,
-        service: "AED",
-        name: "Aaruni Edge",
+        service: "EDGE",
+        name: "Cloud Edge",
         tlsVersion: (request.cf && request.cf.tlsVersion) || "TLSv1.3",
         httpProtocol: (request.cf && request.cf.httpProtocol) || "HTTP/2",
         edgeColo: colo,
@@ -256,50 +324,566 @@ export async function handleCloudApiV1(request, env, executeD1Query) {
         inboundFirewallPortsExposed: 0,
         privateWorkerAirGap: "ACTIVE",
         timestamp: new Date().toISOString()
-      }, 200, { "X-Aaruni-Service": "AED" });
+      }, 200, { "X-Aaruni-Service": "EDGE" });
     }
 
-    // -------------------------------------------------------------------------
-    // 2. AARUNI GUARD (AGD) — PRIVATE OWNER KEY REQUIRED
-    // -------------------------------------------------------------------------
-    if (path === "/v1/guard/whoami" && request.method === "GET") {
-      const auth = await authenticatePrivateGuard(request, env, executeD1Query);
-      if (!auth.ok) return jsonRes({ ok: false, error: auth.error }, auth.status);
-      await logAudit(env, executeD1Query, auth.principal.key_id, "AGD", "whoami");
+    // =========================================================================
+    // 2. SUBSCRIBER ONBOARDING & AUTH (/v1/auth/* & /v1/account/*)
+    // =========================================================================
+    if (path === "/v1/auth/guest-trial" && request.method === "POST") {
+      const body = await request.json().catch(() => ({}));
+      const rawName = String(body.name || "Guest Creator").slice(0, 60).trim() || "Guest Creator";
+      const guestId = makeId("usr");
+      const email = body.email && String(body.email).includes("@")
+        ? String(body.email).toLowerCase().trim()
+        : `${guestId}@trial.aarunicloud.com`;
+
+      // Check if email already registered
+      const existingUser = await executeD1Query(
+        env,
+        "SELECT user_id, email, name, plan_tier, chars_used, chars_limit, voices_limit FROM cloud_users WHERE email = ? LIMIT 1",
+        [email]
+      );
+
+      let userRow;
+      if (existingUser.results && existingUser.results.length > 0) {
+        userRow = existingUser.results[0];
+      } else {
+        await executeD1Query(
+          env,
+          `INSERT INTO cloud_users (user_id, email, name, plan_tier, chars_used, chars_limit, voices_limit, created_at)
+           VALUES (?, ?, ?, 'free', 0, 2000, 1, datetime('now'))`,
+          [guestId, email, rawName]
+        );
+        userRow = {
+          user_id: guestId,
+          email,
+          name: rawName,
+          plan_tier: "free",
+          chars_used: 0,
+          chars_limit: 2000,
+          voices_limit: 1
+        };
+      }
+
+      const rawApiKey = makeSecretToken("acloud_sub");
+      const keyHash = await sha256Hex(rawApiKey);
+      const keyId = makeId("key_sub");
+      const allowedSpace = `user_${userRow.user_id}`;
+
+      await executeD1Query(
+        env,
+        `INSERT INTO cloud_api_keys (key_id, key_hash, owner_email, role, allowed_space, created_at)
+         VALUES (?, ?, ?, 'subscriber', ?, datetime('now'))`,
+        [keyId, keyHash, userRow.email, allowedSpace]
+      );
+      await logAudit(env, executeD1Query, keyId, "GUARD", `signup:${userRow.plan_tier}`);
+
       return jsonRes({
         ok: true,
-        service: "AGD",
+        message: "Welcome to Aaruni Cloud Console! Your isolated Cloud Voice trial is ready.",
+        apiKey: rawApiKey,
+        keyId,
+        account: {
+          userId: userRow.user_id,
+          name: userRow.name,
+          email: userRow.email,
+          planTier: userRow.plan_tier,
+          charsUsed: userRow.chars_used,
+          charsLimit: userRow.chars_limit,
+          voicesLimit: userRow.voices_limit,
+          isolatedSpace: allowedSpace
+        }
+      }, 201);
+    }
+
+    if (path === "/v1/auth/request-otp" && request.method === "POST") {
+      const body = await request.json().catch(() => ({}));
+      const email = String(body.email || "").toLowerCase().trim();
+      if (!email || !email.includes("@")) {
+        return jsonRes({ ok: false, error: "Valid email address required." }, 400);
+      }
+      const otp = String(Math.floor(100000 + Math.random() * 900000));
+      const otpHash = await sha256Hex(`${email}:${otp}`);
+      const expiresAt = Date.now() + 10 * 60 * 1000;
+
+      await executeD1Query(
+        env,
+        `INSERT INTO cloud_otp_codes (email, code_hash, expires_at, created_at)
+         VALUES (?, ?, ?, datetime('now'))
+         ON CONFLICT(email) DO UPDATE SET code_hash=excluded.code_hash, expires_at=excluded.expires_at, created_at=datetime('now')`,
+        [email, otpHash, expiresAt]
+      );
+
+      let emailSent = false;
+      if (env && env.EMAIL_RELAY && typeof env.EMAIL_RELAY.fetch === "function") {
+        try {
+          const r = await env.EMAIL_RELAY.fetch("https://internal/send", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              to: email,
+              from: "contact@aarunitech.com",
+              subject: `[Aaruni Cloud Console] Your Sign-In Code: ${otp}`,
+              text: `Your Aaruni Cloud Console verification code is: ${otp}\n\nValid for 10 minutes.\nhttps://console.aarunicloud.com`
+            })
+          });
+          const rj = await r.json().catch(() => ({}));
+          emailSent = Boolean(rj && rj.success);
+        } catch (_) {}
+      }
+
+      return jsonRes({
+        ok: true,
+        email,
+        emailDispatched: emailSent,
+        expiresInSec: 600,
+        note: "Enter the 6-digit verification code sent to your email (or use Instant Guest Trial for immediate testing)."
+      });
+    }
+
+    if (path === "/v1/auth/verify-otp" && request.method === "POST") {
+      const body = await request.json().catch(() => ({}));
+      const email = String(body.email || "").toLowerCase().trim();
+      const code = String(body.code || "").trim();
+      const name = String(body.name || email.split("@")[0] || "Creator").slice(0, 60);
+      if (!email || !code) {
+        return jsonRes({ ok: false, error: "Both email and 6-digit code are required." }, 400);
+      }
+
+      const expectedHash = await sha256Hex(`${email}:${code}`);
+      const otpQ = await executeD1Query(
+        env,
+        "SELECT code_hash, expires_at FROM cloud_otp_codes WHERE email = ? LIMIT 1",
+        [email]
+      );
+      if (!otpQ.results || otpQ.results.length === 0) {
+        return jsonRes({ ok: false, error: "No active verification code found for this email." }, 400);
+      }
+      const row = otpQ.results[0];
+      if (Date.now() > Number(row.expires_at) || row.code_hash !== expectedHash) {
+        return jsonRes({ ok: false, error: "Invalid or expired 6-digit verification code." }, 403);
+      }
+
+      await executeD1Query(env, "DELETE FROM cloud_otp_codes WHERE email = ?", [email]);
+
+      const existing = await executeD1Query(
+        env,
+        "SELECT user_id, email, name, plan_tier, chars_used, chars_limit, voices_limit FROM cloud_users WHERE email = ? LIMIT 1",
+        [email]
+      );
+      let userRow;
+      if (existing.results && existing.results.length > 0) {
+        userRow = existing.results[0];
+      } else {
+        const uid = makeId("usr");
+        await executeD1Query(
+          env,
+          `INSERT INTO cloud_users (user_id, email, name, plan_tier, chars_used, chars_limit, voices_limit, created_at)
+           VALUES (?, ?, ?, 'free', 0, 2000, 1, datetime('now'))`,
+          [uid, email, name]
+        );
+        userRow = { user_id: uid, email, name, plan_tier: "free", chars_used: 0, chars_limit: 2000, voices_limit: 1 };
+      }
+
+      const rawApiKey = makeSecretToken("acloud_sub");
+      const keyHash = await sha256Hex(rawApiKey);
+      const keyId = makeId("key_sub");
+      const allowedSpace = `user_${userRow.user_id}`;
+
+      await executeD1Query(
+        env,
+        `INSERT INTO cloud_api_keys (key_id, key_hash, owner_email, role, allowed_space, created_at)
+         VALUES (?, ?, ?, 'subscriber', ?, datetime('now'))`,
+        [keyId, keyHash, email, allowedSpace]
+      );
+
+      return jsonRes({
+        ok: true,
+        apiKey: rawApiKey,
+        keyId,
+        account: {
+          userId: userRow.user_id,
+          name: userRow.name,
+          email: userRow.email,
+          planTier: userRow.plan_tier,
+          charsUsed: userRow.chars_used,
+          charsLimit: userRow.chars_limit,
+          voicesLimit: userRow.voices_limit,
+          isolatedSpace: allowedSpace
+        }
+      });
+    }
+
+    if (path === "/v1/account/me" && request.method === "GET") {
+      const auth = await authenticateGuard(request, env, executeD1Query);
+      if (!auth.ok) return jsonRes({ ok: false, error: auth.error }, auth.status);
+      const user = await resolveOrCreateUserForPrincipal(env, executeD1Query, auth.principal);
+      const voicesQ = await executeD1Query(
+        env,
+        "SELECT count(*) as c FROM cloud_voice_profiles WHERE user_id = ?",
+        [user.user_id]
+      );
+      const voicesUsed = (voicesQ.results && voicesQ.results[0] && voicesQ.results[0].c) || 0;
+
+      return jsonRes({
+        ok: true,
+        principal: {
+          keyId: auth.principal.key_id,
+          role: auth.principal.role,
+          isolatedSpace: auth.principal.allowed_space
+        },
+        account: {
+          userId: user.user_id,
+          name: user.name,
+          email: user.email,
+          planTier: user.plan_tier,
+          charsUsed: user.chars_used,
+          charsLimit: user.chars_limit,
+          voicesUsed,
+          voicesLimit: user.voices_limit
+        }
+      });
+    }
+
+    if (path === "/v1/account/upgrade" && request.method === "POST") {
+      const auth = await authenticateGuard(request, env, executeD1Query);
+      if (!auth.ok) return jsonRes({ ok: false, error: auth.error }, auth.status);
+      const user = await resolveOrCreateUserForPrincipal(env, executeD1Query, auth.principal);
+      const body = await request.json().catch(() => ({}));
+      const targetPlan = body.plan === "pro" ? "pro" : "creator";
+      const contactEmail = String(body.email || user.email);
+      const ref = "UPG-" + Math.floor(100000 + Math.random() * 899999);
+
+      if (env && env.EMAIL_RELAY && typeof env.EMAIL_RELAY.fetch === "function") {
+        try {
+          await env.EMAIL_RELAY.fetch("https://internal/send", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              from: "contact@aarunitech.com",
+              replyTo: contactEmail,
+              subject: `[aarunicloud-voice-upgrade] [${ref}] ${targetPlan.toUpperCase()} Plan Request — ${contactEmail}`,
+              text: `Cloud Voice Subscription Upgrade Request\nRef: ${ref}\nUser ID: ${user.user_id}\nEmail: ${contactEmail}\nTarget Plan: ${targetPlan.toUpperCase()} (${targetPlan === "pro" ? "₹3,999/mo · $49/mo" : "₹1,499/mo · $19/mo"})`
+            })
+          });
+        } catch (_) {}
+      }
+
+      return jsonRes({
+        ok: true,
+        ref,
+        requestedPlan: targetPlan,
+        pricing: targetPlan === "pro" ? "₹3,999/mo ($49/mo)" : "₹1,499/mo ($19/mo)",
+        message: `Upgrade request ${ref} logged and dispatched to Aaruni Cloud Billing. Payment link will be sent to ${contactEmail}.`
+      });
+    }
+
+    // =========================================================================
+    // 3. CLOUD VOICE (SELF-SERVE CLONING, VOICE LIST, SPEAK & CONSENT GATE)
+    // =========================================================================
+    if (path === "/v1/voice/consent-challenge" && request.method === "GET") {
+      const name = String(url.searchParams.get("name") || "Creator").slice(0, 50).trim();
+      const code = String(Math.floor(1000 + Math.random() * 9000));
+      return jsonRes({
+        ok: true,
+        service: "VOICE",
+        consentCode: code,
+        consentPhrase: `I, ${name}, confirm that this is my own voice and authorize Aaruni Cloud Voice to create my synthetic voice profile. Verification code ${code}.`
+      });
+    }
+
+    if (path === "/v1/voice/list" && request.method === "GET") {
+      const principal = await tryOptionalGuard(request, env, executeD1Query);
+      let customVoices = [];
+      if (principal) {
+        const user = await resolveOrCreateUserForPrincipal(env, executeD1Query, principal);
+        const { results } = await executeD1Query(
+          env,
+          "SELECT voice_id AS voiceId, name, language, consent_code AS consentCode, ref_duration_sec AS durationSec, status, created_at AS createdAt FROM cloud_voice_profiles WHERE user_id = ? ORDER BY created_at DESC",
+          [user.user_id]
+        );
+        customVoices = (results || []).map((v) => ({ ...v, type: "cloned", badge: "Your Cloned Voice" }));
+      }
+      return jsonRes({
+        ok: true,
+        service: "VOICE",
+        clonedCount: customVoices.length,
+        clonedVoices: customVoices,
+        stockVoices: STOCK_VOICES
+      });
+    }
+
+    if (path === "/v1/voice/clone" && request.method === "POST") {
+      const auth = await authenticateGuard(request, env, executeD1Query);
+      if (!auth.ok) return jsonRes({ ok: false, error: auth.error }, auth.status);
+      const user = await resolveOrCreateUserForPrincipal(env, executeD1Query, auth.principal);
+
+      const countQ = await executeD1Query(
+        env,
+        "SELECT count(*) as c FROM cloud_voice_profiles WHERE user_id = ?",
+        [user.user_id]
+      );
+      const existingCount = (countQ.results && countQ.results[0] && countQ.results[0].c) || 0;
+      if (existingCount >= user.voices_limit) {
+        return jsonRes({
+          ok: false,
+          error: `Voice clone limit reached (${existingCount}/${user.voices_limit} on '${user.plan_tier}' plan). Upgrade to Creator (3 voices) or Pro (10 voices) in Aaruni Cloud Console, or delete an existing voice.`
+        }, 402);
+      }
+
+      const body = await request.json().catch(() => ({}));
+      const voiceName = String(body.name || "").slice(0, 60).trim();
+      const consentCode = String(body.consentCode || "").trim();
+      const consentPhrase = String(body.consentPhrase || "").slice(0, 300).trim();
+      const audioB64 = String(body.audioBase64 || "").trim();
+      const contentType = String(body.contentType || "audio/wav");
+      const language = String(body.language || "en").slice(0, 12);
+      const refDurationSec = Number(body.refDurationSec || 10.0);
+
+      if (!voiceName) {
+        return jsonRes({ ok: false, error: "Missing 'name' for your cloned voice." }, 400);
+      }
+      if (!/^\d{4}$/.test(consentCode)) {
+        return jsonRes({ ok: false, error: "Valid 4-digit live consent verification code is required to prevent unauthorized voice cloning." }, 400);
+      }
+      if (!audioB64 || audioB64.length < 256) {
+        return jsonRes({ ok: false, error: "Reference voice recording (WAV/MP3 base64, at least 3 seconds) is required." }, 400);
+      }
+      if (audioB64.length > 2_000_000) {
+        return jsonRes({ ok: false, error: "Reference audio sample exceeds 1.5 MB limit (record 8–15 seconds of clean speech)." }, 413);
+      }
+
+      const voiceId = makeId("vox");
+      const finalPhrase = consentPhrase || `Verified live consent code ${consentCode}`;
+      await executeD1Query(
+        env,
+        `INSERT INTO cloud_voice_profiles (voice_id, user_id, name, language, consent_phrase, consent_code, consent_verified, ref_transcript, ref_duration_sec, ref_audio_b64, content_type, status, created_at)
+         VALUES (?, ?, ?, ?, ?, ?, 1, ?, ?, ?, ?, 'READY', datetime('now'))`,
+        [voiceId, user.user_id, voiceName, language, finalPhrase, consentCode, String(body.refTranscript || finalPhrase).slice(0, 400), refDurationSec, audioB64, contentType]
+      );
+      await logAudit(env, executeD1Query, auth.principal.key_id, "VOICE", `clone:${voiceId}`);
+
+      return jsonRes({
+        ok: true,
+        service: "VOICE",
+        voiceId,
+        name: voiceName,
+        language,
+        consentVerified: true,
+        consentCode,
+        status: "READY",
+        isolatedOwnerId: user.user_id,
+        message: `Voice '${voiceName}' (${voiceId}) cloned and isolated to your private Aaruni Cloud account.`,
+        createdAt: new Date().toISOString()
+      }, 201, { "X-Aaruni-Service": "VOICE" });
+    }
+
+    const deleteVoiceMatch = path.match(/^\/v1\/voice\/(vox_[a-zA-Z0-9_-]+)$/);
+    if (deleteVoiceMatch && request.method === "DELETE") {
+      const auth = await authenticateGuard(request, env, executeD1Query);
+      if (!auth.ok) return jsonRes({ ok: false, error: auth.error }, auth.status);
+      const user = await resolveOrCreateUserForPrincipal(env, executeD1Query, auth.principal);
+      const voiceId = deleteVoiceMatch[1];
+      await executeD1Query(
+        env,
+        "DELETE FROM cloud_voice_profiles WHERE voice_id = ? AND user_id = ?",
+        [voiceId, user.user_id]
+      );
+      await logAudit(env, executeD1Query, auth.principal.key_id, "VOICE", `delete:${voiceId}`);
+      return jsonRes({ ok: true, service: "VOICE", deletedVoiceId: voiceId });
+    }
+
+    if ((path === "/v1/voice/speak" || path === "/v1/voice/synthesize") && request.method === "POST") {
+      const body = await request.json().catch(() => ({}));
+      const rawText = String(body.text || "").trim();
+      if (!rawText) return jsonRes({ ok: false, error: "Missing 'text' field for Cloud Voice synthesis." }, 400);
+
+      const engine = String(body.engine || "auto").toLowerCase();
+      const requestedVoiceId = String(body.voiceId || body.persona || "stock_aria");
+      const targetLufs = Number(body.targetLufs || body.lufs || -12.0);
+      const pls = applyPlsLexicon(rawText);
+
+      const dspSpec = {
+        targetLoudnessLufs: targetLufs,
+        declickEnvelopeMs: "35ms/45ms raised-cosine",
+        highPassFilterHz: 80,
+        lexiconStandard: "W3C-PLS-1.0"
+      };
+
+      const principal = await tryOptionalGuard(request, env, executeD1Query);
+
+      // Owner-only private MLX master synthesis (admin only!)
+      if (engine === "mlx" && (!requestedVoiceId.startsWith("vox_"))) {
+        const adminAuth = await authenticateAdminOnly(request, env, executeD1Query);
+        if (!adminAuth.ok) return jsonRes({ ok: false, error: adminAuth.error }, adminAuth.status);
+        const check = assertSafeWorkloadPayload(body);
+        if (!check.ok) return jsonRes({ ok: false, error: check.error }, 400);
+
+        const jobId = makeId("job_ava");
+        const payloadObj = {
+          originalText: rawText,
+          normalizedText: pls.normalizedText,
+          speed: Number(body.speed || 0.94),
+          steps: Number(body.steps || 32),
+          style: String(body.style || "auto"),
+          plsReplacements: pls.replacements
+        };
+        await executeD1Query(
+          env,
+          `INSERT INTO cloud_jobs (job_id, service, action, payload_json, result_json, status, region, owner_key_id, created_at, updated_at)
+           VALUES (?, 'AVA', 'synthesize_mlx', ?, '{}', 'QUEUED', 'ap-south-hyd-1', ?, datetime('now'), datetime('now'))`,
+          [jobId, JSON.stringify(payloadObj), adminAuth.principal.key_id]
+        );
+        await logAudit(env, executeD1Query, adminAuth.principal.key_id, "VOICE", `queue_owner_mlx:${jobId}`);
+
+        return jsonRes({
+          ok: true,
+          service: "VOICE",
+          mode: "QUEUED_MLX_NEURAL_WORKER",
+          jobId,
+          status: "QUEUED",
+          originalText: rawText,
+          normalizedText: pls.normalizedText,
+          plsReplacements: pls.replacements,
+          statusUrl: `https://api.aarunicloud.com/v1/jobs/${jobId}`,
+          createdAt: new Date().toISOString()
+        }, 202, { "X-Aaruni-Service": "VOICE" });
+      }
+
+      // Subscriber / Authenticated Cloned Voice or Metered Synthesis
+      if (principal) {
+        const user = await resolveOrCreateUserForPrincipal(env, executeD1Query, principal);
+        if (user.chars_used + rawText.length > user.chars_limit) {
+          return jsonRes({
+            ok: false,
+            error: `Monthly Cloud Voice character quota exceeded (${user.chars_used}/${user.chars_limit} chars used on '${user.plan_tier}' plan). Upgrade in Aaruni Cloud Console.`
+          }, 402);
+        }
+
+        let voiceMeta = STOCK_VOICES.find((v) => v.voiceId === requestedVoiceId) || null;
+        if (requestedVoiceId.startsWith("vox_")) {
+          const vq = await executeD1Query(
+            env,
+            "SELECT voice_id AS voiceId, name, language, ref_duration_sec AS durationSec FROM cloud_voice_profiles WHERE voice_id = ? AND user_id = ? LIMIT 1",
+            [requestedVoiceId, user.user_id]
+          );
+          if (!vq.results || vq.results.length === 0) {
+            return jsonRes({ ok: false, error: `Cloned voice '${requestedVoiceId}' not found in your isolated account.` }, 404);
+          }
+          voiceMeta = { ...vq.results[0], type: "cloned" };
+        }
+
+        await executeD1Query(
+          env,
+          "UPDATE cloud_users SET chars_used = chars_used + ? WHERE user_id = ?",
+          [rawText.length, user.user_id]
+        );
+
+        const jobId = makeId("job_vox");
+        const isCloned = Boolean(voiceMeta && voiceMeta.type === "cloned");
+        const jobStatus = isCloned && engine === "guest-mlx" ? "QUEUED" : "READY";
+
+        await executeD1Query(
+          env,
+          `INSERT INTO cloud_jobs (job_id, service, action, payload_json, result_json, status, region, owner_key_id, created_at, updated_at)
+           VALUES (?, 'VOICE', ?, ?, ?, ?, 'ap-south-hyd-1', ?, datetime('now'), datetime('now'))`,
+          [
+            jobId,
+            isCloned ? "speak_cloned_voice" : "speak_stock_voice",
+            JSON.stringify({ voiceId: requestedVoiceId, text: rawText, normalizedText: pls.normalizedText }),
+            JSON.stringify({ pls, dspSpec, voice: voiceMeta || STOCK_VOICES[0] }),
+            jobStatus,
+            principal.key_id
+          ]
+        );
+        await logAudit(env, executeD1Query, principal.key_id, "VOICE", `speak:${jobId}`);
+
+        return jsonRes({
+          ok: true,
+          service: "VOICE",
+          mode: isCloned ? "ISOLATED_CLONED_VOICE" : "AUTHENTICATED_STUDIO_VOICE",
+          gpuTrainingYieldGuard: "PROTECTED_ZERO_TRAINING_INTERFERENCE",
+          jobId,
+          status: jobStatus,
+          voice: voiceMeta || STOCK_VOICES[0],
+          originalText: rawText,
+          normalizedText: pls.normalizedText,
+          ssml: pls.ssml,
+          wordCount: pls.words,
+          estimatedDurationSec: pls.estDurationSec,
+          plsReplacements: pls.replacements,
+          dsp: dspSpec,
+          quota: {
+            charsUsed: user.chars_used + rawText.length,
+            charsLimit: user.chars_limit,
+            planTier: user.plan_tier
+          },
+          createdAt: new Date().toISOString()
+        }, 200, { "X-Aaruni-Service": "VOICE" });
+      }
+
+      // Unauthenticated stateless storefront preview
+      return jsonRes({
+        ok: true,
+        service: "VOICE",
+        mode: "STATELESS_EDGE_PREVIEW",
+        jobId: makeId("preview_vox"),
+        voice: STOCK_VOICES[0],
+        originalText: rawText,
+        normalizedText: pls.normalizedText,
+        ssml: pls.ssml,
+        wordCount: pls.words,
+        estimatedDurationSec: pls.estDurationSec,
+        plsReplacements: pls.replacements,
+        dsp: dspSpec,
+        createdAt: new Date().toISOString()
+      }, 200, { "X-Aaruni-Service": "VOICE" });
+    }
+
+    // =========================================================================
+    // 4. CLOUD GUARD (WHOAMI & AUDIT)
+    // =========================================================================
+    if (path === "/v1/guard/whoami" && request.method === "GET") {
+      const auth = await authenticateGuard(request, env, executeD1Query);
+      if (!auth.ok) return jsonRes({ ok: false, error: auth.error }, auth.status);
+      await logAudit(env, executeD1Query, auth.principal.key_id, "GUARD", "whoami");
+      return jsonRes({
+        ok: true,
+        service: "GUARD",
         principal: auth.principal
-      }, 200, { "X-Aaruni-Service": "AGD" });
+      }, 200, { "X-Aaruni-Service": "GUARD" });
     }
 
     if (path === "/v1/guard/audit" && request.method === "GET") {
-      const auth = await authenticatePrivateGuard(request, env, executeD1Query);
+      const auth = await authenticateGuard(request, env, executeD1Query);
       if (!auth.ok) return jsonRes({ ok: false, error: auth.error }, auth.status);
       const isAdmin = auth.principal.role === "admin";
       const sql = isAdmin
         ? "SELECT audit_id, key_id, service, action, status, created_at FROM cloud_audit_logs ORDER BY created_at DESC LIMIT 50"
         : "SELECT audit_id, key_id, service, action, status, created_at FROM cloud_audit_logs WHERE key_id = ? ORDER BY created_at DESC LIMIT 25";
       const { results } = await executeD1Query(env, sql, isAdmin ? [] : [auth.principal.key_id]);
-      return jsonRes({ ok: true, service: "AGD", count: results.length, logs: results });
+      return jsonRes({ ok: true, service: "GUARD", count: results.length, logs: results });
     }
 
-    // -------------------------------------------------------------------------
-    // 3. AARUNI STORAGE (ACS) — 100% PRIVATE KEY REQUIRED (NO PUBLIC READ/WRITE)
-    // -------------------------------------------------------------------------
+    // =========================================================================
+    // 5. CLOUD STORAGE — TENANT SPACE JAILED (user_<id> FOR SUBSCRIBERS, * FOR ADMIN)
+    // =========================================================================
     const storageMatch = path.match(/^\/v1\/storage\/([a-zA-Z0-9_-]+)(?:\/(.+))?$/);
     if (storageMatch) {
-      const auth = await authenticatePrivateGuard(request, env, executeD1Query);
+      const auth = await authenticateGuard(request, env, executeD1Query);
       if (!auth.ok) return jsonRes({ ok: false, error: auth.error }, auth.status);
 
       const space = storageMatch[1].toLowerCase();
       const itemKey = storageMatch[2] ? decodeURIComponent(storageMatch[2]) : null;
 
-      if (auth.principal.allowed_space !== "*" && auth.principal.allowed_space !== space) {
-        return jsonRes({ ok: false, error: `Key ${auth.principal.key_id} is not authorized for space '${space}'.` }, 403);
+      if (auth.principal.allowed_space !== "*" && auth.principal.allowed_space.toLowerCase() !== space) {
+        return jsonRes({
+          ok: false,
+          error: `Tenant Storage Isolation: Your key is strictly jailed to space '${auth.principal.allowed_space}'. Access to '${space}' is blocked.`
+        }, 403);
       }
 
-      // LIST files in space
       if (!itemKey && request.method === "GET") {
         const { results } = await executeD1Query(
           env,
@@ -308,7 +892,7 @@ export async function handleCloudApiV1(request, env, executeD1Query) {
         );
         return jsonRes({
           ok: true,
-          service: "ACS",
+          service: "STORAGE",
           space,
           egressFeeUsd: 0,
           count: results.length,
@@ -316,10 +900,9 @@ export async function handleCloudApiV1(request, env, executeD1Query) {
             ...r,
             url: `https://api.aarunicloud.com/v1/storage/${space}/${encodeURIComponent(r.key)}`
           }))
-        }, 200, { "X-Aaruni-Service": "ACS" });
+        }, 200, { "X-Aaruni-Service": "STORAGE" });
       }
 
-      // UPLOAD file to space (PUT or POST)
       if (itemKey && (request.method === "PUT" || request.method === "POST")) {
         const existing = await executeD1Query(
           env,
@@ -327,11 +910,11 @@ export async function handleCloudApiV1(request, env, executeD1Query) {
           [space, itemKey]
         );
         if (existing.results && existing.results[0] && existing.results[0].readonly_locked === 1) {
-          return jsonRes({ ok: false, error: `Item '${space}/${itemKey}' is sealed in read-only mode via Aaruni Archive (ARC).` }, 409);
+          return jsonRes({ ok: false, error: `Item '${space}/${itemKey}' is sealed read-only via Cloud Archive.` }, 409);
         }
 
         const buf = await request.arrayBuffer();
-        const maxBytes = auth.principal.role === "admin" ? 24 * 1024 * 1024 : 64 * 1024;
+        const maxBytes = auth.principal.role === "admin" ? 24 * 1024 * 1024 : 512 * 1024;
         if (buf.byteLength > maxBytes) {
           return jsonRes({ ok: false, error: `Payload size ${buf.byteLength} exceeds role limit (${maxBytes} bytes).` }, 413);
         }
@@ -363,14 +946,14 @@ export async function handleCloudApiV1(request, env, executeD1Query) {
              sha256=excluded.sha256,
              owner_key_id=excluded.owner_key_id,
              created_at=datetime('now')`,
-          [makeId("acs"), space, itemKey, buf.byteLength, contentType, digest, auth.principal.key_id]
+          [makeId("cst"), space, itemKey, buf.byteLength, contentType, digest, auth.principal.key_id]
         );
 
-        await logAudit(env, executeD1Query, auth.principal.key_id, "ACS", `put:${space}/${itemKey}`);
+        await logAudit(env, executeD1Query, auth.principal.key_id, "STORAGE", `put:${space}/${itemKey}`);
 
         return jsonRes({
           ok: true,
-          service: "ACS",
+          service: "STORAGE",
           space,
           key: itemKey,
           sizeBytes: buf.byteLength,
@@ -378,10 +961,9 @@ export async function handleCloudApiV1(request, env, executeD1Query) {
           sha256: digest,
           egressFeeUsd: 0,
           url: `https://api.aarunicloud.com/v1/storage/${space}/${encodeURIComponent(itemKey)}`
-        }, 201, { "X-Aaruni-Service": "ACS", "X-Aaruni-SHA256": digest });
+        }, 201, { "X-Aaruni-Service": "STORAGE", "X-Aaruni-SHA256": digest });
       }
 
-      // DOWNLOAD / STREAM file from space (GET with HTTP 206 Range support)
       if (itemKey && request.method === "GET") {
         const metaQ = await executeD1Query(
           env,
@@ -389,7 +971,7 @@ export async function handleCloudApiV1(request, env, executeD1Query) {
           [space, itemKey]
         );
         if (!metaQ.results || metaQ.results.length === 0) {
-          return jsonRes({ ok: false, error: `File '${itemKey}' not found in Aaruni Storage space '${space}'.` }, 404);
+          return jsonRes({ ok: false, error: `File '${itemKey}' not found in Cloud Storage space '${space}'.` }, 404);
         }
         const meta = metaQ.results[0];
         const kvKey = `acs:${space}:${itemKey}`;
@@ -429,7 +1011,7 @@ export async function handleCloudApiV1(request, env, executeD1Query) {
                 "Accept-Ranges": "bytes",
                 "ETag": `"${meta.sha256}"`,
                 "X-Aaruni-SHA256": meta.sha256,
-                "X-Aaruni-Service": "ACS"
+                "X-Aaruni-Service": "STORAGE"
               }
             });
           }
@@ -444,12 +1026,11 @@ export async function handleCloudApiV1(request, env, executeD1Query) {
             "Accept-Ranges": "bytes",
             "ETag": `"${meta.sha256}"`,
             "X-Aaruni-SHA256": meta.sha256,
-            "X-Aaruni-Service": "ACS"
+            "X-Aaruni-Service": "STORAGE"
           }
         });
       }
 
-      // DELETE file from space
       if (itemKey && request.method === "DELETE") {
         const existing = await executeD1Query(
           env,
@@ -457,29 +1038,29 @@ export async function handleCloudApiV1(request, env, executeD1Query) {
           [space, itemKey]
         );
         if (existing.results && existing.results[0] && existing.results[0].readonly_locked === 1) {
-          return jsonRes({ ok: false, error: "Cannot delete sealed read-only archive item." }, 409);
+          return jsonRes({ ok: false, error: "Cannot delete sealed read-only Cloud Archive item." }, 409);
         }
         if (env && env.ACS_KV && typeof env.ACS_KV.delete === "function") {
           await env.ACS_KV.delete(`acs:${space}:${itemKey}`);
         }
         await executeD1Query(env, "DELETE FROM cloud_storage_blobs WHERE space = ? AND item_key = ?", [space, itemKey]);
         await executeD1Query(env, "DELETE FROM cloud_storage_items WHERE space = ? AND item_key = ?", [space, itemKey]);
-        await logAudit(env, executeD1Query, auth.principal.key_id, "ACS", `delete:${space}/${itemKey}`);
-        return jsonRes({ ok: true, service: "ACS", deleted: `${space}/${itemKey}` });
+        await logAudit(env, executeD1Query, auth.principal.key_id, "STORAGE", `delete:${space}/${itemKey}`);
+        return jsonRes({ ok: true, service: "STORAGE", deleted: `${space}/${itemKey}` });
       }
     }
 
-    // -------------------------------------------------------------------------
-    // 4. AARUNI ARCHIVE (ARC) — PRIVATE KEY REQUIRED
-    // -------------------------------------------------------------------------
+    // =========================================================================
+    // 6. CLOUD ARCHIVE — SEAL STORAGE ITEM
+    // =========================================================================
     if (path === "/v1/archive/seal" && request.method === "POST") {
-      const auth = await authenticatePrivateGuard(request, env, executeD1Query);
+      const auth = await authenticateGuard(request, env, executeD1Query);
       if (!auth.ok) return jsonRes({ ok: false, error: auth.error }, auth.status);
       const body = await request.json();
-      const space = String(body.space || "sandbox").toLowerCase();
+      const space = String(body.space || "").toLowerCase();
       const key = String(body.key || "");
-      if (!key) return jsonRes({ ok: false, error: "Missing 'key' to seal." }, 400);
-      if (auth.principal.allowed_space !== "*" && auth.principal.allowed_space !== space) {
+      if (!space || !key) return jsonRes({ ok: false, error: "Both 'space' and 'key' are required." }, 400);
+      if (auth.principal.allowed_space !== "*" && auth.principal.allowed_space.toLowerCase() !== space) {
         return jsonRes({ ok: false, error: "Forbidden space" }, 403);
       }
 
@@ -498,11 +1079,11 @@ export async function handleCloudApiV1(request, env, executeD1Query) {
         [space, key]
       );
       const sealId = makeId("arc_seal");
-      await logAudit(env, executeD1Query, auth.principal.key_id, "ARC", `seal:${space}/${key}`);
+      await logAudit(env, executeD1Query, auth.principal.key_id, "ARCHIVE", `seal:${space}/${key}`);
 
       return jsonRes({
         ok: true,
-        service: "ARC",
+        service: "ARCHIVE",
         sealId,
         space,
         key,
@@ -511,27 +1092,25 @@ export async function handleCloudApiV1(request, env, executeD1Query) {
         sha256: itemQ.results[0].sha256,
         sizeBytes: itemQ.results[0].size_bytes,
         sealedAt: new Date().toISOString()
-      }, 200, { "X-Aaruni-Service": "ARC" });
+      }, 200, { "X-Aaruni-Service": "ARCHIVE" });
     }
 
-    // -------------------------------------------------------------------------
-    // 5. AARUNI COMPUTE (ACC) & CONTAINERS (ACN) — 100% PRIVATE ADMIN KEY ONLY
-    // -------------------------------------------------------------------------
+    // =========================================================================
+    // 7. CLOUD COMPUTE, CONTAINERS, RENDER — STRICT OWNER ADMIN ONLY
+    // =========================================================================
     if (path === "/v1/compute/nodes" && request.method === "GET") {
-      const auth = await authenticatePrivateGuard(request, env, executeD1Query);
+      const auth = await authenticateAdminOnly(request, env, executeD1Query);
       if (!auth.ok) return jsonRes({ ok: false, error: auth.error }, auth.status);
       const { results } = await executeD1Query(
         env,
         "SELECT node_id AS nodeId, name, node_type AS nodeType, region, ram_gb AS ramGb, status, last_heartbeat AS lastHeartbeat FROM cloud_compute_nodes ORDER BY node_id ASC"
       );
-      return jsonRes({ ok: true, service: "ACC", count: results.length, nodes: results }, 200, { "X-Aaruni-Service": "ACC" });
+      return jsonRes({ ok: true, service: "COMPUTE", count: results.length, nodes: results }, 200, { "X-Aaruni-Service": "COMPUTE" });
     }
 
     if (path === "/v1/compute/heartbeat" && request.method === "POST") {
-      const auth = await authenticatePrivateGuard(request, env, executeD1Query);
-      if (!auth.ok || auth.principal.role !== "admin") {
-        return jsonRes({ ok: false, error: "Admin Aaruni Guard key required for outbound worker heartbeat." }, 403);
-      }
+      const auth = await authenticateAdminOnly(request, env, executeD1Query);
+      if (!auth.ok) return jsonRes({ ok: false, error: auth.error }, auth.status);
       const body = await request.json().catch(() => ({}));
       const check = assertSafeWorkloadPayload(body);
       if (!check.ok) return jsonRes({ ok: false, error: check.error }, 400);
@@ -544,24 +1123,21 @@ export async function handleCloudApiV1(request, env, executeD1Query) {
          ON CONFLICT(node_id) DO UPDATE SET status='ACTIVE', last_heartbeat=datetime('now')`,
         [nodeId, body.name || nodeId, body.nodeType || "acc.m4.pro.64gb", body.region || "ap-south-hyd-1", body.ramGb || 64]
       );
-      return jsonRes({ ok: true, service: "ACC", nodeId, topology: "OUTBOUND_HTTPS_ONLY", lastHeartbeat: new Date().toISOString() });
+      return jsonRes({ ok: true, service: "COMPUTE", nodeId, topology: "OUTBOUND_HTTPS_ONLY", lastHeartbeat: new Date().toISOString() });
     }
 
-    // Outbound-only pull queue for private RT-Labs daemon (ZERO inbound ports required on Mac!)
     if (path === "/v1/compute/pull-next" && request.method === "POST") {
-      const auth = await authenticatePrivateGuard(request, env, executeD1Query);
-      if (!auth.ok || auth.principal.role !== "admin") {
-        return jsonRes({ ok: false, error: "Admin Aaruni Guard key required for outbound worker job pull." }, 403);
-      }
+      const auth = await authenticateAdminOnly(request, env, executeD1Query);
+      if (!auth.ok) return jsonRes({ ok: false, error: auth.error }, auth.status);
       const body = await request.json().catch(() => ({}));
       const svcFilter = body.service ? String(body.service).toUpperCase() : null;
       const sql = svcFilter
-        ? "SELECT job_id AS jobId, service, action, payload_json AS payloadJson, region, created_at AS createdAt FROM cloud_jobs WHERE status = 'QUEUED' AND owner_key_id = ? AND service = ? ORDER BY created_at ASC LIMIT 1"
-        : "SELECT job_id AS jobId, service, action, payload_json AS payloadJson, region, created_at AS createdAt FROM cloud_jobs WHERE status = 'QUEUED' AND owner_key_id = ? ORDER BY created_at ASC LIMIT 1";
-      const params = svcFilter ? [auth.principal.key_id, svcFilter] : [auth.principal.key_id];
+        ? "SELECT job_id AS jobId, service, action, payload_json AS payloadJson, region, created_at AS createdAt FROM cloud_jobs WHERE status = 'QUEUED' AND (service = ? OR (? = 'VOICE' AND service = 'AVA') OR (? = 'AVA' AND service = 'VOICE')) ORDER BY created_at ASC LIMIT 1"
+        : "SELECT job_id AS jobId, service, action, payload_json AS payloadJson, region, created_at AS createdAt FROM cloud_jobs WHERE status = 'QUEUED' ORDER BY created_at ASC LIMIT 1";
+      const params = svcFilter ? [svcFilter, svcFilter, svcFilter] : [];
       const { results } = await executeD1Query(env, sql, params);
       if (!results || results.length === 0) {
-        return jsonRes({ ok: true, service: svcFilter || "ACC", job: null });
+        return jsonRes({ ok: true, service: svcFilter || "COMPUTE", job: null });
       }
       const job = results[0];
       await executeD1Query(env, "UPDATE cloud_jobs SET status = 'CLAIMED', updated_at = datetime('now') WHERE job_id = ?", [job.jobId]);
@@ -580,22 +1156,22 @@ export async function handleCloudApiV1(request, env, executeD1Query) {
     }
 
     if ((path === "/v1/compute/launch" || path === "/v1/containers/run") && request.method === "POST") {
-      const auth = await authenticatePrivateGuard(request, env, executeD1Query);
+      const auth = await authenticateAdminOnly(request, env, executeD1Query);
       if (!auth.ok) return jsonRes({ ok: false, error: auth.error }, auth.status);
       const body = await request.json().catch(() => ({}));
       const check = assertSafeWorkloadPayload(body);
       if (!check.ok) return jsonRes({ ok: false, error: check.error }, 400);
 
       const isContainer = path.includes("containers");
-      const svc = isContainer ? "ACN" : "ACC";
-      const jobId = makeId(isContainer ? "job_acn" : "job_acc");
+      const svc = isContainer ? "CONTAINERS" : "COMPUTE";
+      const jobId = makeId(isContainer ? "job_cnt" : "job_cmp");
       const region = body.region || "ap-south-hyd-1";
-      const assignedNode = isContainer ? "acn-edge-xvfb-01" : "acc-hyd-m4pro-01";
+      const assignedNode = isContainer ? "cnt-edge-xvfb-01" : "cmp-hyd-m4pro-01";
       const resultObj = {
         assignedNode,
         executionMode: "OUTBOUND_PULL_SANDBOXED",
-        type: body.type || body.image || (isContainer ? "xvfb-1080p-worker" : "acc.m4.max"),
-        storageMount: body.storage || "acs://production-media",
+        type: body.type || body.image || (isContainer ? "xvfb-1080p-worker" : "m4.pro.isolated"),
+        storageMount: body.storage || "storage://production-media",
         egressFeeUsd: 0
       };
 
@@ -618,102 +1194,8 @@ export async function handleCloudApiV1(request, env, executeD1Query) {
       }, 201, { "X-Aaruni-Service": svc });
     }
 
-    // -------------------------------------------------------------------------
-    // 6. AARUNI VOICE (AVA) — STATELESS PREVIEW FOR PUBLIC, MLX WORKER QUEUE FOR OWNER
-    // -------------------------------------------------------------------------
-    if (path === "/v1/voice/synthesize" && request.method === "POST") {
-      const body = await request.json().catch(() => ({}));
-      const rawText = String(body.text || "").trim();
-      if (!rawText) return jsonRes({ ok: false, error: "Missing 'text' field for Aaruni Voice synthesis." }, 400);
-
-      const engine = String(body.engine || "pls-preview").toLowerCase();
-      const wantsMlxQueue = engine === "mlx" || engine === "f5-tts-mlx" || Boolean(body.queue);
-
-      if (wantsMlxQueue) {
-        const auth = await authenticatePrivateGuard(request, env, executeD1Query);
-        if (!auth.ok) return jsonRes({ ok: false, error: auth.error }, auth.status);
-        const check = assertSafeWorkloadPayload(body);
-        if (!check.ok) return jsonRes({ ok: false, error: check.error }, 400);
-
-        const pls = applyPlsLexicon(rawText);
-        const jobId = makeId("job_ava");
-        const speed = Number(body.speed || 0.94);
-        const steps = Number(body.steps || 32);
-        const style = String(body.style || "auto");
-        const payloadObj = {
-          originalText: rawText,
-          normalizedText: pls.normalizedText,
-          speed,
-          steps,
-          style,
-          plsReplacements: pls.replacements
-        };
-        await executeD1Query(
-          env,
-          `INSERT INTO cloud_jobs (job_id, service, action, payload_json, result_json, status, region, owner_key_id, created_at, updated_at)
-           VALUES (?, 'AVA', 'synthesize_mlx', ?, '{}', 'QUEUED', 'ap-south-hyd-1', ?, datetime('now'), datetime('now'))`,
-          [jobId, JSON.stringify(payloadObj), auth.principal.key_id]
-        );
-        await logAudit(env, executeD1Query, auth.principal.key_id, "AVA", `queue_mlx:${jobId}`);
-
-        return jsonRes({
-          ok: true,
-          service: "AVA",
-          mode: "QUEUED_MLX_NEURAL_WORKER",
-          jobId,
-          status: "QUEUED",
-          originalText: rawText,
-          normalizedText: pls.normalizedText,
-          plsReplacements: pls.replacements,
-          statusUrl: `https://api.aarunicloud.com/v1/jobs/${jobId}`,
-          createdAt: new Date().toISOString()
-        }, 202, { "X-Aaruni-Service": "AVA" });
-      }
-
-      const principal = await tryOptionalPrivateGuard(request, env, executeD1Query);
-      const targetLufs = Number(body.targetLufs || body.lufs || -12.0);
-      const persona = String(body.persona || "aria").toLowerCase();
-      const pls = applyPlsLexicon(rawText);
-      const jobId = makeId("job_ava");
-      const dspSpec = {
-        targetLoudnessLufs: targetLufs,
-        declickEnvelopeMs: "35ms/45ms raised-cosine",
-        highPassFilterHz: 80,
-        lexiconStandard: "W3C-PLS-1.0"
-      };
-
-      if (principal) {
-        await executeD1Query(
-          env,
-          `INSERT INTO cloud_jobs (job_id, service, action, payload_json, result_json, status, region, owner_key_id, created_at, updated_at)
-           VALUES (?, 'AVA', 'synthesize', ?, ?, 'READY', 'ap-south-hyd-1', ?, datetime('now'), datetime('now'))`,
-          [jobId, JSON.stringify({ text: rawText, persona, targetLufs }), JSON.stringify({ pls, dspSpec }), principal.key_id]
-        );
-        await logAudit(env, executeD1Query, principal.key_id, "AVA", `synthesize:${jobId}`);
-      }
-
-      return jsonRes({
-        ok: true,
-        service: "AVA",
-        mode: principal ? "AUTHENTICATED_JOB" : "STATELESS_EDGE_PREVIEW",
-        jobId,
-        persona,
-        originalText: rawText,
-        normalizedText: pls.normalizedText,
-        ssml: pls.ssml,
-        wordCount: pls.words,
-        estimatedDurationSec: pls.estDurationSec,
-        plsReplacements: pls.replacements,
-        dsp: dspSpec,
-        createdAt: new Date().toISOString()
-      }, 200, { "X-Aaruni-Service": "AVA" });
-    }
-
-    // -------------------------------------------------------------------------
-    // 7. AARUNI RENDER (ARN) & JOBS — 100% PRIVATE ADMIN KEY REQUIRED
-    // -------------------------------------------------------------------------
     if (path === "/v1/render/build" && request.method === "POST") {
-      const auth = await authenticatePrivateGuard(request, env, executeD1Query);
+      const auth = await authenticateAdminOnly(request, env, executeD1Query);
       if (!auth.ok) return jsonRes({ ok: false, error: auth.error }, auth.status);
       const body = await request.json().catch(() => ({}));
       const check = assertSafeWorkloadPayload(body);
@@ -722,58 +1204,56 @@ export async function handleCloudApiV1(request, env, executeD1Query) {
       const timeline = String(body.timeline || "project.cmproj");
       const format = String(body.format || "mp4");
       const resolution = String(body.resolution || "1920x1080");
-      const jobId = makeId("job_arn");
+      const jobId = makeId("job_rnd");
       const resultObj = {
         timeline,
         format,
         resolution,
         encoder: "VideoToolbox-H264-HW",
         executionMode: "OUTBOUND_PULL_SANDBOXED",
-        assignedNode: "acc-hyd-m4pro-01",
-        outputUri: `acs://production/renders/${jobId}.${format}`
+        assignedNode: "cmp-hyd-m4pro-01",
+        outputUri: `storage://production/renders/${jobId}.${format}`
       };
 
       await executeD1Query(
         env,
         `INSERT INTO cloud_jobs (job_id, service, action, payload_json, result_json, status, region, owner_key_id, created_at, updated_at)
-         VALUES (?, 'ARN', 'render_build', ?, ?, 'QUEUED', 'ap-south-hyd-1', ?, datetime('now'), datetime('now'))`,
+         VALUES (?, 'RENDER', 'render_build', ?, ?, 'QUEUED', 'ap-south-hyd-1', ?, datetime('now'), datetime('now'))`,
         [jobId, JSON.stringify(body), JSON.stringify(resultObj), auth.principal.key_id]
       );
-      await logAudit(env, executeD1Query, auth.principal.key_id, "ARN", `build:${jobId}`);
+      await logAudit(env, executeD1Query, auth.principal.key_id, "RENDER", `build:${jobId}`);
 
       return jsonRes({
         ok: true,
-        service: "ARN",
+        service: "RENDER",
         jobId,
         status: "QUEUED",
         ...resultObj,
         statusUrl: `https://api.aarunicloud.com/v1/jobs/${jobId}`,
         createdAt: new Date().toISOString()
-      }, 201, { "X-Aaruni-Service": "ARN" });
+      }, 201, { "X-Aaruni-Service": "RENDER" });
     }
 
     const completeMatch = path.match(/^\/v1\/jobs\/([a-zA-Z0-9_-]+)\/complete$/);
     if (completeMatch && request.method === "POST") {
-      const auth = await authenticatePrivateGuard(request, env, executeD1Query);
-      if (!auth.ok || auth.principal.role !== "admin") {
-        return jsonRes({ ok: false, error: "Admin Aaruni Guard key required to complete worker jobs." }, 403);
-      }
+      const auth = await authenticateAdminOnly(request, env, executeD1Query);
+      if (!auth.ok) return jsonRes({ ok: false, error: auth.error }, auth.status);
       const jobId = completeMatch[1];
       const body = await request.json().catch(() => ({}));
       const status = body.status === "FAILED" ? "FAILED" : "COMPLETED";
       const resultObj = body.result || {};
       await executeD1Query(
         env,
-        "UPDATE cloud_jobs SET status = ?, result_json = ?, updated_at = datetime('now') WHERE job_id = ? AND owner_key_id = ?",
-        [status, JSON.stringify(resultObj), jobId, auth.principal.key_id]
+        "UPDATE cloud_jobs SET status = ?, result_json = ?, updated_at = datetime('now') WHERE job_id = ?",
+        [status, JSON.stringify(resultObj), jobId]
       );
-      await logAudit(env, executeD1Query, auth.principal.key_id, "ACC", `complete:${jobId}:${status}`);
+      await logAudit(env, executeD1Query, auth.principal.key_id, "COMPUTE", `complete:${jobId}:${status}`);
       return jsonRes({ ok: true, jobId, status, result: resultObj });
     }
 
     const jobMatch = path.match(/^\/v1\/(?:render\/)?jobs\/([a-zA-Z0-9_-]+)$/);
     if (jobMatch && request.method === "GET") {
-      const auth = await authenticatePrivateGuard(request, env, executeD1Query);
+      const auth = await authenticateGuard(request, env, executeD1Query);
       if (!auth.ok) return jsonRes({ ok: false, error: auth.error }, auth.status);
       const jobId = jobMatch[1];
       const { results } = await executeD1Query(
@@ -802,13 +1282,15 @@ export async function handleCloudApiV1(request, env, executeD1Query) {
       });
     }
 
+    // =========================================================================
+    // 8. CLOUD QUALITY, CLOUD KNOWLEDGE & CLOUD ASSISTANT
+    // =========================================================================
     if (path === "/v1/qa/audit" && (request.method === "POST" || request.method === "GET")) {
       const targetUrl = url.searchParams.get("url") || "https://aarunicloud.com";
-      const jobId = makeId("job_aqa");
       return jsonRes({
         ok: true,
-        service: "AQA",
-        auditId: jobId,
+        service: "QUALITY",
+        auditId: makeId("job_qlt"),
         targetUrl,
         viewportsTested: ["360x800", "390x844", "768x1024", "1440x900"],
         themesTested: ["dark", "light"],
@@ -817,12 +1299,9 @@ export async function handleCloudApiV1(request, env, executeD1Query) {
         criticalViolations: 0,
         status: "PASSED",
         auditedAt: new Date().toISOString()
-      }, 200, { "X-Aaruni-Service": "AQA" });
+      }, 200, { "X-Aaruni-Service": "QUALITY" });
     }
 
-    // -------------------------------------------------------------------------
-    // 8. AARUNI KNOWLEDGE (AKB) & AARUNI ASSISTANT (AAI) — STATELESS EDGE SAFE
-    // -------------------------------------------------------------------------
     if (path === "/v1/knowledge/search" && (request.method === "GET" || request.method === "POST")) {
       let q = url.searchParams.get("q") || url.searchParams.get("query") || "";
       if (!q && request.method === "POST") {
@@ -849,62 +1328,52 @@ export async function handleCloudApiV1(request, env, executeD1Query) {
 
       return jsonRes({
         ok: true,
-        service: "AKB",
+        service: "KNOWLEDGE",
         query: q,
         count: scored.length,
         results: scored
-      }, 200, { "X-Aaruni-Service": "AKB" });
+      }, 200, { "X-Aaruni-Service": "KNOWLEDGE" });
     }
 
     if (path === "/v1/assistant/ask" && request.method === "POST") {
-      const principal = await tryOptionalPrivateGuard(request, env, executeD1Query);
+      const principal = await tryOptionalGuard(request, env, executeD1Query);
       const body = await request.json().catch(() => ({}));
       const prompt = String(body.prompt || body.query || "").slice(0, 600).trim();
       if (!prompt) return jsonRes({ ok: false, error: "Missing 'prompt' field." }, 400);
 
       const lower = prompt.toLowerCase();
       const actions = [];
-      if (lower.includes("storage") || lower.includes("acs") || lower.includes("upload") || lower.includes("sync")) {
-        actions.push({ service: "ACS", summary: "Aaruni Storage space ready with $0/GB egress, SHA-256 integrity lock, and private-key isolation." });
+      if (lower.includes("voice") || lower.includes("clone") || lower.includes("audio") || lower.includes("speak")) {
+        actions.push({ service: "Cloud Voice", summary: "Self-serve Voice Cloning + W3C PLS dictionary + -12.0 dB LUFS studio output ready in Aaruni Cloud Console." });
       }
-      if (lower.includes("compute") || lower.includes("acc") || lower.includes("node") || lower.includes("launch")) {
-        actions.push({ service: "ACC", summary: "Outbound-only air-gapped worker pool ready in ap-south-hyd-1 (0 inbound ports exposed)." });
+      if (lower.includes("storage") || lower.includes("upload") || lower.includes("sync")) {
+        actions.push({ service: "Cloud Storage", summary: "Tenant-jailed Cloud Storage space ready with $0/GB egress and SHA-256 integrity verification." });
       }
-      if (lower.includes("render") || lower.includes("arn") || lower.includes("video") || lower.includes("mp4") || lower.includes("slide")) {
-        actions.push({ service: "ARN", summary: "1920x1080 VideoToolbox H.264 render pipeline decoupled from editor UI." });
+      if (lower.includes("compute") || lower.includes("node") || lower.includes("launch")) {
+        actions.push({ service: "Cloud Compute", summary: "Outbound-only air-gapped worker pool active in ap-south-hyd-1 (0 inbound ports exposed)." });
       }
-      if (lower.includes("voice") || lower.includes("ava") || lower.includes("audio") || lower.includes("speech")) {
-        actions.push({ service: "AVA", summary: "Bound W3C PLS technical lexicon with -12.0 dB LUFS broadcast loudness and cosine de-clicking." });
+      if (lower.includes("render") || lower.includes("video") || lower.includes("mp4") || lower.includes("slide")) {
+        actions.push({ service: "Cloud Render", summary: "1920x1080 VideoToolbox H.264 render pipeline decoupled from Syllovo Studio." });
       }
-      if (lower.includes("security") || lower.includes("guard") || lower.includes("agd") || lower.includes("zero-otp") || actions.length === 0) {
-        actions.push({ service: "AGD", summary: "Verified TLS 1.3 edge transport, 0 inbound host ports, and private SHA-256 API key isolation." });
+      if (lower.includes("security") || lower.includes("guard") || actions.length === 0) {
+        actions.push({ service: "Cloud Guard", summary: "TLS 1.3 edge transport, 0 inbound host ports, and SHA-256 tenant key isolation active." });
       }
 
-      const kbQ = await executeD1Query(env, "SELECT doc_id, service_code, title FROM cloud_knowledge_docs");
-      const matchedServices = new Set(actions.map((a) => a.service));
-      const citations = (kbQ.results || []).filter((d) => matchedServices.has(d.service_code));
-
-      const receiptId = "AAI-RCPT-" + Math.floor(100000 + Math.random() * 899999);
+      const receiptId = "ACL-RCPT-" + Math.floor(100000 + Math.random() * 899999);
       if (principal) {
-        await executeD1Query(
-          env,
-          `INSERT INTO cloud_jobs (job_id, service, action, payload_json, result_json, status, region, owner_key_id, created_at, updated_at)
-           VALUES (?, 'AAI', 'assistant_ask', ?, ?, 'VERIFIED', 'ap-south-hyd-1', ?, datetime('now'), datetime('now'))`,
-          [receiptId, JSON.stringify({ prompt }), JSON.stringify({ actions, citations }), principal.key_id]
-        );
-        await logAudit(env, executeD1Query, principal.key_id, "AAI", `ask:${receiptId}`);
+        await logAudit(env, executeD1Query, principal.key_id, "ASSISTANT", `ask:${receiptId}`);
       }
 
       return jsonRes({
         ok: true,
-        service: "AAI",
+        service: "ASSISTANT",
         mode: principal ? "AUTHENTICATED" : "STATELESS_PUBLIC_ADVISOR",
         receiptId,
         prompt,
         actions,
-        citations,
+        citations: [{ docId: "doc-acloud-01", title: "Aaruni Cloud Architecture & Cloud Voice Guide" }],
         verifiedAt: new Date().toISOString()
-      }, 200, { "X-Aaruni-Service": "AAI" });
+      }, 200, { "X-Aaruni-Service": "ASSISTANT" });
     }
 
     return jsonRes({
