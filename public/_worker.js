@@ -150,6 +150,19 @@ export default {
             });
           }
 
+          const empNameMap = {
+            "AAR-0001": "Shailaja Tiwari",
+            "AAR-0002": "Rupesh Tiwari",
+            "AAR-0003": "Rakesh Tiwari",
+            "AAR-0004": "Chukka Nandini",
+            "AAR-0005": "Janhavi Kamble",
+            "AAR-0006": "Ramya S",
+            "AAR-0008": "Ali"
+          };
+          const empName = body.empName || empNameMap[body.empId] || "Aaruni Staff";
+          const monthVal = body.month || (body.date ? body.date.slice(0, 7) : "2026-11");
+          const emailVal = body.email || "";
+
           const hoursVal = parseFloat(body.hours) || 8;
           const entryVal = body.entryTime || "10:00";
           const exitVal = body.exitTime || "18:00";
@@ -159,11 +172,14 @@ export default {
           const sourceVal = body.source || "Aaruni Portal App (Live D1)";
 
           const insertSql = `
-            INSERT INTO timesheets (id, emp_id, date, entry_time, exit_time, hours, status, summary, task_link, source, created_at)
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, datetime('now'))
+            INSERT INTO timesheets (id, emp_id, emp_name, email, date, month, entry_time, exit_time, hours, status, summary, task_link, source, created_at)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, datetime('now'))
             ON CONFLICT(id) DO UPDATE SET
               emp_id=excluded.emp_id,
+              emp_name=excluded.emp_name,
+              email=excluded.email,
               date=excluded.date,
+              month=excluded.month,
               entry_time=excluded.entry_time,
               exit_time=excluded.exit_time,
               hours=excluded.hours,
@@ -172,7 +188,7 @@ export default {
               task_link=excluded.task_link,
               source=excluded.source;
           `;
-          const params = [body.id, body.empId, body.date, entryVal, exitVal, hoursVal, statusVal, summaryVal, taskVal, sourceVal];
+          const params = [body.id, body.empId, empName, emailVal, body.date, monthVal, entryVal, exitVal, hoursVal, statusVal, summaryVal, taskVal, sourceVal];
 
           await executeD1Query(env, insertSql, params);
 
