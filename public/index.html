@@ -7703,6 +7703,8 @@ function updateQrBaseUrl(val) {
             if (holidayParam) setTimeout(() => openHolidayCalendarModal(), 300);
             const taxParam = params.get("tax");
             if (taxParam) setTimeout(() => openACSTaxDossierModal(), 300);
+            const liveModalParam = params.get("modal") || params.get("live");
+            if (liveModalParam) setTimeout(() => openLiveTimesheetModal(found.id), 300);
             const upiParam = params.get("upi");
             if (upiParam) setTimeout(() => openAdminUPIPaymentModal(found.id), 300);
           }
