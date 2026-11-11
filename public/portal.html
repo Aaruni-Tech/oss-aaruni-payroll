@@ -880,17 +880,17 @@ button, a.button {
         shiftHours: 8,
         monthlyCtc: 0,
         joiningDate: "01/01/2025",
-        dob: "Confidential",
-        fatherName: "Confidential",
-        pan: "Confidential",
-        aadhaar: "Confidential",
-        mobile: "7842097003",
-        email: "nisha.tiwari.mail@gmail.com",
-        alternateEmails: [],
-        address: "Villa 257 Chaitanya Nagar Colony, Praneeth Pranav Knight Woods, Beeramguda, Telangana - 502319",
+        dob: "24/05/1986",
+        fatherName: "Ram Chandra Soni",
+        pan: "AMPPT7382M",
+        aadhaar: "3598 7253 0683",
+        mobile: "7042949239",
+        email: "nisha@aarunitech.com",
+        alternateEmails: ["nisha.tiwari.mail1@gmail.com"],
+        address: "Villa No. 257, Chaitanya Nagar Colony, Praneeth Pranav Knight Woods, Beeramguda, Patancheru, Sangareddy, Telangana - 502319",
         bankName: "Axis Bank",
         accountHolder: "Nisha Tiwari",
-        bankAccount: "Confidential",
+        bankAccount: "924010036673409",
         ifsc: "UTIB0002057",
         upiId: "nisha.tiwari@okaxis",
         idCardFile: "AAR-0001_Nisha_Tiwari_ID_Card.png"
@@ -1310,13 +1310,19 @@ button, a.button {
 
     const DEFAULT_TAX_DEDUCTOR = {
       employerName: "Aaruni Tech",
-      legalEntity: "Aarunitech Private Limited / GST Proprietorship",
-      deductorName: "Nisha Tiwari / Rupesh Kumar Tiwari",
-      deductorFatherName: "Authorised Signatory",
+      legalEntity: "Aarunitech Private Limited / Aaruni Tech (Proprietorship)",
+      deductorName: "Nisha Tiwari",
+      deductorFatherName: "Ram Chandra Soni",
       deductorDesignation: "Proprietor & Authorised Signatory",
       tan: "HYDA02026F",
-      pan: "AAUFA2026T",
-      gstin: "36AAUFA2026T1Z5",
+      pan: "AMPPT7382M",
+      aadhaar: "3598 7253 0683",
+      gstin: "36AAJCA1234F1Z5",
+      bankName: "Axis Bank",
+      bankAccount: "924010036673409",
+      ifsc: "UTIB0002057",
+      mobile: "+91 70429 49239",
+      address: "Villa No. 257, Chaitanya Nagar Colony, Praneeth Pranav Knight Woods, Beeramguda, Patancheru, Sangareddy, Telangana - 502319",
       citTds: "CIT (TDS), Hyderabad — Ayakar Bhawan, Basheerbagh, Hyderabad - 500004",
       financialYear: "2026-27",
       assessmentYear: "2027-28",
@@ -10123,20 +10129,23 @@ function updateQrBaseUrl(val) {
               </div>
             </div>
 
-            <!-- ACS CLOUD STORAGE DOSSIER FILES -->
+            <!-- ACS CLOUD STORAGE DOSSIER FILES (SYNCHRONIZED WITH GOOGLE DRIVE) -->
             <div style="background:#f8fafc;border-radius:14px;padding:18px;border:1px solid #e2e8f0;margin-bottom:18px;">
-              <div style="font-size:11px;font-weight:800;text-transform:uppercase;color:#475569;letter-spacing:0.05em;margin-bottom:12px;display:flex;justify-content:space-between;align-items:center;">
-                <span>📁 ACS Cloud Storage Dossier Files (Ready for CA / Tax Audit)</span>
-                <span style="color:#64748b;font-size:10px;font-weight:600;">4 Verified Files</span>
+              <div style="font-size:11px;font-weight:800;text-transform:uppercase;color:#475569;letter-spacing:0.05em;margin-bottom:12px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;">
+                <span>📁 Official Tax &amp; Business Loss Filing Dossier (Verified Drive Sync)</span>
+                <a href="https://drive.google.com/drive/folders/1t4XUSQt_sclq67iDLSM6TF0yb2UJk0ej" target="_blank" rel="noopener noreferrer" style="color:#ea580c;background:#fff7ed;border:1px solid #fed7aa;font-size:11px;font-weight:700;padding:4px 10px;border-radius:6px;text-decoration:none;display:inline-flex;align-items:center;gap:4px;">
+                  <span>📂 Open Google Drive Folder</span> ↗
+                </a>
               </div>
               
               <div style="display:grid;grid-template-columns:1fr;gap:10px;font-size:12px;">
+                <!-- 1. Salary Disbursement Ledger -->
                 <div style="display:flex;align-items:center;justify-content:space-between;background:#ffffff;padding:12px 14px;border-radius:10px;border:1px solid #e2e8f0;">
                   <div style="display:flex;align-items:center;gap:12px;">
                     <span style="font-size:22px;">📊</span>
                     <div>
                       <strong style="color:#0f172a;font-size:13px;">01_Annual_Salary_Disbursement_Ledger_FY2026-27.xlsx</strong>
-                      <div style="color:#64748b;font-size:11px;margin-top:2px;">Complete breakdown of ₹4,32,587 monthly salaries as proof of operational expense</div>
+                      <div style="color:#64748b;font-size:11px;margin-top:2px;">Breakdown of verified staff payroll disbursed via Axis Corporate Banking (Section 37 expense)</div>
                     </div>
                   </div>
                   <button onclick="downloadAxisBankCSV()" style="background:#0f172a;color:#ffffff;font-size:11px;font-weight:700;padding:7px 14px;border-radius:8px;border:none;cursor:pointer;box-shadow:0 1px 3px rgba(0,0,0,0.1);">
@@ -10144,42 +10153,73 @@ function updateQrBaseUrl(val) {
                   </button>
                 </div>
 
+                <!-- 2. Axis Bank Statements & Account Letter -->
                 <div style="display:flex;align-items:center;justify-content:space-between;background:#ffffff;padding:12px 14px;border-radius:10px;border:1px solid #e2e8f0;">
                   <div style="display:flex;align-items:center;gap:12px;">
                     <span style="font-size:22px;">🏦</span>
                     <div>
-                      <strong style="color:#0f172a;font-size:13px;">02_Corporate_Bank_Statements_Axis_Bank_2025_2026.pdf</strong>
-                      <div style="color:#64748b;font-size:11px;margin-top:2px;">Bank statements repository for payroll reconciliation &amp; audit evidence</div>
+                      <strong style="color:#0f172a;font-size:13px;">02_Axis_Corporate_Bank_Account_924010036673409.pdf</strong>
+                      <div style="color:#64748b;font-size:11px;margin-top:2px;">Axis Bank IFSC: UTIB0002057 &bull; Beeramguda Branch reconciliation &amp; audit evidence</div>
                     </div>
                   </div>
-                  <button onclick="showToast('📥 Downloading Statement', 'Downloading Axis Bank Corporate Statement Repository...')" style="background:#0f172a;color:#ffffff;font-size:11px;font-weight:700;padding:7px 14px;border-radius:8px;border:none;cursor:pointer;box-shadow:0 1px 3px rgba(0,0,0,0.1);">
-                    ⬇️ Download
-                  </button>
+                  <a href="https://drive.google.com/drive/folders/1gVEanM9pYOCVwtackfDaDA2_0uaotfvH" target="_blank" rel="noopener noreferrer" style="background:#0f172a;color:#ffffff;font-size:11px;font-weight:700;padding:7px 14px;border-radius:8px;text-decoration:none;display:inline-block;">
+                    👁️ View in Drive
+                  </a>
                 </div>
 
+                <!-- 3. Proprietor PAN Card -->
+                <div style="display:flex;align-items:center;justify-content:space-between;background:#ffffff;padding:12px 14px;border-radius:10px;border:1px solid #e2e8f0;">
+                  <div style="display:flex;align-items:center;gap:12px;">
+                    <span style="font-size:22px;">🪪</span>
+                    <div>
+                      <strong style="color:#0f172a;font-size:13px;">03_Proprietor_PAN_Nisha_Tiwari_AMPPT7382M.pdf</strong>
+                      <div style="color:#64748b;font-size:11px;margin-top:2px;">Income Tax Dept. PAN: AMPPT7382M &bull; Father: Ram Chandra Soni &bull; DOB: 24/05/1986</div>
+                    </div>
+                  </div>
+                  <a href="https://drive.google.com/drive/folders/1gVEanM9pYOCVwtackfDaDA2_0uaotfvH" target="_blank" rel="noopener noreferrer" style="background:#0f172a;color:#ffffff;font-size:11px;font-weight:700;padding:7px 14px;border-radius:8px;text-decoration:none;display:inline-block;">
+                    👁️ View in Drive
+                  </a>
+                </div>
+
+                <!-- 4. Proprietor Aadhaar KYC Proof -->
+                <div style="display:flex;align-items:center;justify-content:space-between;background:#ffffff;padding:12px 14px;border-radius:10px;border:1px solid #e2e8f0;">
+                  <div style="display:flex;align-items:center;gap:12px;">
+                    <span style="font-size:22px;">🏠</span>
+                    <div>
+                      <strong style="color:#0f172a;font-size:13px;">04_Aadhaar_Registered_Office_Proof_359872530683.pdf</strong>
+                      <div style="color:#64748b;font-size:11px;margin-top:2px;">UIDAI Registered Address: Villa 257, Praneeth Pranav Knight Woods, Beeramguda, Telangana 502319</div>
+                    </div>
+                  </div>
+                  <a href="https://drive.google.com/drive/folders/1gVEanM9pYOCVwtackfDaDA2_0uaotfvH" target="_blank" rel="noopener noreferrer" style="background:#0f172a;color:#ffffff;font-size:11px;font-weight:700;padding:7px 14px;border-radius:8px;text-decoration:none;display:inline-block;">
+                    👁️ View in Drive
+                  </a>
+                </div>
+
+                <!-- 5. Product Purchase Proofs & Operational Expenses -->
+                <div style="display:flex;align-items:center;justify-content:space-between;background:#ffffff;padding:12px 14px;border-radius:10px;border:1px solid #e2e8f0;">
+                  <div style="display:flex;align-items:center;gap:12px;">
+                    <span style="font-size:22px;">📦</span>
+                    <div>
+                      <strong style="color:#0f172a;font-size:13px;">05_Product_Purchase_Invoices_SR_Exclusive_CrystalTree.pdf</strong>
+                      <div style="color:#64748b;font-size:11px;margin-top:2px;">Amazon seller inventory &amp; product capital purchase invoices for Section 37 business loss filing</div>
+                    </div>
+                  </div>
+                  <a href="https://drive.google.com/drive/folders/1fARsjdGjaPvGieptYf0Fb_Bt47rMCT2P" target="_blank" rel="noopener noreferrer" style="background:#0f172a;color:#ffffff;font-size:11px;font-weight:700;padding:7px 14px;border-radius:8px;text-decoration:none;display:inline-block;">
+                    👁️ View in Drive
+                  </a>
+                </div>
+
+                <!-- 6. Form 16 Summary -->
                 <div style="display:flex;align-items:center;justify-content:space-between;background:#ffffff;padding:12px 14px;border-radius:10px;border:1px solid #e2e8f0;">
                   <div style="display:flex;align-items:center;gap:12px;">
                     <span style="font-size:22px;">📑</span>
                     <div>
-                      <strong style="color:#0f172a;font-size:13px;">03_Form_16_Part_A_and_B_Employee_TDS_Summary.pdf</strong>
+                      <strong style="color:#0f172a;font-size:13px;">06_Form_16_Part_A_and_B_Employee_TDS_Summary.pdf</strong>
                       <div style="color:#64748b;font-size:11px;margin-top:2px;">Section 192 TDS compliance certificates across all staff</div>
                     </div>
                   </div>
                   <button onclick="openForm16Modal('AAR-0004')" style="background:#0f172a;color:#ffffff;font-size:11px;font-weight:700;padding:7px 14px;border-radius:8px;border:none;cursor:pointer;box-shadow:0 1px 3px rgba(0,0,0,0.1);">
-                    👁️ View
-                  </button>
-                </div>
-
-                <div style="display:flex;align-items:center;justify-content:space-between;background:#ffffff;padding:12px 14px;border-radius:10px;border:1px solid #e2e8f0;">
-                  <div style="display:flex;align-items:center;gap:12px;">
-                    <span style="font-size:22px;">📜</span>
-                    <div>
-                      <strong style="color:#0f172a;font-size:13px;">04_Certificate_of_Incorporation_MCA_COI.pdf</strong>
-                      <div style="color:#64748b;font-size:11px;margin-top:2px;">MCA legal incorporation document and Registered Office certification</div>
-                    </div>
-                  </div>
-                  <button onclick="showToast('📜 Legal Record', 'Aarunitech Private Limited Incorporation Certificate verified.')" style="background:#0f172a;color:#ffffff;font-size:11px;font-weight:700;padding:7px 14px;border-radius:8px;border:none;cursor:pointer;box-shadow:0 1px 3px rgba(0,0,0,0.1);">
-                    👁️ View
+                    👁️ View Certificate
                   </button>
                 </div>
               </div>
