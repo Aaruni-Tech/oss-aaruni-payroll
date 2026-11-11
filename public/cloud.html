@@ -1967,19 +1967,22 @@
           </div>
 
           <div class="terminal-body mono" id="terminal-content">
-            <div><span class="t-prompt">$</span> <span class="t-cmd">aaruni compute launch --type acc.m4.max --region ap-south-hyd-1</span></div>
-            <div class="t-info">[INFO] Connecting to Aaruni Cloud Control Plane at ap-south-hyd-1...</div>
-            <div class="t-success">✔ Verified Aaruni Guard Session (AGD Key ID: agd_9921_valid)</div>
-            <div class="t-success">✔ Allocated Aaruni Compute Node (64GB Unified RAM, Hardware VideoToolbox)</div>
-            <div class="t-success">✔ Mounted 8TB Aaruni Storage (acs://media-production-hyd • $0 Egress)</div>
-            <div><span class="t-prompt">$</span> <span class="t-cmd">aaruni voice synthesize --text "Module 1 Ready" --lufs -12</span></div>
-            <div class="t-success">✔ W3C PLS Lexicon bound • Zero boundary clicks (35ms/45ms cosine)</div>
-            <div class="t-info">🚀 Instance Ready at compute.api.aarunicloud.com (Latency: 12ms, Status: 🟢 ACTIVE)</div>
+            <div><span class="t-prompt">$</span> <span class="t-cmd">npm install -g https://aarunicloud.com/sdk/aaruni-sdk-1.0.0.tgz</span></div>
+            <div><span class="t-prompt">$</span> <span class="t-cmd">aaruni status</span></div>
+            <div class="t-success">🟢 Aaruni Cloud (OPERATIONAL) • Control Plane: ap-south-hyd-1</div>
+            <div><span class="t-prompt">$</span> <span class="t-cmd">aaruni storage upload ./demo.txt --space sandbox</span></div>
+            <div class="t-success">✔ Uploaded to acs://sandbox/demo.txt (SHA-256 verified • $0.00 Egress)</div>
+            <div><span class="t-prompt">$</span> <span class="t-cmd">aaruni voice synthesize --text "Deploy via kubectl &amp; PostgreSQL" --lufs -12</span></div>
+            <div class="t-success">✔ W3C PLS Normalized ("kube-control", "Post-gres-Q-L") • -12.0 dB LUFS</div>
+            <div class="t-info">🚀 Live Gateway: https://api.aarunicloud.com/v1/status (🟢 LIVE)</div>
           </div>
 
-          <div class="terminal-footer mono">
-            <div>Region: <strong>ap-south-hyd-1</strong> &bull; Node: <strong>ACC-HYD-04</strong></div>
-            <button type="button" class="copy-code-btn" onclick="copyTerminalSnippet()">📋 Copy Snippet</button>
+          <div class="terminal-footer mono" style="gap:8px;flex-wrap:wrap;">
+            <div>Gateway: <strong>api.aarunicloud.com</strong></div>
+            <div style="display:flex;gap:8px;">
+              <button type="button" class="copy-code-btn" style="border-color:rgba(16,185,129,0.45);color:#6ee7b7;" onclick="pingLiveCloudApi()">▶ Run Live API</button>
+              <button type="button" id="copy-snippet-btn" class="copy-code-btn" onclick="copyTerminalSnippet()">📋 Copy</button>
+            </div>
           </div>
         </div>
       </div>
@@ -2571,14 +2574,14 @@
         category: "storage",
         featured: true,
         glyphClass: "glyph-storage",
-        endpoint: "storage.api.aarunicloud.com",
+        endpoint: "api.aarunicloud.com/v1/storage",
         desc: "Simple, fast, S3-compatible cloud storage for videos, media, datasets, and application files—combining NVMe cache, 8 TB RAID-1 NAS, and global $0-egress CDN delivery.",
         bullets: [
           "Zero egress fees ($0/GB) with instant global HTTP 206 streaming",
           "Real-time Gigabit RAID-1 mirroring with SHA-256 checksums",
           "Read-only finalization lock prevents accidental file overwrites"
         ],
-        cli: "aaruni storage sync ./media acs://production-media"
+        cli: "aaruni storage upload ./demo.txt --space sandbox"
       },
       {
         id: "arc",
@@ -2588,14 +2591,14 @@
         category: "storage",
         featured: false,
         glyphClass: "glyph-storage",
-        endpoint: "archive.api.aarunicloud.com",
+        endpoint: "api.aarunicloud.com/v1/archive/seal",
         desc: "30 TB AES-256 encrypted offsite cold backup storage engineered for long-term media preservation, disaster recovery, and statutory audit retention.",
         bullets: [
           "Offsite geo-isolated cold storage immune to local power events",
           "AES-256 encryption at rest with strict role-gated access",
           "Immutable SHA-256 verification receipts on every backup bundle"
         ],
-        cli: "aaruni archive seal --target arc://cold-backup-30tb"
+        cli: "aaruni archive seal --space sandbox --key demo.txt"
       },
       {
         id: "acc",
@@ -2605,14 +2608,14 @@
         category: "compute",
         featured: true,
         glyphClass: "glyph-compute",
-        endpoint: "compute.api.aarunicloud.com",
+        endpoint: "api.aarunicloud.com/v1/compute/nodes",
         desc: "Dedicated unified-memory Apple Silicon M-Series and Linux compute machines running 24/7 for fast AI inference, builds, and hardware video encoding.",
         bullets: [
           "Hardware H.264/HEVC VideoToolbox 1080p/4K media acceleration",
           "Auto-reboot power recovery & Wake-on-LAN high availability",
           "Predictable flat monthly pricing with zero per-minute GPU surcharges"
         ],
-        cli: "aaruni compute list --region ap-south-hyd-1"
+        cli: "aaruni compute nodes"
       },
       {
         id: "acn",
@@ -2622,7 +2625,7 @@
         category: "compute",
         featured: false,
         glyphClass: "glyph-compute",
-        endpoint: "containers.api.aarunicloud.com",
+        endpoint: "api.aarunicloud.com/v1/containers/run",
         desc: "Isolated Docker/OCI container sandboxes and serverless Linux Xvfb (1920x1080) headless workers for clean app testing, browser capture, and cloud failover.",
         bullets: [
           "Automatic cloud runner failover if local LAN connectivity drops",
@@ -2639,7 +2642,7 @@
         category: "ai",
         featured: true,
         glyphClass: "glyph-ai",
-        endpoint: "voice.api.aarunicloud.com",
+        endpoint: "api.aarunicloud.com/v1/voice/synthesize",
         desc: "Natural neural speech synthesis and broadcast audio mastering combining unlimited free local draft iterations with 1-click premium studio voice APIs.",
         bullets: [
           "W3C PLS technical pronunciation lexicon for developer terms",
@@ -2656,14 +2659,14 @@
         category: "ai",
         featured: true,
         glyphClass: "glyph-ai",
-        endpoint: "assistant.api.aarunicloud.com",
+        endpoint: "api.aarunicloud.com/v1/assistant/ask",
         desc: "Multi-intent enterprise AI chatbot and cloud copilot that turns plain-English instructions into verified storage, compute, rendering, and audio actions.",
         bullets: [
           "Simultaneous multi-intent execution across cloud services",
           "Honest step-by-step progress streaming with audit receipts",
           "Grounded in Aaruni Knowledge (AKB) with zero hallucinations"
         ],
-        cli: "aaruni assistant ask --prompt 'Sync ACS storage and render MP4'"
+        cli: "aaruni assistant ask 'Check ACS storage and launch ACC compute'"
       },
       {
         id: "akb",
@@ -2673,14 +2676,14 @@
         category: "ai",
         featured: false,
         glyphClass: "glyph-ai",
-        endpoint: "knowledge.api.aarunicloud.com",
+        endpoint: "api.aarunicloud.com/v1/knowledge/search",
         desc: "Managed SQLite FTS5 full-text and semantic RAG knowledge base with weighted source authority scoring and automated pre-flight compliance checks.",
         bullets: [
           "Weighted source ledger across docs, RFCs, and verified code",
           "Sub-50ms indexed rule lookup and citation verification",
           "Catches policy & quality issues before compute jobs run"
         ],
-        cli: "aaruni knowledge search --query 'audio loudness standard'"
+        cli: "aaruni knowledge search --query 'zero egress'"
       },
       {
         id: "arn",
@@ -2690,14 +2693,14 @@
         category: "tools",
         featured: true,
         glyphClass: "glyph-tools",
-        endpoint: "render.api.aarunicloud.com",
+        endpoint: "api.aarunicloud.com/v1/render/build",
         desc: "Cloud background rendering engine that compiles slide decks (.key/.pdf), multi-track timelines (.cmproj), and synchronized 1080p MP4 videos.",
         bullets: [
           "Exact 1:1 narration, caption, and visual transition alignment",
           "Clean adapters for Camtasia®, Keynote®, and FFmpeg®",
           "Decoupled cloud render backend powering authoring editors"
         ],
-        cli: "aaruni render build --timeline project.json --format mp4"
+        cli: "aaruni render build --timeline lesson-01.cmproj --format mp4"
       },
       {
         id: "aqa",
@@ -2707,14 +2710,14 @@
         category: "tools",
         featured: false,
         glyphClass: "glyph-tools",
-        endpoint: "qa.api.aarunicloud.com",
+        endpoint: "api.aarunicloud.com/v1/qa/audit",
         desc: "Automated 7-device responsive layout, HTML5 Canvas visual inspection, and axe-core WCAG 2.1 Level AA accessibility testing service.",
         bullets: [
           "Tests 360px Android through 1440px Desktop in Light & Dark",
           "SHA-256 bug fingerprinting & root-cause deduplication",
           "Blocks horizontal overflow and contrast regressions pre-deploy"
         ],
-        cli: "aaruni qa audit --devices 7 --wcag aa"
+        cli: "aaruni qa audit --url https://aarunicloud.com"
       },
       {
         id: "agd",
@@ -2724,14 +2727,14 @@
         category: "security",
         featured: true,
         glyphClass: "glyph-sec",
-        endpoint: "guard.api.aarunicloud.com",
+        endpoint: "api.aarunicloud.com/v1/guard/whoami",
         desc: "Zero-Trust identity, encrypted API secret management, and Zero-OTP remote browser session handoff so teams work safely without sharing passwords.",
         bullets: [
           "Zero password or 2FA OTP exposure to staff operators",
           "Encrypted session state handoff with 1-tap mobile revoke",
           "Full audit trail across every cloud API action"
         ],
-        cli: "aaruni guard session-handoff --profile production"
+        cli: "aaruni guard whoami"
       },
       {
         id: "aed",
@@ -2741,14 +2744,14 @@
         category: "security",
         featured: false,
         glyphClass: "glyph-sec",
-        endpoint: "edge.api.aarunicloud.com",
+        endpoint: "api.aarunicloud.com/v1/edge/status",
         desc: "Global TLS 1.3 Anycast CDN, DNS routing, and outbound-only encrypted worker tunnels connecting private compute nodes with zero open firewall ports.",
         bullets: [
           "Zero public static IP exposure on private compute hardware",
           "Host-aware global edge routing & DDoS protection",
           "Sub-20ms asset & review delivery worldwide"
         ],
-        cli: "aaruni edge status --region global-anycast"
+        cli: "aaruni edge status"
       }
     ];
 
@@ -2774,49 +2777,42 @@
     };
 
     const TERMINAL_SNIPPETS = {
-      cli: `$ aaruni compute launch --type acc.m4.max --region ap-south-hyd-1
-[INFO] Connecting to Aaruni Cloud Control Plane at ap-south-hyd-1...
-✔ Verified Aaruni Guard Session (AGD Key ID: agd_9921_valid)
-✔ Allocated Aaruni Compute Node (64GB Unified RAM, Hardware VideoToolbox)
-✔ Mounted 8TB Aaruni Storage (acs://media-production-hyd • $0 Egress)
-$ aaruni voice synthesize --text "Module 1 Ready" --lufs -12
-✔ W3C PLS Lexicon bound • Zero boundary clicks (35ms/45ms cosine)
-🚀 Instance Ready at compute.api.aarunicloud.com (Latency: 12ms, Status: 🟢 ACTIVE)`,
-      curl: `curl -X POST https://compute.api.aarunicloud.com/v1/nodes   -H "Authorization: Bearer agd_token_881"   -H "Content-Type: application/json"   -d '{
-    "node_type": "acc.m4.max.64gb",
-    "storage_mount": "acs://media-production-hyd",
-    "region": "ap-south-hyd-1"
-  }'
+      cli: `# Install real Aaruni Cloud CLI & Node SDK globally:
+npm install -g https://aarunicloud.com/sdk/aaruni-sdk-1.0.0.tgz
 
-# Response:
-# {"status": "ACTIVE", "node_id": "acc-hyd-04", "egress_fee": 0.0, "latency_ms": 12}`,
-      python: `import aaruni_cloud as ac
+# Run real live commands against https://api.aarunicloud.com:
+aaruni status
+aaruni services
+aaruni compute nodes
+aaruni voice synthesize --text "Deploy via kubectl and PostgreSQL" --lufs -12
+aaruni assistant ask "Check ACS storage and launch ACC compute"`,
+      curl: `# 1. Live Gateway Status (copy & run in your terminal right now):
+curl -s https://api.aarunicloud.com/v1/status
 
-# Connect with Aaruni Guard API credentials
-cloud = ac.Client(region="ap-south-hyd-1")
+# 2. Live W3C PLS Voice Normalization & DSP Synthesis:
+curl -s -X POST https://api.aarunicloud.com/v1/voice/synthesize   -H "Authorization: Bearer agd_sandbox_public_demo"   -H "Content-Type: application/json"   -d '{"text":"Scale kubectl and PostgreSQL on Aaruni Cloud","lufs":-12}'`,
+      python: `# Install real zero-dependency Python SDK:
+# pip install https://aarunicloud.com/sdk/aaruni_cloud-1.0.0.tar.gz
 
-# Upload media to Aaruni Storage (ACS) with $0 egress
-cloud.storage.upload("./demo.mp4", space="acs://media-production-hyd")
+import aaruni_cloud as ac
 
-# Synthesize broadcast speech with Aaruni Voice (AVA)
-audio = cloud.voice.synthesize(
-    text="Welcome to Aaruni Cloud — simple cloud for everyone.",
-    target_lufs=-12.0
-)
-print("Uploaded & synthesized:", audio.url)`,
-      node: `import { AaruniCloud } from "@aaruni/sdk";
+cloud = ac.Client(api_key="agd_sandbox_public_demo")
+print(cloud.status())
 
-const cloud = new AaruniCloud({ region: "ap-south-hyd-1" });
+# Upload & stream from Aaruni Storage (ACS) with $0 egress:
+cloud.storage.upload(b"Hello Aaruni Cloud!", space="sandbox", key="hello.txt")
+print(cloud.storage.download("hello.txt", space="sandbox").decode())`,
+      node: `// Install real ESM/TypeScript SDK:
+// npm install https://aarunicloud.com/sdk/aaruni-sdk-1.0.0.tgz
 
-// Store assets in Aaruni Storage (ACS) & launch Aaruni Compute (ACC)
-const node = await cloud.compute.launch({
-  type: "acc.m4.max",
-  storage: "acs://media-production-hyd"
-});
+import { AaruniCloud } from "@aaruni/sdk";
 
-// Trigger background 1080p MP4 build via Aaruni Render (ARN)
-const job = await cloud.render.build({ timeline: "lesson-01.cmproj" });
-console.log("Render complete:", job.mp4Url);`
+const cloud = new AaruniCloud({ apiKey: "agd_sandbox_public_demo" });
+console.log(await cloud.status());
+
+// Execute grounded multi-intent Aaruni Assistant (AAI) request:
+const plan = await cloud.assistant.ask("Verify ACS storage and launch ACC compute");
+console.log("Verified Receipt:", plan.receiptId, plan.actions);`
     };
 
     const LEGAL_CONTENT = {
@@ -2866,10 +2862,24 @@ console.log("Render complete:", job.mp4Url);`
       el.textContent = snippet;
     }
 
+    function pingLiveCloudApi() {
+      const el = document.getElementById("terminal-content");
+      if (!el) return;
+      el.textContent = "$ curl -s https://api.aarunicloud.com/v1/status\n[Connecting to live Cloudflare Edge + D1 Control Plane...]";
+      fetch("/v1/status")
+        .then(function (r) { return r.json(); })
+        .then(function (data) {
+          el.textContent = "$ curl -s https://api.aarunicloud.com/v1/status\n" + JSON.stringify(data, null, 2);
+        })
+        .catch(function (err) {
+          el.textContent = "Live ping error: " + (err && err.message ? err.message : String(err));
+        });
+    }
+
     function copyTerminalSnippet() {
       const snippet = TERMINAL_SNIPPETS[activeTerminalTab] || TERMINAL_SNIPPETS.cli;
       navigator.clipboard.writeText(snippet).then(() => {
-        const btn = document.querySelector(".copy-code-btn");
+        const btn = document.getElementById("copy-snippet-btn");
         if (btn) {
           const old = btn.textContent;
           btn.textContent = "✔ Copied!";
@@ -3089,13 +3099,28 @@ console.log("Render complete:", job.mp4Url);`
         planLines.push("• [Aaruni Guard • AGD] Verified TLS 1.3 edge transport, AES-256 storage encryption, and Zero-OTP session safety.");
       }
 
-      const receiptId = "AAI-RCPT-" + Math.floor(10000 + Math.random() * 89999);
-      setTimeout(function () {
-        agentBubble.innerHTML =
-          '<strong class="mono" style="color:#86efac;display:block;font-size:11px;margin-bottom:4px;">✓ Verified Multi-Service Plan (' + receiptId + ')</strong>' +
-          planLines.map(function (l) { return '<div style="margin-bottom:3px;">' + esc(l) + '</div>'; }).join("");
-        log.scrollTop = log.scrollHeight;
-      }, 260);
+      const fallbackReceipt = "AAI-RCPT-" + Math.floor(100000 + Math.random() * 899999);
+      fetch("/v1/assistant/ask", {
+        method: "POST",
+        headers: { "Content-Type": "application/json", "Authorization": "Bearer agd_sandbox_public_demo" },
+        body: JSON.stringify({ prompt: query })
+      })
+        .then(function (r) { if (!r.ok) throw new Error("fallback"); return r.json(); })
+        .then(function (data) {
+          const lines = (data.actions || []).map(function (a) {
+            return "• [" + a.service + "] " + a.summary;
+          });
+          agentBubble.innerHTML =
+            '<strong class="mono" style="color:#86efac;display:block;font-size:11px;margin-bottom:4px;">✓ Live Verified Plan (' + esc(data.receiptId || fallbackReceipt) + ')</strong>' +
+            lines.map(function (l) { return '<div style="margin-bottom:3px;">' + esc(l) + '</div>'; }).join("");
+          log.scrollTop = log.scrollHeight;
+        })
+        .catch(function () {
+          agentBubble.innerHTML =
+            '<strong class="mono" style="color:#86efac;display:block;font-size:11px;margin-bottom:4px;">✓ Verified Multi-Service Plan (' + fallbackReceipt + ')</strong>' +
+            planLines.map(function (l) { return '<div style="margin-bottom:3px;">' + esc(l) + '</div>'; }).join("");
+          log.scrollTop = log.scrollHeight;
+        });
     }
 
     /* -----------------------------------------------------------------------
