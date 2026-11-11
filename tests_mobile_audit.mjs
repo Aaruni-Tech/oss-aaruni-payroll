@@ -14,22 +14,23 @@ const DEVICE_MATRIX = [
   { name: "iPad Mini (Tablet)", width: 768, height: 1024, isMobile: true, hasTouch: true }
 ];
 
-// Views / Tabs to Audit
+// Views / Tabs to Audit (Supports both /portal.html and edge routed /)
+const PORTAL_PREFIX = process.env.PORTAL_PREFIX || "/portal.html";
 const TEST_SCENARIOS = [
-  { id: "staff-phonetool", path: "/?emp=AAR-0004&tab=phonetool" },
-  { id: "staff-timesheet", path: "/?emp=AAR-0004&tab=timesheet" },
-  { id: "staff-forte", path: "/?emp=AAR-0004&tab=forte" },
-  { id: "staff-salary", path: "/?emp=AAR-0004&tab=salary" },
-  { id: "staff-payslips", path: "/?emp=AAR-0004&tab=payslips" },
-  { id: "staff-tax", path: "/?emp=AAR-0004&tab=tax" },
-  { id: "staff-documents", path: "/?emp=AAR-0004&tab=documents" },
-  { id: "admin-dashboard", path: "/?emp=ADMIN&tab=dashboard" },
-  { id: "admin-roster", path: "/?emp=ADMIN&tab=roster" },
-  { id: "admin-payroll", path: "/?emp=ADMIN&tab=payroll" },
-  { id: "admin-pulse", path: "/?emp=ADMIN&tab=pulse" },
-  { id: "admin-loans", path: "/?emp=ADMIN&tab=loans" },
-  { id: "admin-appointments", path: "/?emp=ADMIN&tab=appointments" },
-  { id: "login-screen", path: "/?emp=LOGIN" }
+  { id: "staff-phonetool", path: `${PORTAL_PREFIX}?emp=AAR-0004&tab=phonetool` },
+  { id: "staff-timesheet", path: `${PORTAL_PREFIX}?emp=AAR-0004&tab=timesheet` },
+  { id: "staff-forte", path: `${PORTAL_PREFIX}?emp=AAR-0004&tab=forte` },
+  { id: "staff-salary", path: `${PORTAL_PREFIX}?emp=AAR-0004&tab=salary` },
+  { id: "staff-payslips", path: `${PORTAL_PREFIX}?emp=AAR-0004&tab=payslips` },
+  { id: "staff-tax", path: `${PORTAL_PREFIX}?emp=AAR-0004&tab=tax` },
+  { id: "staff-documents", path: `${PORTAL_PREFIX}?emp=AAR-0004&tab=documents` },
+  { id: "admin-dashboard", path: `${PORTAL_PREFIX}?emp=ADMIN&tab=dashboard` },
+  { id: "admin-roster", path: `${PORTAL_PREFIX}?emp=ADMIN&tab=roster` },
+  { id: "admin-payroll", path: `${PORTAL_PREFIX}?emp=ADMIN&tab=payroll` },
+  { id: "admin-pulse", path: `${PORTAL_PREFIX}?emp=ADMIN&tab=pulse` },
+  { id: "admin-loans", path: `${PORTAL_PREFIX}?emp=ADMIN&tab=loans` },
+  { id: "admin-appointments", path: `${PORTAL_PREFIX}?emp=ADMIN&tab=appointments` },
+  { id: "login-screen", path: `${PORTAL_PREFIX}?emp=LOGIN` }
 ];
 
 const THEMES = ["light", "dark"];

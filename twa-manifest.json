@@ -1,6 +1,6 @@
 {
   "packageId": "com.aarunitech.payroll",
-  "host": "my.aaruni.in",
+  "host": "my.aarunitech.com",
   "name": "Aaruni Tech Payroll & Attendance",
   "launcherName": "Aaruni Payroll",
   "display": "standalone",
@@ -11,16 +11,16 @@
   "navigationDividerColorDark": "#1E293B",
   "backgroundColor": "#0F172A",
   "enableNotifications": true,
-  "startUrl": "/?source=android_twa",
-  "iconUrl": "https://my.aaruni.in/icon-512.png",
-  "maskableIconUrl": "https://my.aaruni.in/icon-512.png",
-  "appVersionName": "1.0.0",
-  "appVersionCode": 1,
+  "startUrl": "/?source=android_twa&v=2.4.0",
+  "iconUrl": "https://my.aarunitech.com/aaruni_square_logo.png",
+  "maskableIconUrl": "https://my.aarunitech.com/aaruni_square_logo.png",
+  "appVersionName": "2.4.0",
+  "appVersionCode": 24,
   "shortcuts": [
     {
       "name": "Clock In / Out",
       "shortName": "Timesheet",
-      "url": "/?tab=clock"
+      "url": "/?tab=timesheet"
     },
     {
       "name": "Download Payslip PDF",
@@ -29,7 +29,7 @@
     }
   ],
   "generatorApp": "bubblewrap-cli",
-  "webManifestUrl": "https://my.aaruni.in/manifest.json",
+  "webManifestUrl": "https://my.aarunitech.com/manifest.json",
   "fallbackType": "customtabs",
   "features": {
     "locationDelegation": {
@@ -45,7 +45,7 @@
   "enableSiteSettingsShortcut": true,
   "isChromeOSOnly": false,
   "isMetaQuest": false,
-  "fullScopeUrl": "https://my.aaruni.in/",
+  "fullScopeUrl": "https://my.aarunitech.com/",
   "minSdkVersion": 21,
   "orientation": "portrait"
 }
