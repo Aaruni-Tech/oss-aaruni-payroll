@@ -1,26 +1,28 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="light">
+<html lang="en" data-theme="dark">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Aaruni Cloud (aarunicloud.com) — Cloud Compute, Object Storage, Voice AI &amp; Converse AI</title>
-  <meta name="description" content="Aaruni Cloud (aarunicloud.com) delivers enterprise cloud infrastructure: Aaruni Compute Engine (ACE), Aaruni Object Vault (AOV), Aaruni Voice AI (AVS), Aaruni Converse AI (ACA), and pluggable media studio toolchains." />
+  <title>Aaruni Cloud (aarunicloud.com) — Sovereign Compute, Object Storage, Voice AI &amp; Converse AI</title>
+  <meta name="description" content="Aaruni Cloud (aarunicloud.com) delivers hyperscale sovereign cloud infrastructure: Aaruni Compute Engine (ACE), Aaruni Object Vault (AOV), Aaruni Voice AI (AVS), Aaruni Converse AI (ACA), and automated media studio toolchains." />
   <meta property="og:title" content="Aaruni Cloud — Compute, Storage, Voice AI &amp; Converse AI Services" />
-  <meta property="og:description" content="Build, render, and scale with Aaruni Compute Engine (ACE), Aaruni Object Vault (AOV), Aaruni Voice AI (AVS), and Aaruni Converse AI (ACA)." />
+  <meta property="og:description" content="Provision unified-memory compute clusters (ACE), zero-egress object storage (AOV), neural broadcast voice (AVS), and autonomous AI agents (ACA) on aarunicloud.com." />
   <meta property="og:type" content="website" />
   <meta property="og:url" content="https://aarunicloud.com/" />
-  <meta name="theme-color" content="#080e1a" />
+  <meta name="theme-color" content="#060913" />
   <link rel="icon" type="image/svg+xml" href="/aaruni-cloud-icon.svg" />
   <link rel="apple-touch-icon" href="/aaruni_square_logo.png" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet" />
   <script>
     (function () {
       try {
         var saved = localStorage.getItem("aaruni_cloud_theme");
-        if (saved === "dark" || saved === "light") {
+        if (saved === "light" || saved === "dark") {
           document.documentElement.setAttribute("data-theme", saved);
+        } else {
+          document.documentElement.setAttribute("data-theme", "dark");
         }
         if ("serviceWorker" in navigator) {
           navigator.serviceWorker.getRegistrations().then(function (regs) {
@@ -32,76 +34,84 @@
   </script>
   <style>
     /* =========================================================================
-       AARUNI CLOUD HYPERSCALE PORTAL DESIGN SYSTEM (WCAG 2.1 AA/AAA VERIFIED)
-       Original Aaruni Identity: Midnight Slate + Cobalt Blue + Aaruni Dawn
+       AARUNI CLOUD HYPERSCALE DESIGN SYSTEM (AWS & GOOGLE CLOUD SHOP CALIBER)
+       Colors: Deep Cosmic Navy, Electric Cyan, Azure Cobalt, Sunset Amber, Emerald
        ========================================================================= */
     :root,
-    [data-theme="light"] {
-      --ac-bg: #f4f6f9;
-      --ac-bg-alt: #eaeff5;
-      --ac-surface: #ffffff;
-      --ac-surface-subtle: #f8fafc;
-      --ac-border: #cbd5e1;
-      --ac-border-subtle: #e2e8f0;
-      --ac-text: #0f172a;
-      --ac-text-secondary: #334155;
-      --ac-text-muted: #475569;
-      --ac-primary: #0369a1;
-      --ac-primary-hover: #075985;
-      --ac-primary-fg: #ffffff;
-      --ac-link: #0369a1;
-      --ac-primary-soft: #e0f2fe;
-      --ac-primary-soft-fg: #0c4a6e;
-      --ac-accent: #c2410c;
-      --ac-accent-hover: #9a3412;
-      --ac-accent-fg: #ffffff;
-      --ac-accent-soft: #ffedd5;
-      --ac-accent-soft-fg: #7c2d12;
-      --ac-green-soft: #dcfce7;
-      --ac-green-fg: #14532d;
-      --ac-green-border: #86efac;
-      --ac-violet-soft: #f3e8ff;
-      --ac-violet-fg: #581c87;
-      --ac-teal-soft: #ccfbf1;
-      --ac-teal-fg: #115e59;
-      --ac-shadow-sm: 0 1px 3px rgba(15, 23, 42, 0.07);
-      --ac-shadow-md: 0 10px 26px rgba(15, 23, 42, 0.09);
-      --ac-shadow-lg: 0 22px 48px rgba(15, 23, 42, 0.15);
-      color-scheme: light;
-    }
-
     [data-theme="dark"] {
-      --ac-bg: #060b14;
-      --ac-bg-alt: #0b1322;
-      --ac-surface: #0f172a;
-      --ac-surface-subtle: #142038;
-      --ac-border: #334155;
-      --ac-border-subtle: #1e293b;
+      --ac-bg: #060913;
+      --ac-bg-subtle: #0b1120;
+      --ac-bg-alt: #0f172a;
+      --ac-surface: #111a2e;
+      --ac-surface-hover: #16223b;
+      --ac-surface-card: rgba(17, 26, 46, 0.85);
+      --ac-border: rgba(56, 189, 248, 0.16);
+      --ac-border-subtle: rgba(255, 255, 255, 0.08);
+      --ac-border-bright: #38bdf8;
       --ac-text: #f8fafc;
       --ac-text-secondary: #cbd5e1;
       --ac-text-muted: #94a3b8;
-      --ac-primary: #0369a1;
-      --ac-primary-hover: #075985;
+      --ac-primary: #0284c7;
+      --ac-primary-hover: #0369a1;
       --ac-primary-fg: #ffffff;
       --ac-link: #38bdf8;
-      --ac-primary-soft: rgba(56, 189, 248, 0.15);
-      --ac-primary-soft-fg: #7dd3fc;
-      --ac-accent: #c2410c;
+      --ac-cyan: #06b6d4;
+      --ac-cyan-soft: rgba(6, 182, 212, 0.14);
+      --ac-cyan-fg: #67e8f9;
+      --ac-accent: #f97316;
       --ac-accent-hover: #ea580c;
       --ac-accent-fg: #ffffff;
-      --ac-accent-soft: rgba(251, 146, 60, 0.16);
-      --ac-accent-soft-fg: #fdba74;
-      --ac-green-soft: rgba(34, 197, 94, 0.16);
-      --ac-green-fg: #86efac;
-      --ac-green-border: rgba(74, 222, 128, 0.35);
-      --ac-violet-soft: rgba(168, 85, 247, 0.18);
-      --ac-violet-fg: #e9d5ff;
-      --ac-teal-soft: rgba(45, 212, 191, 0.16);
-      --ac-teal-fg: #99f6e4;
-      --ac-shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.45);
-      --ac-shadow-md: 0 12px 28px rgba(0, 0, 0, 0.55);
-      --ac-shadow-lg: 0 24px 52px rgba(0, 0, 0, 0.7);
+      --ac-accent-soft: rgba(249, 115, 22, 0.15);
+      --ac-accent-fg-soft: #fdba74;
+      --ac-green: #10b981;
+      --ac-green-soft: rgba(16, 185, 129, 0.14);
+      --ac-green-fg: #6ee7b7;
+      --ac-green-border: rgba(52, 211, 153, 0.35);
+      --ac-violet: #8b5cf6;
+      --ac-violet-soft: rgba(139, 92, 246, 0.15);
+      --ac-violet-fg: #c4b5fd;
+      --ac-card-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.6);
+      --ac-glow: 0 0 25px rgba(2, 132, 199, 0.35);
+      --ac-glow-accent: 0 0 25px rgba(249, 115, 22, 0.35);
       color-scheme: dark;
+    }
+
+    [data-theme="light"] {
+      --ac-bg: #f8fafc;
+      --ac-bg-subtle: #f1f5f9;
+      --ac-bg-alt: #e2e8f0;
+      --ac-surface: #ffffff;
+      --ac-surface-hover: #f8fafc;
+      --ac-surface-card: #ffffff;
+      --ac-border: #cbd5e1;
+      --ac-border-subtle: #e2e8f0;
+      --ac-border-bright: #0284c7;
+      --ac-text: #0f172a;
+      --ac-text-secondary: #334155;
+      --ac-text-muted: #64748b;
+      --ac-primary: #0284c7;
+      --ac-primary-hover: #0369a1;
+      --ac-primary-fg: #ffffff;
+      --ac-link: #0284c7;
+      --ac-cyan: #0891b2;
+      --ac-cyan-soft: #ecfeff;
+      --ac-cyan-fg: #0e7490;
+      --ac-accent: #ea580c;
+      --ac-accent-hover: #c2410c;
+      --ac-accent-fg: #ffffff;
+      --ac-accent-soft: #fff7ed;
+      --ac-accent-fg-soft: #c2410c;
+      --ac-green: #059669;
+      --ac-green-soft: #ecfdf5;
+      --ac-green-fg: #047857;
+      --ac-green-border: #a7f3d0;
+      --ac-violet: #7c3aed;
+      --ac-violet-soft: #f5f3ff;
+      --ac-violet-fg: #6d28d9;
+      --ac-card-shadow: 0 4px 18px rgba(15, 23, 42, 0.08);
+      --ac-glow: 0 0 20px rgba(2, 132, 199, 0.15);
+      --ac-glow-accent: 0 0 20px rgba(234, 88, 12, 0.15);
+      color-scheme: light;
     }
 
     *, *::before, *::after {
@@ -116,12 +126,17 @@
     body {
       margin: 0;
       padding: 0;
-      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
       background-color: var(--ac-bg);
       color: var(--ac-text);
       line-height: 1.55;
       overflow-x: hidden;
       -webkit-font-smoothing: antialiased;
+      background-image: 
+        radial-gradient(circle at 50% 0%, rgba(56, 189, 248, 0.08) 0%, transparent 45%),
+        linear-gradient(rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+      background-size: 100% 100%, 36px 36px, 36px 36px;
     }
 
     code, pre, .mono {
@@ -139,9 +154,9 @@
 
     .container {
       width: 100%;
-      max-width: 1320px;
+      max-width: 1340px;
       margin: 0 auto;
-      padding: 0 20px;
+      padding: 0 22px;
     }
 
     .sr-only {
@@ -157,19 +172,22 @@
     }
 
     /* =========================================================================
-       1. DOUBLE-TIER HYPERSCALE CLOUD GLOBAL HEADER
+       1. AWS/GCP CLOUD COCKPIT GLOBAL HEADER
        ========================================================================= */
     .cloud-header {
       position: sticky;
       top: 0;
       z-index: 60;
-      background-color: #080e1a;
+      background: rgba(6, 9, 19, 0.92);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
       color: #f8fafc;
-      box-shadow: 0 4px 18px rgba(0, 0, 0, 0.35);
+      border-bottom: 1px solid rgba(56, 189, 248, 0.15);
+      box-shadow: 0 4px 24px rgba(0, 0, 0, 0.4);
     }
 
     .global-topbar {
-      border-bottom: 1px solid #1e293b;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.06);
     }
 
     .topbar-inner {
@@ -177,32 +195,44 @@
       align-items: center;
       justify-content: space-between;
       gap: 14px;
-      min-height: 60px;
+      min-height: 62px;
     }
 
     .brand-lockup {
       display: inline-flex;
       align-items: center;
-      gap: 10px;
+      gap: 12px;
       min-width: 0;
-      flex-shrink: 1;
+      flex-shrink: 0;
     }
 
     .brand-icon {
       width: 36px;
       height: 36px;
       border-radius: 9px;
-      flex-shrink: 0;
+      box-shadow: 0 0 16px rgba(56, 189, 248, 0.35);
     }
 
     .brand-title {
-      font-size: 17px;
+      font-size: 18px;
       font-weight: 800;
-      letter-spacing: -0.02em;
+      letter-spacing: -0.025em;
       color: #ffffff;
-      display: block;
-      line-height: 1.15;
-      white-space: nowrap;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      line-height: 1.1;
+    }
+
+    .brand-badge {
+      font-size: 10px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      padding: 2px 6px;
+      border-radius: 4px;
+      background: linear-gradient(135deg, #0284c7, #38bdf8);
+      color: #ffffff;
     }
 
     .brand-domain {
@@ -210,43 +240,44 @@
       font-weight: 600;
       color: #7dd3fc;
       display: block;
-      white-space: nowrap;
+      margin-top: 1px;
     }
 
-    /* Global Search in Header */
     .header-search-wrap {
       position: relative;
-      flex: 1 1 320px;
-      max-width: 460px;
+      flex: 1 1 360px;
+      max-width: 480px;
     }
 
     .header-search-input {
       width: 100%;
       min-height: 38px;
-      padding: 6px 14px 6px 36px;
+      padding: 6px 14px 6px 38px;
       border-radius: 8px;
-      border: 1px solid #334155;
-      background-color: #111b2e;
+      border: 1px solid rgba(56, 189, 248, 0.2);
+      background-color: rgba(15, 23, 42, 0.7);
       color: #f8fafc;
-      font-size: 16px;
+      font-size: 13.5px;
+      transition: all 0.15s ease;
     }
 
     .header-search-input::placeholder {
-      color: #94a3b8;
+      color: #64748b;
     }
 
     .header-search-input:focus {
-      outline: 2px solid #38bdf8;
-      outline-offset: 1px;
+      outline: none;
+      border-color: #38bdf8;
+      box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.2);
       background-color: #0f172a;
     }
 
     .header-search-icon {
       position: absolute;
-      left: 11px;
+      left: 12px;
       top: 50%;
       transform: translateY(-50%);
-      color: #94a3b8;
+      color: #7dd3fc;
       pointer-events: none;
     }
 
@@ -260,15 +291,15 @@
     .region-chip {
       display: inline-flex;
       align-items: center;
-      gap: 6px;
+      gap: 7px;
       min-height: 36px;
-      padding: 0 10px;
-      border-radius: 7px;
-      background-color: #111b2e;
-      border: 1px solid #293856;
+      padding: 0 11px;
+      border-radius: 8px;
+      background: rgba(15, 23, 42, 0.8);
+      border: 1px solid rgba(56, 189, 248, 0.2);
       color: #e2e8f0;
       font-size: 11.5px;
-      font-weight: 600;
+      font-weight: 700;
       white-space: nowrap;
     }
 
@@ -276,8 +307,15 @@
       width: 7px;
       height: 7px;
       border-radius: 50%;
-      background-color: #4ade80;
+      background-color: #10b981;
+      box-shadow: 0 0 8px #10b981;
       display: inline-block;
+      animation: pulse-dot 2s infinite;
+    }
+
+    @keyframes pulse-dot {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.6; transform: scale(0.9); }
     }
 
     .hdr-btn {
@@ -286,48 +324,76 @@
       justify-content: center;
       gap: 6px;
       min-height: 38px;
-      padding: 0 12px;
+      padding: 0 13px;
       border-radius: 8px;
-      border: 1px solid #334155;
-      background-color: #111b2e;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      background-color: rgba(15, 23, 42, 0.6);
       color: #f8fafc;
       font-size: 12.5px;
       font-weight: 600;
       cursor: pointer;
       white-space: nowrap;
-      transition: background-color 0.15s ease, border-color 0.15s ease;
+      transition: all 0.15s ease;
     }
 
     .hdr-btn:hover {
-      background-color: #1e293b;
-      border-color: #64748b;
+      background-color: rgba(30, 41, 59, 0.9);
+      border-color: rgba(56, 189, 248, 0.4);
+    }
+
+    .hdr-console-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 7px;
+      min-height: 38px;
+      padding: 0 15px;
+      border-radius: 8px;
+      border: 1px solid rgba(56, 189, 248, 0.4);
+      background: linear-gradient(135deg, rgba(2, 132, 199, 0.25), rgba(56, 189, 248, 0.15));
+      color: #38bdf8;
+      font-size: 12.5px;
+      font-weight: 700;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: all 0.15s ease;
+    }
+
+    .hdr-console-btn:hover {
+      background: linear-gradient(135deg, rgba(2, 132, 199, 0.4), rgba(56, 189, 248, 0.25));
+      box-shadow: 0 0 15px rgba(56, 189, 248, 0.3);
+      color: #ffffff;
     }
 
     .hdr-cta {
       display: inline-flex;
       align-items: center;
       justify-content: center;
+      gap: 6px;
       min-height: 38px;
-      padding: 0 15px;
+      padding: 0 16px;
       border-radius: 8px;
-      border: 1px solid #ea580c;
-      background-color: #c2410c;
+      border: 1px solid #f97316;
+      background: linear-gradient(135deg, #f97316, #ea580c);
       color: #ffffff;
       font-size: 12.5px;
-      font-weight: 700;
+      font-weight: 800;
       cursor: pointer;
       white-space: nowrap;
-      transition: background-color 0.15s ease;
+      box-shadow: 0 2px 10px rgba(249, 115, 22, 0.35);
+      transition: all 0.15s ease;
     }
 
     .hdr-cta:hover {
-      background-color: #9a3412;
+      background: linear-gradient(135deg, #fb923c, #f97316);
+      box-shadow: 0 4px 16px rgba(249, 115, 22, 0.5);
+      transform: translateY(-1px);
     }
 
-    /* Row 2: Secondary Cloud Service Sub-Navbar */
+    /* Subnav */
     .subnav-bar {
-      background-color: #0d1628;
-      border-bottom: 1px solid #1e293b;
+      background-color: rgba(10, 16, 29, 0.95);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
     }
 
     .subnav-inner {
@@ -335,46 +401,52 @@
       align-items: center;
       justify-content: space-between;
       gap: 8px;
-      min-height: 42px;
+      min-height: 44px;
     }
 
     .subnav-links {
       display: flex;
       align-items: center;
-      gap: 2px;
+      gap: 4px;
       flex-wrap: wrap;
     }
 
     .subnav-item {
       display: inline-flex;
       align-items: center;
-      gap: 4px;
-      min-height: 36px;
-      padding: 5px 8.5px;
+      gap: 5px;
+      min-height: 34px;
+      padding: 4px 10px;
       border-radius: 6px;
       background: transparent;
       border: none;
-      color: #cbd5e1;
-      font-size: 12px;
+      color: #94a3b8;
+      font-size: 12.5px;
       font-weight: 600;
       cursor: pointer;
       white-space: nowrap;
-      transition: color 0.15s ease, background-color 0.15s ease;
+      transition: all 0.15s ease;
     }
 
     .subnav-item:hover,
     .subnav-item[aria-expanded="true"] {
       color: #ffffff;
-      background-color: #1e293b;
+      background-color: rgba(255, 255, 255, 0.08);
     }
 
-    /* Mega-Menu Dropdown */
+    .subnav-item.active {
+      color: #38bdf8;
+      background-color: rgba(56, 189, 248, 0.12);
+    }
+
+    /* Mega-Menu */
     .mega-menu {
       display: none;
-      background-color: #0b1324;
+      background-color: #0b1120;
       border-bottom: 2px solid #0284c7;
       padding: 24px 0;
       color: #f8fafc;
+      box-shadow: 0 16px 40px rgba(0, 0, 0, 0.6);
     }
 
     .mega-menu.open {
@@ -391,11 +463,11 @@
       font-size: 11px;
       font-weight: 800;
       text-transform: uppercase;
-      letter-spacing: 0.07em;
-      color: #7dd3fc;
+      letter-spacing: 0.08em;
+      color: #38bdf8;
       margin: 0 0 10px;
       padding-bottom: 6px;
-      border-bottom: 1px solid #1e293b;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
     }
 
     .mega-list {
@@ -410,11 +482,11 @@
       display: block;
       padding: 6px 8px;
       border-radius: 7px;
-      transition: background-color 0.15s ease;
+      transition: all 0.15s ease;
     }
 
     .mega-link:hover {
-      background-color: #17233d;
+      background-color: rgba(56, 189, 248, 0.1);
     }
 
     .mega-link strong {
@@ -435,9 +507,9 @@
 
     .mobile-drawer {
       display: none;
-      background-color: #0b1324;
-      border-top: 1px solid #1e293b;
-      padding: 16px 20px 22px;
+      background-color: #0b1120;
+      border-top: 1px solid rgba(255, 255, 255, 0.08);
+      padding: 16px 20px 24px;
     }
 
     .mobile-drawer.open {
@@ -459,8 +531,8 @@
       min-height: 42px;
       padding: 8px 12px;
       border-radius: 8px;
-      background-color: #131f38;
-      border: 1px solid #263657;
+      background-color: #111a2e;
+      border: 1px solid rgba(56, 189, 248, 0.15);
       color: #f8fafc;
       font-size: 13.5px;
       font-weight: 600;
@@ -469,55 +541,112 @@
     }
 
     /* =========================================================================
-       2. HYPERSCALE DARK CLOUD HERO + 4 OVERLAPPING QUICK-LAUNCH CARDS
+       2. AWS/GCP STYLE HERO & CLOUD CONSOLE COCKPIT
        ========================================================================= */
     .cloud-hero {
-      background:
-        radial-gradient(920px 440px at 82% 18%, rgba(2, 132, 199, 0.28), transparent 60%),
-        radial-gradient(760px 380px at 14% 12%, rgba(234, 88, 12, 0.2), transparent 55%),
-        linear-gradient(180deg, #070d19 0%, #0d192e 100%);
-      color: #f8fafc;
-      padding: 52px 0 88px;
       position: relative;
-      border-bottom: 1px solid #1e293b;
+      padding: 56px 0 80px;
+      border-bottom: 1px solid rgba(56, 189, 248, 0.15);
+      overflow: hidden;
+    }
+
+    .cloud-hero::before {
+      content: '';
+      position: absolute;
+      top: -120px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 1000px;
+      height: 500px;
+      background: radial-gradient(circle, rgba(2, 132, 199, 0.18) 0%, rgba(249, 115, 22, 0.08) 35%, transparent 70%);
+      filter: blur(50px);
+      pointer-events: none;
+      z-index: 0;
     }
 
     .hero-split {
+      position: relative;
+      z-index: 1;
       display: grid;
-      grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr);
+      grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.95fr);
       gap: 36px;
       align-items: center;
     }
 
-    .hero-pill {
+    .hero-tag {
       display: inline-flex;
       align-items: center;
-      flex-wrap: wrap;
       gap: 8px;
-      padding: 5px 12px;
+      padding: 6px 14px;
       border-radius: 999px;
-      background-color: rgba(56, 189, 248, 0.14);
-      border: 1px solid rgba(56, 189, 248, 0.35);
-      color: #bae6fd;
+      background: rgba(56, 189, 248, 0.1);
+      border: 1px solid rgba(56, 189, 248, 0.3);
+      color: #38bdf8;
       font-size: 12px;
       font-weight: 700;
-      margin-bottom: 16px;
+      letter-spacing: 0.02em;
+      margin-bottom: 18px;
+      box-shadow: 0 0 14px rgba(56, 189, 248, 0.2);
     }
 
     .hero-h1 {
-      font-size: clamp(28px, 4vw, 46px);
+      font-size: clamp(32px, 4.2vw, 54px);
       font-weight: 800;
-      line-height: 1.12;
-      letter-spacing: -0.03em;
-      margin: 0 0 16px;
+      line-height: 1.08;
+      letter-spacing: -0.035em;
+      margin: 0 0 18px;
       color: #ffffff;
     }
 
+    .hero-h1 span.gradient-text {
+      background: linear-gradient(135deg, #38bdf8 10%, #818cf8 50%, #f97316 90%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
     .hero-lead {
-      font-size: clamp(15px, 1.35vw, 17px);
-      color: #cbd5e1;
+      font-size: clamp(15px, 1.35vw, 17.5px);
+      color: var(--ac-text-secondary);
       margin: 0 0 26px;
-      max-width: 640px;
+      max-width: 620px;
+      line-height: 1.6;
+    }
+
+    .hero-metrics-strip {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+      margin-bottom: 28px;
+      padding: 14px;
+      border-radius: 12px;
+      background: rgba(15, 23, 42, 0.6);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .hero-metric-item {
+      text-align: center;
+      border-right: 1px solid rgba(255, 255, 255, 0.08);
+      padding: 0 8px;
+    }
+
+    .hero-metric-item:last-child {
+      border-right: none;
+    }
+
+    .metric-val {
+      font-size: 20px;
+      font-weight: 800;
+      color: #38bdf8;
+      display: block;
+      line-height: 1.1;
+    }
+
+    .metric-lbl {
+      font-size: 11px;
+      color: var(--ac-text-muted);
+      font-weight: 600;
+      margin-top: 3px;
+      display: block;
     }
 
     .hero-btn-row {
@@ -526,48 +655,53 @@
       gap: 12px;
     }
 
-    .btn-primary {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
-      min-height: 44px;
-      padding: 0 20px;
-      border-radius: 9px;
-      border: 1px solid transparent;
-      background-color: var(--ac-primary);
-      color: var(--ac-primary-fg);
-      font-size: 14px;
-      font-weight: 700;
-      cursor: pointer;
-      transition: background-color 0.15s ease, transform 0.12s ease;
-    }
-
-    .btn-primary:hover {
-      background-color: var(--ac-primary-hover);
-      transform: translateY(-1px);
-    }
-
     .btn-dawn {
       display: inline-flex;
       align-items: center;
       justify-content: center;
       gap: 8px;
-      min-height: 44px;
-      padding: 0 20px;
-      border-radius: 9px;
-      border: 1px solid #ea580c;
-      background-color: #c2410c;
+      min-height: 46px;
+      padding: 0 22px;
+      border-radius: 10px;
+      border: 1px solid #f97316;
+      background: linear-gradient(135deg, #f97316, #ea580c);
       color: #ffffff;
       font-size: 14px;
-      font-weight: 700;
+      font-weight: 800;
       cursor: pointer;
-      transition: background-color 0.15s ease, transform 0.12s ease;
+      box-shadow: 0 4px 18px rgba(249, 115, 22, 0.4);
+      transition: all 0.15s ease;
     }
 
     .btn-dawn:hover {
-      background-color: #9a3412;
-      transform: translateY(-1px);
+      background: linear-gradient(135deg, #fb923c, #f97316);
+      box-shadow: 0 6px 22px rgba(249, 115, 22, 0.6);
+      transform: translateY(-2px);
+    }
+
+    .btn-console {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      min-height: 46px;
+      padding: 0 20px;
+      border-radius: 10px;
+      border: 1px solid rgba(56, 189, 248, 0.4);
+      background: rgba(15, 23, 42, 0.8);
+      color: #38bdf8;
+      font-size: 14px;
+      font-weight: 700;
+      cursor: pointer;
+      box-shadow: 0 0 16px rgba(56, 189, 248, 0.18);
+      transition: all 0.15s ease;
+    }
+
+    .btn-console:hover {
+      background: rgba(30, 41, 59, 0.9);
+      color: #ffffff;
+      border-color: #38bdf8;
+      transform: translateY(-2px);
     }
 
     .btn-outline-light {
@@ -575,92 +709,139 @@
       align-items: center;
       justify-content: center;
       gap: 8px;
-      min-height: 44px;
+      min-height: 46px;
       padding: 0 18px;
-      border-radius: 9px;
-      border: 1px solid #475569;
-      background-color: rgba(15, 23, 42, 0.65);
+      border-radius: 10px;
+      border: 1px solid rgba(255, 255, 255, 0.14);
+      background-color: rgba(15, 23, 42, 0.5);
       color: #f8fafc;
       font-size: 14px;
-      font-weight: 700;
+      font-weight: 600;
       cursor: pointer;
-      transition: background-color 0.15s ease, border-color 0.15s ease;
+      transition: all 0.15s ease;
     }
 
     .btn-outline-light:hover {
-      background-color: #1e293b;
-      border-color: #94a3b8;
+      background-color: rgba(30, 41, 59, 0.8);
+      border-color: rgba(255, 255, 255, 0.3);
+      transform: translateY(-1px);
     }
 
-    .btn-secondary {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
-      min-height: 40px;
-      padding: 0 16px;
-      border-radius: 8px;
-      border: 1px solid var(--ac-border);
-      background-color: var(--ac-surface);
-      color: var(--ac-text);
-      font-size: 13px;
-      font-weight: 700;
-      cursor: pointer;
-      transition: background-color 0.15s ease;
-    }
-
-    .btn-secondary:hover {
-      background-color: var(--ac-bg-alt);
-    }
-
-    /* Hero Right Live Architecture Summary Box */
-    .hero-arch-card {
-      background-color: rgba(11, 18, 34, 0.92);
-      border: 1px solid #2b3d5e;
+    /* Hero Right: Interactive Cloud Console Cockpit Terminal */
+    .cockpit-terminal {
+      background: #090e1a;
+      border: 1px solid rgba(56, 189, 248, 0.3);
       border-radius: 14px;
-      padding: 20px;
-      box-shadow: 0 20px 44px rgba(0, 0, 0, 0.5);
+      box-shadow: 0 24px 60px rgba(0, 0, 0, 0.7), 0 0 24px rgba(2, 132, 199, 0.2);
+      overflow: hidden;
     }
 
-    .arch-pill-grid {
-      display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 10px;
-      margin-top: 12px;
+    .terminal-titlebar {
+      background: #0f172a;
+      padding: 10px 14px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
     }
 
-    .arch-mini-tile {
-      background-color: #121e36;
-      border: 1px solid #243556;
-      border-radius: 10px;
-      padding: 12px;
+    .terminal-dots {
+      display: flex;
+      gap: 6px;
     }
 
-    .arch-mini-code {
-      font-size: 11px;
-      font-weight: 800;
-      color: #7dd3fc;
-      display: block;
+    .t-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
     }
 
-    .arch-mini-name {
-      font-size: 13.5px;
-      font-weight: 700;
-      color: #ffffff;
-      display: block;
-      margin-top: 2px;
+    .t-dot.red { background: #ef4444; }
+    .t-dot.yellow { background: #f59e0b; }
+    .t-dot.green { background: #10b981; }
+
+    .terminal-tabs {
+      display: flex;
+      gap: 4px;
     }
 
-    .arch-mini-sub {
-      font-size: 11.5px;
+    .terminal-tab-btn {
+      background: transparent;
+      border: none;
       color: #94a3b8;
-      display: block;
-      margin-top: 2px;
+      font-size: 11.5px;
+      font-weight: 700;
+      padding: 4px 10px;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: all 0.12s ease;
     }
 
-    /* 4 Overlapping Launchpad Cards Below Hero */
+    .terminal-tab-btn.active {
+      color: #38bdf8;
+      background: rgba(56, 189, 248, 0.14);
+    }
+
+    .terminal-body {
+      padding: 16px;
+      font-size: 12.5px;
+      line-height: 1.65;
+      color: #e2e8f0;
+      min-height: 220px;
+    }
+
+    .t-prompt {
+      color: #f97316;
+      font-weight: 700;
+    }
+
+    .t-cmd {
+      color: #38bdf8;
+      font-weight: 700;
+    }
+
+    .t-success {
+      color: #10b981;
+      font-weight: 600;
+    }
+
+    .t-info {
+      color: #94a3b8;
+    }
+
+    .terminal-footer {
+      background: #0c1424;
+      border-top: 1px solid rgba(255, 255, 255, 0.06);
+      padding: 10px 14px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 11.5px;
+      color: #cbd5e1;
+    }
+
+    .copy-code-btn {
+      background: rgba(56, 189, 248, 0.12);
+      border: 1px solid rgba(56, 189, 248, 0.25);
+      color: #38bdf8;
+      font-size: 11.5px;
+      font-weight: 700;
+      padding: 4px 10px;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: all 0.12s ease;
+    }
+
+    .copy-code-btn:hover {
+      background: rgba(56, 189, 248, 0.25);
+      color: #ffffff;
+    }
+
+    /* =========================================================================
+       3. 4 HIGH-TECH CLOUD LAUNCHPAD CARDS
+       ========================================================================= */
     .launchpad-strip {
-      margin-top: -50px;
+      margin-top: -38px;
       position: relative;
       z-index: 10;
       padding-bottom: 24px;
@@ -672,46 +853,184 @@
       gap: 16px;
     }
 
-    .launchpad-card {
-      background-color: var(--ac-surface);
+    .cloud-shop-card {
+      background: var(--ac-surface-card);
       border: 1px solid var(--ac-border);
-      border-top: 4px solid var(--ac-primary);
-      border-radius: 12px;
-      padding: 18px 18px 16px;
-      box-shadow: var(--ac-shadow-md);
+      border-radius: 14px;
+      padding: 20px;
+      box-shadow: var(--ac-card-shadow);
       display: flex;
       flex-direction: column;
       justify-content: space-between;
-      transition: transform 0.15s ease, box-shadow 0.15s ease;
+      position: relative;
+      overflow: hidden;
+      transition: all 0.2s ease;
+      backdrop-filter: blur(10px);
     }
 
-    .launchpad-card:hover {
-      transform: translateY(-2px);
-      box-shadow: var(--ac-shadow-lg);
+    .cloud-shop-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, #0284c7, #38bdf8);
+      transition: height 0.2s ease;
     }
 
-    .launchpad-card.pillar-storage {
-      border-top-color: #15803d;
+    .cloud-shop-card:hover {
+      transform: translateY(-3px);
+      border-color: var(--ac-border-bright);
+      box-shadow: var(--ac-glow);
     }
 
-    .launchpad-card.pillar-voice {
-      border-top-color: #7e22ce;
+    .cloud-shop-card:hover::before {
+      height: 4px;
     }
 
-    .launchpad-card.pillar-chat {
-      border-top-color: #c2410c;
+    .card-pillar-storage::before { background: linear-gradient(90deg, #10b981, #34d399); }
+    .card-pillar-voice::before   { background: linear-gradient(90deg, #8b5cf6, #c084fc); }
+    .card-pillar-chat::before    { background: linear-gradient(90deg, #f97316, #fb923c); }
+
+    .card-top-badge {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 12px;
+    }
+
+    .cloud-acronym-pill {
+      font-size: 13px;
+      font-weight: 900;
+      letter-spacing: 0.05em;
+      padding: 4px 10px;
+      border-radius: 6px;
+      background: rgba(56, 189, 248, 0.16);
+      color: #38bdf8;
+      border: 1px solid rgba(56, 189, 248, 0.3);
+    }
+
+    .cloud-spec-chip {
+      font-size: 10.5px;
+      font-weight: 700;
+      color: #86efac;
+      background: rgba(16, 185, 129, 0.12);
+      padding: 2px 7px;
+      border-radius: 999px;
+      border: 1px solid rgba(16, 185, 129, 0.25);
+    }
+
+    .card-title {
+      font-size: 17px;
+      font-weight: 800;
+      margin: 0 0 6px;
+      color: var(--ac-text);
+      line-height: 1.25;
+    }
+
+    .card-desc {
+      font-size: 12.5px;
+      color: var(--ac-text-secondary);
+      margin: 0 0 16px;
+      line-height: 1.5;
+    }
+
+    .card-action-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 12.5px;
+      font-weight: 800;
+      color: var(--ac-link);
+      transition: gap 0.15s ease;
+    }
+
+    .card-action-link:hover {
+      gap: 10px;
+      text-decoration: underline;
     }
 
     /* =========================================================================
-       3. AWS-STYLE 2-PANE "EXPLORE OUR CLOUD PRODUCTS" DIRECTORY
+       4. INTERACTIVE CLOUD ARCHITECTURE BLUEPRINT (AWS/GCP SOLUTIONS DIAGRAM)
+       ========================================================================= */
+    .arch-blueprint-section {
+      padding: 48px 0;
+      background: rgba(11, 17, 32, 0.6);
+      border-bottom: 1px solid rgba(56, 189, 248, 0.12);
+    }
+
+    .arch-flow-wrap {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      overflow-x: auto;
+      padding: 20px 10px;
+    }
+
+    .arch-node {
+      background: var(--ac-surface);
+      border: 1px solid rgba(56, 189, 248, 0.2);
+      border-radius: 12px;
+      padding: 14px 16px;
+      min-width: 170px;
+      flex-shrink: 0;
+      text-align: center;
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+
+    .arch-node:hover,
+    .arch-node.active {
+      border-color: #38bdf8;
+      box-shadow: 0 0 20px rgba(56, 189, 248, 0.35);
+      transform: translateY(-2px);
+    }
+
+    .arch-node-code {
+      font-size: 12px;
+      font-weight: 800;
+      color: #38bdf8;
+      display: block;
+    }
+    html[data-theme="light"] .arch-node-code {
+      color: #0369a1;
+    }
+
+    .arch-node-name {
+      font-size: 13px;
+      font-weight: 800;
+      color: var(--ac-text);
+      margin: 2px 0;
+      display: block;
+    }
+
+    .arch-node-spec {
+      font-size: 11px;
+      color: var(--ac-text-muted);
+      display: block;
+    }
+
+    .arch-arrow {
+      color: #38bdf8;
+      font-size: 18px;
+      font-weight: 800;
+      opacity: 0.7;
+      flex-shrink: 0;
+    }
+
+    /* =========================================================================
+       5. AWS/GCP STYLE CLOUD SERVICES MARKETPLACE & DIRECTORY
        ========================================================================= */
     .section {
-      padding: 56px 0;
+      padding: 64px 0;
       border-bottom: 1px solid var(--ac-border-subtle);
     }
 
     .section-surface {
-      background-color: var(--ac-surface);
+      background-color: var(--ac-bg-subtle);
     }
 
     .section-header {
@@ -719,25 +1038,28 @@
       align-items: flex-end;
       justify-content: space-between;
       gap: 16px;
-      margin-bottom: 28px;
+      margin-bottom: 32px;
       flex-wrap: wrap;
     }
 
     .eyebrow-tag {
-      display: inline-block;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
       font-size: 11px;
       font-weight: 800;
       letter-spacing: 0.08em;
       text-transform: uppercase;
       padding: 4px 10px;
       border-radius: 6px;
-      background-color: var(--ac-primary-soft);
-      color: var(--ac-primary-soft-fg);
+      background-color: var(--ac-cyan-soft);
+      color: var(--ac-cyan-fg);
       margin-bottom: 8px;
+      border: 1px solid rgba(6, 182, 212, 0.25);
     }
 
     .section-h2 {
-      font-size: clamp(23px, 2.7vw, 32px);
+      font-size: clamp(24px, 2.8vw, 34px);
       font-weight: 800;
       letter-spacing: -0.025em;
       margin: 0 0 6px;
@@ -748,25 +1070,26 @@
       font-size: 15px;
       color: var(--ac-text-secondary);
       margin: 0;
-      max-width: 740px;
+      max-width: 760px;
+      line-height: 1.6;
     }
 
-    /* 2-Pane Split Layout: Left Category Sidebar + Right Service Tile Grid */
+    /* 2-Pane Explorer */
     .aws-explorer-layout {
       display: grid;
-      grid-template-columns: 270px minmax(0, 1fr);
+      grid-template-columns: 280px minmax(0, 1fr);
       gap: 26px;
       align-items: start;
     }
 
     .category-rail {
       background-color: var(--ac-surface);
-      border: 1px solid var(--ac-border-subtle);
-      border-radius: 12px;
-      padding: 10px;
-      box-shadow: var(--ac-shadow-sm);
+      border: 1px solid var(--ac-border);
+      border-radius: 14px;
+      padding: 12px;
+      box-shadow: var(--ac-card-shadow);
       display: grid;
-      gap: 4px;
+      gap: 6px;
     }
 
     .rail-btn {
@@ -774,9 +1097,9 @@
       align-items: center;
       justify-content: space-between;
       width: 100%;
-      min-height: 42px;
-      padding: 9px 12px;
-      border-radius: 8px;
+      min-height: 44px;
+      padding: 9px 14px;
+      border-radius: 9px;
       border: 1px solid transparent;
       background: transparent;
       color: var(--ac-text-secondary);
@@ -788,26 +1111,29 @@
     }
 
     .rail-btn:hover {
-      background-color: var(--ac-bg);
+      background-color: rgba(56, 189, 248, 0.08);
       color: var(--ac-text);
     }
 
     .rail-btn[aria-selected="true"] {
-      background-color: var(--ac-primary);
+      background: linear-gradient(135deg, rgba(2, 132, 199, 0.3), rgba(56, 189, 248, 0.2));
       color: #ffffff;
-      font-weight: 700;
+      border-color: rgba(56, 189, 248, 0.4);
+      font-weight: 800;
+      box-shadow: 0 0 16px rgba(2, 132, 199, 0.2);
     }
 
     .rail-count {
       font-size: 11px;
-      padding: 2px 7px;
+      padding: 2px 8px;
       border-radius: 999px;
-      background-color: rgba(148, 163, 184, 0.2);
+      background-color: rgba(148, 163, 184, 0.18);
     }
 
     .rail-btn[aria-selected="true"] .rail-count {
-      background-color: rgba(255, 255, 255, 0.24);
-      color: #ffffff;
+      background-color: #38bdf8;
+      color: #060913;
+      font-weight: 800;
     }
 
     .service-tiles-grid {
@@ -818,21 +1144,22 @@
 
     .service-tile {
       background-color: var(--ac-surface);
-      border: 1px solid var(--ac-border-subtle);
-      border-radius: 12px;
-      padding: 20px;
-      box-shadow: var(--ac-shadow-sm);
+      border: 1px solid var(--ac-border);
+      border-radius: 14px;
+      padding: 22px;
+      box-shadow: var(--ac-card-shadow);
       display: flex;
       flex-direction: column;
       justify-content: space-between;
-      transition: border-color 0.15s ease, box-shadow 0.15s ease, transform 0.15s ease;
+      transition: all 0.18s ease;
       min-width: 0;
+      position: relative;
     }
 
     .service-tile:hover {
-      border-color: var(--ac-link);
-      box-shadow: var(--ac-shadow-md);
-      transform: translateY(-2px);
+      border-color: #38bdf8;
+      box-shadow: var(--ac-glow);
+      transform: translateY(-3px);
     }
 
     .tile-header {
@@ -850,21 +1177,22 @@
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      font-weight: 800;
-      font-size: 13px;
+      font-weight: 900;
+      font-size: 13.5px;
       flex-shrink: 0;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
     }
 
-    .glyph-compute { background-color: var(--ac-primary-soft); color: var(--ac-primary-soft-fg); }
-    .glyph-storage { background-color: var(--ac-green-soft); color: var(--ac-green-fg); }
-    .glyph-ai      { background-color: var(--ac-violet-soft); color: var(--ac-violet-fg); }
-    .glyph-tools   { background-color: var(--ac-accent-soft); color: var(--ac-accent-soft-fg); }
-    .glyph-sec     { background-color: var(--ac-teal-soft); color: var(--ac-teal-fg); }
+    .glyph-compute { background: linear-gradient(135deg, rgba(2, 132, 199, 0.3), rgba(56, 189, 248, 0.2)); color: #38bdf8; border: 1px solid rgba(56, 189, 248, 0.4); }
+    .glyph-storage { background: linear-gradient(135deg, rgba(16, 185, 129, 0.3), rgba(52, 211, 153, 0.2)); color: #34d399; border: 1px solid rgba(16, 185, 129, 0.4); }
+    .glyph-ai      { background: linear-gradient(135deg, rgba(139, 92, 246, 0.3), rgba(192, 132, 252, 0.2)); color: #c084fc; border: 1px solid rgba(139, 92, 246, 0.4); }
+    .glyph-tools   { background: linear-gradient(135deg, rgba(249, 115, 22, 0.3), rgba(251, 146, 60, 0.2)); color: #fb923c; border: 1px solid rgba(249, 115, 22, 0.4); }
+    .glyph-sec     { background: linear-gradient(135deg, rgba(6, 182, 212, 0.3), rgba(103, 232, 249, 0.2)); color: #67e8f9; border: 1px solid rgba(6, 182, 212, 0.4); }
 
     .pill-badge {
       display: inline-flex;
       align-items: center;
-      padding: 3px 8px;
+      padding: 3px 9px;
       border-radius: 6px;
       font-size: 11px;
       font-weight: 700;
@@ -875,30 +1203,52 @@
       font-weight: 800;
       color: var(--ac-text);
       margin: 0 0 4px;
-      line-height: 1.28;
+      line-height: 1.3;
+    }
+
+    .dsp-badge {
+      font-size: 11.5px;
+      color: #10b981;
+      font-weight: 700;
+    }
+    html[data-theme="light"] .dsp-badge {
+      color: #047857;
+    }
+
+    .rag-badge {
+      font-size: 11.5px;
+      color: #38bdf8;
+      font-weight: 700;
+    }
+    html[data-theme="light"] .rag-badge {
+      color: #0369a1;
     }
 
     .svc-endpoint {
       font-size: 11px;
-      color: var(--ac-link);
+      color: #38bdf8;
       font-weight: 600;
       display: block;
-      margin-bottom: 10px;
+      margin-bottom: 12px;
       word-break: break-all;
+    }
+    html[data-theme="light"] .svc-endpoint {
+      color: #0369a1;
     }
 
     .svc-desc {
       font-size: 13px;
       color: var(--ac-text-secondary);
       margin: 0 0 14px;
+      line-height: 1.5;
     }
 
     .svc-bullets {
       list-style: none;
       padding: 0;
-      margin: 0 0 16px;
+      margin: 0 0 18px;
       display: grid;
-      gap: 5px;
+      gap: 6px;
     }
 
     .svc-bullets li {
@@ -906,40 +1256,79 @@
       color: var(--ac-text-muted);
       display: flex;
       align-items: flex-start;
-      gap: 6px;
+      gap: 7px;
     }
 
     .svc-check {
-      color: var(--ac-link);
+      color: #10b981;
       font-weight: 800;
       flex-shrink: 0;
     }
 
-    .tile-action-btn {
+    .tile-action-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+      margin-top: 14px;
+    }
+
+    .btn-tile-primary {
       display: flex;
       align-items: center;
-      justify-content: space-between;
-      width: 100%;
-      min-height: 38px;
-      padding: 7px 12px;
+      justify-content: center;
+      gap: 5px;
+      padding: 8px 10px;
       border-radius: 8px;
-      border: 1px solid var(--ac-border-subtle);
-      background-color: var(--ac-surface-subtle);
-      color: var(--ac-text);
-      font-size: 12.5px;
+      border: 1px solid #0284c7;
+      background: linear-gradient(135deg, #0284c7, #0369a1);
+      color: #ffffff;
+      font-size: 11.5px;
+      font-weight: 800;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+
+    .btn-tile-primary:hover {
+      background: linear-gradient(135deg, #0369a1, #075985);
+      box-shadow: 0 0 12px rgba(2, 132, 199, 0.4);
+    }
+
+    .btn-tile-secondary {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 5px;
+      padding: 8px 10px;
+      border-radius: 8px;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      background: rgba(15, 23, 42, 0.6);
+      color: #cbd5e1;
+      font-size: 11.5px;
       font-weight: 700;
       cursor: pointer;
       transition: all 0.15s ease;
     }
 
-    .tile-action-btn:hover {
-      background-color: var(--ac-primary-soft);
-      color: var(--ac-primary-soft-fg);
-      border-color: var(--ac-link);
+    .btn-tile-secondary:hover {
+      background: rgba(30, 41, 59, 0.8);
+      color: #ffffff;
+      border-color: rgba(56, 189, 248, 0.35);
+    }
+
+    html[data-theme="light"] .btn-tile-secondary {
+      background: #f1f5f9;
+      color: #0f172a;
+      border-color: #cbd5e1;
+    }
+
+    html[data-theme="light"] .btn-tile-secondary:hover {
+      background: #e2e8f0;
+      color: #0284c7;
+      border-color: #0284c7;
     }
 
     /* =========================================================================
-       4. INTERACTIVE AI WORKBENCH: AARUNI VOICE AI (AVS) & CONVERSE AI (ACA)
+       6. INTERACTIVE AI PLAYGROUND (AWS BEDROCK / VERTEX AI CALIBER)
        ========================================================================= */
     .ai-workbench-grid {
       display: grid;
@@ -949,11 +1338,11 @@
     }
 
     .workbench-card {
-      background-color: var(--ac-surface);
+      background: var(--ac-surface);
       border: 1px solid var(--ac-border);
       border-radius: 16px;
-      padding: 24px;
-      box-shadow: var(--ac-shadow-sm);
+      padding: 26px;
+      box-shadow: var(--ac-card-shadow);
       display: flex;
       flex-direction: column;
       justify-content: space-between;
@@ -961,9 +1350,8 @@
     }
 
     .voice-meter-box {
-      background-color: #0b1222;
-      color: #f8fafc;
-      border: 1px solid #263654;
+      background: #080d19;
+      border: 1px solid rgba(56, 189, 248, 0.25);
       border-radius: 12px;
       padding: 16px;
       margin: 14px 0;
@@ -973,22 +1361,21 @@
       display: flex;
       align-items: center;
       gap: 4px;
-      height: 36px;
+      height: 38px;
       margin: 12px 0;
     }
 
     .wave-bar {
       flex: 1;
-      background-color: #38bdf8;
+      background: linear-gradient(180deg, #38bdf8, #0284c7);
       border-radius: 3px;
       height: 24%;
-      transition: height 0.18s ease;
+      transition: height 0.15s ease;
     }
 
     .chat-log {
-      background-color: #0b1222;
-      color: #f8fafc;
-      border: 1px solid #263654;
+      background: #080d19;
+      border: 1px solid rgba(56, 189, 248, 0.2);
       border-radius: 12px;
       padding: 14px;
       min-height: 210px;
@@ -1001,7 +1388,8 @@
     }
 
     .chat-msg-user {
-      background-color: #1e293b;
+      background: rgba(56, 189, 248, 0.15);
+      border: 1px solid rgba(56, 189, 248, 0.3);
       color: #f8fafc;
       padding: 9px 12px;
       border-radius: 10px 10px 2px 10px;
@@ -1010,8 +1398,8 @@
     }
 
     .chat-msg-agent {
-      background-color: #11223d;
-      border: 1px solid #1d4ed8;
+      background: #0f172a;
+      border: 1px solid #1e293b;
       color: #e2e8f0;
       padding: 10px 12px;
       border-radius: 10px 10px 10px 2px;
@@ -1030,40 +1418,50 @@
       min-height: 32px;
       padding: 5px 10px;
       border-radius: 999px;
-      border: 1px solid var(--ac-border);
-      background-color: var(--ac-surface-subtle);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      background: rgba(15, 23, 42, 0.6);
       color: var(--ac-text-secondary);
       font-size: 11.5px;
       font-weight: 600;
       cursor: pointer;
+      transition: all 0.15s ease;
     }
 
     .preset-chip:hover {
-      border-color: var(--ac-link);
-      color: var(--ac-text);
+      border-color: #38bdf8;
+      color: #ffffff;
+      background: rgba(56, 189, 248, 0.1);
+    }
+
+    html[data-theme="light"] .preset-chip {
+      background: #f1f5f9;
+      color: #0f172a;
+      border-color: #cbd5e1;
+    }
+
+    html[data-theme="light"] .preset-chip:hover {
+      background: #e2e8f0;
+      color: #0284c7;
+      border-color: #0284c7;
     }
 
     /* =========================================================================
-       5. SYLLOVO SPOTLIGHT, ECOSYSTEM GRID, TCO & LEGAL
+       7. ENTERPRISE CUSTOMER SPOTLIGHT, PARTNER STACK & TCO CALCULATOR
        ========================================================================= */
-    .cards-grid-4 {
-      display: grid;
-      grid-template-columns: repeat(4, minmax(0, 1fr));
-      gap: 16px;
-    }
-
     .spotlight-box {
-      background-color: var(--ac-surface);
+      background: var(--ac-surface);
       border: 1px solid var(--ac-border);
       border-radius: 18px;
-      padding: 30px;
-      box-shadow: var(--ac-shadow-sm);
+      padding: 32px;
+      box-shadow: var(--ac-card-shadow);
+      position: relative;
+      overflow: hidden;
     }
 
     .spotlight-split {
       display: grid;
       grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr);
-      gap: 28px;
+      gap: 32px;
       align-items: start;
     }
 
@@ -1074,40 +1472,141 @@
       margin: 18px 0;
     }
 
-    .kpi-card {
-      background-color: var(--ac-surface-subtle);
-      border: 1px solid var(--ac-border-subtle);
+    .case-tenant-label {
+      font-size: 12px;
+      color: #38bdf8;
+    }
+    html[data-theme="light"] .case-tenant-label {
+      color: #0369a1;
+    }
+
+    html[data-theme="light"] .kpi-card {
+      background: #f8fafc;
+      border-color: #cbd5e1;
+    }
+
+    html[data-theme="light"] .kpi-card strong.mono {
+      color: #0369a1 !important;
+    }
+
+    .spotlight-mapping-box {
+      background: rgba(15, 23, 42, 0.8);
+      border: 1px solid rgba(56, 189, 248, 0.2);
+      border-radius: 14px;
+      padding: 20px;
+      display: grid;
+      gap: 10px;
+    }
+
+    html[data-theme="light"] .spotlight-mapping-box {
+      background: #f8fafc;
+      border-color: #cbd5e1;
+    }
+
+    html[data-theme="light"] .spotlight-mapping-box strong {
+      color: #0369a1 !important;
+    }
+
+    .tco-slider-val {
+      color: #38bdf8;
+    }
+    html[data-theme="light"] .tco-slider-val {
+      color: #0369a1;
+    }
+
+    .tco-save-card {
+      background: rgba(16, 185, 129, 0.12);
+      border-color: rgba(16, 185, 129, 0.3);
+    }
+    .tco-save-label {
+      font-size: 11.5px;
+      color: #86efac;
+      font-weight: 700;
+      display: block;
+    }
+    .tco-save-val {
+      font-size: 21px;
+      color: #86efac;
+      display: block;
+      margin-top: 3px;
+    }
+    html[data-theme="light"] .tco-save-card {
+      background: #ecfdf5;
+      border-color: #6ee7b7;
+    }
+    html[data-theme="light"] .tco-save-label {
+      color: #047857 !important;
+    }
+    html[data-theme="light"] .tco-save-val {
+      color: #047857 !important;
+    }
+
+    .portfolio-gov-callout {
+      padding: 12px 14px;
       border-radius: 10px;
-      padding: 13px 15px;
+      background: rgba(15, 23, 42, 0.6);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      font-size: 12px;
+      color: var(--ac-text-secondary);
+    }
+    html[data-theme="light"] .portfolio-gov-callout {
+      background: #f8fafc;
+      border-color: #cbd5e1;
+      color: #334155;
+    }
+    html[data-theme="light"] .portfolio-gov-callout a {
+      color: #0369a1 !important;
+    }
+
+    .kpi-card {
+      background: rgba(15, 23, 42, 0.6);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 10px;
+      padding: 14px 16px;
+    }
+
+    .cards-grid-4 {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 16px;
     }
 
     .legal-notice-box {
-      margin-top: 22px;
-      padding: 15px 18px;
+      margin-top: 24px;
+      padding: 16px 20px;
       border-radius: 12px;
-      background-color: var(--ac-surface);
-      border: 1px solid var(--ac-border);
+      background: rgba(15, 23, 42, 0.6);
+      border: 1px solid rgba(255, 255, 255, 0.08);
       font-size: 12.5px;
-      color: var(--ac-text-secondary);
+      color: var(--ac-text-muted);
       line-height: 1.6;
     }
 
-    /* =========================================================================
-       6. FOOTER & ACCESSIBLE MODAL
-       ========================================================================= */
+    html[data-theme="light"] .legal-notice-box {
+      background: #f8fafc;
+      border-color: #cbd5e1;
+      color: #334155;
+    }
+
+    html[data-theme="light"] .legal-notice-box strong {
+      color: #0f172a;
+    }
+
+    /* Footer */
     .site-footer {
-      background-color: #070d19;
+      background-color: #04070e;
       color: #cbd5e1;
-      padding: 52px 0 34px;
+      padding: 56px 0 34px;
       font-size: 13px;
+      border-top: 1px solid rgba(56, 189, 248, 0.15);
     }
 
     .footer-cols {
       display: grid;
       grid-template-columns: 1.4fr repeat(4, minmax(0, 1fr));
-      gap: 26px;
+      gap: 28px;
       padding-bottom: 32px;
-      border-bottom: 1px solid #1e293b;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
     }
 
     .footer-h {
@@ -1115,8 +1614,8 @@
       font-size: 12px;
       font-weight: 800;
       text-transform: uppercase;
-      letter-spacing: 0.06em;
-      margin: 0 0 12px;
+      letter-spacing: 0.08em;
+      margin: 0 0 14px;
     }
 
     .footer-ul {
@@ -1136,16 +1635,17 @@
       font-size: 12.5px;
       text-align: left;
       cursor: pointer;
+      transition: color 0.12s ease;
     }
 
     .footer-ul a:hover,
     .footer-ul button:hover {
-      color: #ffffff;
+      color: #38bdf8;
       text-decoration: underline;
     }
 
     .footer-legal-bar {
-      padding-top: 22px;
+      padding-top: 24px;
       display: flex;
       justify-content: space-between;
       gap: 18px;
@@ -1154,11 +1654,17 @@
       color: #94a3b8;
     }
 
+    .footer-legal-bar strong {
+      color: #e2e8f0;
+    }
+
+    /* Modal */
     .modal-backdrop {
       position: fixed;
       inset: 0;
       z-index: 100;
-      background-color: rgba(7, 13, 25, 0.78);
+      background-color: rgba(4, 7, 14, 0.84);
+      backdrop-filter: blur(8px);
       display: none;
       align-items: center;
       justify-content: center;
@@ -1170,16 +1676,16 @@
     }
 
     .modal-dialog {
-      background-color: var(--ac-surface);
-      color: var(--ac-text);
-      border: 1px solid var(--ac-border);
+      background-color: #0f172a;
+      color: #f8fafc;
+      border: 1px solid rgba(56, 189, 248, 0.3);
       border-radius: 16px;
       width: 100%;
       max-width: 680px;
       max-height: 88vh;
       overflow-y: auto;
       padding: 24px;
-      box-shadow: var(--ac-shadow-lg);
+      box-shadow: 0 24px 60px rgba(0, 0, 0, 0.8), 0 0 30px rgba(2, 132, 199, 0.3);
     }
 
     .form-input {
@@ -1187,15 +1693,19 @@
       min-height: 42px;
       padding: 8px 12px;
       border-radius: 8px;
-      border: 1px solid var(--ac-border);
-      background-color: var(--ac-surface-subtle);
-      color: var(--ac-text);
-      font-size: 16px;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      background-color: rgba(15, 23, 42, 0.8);
+      color: #f8fafc;
+      font-size: 14px;
     }
 
-    /* =========================================================================
-       7. RESPONSIVE MULTI-DEVICE RULES (360px -> 1440px, ZERO OVERFLOW)
-       ========================================================================= */
+    .form-input:focus {
+      outline: none;
+      border-color: #38bdf8;
+      box-shadow: 0 0 0 2px rgba(56, 189, 248, 0.2);
+    }
+
+    /* Responsive */
     @media (max-width: 1120px) {
       .subnav-bar,
       .header-search-wrap,
@@ -1241,7 +1751,14 @@
       .cloud-hero {
         padding: 34px 0 68px;
       }
-      .arch-pill-grid,
+      .hero-metrics-strip {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 10px;
+      }
+      .hero-metric-item {
+        border-right: none;
+        padding: 6px 0;
+      }
       .launchpad-grid,
       .service-tiles-grid,
       .kpi-grid-2,
@@ -1253,43 +1770,49 @@
         padding: 20px;
       }
       .section {
-        padding: 42px 0;
+        padding: 44px 0;
       }
     }
   </style>
 </head>
 <body>
   <!-- =======================================================================
-       1. DOUBLE-TIER HYPERSCALE ENTERPRISE CLOUD HEADER
+       1. AWS/GCP CLOUD COCKPIT GLOBAL HEADER
        ======================================================================= -->
   <header class="cloud-header">
     <div class="global-topbar">
       <div class="container topbar-inner">
         <a href="#" class="brand-lockup">
-          <img src="/aaruni-cloud-icon.svg" alt="" class="brand-icon" width="36" height="36" />
+          <img src="/aaruni-cloud-icon.svg" alt="Aaruni Cloud Emblem" class="brand-icon" width="36" height="36" />
           <span>
-            <span class="brand-title">Aaruni Cloud</span>
+            <span class="brand-title">
+              <span>Aaruni Cloud</span>
+              <span class="brand-badge">Sovereign</span>
+            </span>
             <span class="brand-domain mono">aarunicloud.com</span>
           </span>
         </a>
 
         <div class="header-search-wrap">
-          <label for="global-service-search" class="sr-only">Search Aaruni Cloud services and AI tools</label>
-          <svg class="header-search-icon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-          <input type="search" id="global-service-search" class="header-search-input" placeholder="Search ACE Compute, AOV Storage, AVS Voice, ACA Chat..." oninput="handleGlobalSearch(this.value)" />
+          <label for="global-service-search" class="sr-only">Search Aaruni Cloud services, APIs, and tools</label>
+          <svg class="header-search-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+          <input type="search" id="global-service-search" class="header-search-input" placeholder="Search ACE Compute, AOV Storage, AVS Voice, ACA Agents..." oninput="handleGlobalSearch(this.value)" />
         </div>
 
         <div class="topbar-right">
-          <span class="region-chip hide-md mono" title="Primary Cloud Availability Region">
+          <span class="region-chip hide-md mono" title="Primary Cloud Region">
             <span class="status-dot" aria-hidden="true"></span>
             <span>ap-south-hyd-1</span>
           </span>
-          <button type="button" class="hdr-btn" id="theme-toggle-btn" onclick="toggleCloudTheme()" aria-label="Switch to Dark theme">
-            <span id="theme-toggle-icon" aria-hidden="true">🌙</span>
-            <span id="theme-toggle-label" class="hide-xs">Dark</span>
+          <button type="button" class="hdr-btn" id="theme-toggle-btn" onclick="toggleCloudTheme()" aria-label="Switch to Light theme">
+            <span id="theme-toggle-icon" aria-hidden="true">☀️</span>
+            <span id="theme-toggle-label" class="hide-xs">Light</span>
           </button>
-          <button type="button" class="hdr-btn hide-xs" onclick="openConsoleSignInModal()">Console Sign In</button>
-          <button type="button" class="hdr-cta hide-xs" onclick="openPilotModal()">Start Pilot</button>
+          <button type="button" class="hdr-console-btn hide-xs" onclick="openConsoleSignInModal()">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><line x1="9" y1="3" x2="9" y2="21"/></svg>
+            <span>Cloud Console</span>
+          </button>
+          <button type="button" class="hdr-cta hide-xs" onclick="openPilotModal()">Start Enterprise Pilot</button>
           <button type="button" class="hdr-btn mobile-menu-btn" id="mobile-menu-toggle" onclick="toggleMobileDrawer()" aria-expanded="false" aria-controls="mobile-nav-drawer" aria-label="Open menu">
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
           </button>
@@ -1297,82 +1820,83 @@
       </div>
     </div>
 
-    <!-- Row 2: Cloud Service Category Sub-Bar -->
-    <nav class="subnav-bar" aria-label="Cloud Service Categories">
+    <!-- Row 2: Secondary Cloud Services Sub-Navbar -->
+    <nav class="subnav-bar" aria-label="Cloud Categories and Services">
       <div class="container subnav-inner">
         <div class="subnav-links">
           <button type="button" class="subnav-item" id="mega-menu-btn" aria-expanded="false" aria-controls="products-mega-menu" onclick="toggleMegaMenu()">
-            <span>Products &amp; Services</span>
+            <span>Explore Products</span>
             <span aria-hidden="true">&#9662;</span>
           </button>
           <a href="#products" class="subnav-item" onclick="selectCategory('compute')">Compute (ACE)</a>
-          <a href="#products" class="subnav-item" onclick="selectCategory('storage')">Storage (AOV)</a>
-          <a href="#ai-workbench" class="subnav-item">AI Voice (AVS)</a>
-          <a href="#ai-workbench" class="subnav-item">AI Chatbot (ACA)</a>
-          <a href="#products" class="subnav-item" onclick="selectCategory('tools')">Developer &amp; Media Tools</a>
-          <a href="#customer-syllovo" class="subnav-item">Customers: Syllovo</a>
-          <a href="#ecosystem" class="subnav-item">Plugins &amp; Vendors</a>
-          <a href="#tco-section" class="subnav-item">Pricing &amp; TCO</a>
+          <a href="#products" class="subnav-item" onclick="selectCategory('storage')">Storage &amp; Vault (AOV)</a>
+          <a href="#ai-workbench" class="subnav-item">Voice AI (AVS)</a>
+          <a href="#ai-workbench" class="subnav-item">Converse AI (ACA)</a>
+          <a href="#blueprint" class="subnav-item">Architecture Flow</a>
+          <a href="#customer-syllovo" class="subnav-item">Customer: Syllovo</a>
+          <a href="#ecosystem" class="subnav-item">Plugins &amp; Ecosystem</a>
+          <a href="#tco-section" class="subnav-item">Pricing &amp; Sizing</a>
         </div>
-        <a href="https://aarunitech.com" target="_blank" rel="noopener" class="subnav-item mono" style="color:#7dd3fc;">Parent: aarunitech.com &nearr;</a>
+        <a href="https://aarunitech.com" target="_blank" rel="noopener" class="subnav-item mono" style="color:#38bdf8;">Parent: aarunitech.com &nearr;</a>
       </div>
     </nav>
 
-    <!-- Expandable Cloud Products Mega-Menu -->
+    <!-- Expandable Products Mega-Menu -->
     <div id="products-mega-menu" class="mega-menu" role="region" aria-label="All Aaruni Cloud Products">
       <div class="container mega-grid">
         <div>
-          <h3 class="mega-col-title">Compute</h3>
+          <h3 class="mega-col-title">Compute &amp; Containers</h3>
           <ul class="mega-list">
-            <li><a href="#products" class="mega-link" onclick="closeMegaMenu(); selectCategory('compute');"><strong>Aaruni Compute Engine (ACE)</strong><span>Unified-memory M-Series worker clusters</span></a></li>
+            <li><a href="#products" class="mega-link" onclick="closeMegaMenu(); selectCategory('compute');"><strong>Aaruni Compute Engine (ACE)</strong><span>Unified-memory M-Series GPU clusters</span></a></li>
             <li><a href="#products" class="mega-link" onclick="closeMegaMenu(); selectCategory('compute');"><strong>Aaruni Container Grid (ACG)</strong><span>Elastic OCI sandboxes &amp; Xvfb runners</span></a></li>
           </ul>
         </div>
         <div>
-          <h3 class="mega-col-title">Storage &amp; Backup</h3>
+          <h3 class="mega-col-title">Storage &amp; Buckets</h3>
           <ul class="mega-list">
-            <li><a href="#products" class="mega-link" onclick="closeMegaMenu(); selectCategory('storage');"><strong>Aaruni Object Vault (AOV)</strong><span>3-tier RAID-1, edge cache &amp; media streaming</span></a></li>
-            <li><a href="#products" class="mega-link" onclick="closeMegaMenu(); selectCategory('storage');"><strong>Aaruni Deep Archive (ADA)</strong><span>30 TB AES-256 offsite cold storage</span></a></li>
+            <li><a href="#products" class="mega-link" onclick="closeMegaMenu(); selectCategory('storage');"><strong>Aaruni Object Vault (AOV)</strong><span>RAID-1 Gigabit, Anycast edge cache &amp; zero egress</span></a></li>
+            <li><a href="#products" class="mega-link" onclick="closeMegaMenu(); selectCategory('storage');"><strong>Aaruni Deep Archive (ADA)</strong><span>30 TB AES-256 encrypted cold archive</span></a></li>
           </ul>
         </div>
         <div>
-          <h3 class="mega-col-title">AI, Voice &amp; Chatbot</h3>
+          <h3 class="mega-col-title">Applied AI &amp; Voice</h3>
           <ul class="mega-list">
-            <li><a href="#ai-workbench" class="mega-link" onclick="closeMegaMenu();"><strong>Aaruni Voice AI (AVS)</strong><span>Neural speech synthesis &amp; -12 dB DSP</span></a></li>
-            <li><a href="#ai-workbench" class="mega-link" onclick="closeMegaMenu();"><strong>Aaruni Converse AI (ACA)</strong><span>Multi-intent enterprise RAG chatbot</span></a></li>
+            <li><a href="#ai-workbench" class="mega-link" onclick="closeMegaMenu();"><strong>Aaruni Voice AI (AVS)</strong><span>Neural speech synthesis, W3C PLS &amp; -12 dB DSP</span></a></li>
+            <li><a href="#ai-workbench" class="mega-link" onclick="closeMegaMenu();"><strong>Aaruni Converse AI (ACA)</strong><span>Multi-intent enterprise RAG agent &amp; copilot</span></a></li>
             <li><a href="#products" class="mega-link" onclick="closeMegaMenu(); selectCategory('ai');"><strong>Aaruni Knowledge Fabric (AKF)</strong><span>SQLite FTS5 RAG &amp; compliance linter</span></a></li>
           </ul>
         </div>
         <div>
-          <h3 class="mega-col-title">Media &amp; Dev Tools</h3>
+          <h3 class="mega-col-title">Studio &amp; Media Tools</h3>
           <ul class="mega-list">
             <li><a href="#products" class="mega-link" onclick="closeMegaMenu(); selectCategory('tools');"><strong>Aaruni Media Pipeline (AMP)</strong><span>Slide, timeline &amp; 1080p MP4 compiler</span></a></li>
             <li><a href="#products" class="mega-link" onclick="closeMegaMenu(); selectCategory('tools');"><strong>Aaruni Assurance Lab (AAL)</strong><span>7-device Playwright &amp; WCAG auditor</span></a></li>
           </ul>
         </div>
         <div>
-          <h3 class="mega-col-title">Security &amp; Edge</h3>
+          <h3 class="mega-col-title">Security &amp; Mesh</h3>
           <ul class="mega-list">
-            <li><a href="#products" class="mega-link" onclick="closeMegaMenu(); selectCategory('security');"><strong>Aaruni Zero-Trust Vault (AZV)</strong><span>Zero-OTP remote browser auth vault</span></a></li>
-            <li><a href="#products" class="mega-link" onclick="closeMegaMenu(); selectCategory('security');"><strong>Aaruni Edge Mesh (AEM)</strong><span>Global Anycast CDN &amp; outbound tunnels</span></a></li>
+            <li><a href="#products" class="mega-link" onclick="closeMegaMenu(); selectCategory('security');"><strong>Aaruni Zero-Trust Vault (AZV)</strong><span>Zero-OTP remote browser session vault</span></a></li>
+            <li><a href="#products" class="mega-link" onclick="closeMegaMenu(); selectCategory('security');"><strong>Aaruni Edge Mesh (AEM)</strong><span>Global Anycast delivery &amp; outbound tunnels</span></a></li>
           </ul>
         </div>
       </div>
     </div>
 
-    <!-- Mobile Navigation Drawer -->
-    <div id="mobile-nav-drawer" class="mobile-drawer" aria-label="Mobile Cloud Menu">
+    <!-- Mobile Drawer -->
+    <div id="mobile-nav-drawer" class="mobile-drawer" aria-label="Mobile Navigation">
       <div class="mobile-nav-grid">
         <a href="#products" onclick="closeMobileDrawer(); selectCategory('compute');"><span>Compute: Aaruni Compute Engine (ACE)</span><span>&rarr;</span></a>
         <a href="#products" onclick="closeMobileDrawer(); selectCategory('storage');"><span>Storage: Aaruni Object Vault (AOV)</span><span>&rarr;</span></a>
-        <a href="#ai-workbench" onclick="closeMobileDrawer();"><span>Voice AI: Aaruni Voice AI (AVS)</span><span>&rarr;</span></a>
-        <a href="#ai-workbench" onclick="closeMobileDrawer();"><span>Chatbot: Aaruni Converse AI (ACA)</span><span>&rarr;</span></a>
-        <a href="#customer-syllovo" onclick="closeMobileDrawer();"><span>Featured Customer: Syllovo</span><span>&rarr;</span></a>
-        <a href="#ecosystem" onclick="closeMobileDrawer();"><span>Supported Plugins &amp; Vendors</span><span>&rarr;</span></a>
-        <a href="#tco-section" onclick="closeMobileDrawer();"><span>Workload Pricing &amp; TCO</span><span>&rarr;</span></a>
+        <a href="#ai-workbench" onclick="closeMobileDrawer();"><span>Speech AI: Aaruni Voice AI (AVS)</span><span>&rarr;</span></a>
+        <a href="#ai-workbench" onclick="closeMobileDrawer();"><span>Agent AI: Aaruni Converse AI (ACA)</span><span>&rarr;</span></a>
+        <a href="#blueprint" onclick="closeMobileDrawer();"><span>Architecture Blueprint</span><span>&rarr;</span></a>
+        <a href="#customer-syllovo" onclick="closeMobileDrawer();"><span>Customer Story: Syllovo</span><span>&rarr;</span></a>
+        <a href="#ecosystem" onclick="closeMobileDrawer();"><span>Ecosystem &amp; Plugins</span><span>&rarr;</span></a>
+        <a href="#tco-section" onclick="closeMobileDrawer();"><span>Pricing &amp; Sizing Calculator</span><span>&rarr;</span></a>
       </div>
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
-        <button type="button" class="hdr-btn" onclick="closeMobileDrawer(); openConsoleSignInModal();">Console Sign In</button>
+        <button type="button" class="hdr-btn" onclick="closeMobileDrawer(); openConsoleSignInModal();">Cloud Console</button>
         <button type="button" class="hdr-cta" onclick="closeMobileDrawer(); openPilotModal();">Start Pilot</button>
       </div>
     </div>
@@ -1380,124 +1904,241 @@
 
   <main id="main-content">
     <!-- =====================================================================
-         2. ENTERPRISE CLOUD HERO + CORE SERVICE MATRIX
-         ===================================================================== -->
+       2. AWS/GCP STYLE CLOUD HERO & COCKPIT
+       ===================================================================== -->
     <section class="cloud-hero">
       <div class="container hero-split">
         <div>
-          <div class="hero-pill">
-            <span>☁️ Aaruni Cloud Platform (aarunicloud.com)</span>
-            <span>&bull;</span>
-            <span>Compute &bull; Storage &bull; Voice AI &bull; Converse AI</span>
+          <div class="hero-tag">
+            <span>⚡ THE ENTERPRISE CLOUD FOR APPLIED AI &amp; MEDIA PIPELINES</span>
           </div>
           <h1 class="hero-h1">
-            Enterprise Cloud Compute, Multi-Tier Storage &amp; Applied AI Services
+            Build, Train &amp; Scale on <span class="gradient-text">Sovereign Cloud Infrastructure</span>
           </h1>
           <p class="hero-lead">
-            Deploy production workloads across <strong>Aaruni Compute Engine (ACE)</strong>, store mission-critical media in <strong>Aaruni Object Vault (AOV)</strong>, synthesize studio narration with <strong>Aaruni Voice AI (AVS)</strong>, and automate workflows with <strong>Aaruni Converse AI (ACA)</strong>.
+            Provision dedicated unified-memory compute clusters (<strong>ACE</strong>), store petabytes in zero-egress vaults (<strong>AOV</strong>), synthesize broadcast neural speech (<strong>AVS</strong>), and orchestrate autonomous multi-intent agents (<strong>ACA</strong>).
           </p>
+
+          <div class="hero-metrics-strip">
+            <div class="hero-metric-item">
+              <span class="metric-val mono">99.99%</span>
+              <span class="metric-lbl">Sovereign SLA</span>
+            </div>
+            <div class="hero-metric-item">
+              <span class="metric-val mono">$0.00</span>
+              <span class="metric-lbl">Egress Fees (AOV)</span>
+            </div>
+            <div class="hero-metric-item">
+              <span class="metric-val mono">4.2×</span>
+              <span class="metric-lbl">Encoding Speed</span>
+            </div>
+            <div class="hero-metric-item">
+              <span class="metric-val mono">11</span>
+              <span class="metric-lbl">Cloud Services</span>
+            </div>
+          </div>
+
           <div class="hero-btn-row">
-            <a href="#products" class="btn-dawn">Explore All 11 Cloud Services &rarr;</a>
-            <a href="#ai-workbench" class="btn-outline-light">Try Voice AI &amp; Chatbot Live</a>
+            <button type="button" class="btn-dawn" onclick="openPilotModal()">
+              <span>🚀 Start Enterprise Pilot</span>
+              <span>&rarr;</span>
+            </button>
+            <button type="button" class="btn-console" onclick="openConsoleSignInModal()">
+              <span>⚡ Cloud Console</span>
+            </button>
+            <a href="#products" class="btn-outline-light">Browse Cloud Shop</a>
           </div>
         </div>
 
-        <div class="hero-arch-card" aria-label="Aaruni Cloud Core Pillars">
-          <div style="display:flex;align-items:center;justify-content:space-between;gap:8px;">
-            <strong style="font-size:13px;color:#ffffff;">Aaruni Cloud Flagship Pillars</strong>
-            <span class="mono" style="font-size:11px;color:#86efac;">● 11 Managed Services Active</span>
+        <!-- Right: Interactive Cloud Console Terminal Window -->
+        <div class="cockpit-terminal">
+          <div class="terminal-titlebar">
+            <div class="terminal-dots">
+              <span class="t-dot red"></span>
+              <span class="t-dot yellow"></span>
+              <span class="t-dot green"></span>
+            </div>
+            <div class="terminal-tabs">
+              <button type="button" class="terminal-tab-btn active" onclick="switchTerminalTab('cli')">CLI</button>
+              <button type="button" class="terminal-tab-btn" onclick="switchTerminalTab('curl')">cURL</button>
+              <button type="button" class="terminal-tab-btn" onclick="switchTerminalTab('python')">Python</button>
+              <button type="button" class="terminal-tab-btn" onclick="switchTerminalTab('node')">Node.js</button>
+            </div>
           </div>
-          <div class="arch-pill-grid">
-            <div class="arch-mini-tile">
-              <span class="arch-mini-code mono">COMPUTE &bull; ACE / ACG</span>
-              <span class="arch-mini-name">Aaruni Compute Engine</span>
-              <span class="arch-mini-sub">Unified-memory clusters &amp; OCI containers</span>
-            </div>
-            <div class="arch-mini-tile">
-              <span class="arch-mini-code mono">STORAGE &bull; AOV / ADA</span>
-              <span class="arch-mini-name">Aaruni Object Vault</span>
-              <span class="arch-mini-sub">RAID-1 NAS + Edge + 30 TB Cold Archive</span>
-            </div>
-            <div class="arch-mini-tile">
-              <span class="arch-mini-code mono">SPEECH AI &bull; AVS</span>
-              <span class="arch-mini-name">Aaruni Voice AI</span>
-              <span class="arch-mini-sub">Neural TTS, W3C PLS &amp; -12 dB DSP</span>
-            </div>
-            <div class="arch-mini-tile">
-              <span class="arch-mini-code mono">AGENT AI &bull; ACA / AKF</span>
-              <span class="arch-mini-name">Aaruni Converse AI</span>
-              <span class="arch-mini-sub">Multi-intent RAG chatbot &amp; copilot</span>
-            </div>
+
+          <div class="terminal-body mono" id="terminal-content">
+            <div><span class="t-prompt">$</span> <span class="t-cmd">aaruni compute launch --type ace.m4.max --region ap-south-hyd-1</span></div>
+            <div class="t-info">[INFO] Connecting to Sovereign Control Plane at ap-south-hyd-1...</div>
+            <div class="t-success">✔ Verified Zero-Trust Vault Session (AZV Session ID: azv_9921_valid)</div>
+            <div class="t-success">✔ Allocated Apple Silicon M-Series Node (64GB Unified RAM, VideoToolbox HW)</div>
+            <div class="t-success">✔ Mounted 8TB RAID-1 AOV Vault (aov://production-vault-hyd)</div>
+            <div><span class="t-prompt">$</span> <span class="t-cmd">aaruni voice synthesize --text "Course Module 1 Complete" --lufs -12</span></div>
+            <div class="t-success">✔ W3C PLS Lexicon bound • Zero boundary clicks (35ms/45ms cosine)</div>
+            <div class="t-info">🚀 Cluster Ready at ace.api.aarunicloud.com (Latency: 12ms, Status: 🟢 ACTIVE)</div>
+          </div>
+
+          <div class="terminal-footer mono">
+            <div>Region: <strong>ap-south-hyd-1</strong> &bull; Node: <strong>ACE-HYD-04</strong></div>
+            <button type="button" class="copy-code-btn" onclick="copyTerminalSnippet()">📋 Copy Snippet</button>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- 4 Overlapping Cloud Launchpad Cards (Signature Hyperscale Portal Pattern) -->
+    <!-- =====================================================================
+       3. TOP 4 HIGH-TECH CLOUD LAUNCHPAD CARDS
+       ===================================================================== -->
     <div class="launchpad-strip">
       <div class="container launchpad-grid">
-        <div class="launchpad-card">
+        <div class="cloud-shop-card">
           <div>
-            <span class="mono" style="font-size:11px;font-weight:800;color:var(--ac-link);">COMPUTE SERVICE</span>
-            <h2 style="font-size:17px;font-weight:800;margin:4px 0 6px;">Aaruni Compute Engine (ACE)</h2>
-            <p style="font-size:13px;color:var(--ac-text-secondary);margin:0 0 14px;">24/7 unified-memory Apple Silicon nodes &amp; elastic Linux container failover for AI and 1080p video encoding.</p>
+            <div class="card-top-badge">
+              <span class="cloud-acronym-pill mono">ACE</span>
+              <span class="cloud-spec-chip mono">64–128GB Unified RAM</span>
+            </div>
+            <h2 class="card-title">Aaruni Compute Engine</h2>
+            <p class="card-desc">Dedicated unified-memory Apple Silicon clusters running 24/7 dark-monitor server mode with VideoToolbox hardware acceleration.</p>
           </div>
-          <a href="#products" onclick="selectCategory('compute')" style="font-size:13px;font-weight:700;color:var(--ac-link);">Inspect ACE Compute &rarr;</a>
+          <button type="button" class="card-action-link" onclick="openServiceSpec('ace')">
+            <span>Provision ACE Instance</span>
+            <span aria-hidden="true">&rarr;</span>
+          </button>
         </div>
 
-        <div class="launchpad-card pillar-storage">
+        <div class="cloud-shop-card card-pillar-storage">
           <div>
-            <span class="mono" style="font-size:11px;font-weight:800;color:var(--ac-green-fg);">STORAGE SERVICE</span>
-            <h2 style="font-size:17px;font-weight:800;margin:4px 0 6px;">Aaruni Object Vault (AOV)</h2>
-            <p style="font-size:13px;color:var(--ac-text-secondary);margin:0 0 14px;">3-tier storage mesh uniting Gigabit RAID-1 local mirrors, Anycast edge caching, and 30 TB cold archives.</p>
+            <div class="card-top-badge">
+              <span class="cloud-acronym-pill mono" style="color:#34d399;border-color:rgba(16,185,129,0.3);background:rgba(16,185,129,0.15);">AOV</span>
+              <span class="cloud-spec-chip mono">$0 Egress Caching</span>
+            </div>
+            <h2 class="card-title">Aaruni Object Vault</h2>
+            <p class="card-desc">High-throughput 3-tier storage fabric uniting local NVMe scratch, 8TB Gigabit RAID-1 NAS, and zero-egress Anycast edge caches.</p>
           </div>
-          <a href="#products" onclick="selectCategory('storage')" style="font-size:13px;font-weight:700;color:var(--ac-link);">Inspect AOV Storage &rarr;</a>
+          <button type="button" class="card-action-link" style="color:#34d399;" onclick="openServiceSpec('aov')">
+            <span>Mount AOV Vault</span>
+            <span aria-hidden="true">&rarr;</span>
+          </button>
         </div>
 
-        <div class="launchpad-card pillar-voice">
+        <div class="cloud-shop-card card-pillar-voice">
           <div>
-            <span class="mono" style="font-size:11px;font-weight:800;color:var(--ac-violet-fg);">AI VOICE GENERATION</span>
-            <h2 style="font-size:17px;font-weight:800;margin:4px 0 6px;">Aaruni Voice AI (AVS)</h2>
-            <p style="font-size:13px;color:var(--ac-text-secondary);margin:0 0 14px;">Two-stage neural speech generation with W3C PLS technical lexicons, cosine de-clicking, and -12 dB DSP.</p>
+            <div class="card-top-badge">
+              <span class="cloud-acronym-pill mono" style="color:#c084fc;border-color:rgba(139,92,246,0.3);background:rgba(139,92,246,0.15);">AVS</span>
+              <span class="cloud-spec-chip mono">-12.0 dB LUFS DSP</span>
+            </div>
+            <h2 class="card-title">Aaruni Voice AI</h2>
+            <p class="card-desc">Two-stage neural speech generation with W3C PLS technical lexicons, zero-cost local MLX drafts, and 1-click studio voice API upgrades.</p>
           </div>
-          <a href="#ai-workbench" style="font-size:13px;font-weight:700;color:var(--ac-link);">Launch Voice AI Demo &rarr;</a>
+          <a href="#ai-workbench" class="card-action-link" style="color:#c084fc;">
+            <span>Launch Voice Studio</span>
+            <span aria-hidden="true">&rarr;</span>
+          </a>
         </div>
 
-        <div class="launchpad-card pillar-chat">
+        <div class="cloud-shop-card card-pillar-chat">
           <div>
-            <span class="mono" style="font-size:11px;font-weight:800;color:var(--ac-accent-soft-fg);">AI CHATBOT &amp; AGENTS</span>
-            <h2 style="font-size:17px;font-weight:800;margin:4px 0 6px;">Aaruni Converse AI (ACA)</h2>
-            <p style="font-size:13px;color:var(--ac-text-secondary);margin:0 0 14px;">Citation-backed enterprise RAG chatbot &amp; multi-intent workflow agent with verifiable execution receipts.</p>
+            <div class="card-top-badge">
+              <span class="cloud-acronym-pill mono" style="color:#fb923c;border-color:rgba(249,115,22,0.3);background:rgba(249,115,22,0.15);">ACA</span>
+              <span class="cloud-spec-chip mono">Multi-Intent RAG</span>
+            </div>
+            <h2 class="card-title">Aaruni Converse AI</h2>
+            <p class="card-desc">Domain-scoped enterprise AI chatbot and task copilot that parses compound instructions into verified compute and audio service receipts.</p>
           </div>
-          <a href="#ai-workbench" style="font-size:13px;font-weight:700;color:var(--ac-link);">Launch Chatbot Demo &rarr;</a>
+          <a href="#ai-workbench" class="card-action-link" style="color:#fb923c;">
+            <span>Open Agent Playground</span>
+            <span aria-hidden="true">&rarr;</span>
+          </a>
         </div>
       </div>
     </div>
 
     <!-- =====================================================================
-         3. AWS-STYLE 2-PANE "EXPLORE OUR CLOUD PRODUCTS" CATALOG
-         ===================================================================== -->
+       4. INTERACTIVE CLOUD ARCHITECTURE BLUEPRINT (SOLUTIONS PIPELINE)
+       ===================================================================== -->
+    <section id="blueprint" class="arch-blueprint-section">
+      <div class="container">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;flex-wrap:wrap;gap:12px;">
+          <div>
+            <span class="eyebrow-tag">SOLUTIONS ARCHITECTURE BLUEPRINT</span>
+            <h3 style="margin:4px 0 0;font-size:20px;font-weight:800;">End-to-End Sovereign Cloud Pipeline Flow</h3>
+          </div>
+          <div class="mono" style="font-size:12px;color:#86efac;">● 100% Zero-Trust Encrypted Ingress &bull; ap-south-hyd-1</div>
+        </div>
+
+        <div class="arch-flow-wrap" role="region" aria-label="Aaruni Cloud Architecture Pipeline" tabindex="0">
+          <div class="arch-node active" onclick="openServiceSpec('aem')">
+            <span class="arch-node-code mono">1. EDGE INGRESS</span>
+            <span class="arch-node-name">AEM Edge Mesh</span>
+            <span class="arch-node-spec">TLS 1.3 Anycast CDN</span>
+          </div>
+
+          <div class="arch-arrow">&rarr;</div>
+
+          <div class="arch-node" onclick="openServiceSpec('azv')">
+            <span class="arch-node-code mono">2. AUTHENTICATION</span>
+            <span class="arch-node-name">AZV Zero-Trust</span>
+            <span class="arch-node-spec">Encrypted Session Vault</span>
+          </div>
+
+          <div class="arch-arrow">&rarr;</div>
+
+          <div class="arch-node" onclick="openServiceSpec('ace')">
+            <span class="arch-node-code mono">3. SOVEREIGN COMPUTE</span>
+            <span class="arch-node-name">ACE Compute</span>
+            <span class="arch-node-spec">M-Series Metal Hardware</span>
+          </div>
+
+          <div class="arch-arrow">&harr;</div>
+
+          <div class="arch-node" onclick="openServiceSpec('aov')">
+            <span class="arch-node-code mono">4. 3-TIER STORAGE</span>
+            <span class="arch-node-name">AOV Object Vault</span>
+            <span class="arch-node-spec">RAID-1 NAS + Edge</span>
+          </div>
+
+          <div class="arch-arrow">&rarr;</div>
+
+          <div class="arch-node" onclick="openServiceSpec('avs')">
+            <span class="arch-node-code mono">5. APPLIED AI</span>
+            <span class="arch-node-name">AVS Voice + ACA</span>
+            <span class="arch-node-spec">W3C PLS &amp; Multi-Intent</span>
+          </div>
+
+          <div class="arch-arrow">&rarr;</div>
+
+          <div class="arch-node" onclick="openServiceSpec('amp')">
+            <span class="arch-node-code mono">6. PRODUCTION</span>
+            <span class="arch-node-name">AMP Media Pipeline</span>
+            <span class="arch-node-spec">Synchronized 1080p MP4</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- =====================================================================
+       5. AWS/GCP STYLE CLOUD SERVICES CATALOG & SHOP
+       ===================================================================== -->
     <section id="products" class="section">
       <div class="container">
         <div class="section-header">
           <div>
-            <span class="eyebrow-tag">AARUNI CLOUD SERVICE DIRECTORY</span>
-            <h2 class="section-h2">Explore Our Cloud Products &amp; Services</h2>
+            <span class="eyebrow-tag">AARUNI CLOUD SERVICE CATALOG</span>
+            <h2 class="section-h2">Cloud Products &amp; Managed Services Directory</h2>
             <p class="section-sub">
-              Select a service category on the left to inspect Aaruni Cloud’s compute, storage, generative AI, voice synthesis, media automation, and zero-trust security offerings.
+              Explore our enterprise sovereign compute, scalable object storage, generative speech AI, media timeline compilers, and zero-trust perimeter services.
             </p>
           </div>
-          <div style="min-width:250px;">
-            <label for="catalog-inline-filter" class="sr-only">Filter displayed cloud services</label>
+          <div style="min-width:260px;">
+            <label for="catalog-inline-filter" class="sr-only">Filter cloud services</label>
             <input type="search" id="catalog-inline-filter" class="form-input" placeholder="Quick filter (e.g. ACE, AOV, Voice, Chat)..." oninput="handleGlobalSearch(this.value)" />
           </div>
         </div>
 
         <div class="aws-explorer-layout">
-          <!-- Left Category Sidebar Rail -->
+          <!-- Left Category Rail -->
           <div class="category-rail" role="tablist" aria-label="Cloud Product Categories" tabindex="0">
             <button type="button" role="tab" class="rail-btn" data-cat="featured" aria-selected="true" onclick="selectCategory('featured')">
-              <span>&#9733; Featured Services</span>
+              <span>&#9733; Featured Cloud Services</span>
               <span class="rail-count">6</span>
             </button>
             <button type="button" role="tab" class="rail-btn" data-cat="all" aria-selected="false" onclick="selectCategory('all')">
@@ -1505,46 +2146,46 @@
               <span class="rail-count">11</span>
             </button>
             <button type="button" role="tab" class="rail-btn" data-cat="compute" aria-selected="false" onclick="selectCategory('compute')">
-              <span>&#9635; Compute</span>
+              <span>⚡ Compute &amp; Containers</span>
               <span class="rail-count">2</span>
             </button>
             <button type="button" role="tab" class="rail-btn" data-cat="storage" aria-selected="false" onclick="selectCategory('storage')">
-              <span>&#9921; Storage &amp; Backup</span>
+              <span>🗄️ Storage &amp; Buckets</span>
               <span class="rail-count">2</span>
             </button>
             <button type="button" role="tab" class="rail-btn" data-cat="ai" aria-selected="false" onclick="selectCategory('ai')">
-              <span>&#10022; AI, Voice &amp; Chatbot</span>
+              <span>🎙️ Applied AI &amp; Speech</span>
               <span class="rail-count">3</span>
             </button>
             <button type="button" role="tab" class="rail-btn" data-cat="tools" aria-selected="false" onclick="selectCategory('tools')">
-              <span>&#9881; Media &amp; Dev Tools</span>
+              <span>⚙️ Media &amp; Dev Tools</span>
               <span class="rail-count">2</span>
             </button>
             <button type="button" role="tab" class="rail-btn" data-cat="security" aria-selected="false" onclick="selectCategory('security')">
-              <span>&#128737; Security &amp; Edge</span>
+              <span>🛡️ Security &amp; Mesh</span>
               <span class="rail-count">2</span>
             </button>
           </div>
 
-          <!-- Right Service Cards Grid -->
+          <!-- Right Grid of Cloud Products -->
           <div id="service-tiles-container" class="service-tiles-grid" aria-live="polite">
-            <!-- Populated deterministically by renderServiceCatalog() -->
+            <!-- Rendered deterministically by renderServiceCatalog() -->
           </div>
         </div>
       </div>
     </section>
 
     <!-- =====================================================================
-         4. INTERACTIVE AI SERVICES WORKBENCH: VOICE AI (AVS) & CONVERSE AI (ACA)
-         ===================================================================== -->
+       6. INTERACTIVE AI SERVICES PLAYGROUND (AVS + ACA)
+       ===================================================================== -->
     <section id="ai-workbench" class="section section-surface">
       <div class="container">
         <div class="section-header">
           <div>
-            <span class="eyebrow-tag">INTERACTIVE AI SERVICES PLAYGROUND</span>
-            <h2 class="section-h2">Experience Aaruni Voice AI (AVS) &amp; Aaruni Converse AI (ACA)</h2>
+            <span class="eyebrow-tag">INTERACTIVE CLOUD AI PLAYGROUND</span>
+            <h2 class="section-h2">Aaruni Voice AI (AVS) &amp; Converse AI (ACA) Studio</h2>
             <p class="section-sub">
-              Test our flagship neural voice generation pipeline and our multi-intent enterprise chatbot &amp; task copilot directly in your browser.
+              Test our flagship neural speech synthesis pipeline and our multi-intent conversational workflow copilot live in your browser.
             </p>
           </div>
         </div>
@@ -1553,30 +2194,30 @@
           <!-- LEFT: AARUNI VOICE AI (AVS) STUDIO -->
           <div class="workbench-card">
             <div>
-              <div style="display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:10px;">
-                <span class="pill-badge glyph-ai mono">AVS &bull; AI VOICE GENERATION SERVICE</span>
-                <span class="mono" style="font-size:11.5px;color:var(--ac-green-fg);font-weight:700;">-12.0 dB LUFS Calibrated</span>
+              <div style="display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:12px;">
+                <span class="pill-badge glyph-ai mono">AVS &bull; SPEECH SYNTHESIS ENGINE</span>
+                <span class="mono dsp-badge">-12.0 dB LUFS DSP Standard</span>
               </div>
               <h3 style="margin:0 0 6px;font-size:20px;font-weight:800;">Aaruni Voice AI (AVS)</h3>
-              <p style="margin:0 0 14px;font-size:13.5px;color:var(--ac-text-secondary);">
-                Synthesizes studio-grade technical narration with W3C PLS phonetic lexicons, zero-cost local MLX/ONNX draft iterations, 35ms/45ms raised-cosine valley de-clicking, and pluggable studio voice API connectors.
+              <p style="margin:0 0 14px;font-size:13.5px;color:var(--ac-text-secondary);line-height:1.5;">
+                Generates broadcast-grade technical narration with strict W3C PLS phonetic lexicons, zero-cost local neural drafts, 35ms/45ms raised-cosine de-clicking, and 1-click studio API connectors.
               </p>
 
-              <div style="margin-bottom:10px;">
-                <label for="avs-persona-select" style="display:block;font-size:12.5px;font-weight:700;margin-bottom:5px;">Licensed Stock Public Demo Persona</label>
+              <div style="margin-bottom:12px;">
+                <label for="avs-persona-select" style="display:block;font-size:12.5px;font-weight:700;margin-bottom:5px;color:var(--ac-text-secondary);">Licensed Stock Demo Persona</label>
                 <select id="avs-persona-select" class="form-input" onchange="updateAvsScript()">
-                  <option value="aria">Aria (Stock Premade) — Cloud Architecture Narrator</option>
-                  <option value="dev">Dev (Stock Premade) — DevSecOps &amp; Container Guide</option>
-                  <option value="maya">Maya (Stock Premade) — Executive Release Briefing</option>
+                  <option value="aria">Aria (Stock Premade) — Cloud Systems Narrator</option>
+                  <option value="dev">Dev (Stock Premade) — DevSecOps &amp; Infrastructure</option>
+                  <option value="maya">Maya (Stock Premade) — Executive Architecture Briefing</option>
                 </select>
               </div>
 
               <div class="voice-meter-box">
                 <div style="display:flex;justify-content:space-between;align-items:center;font-size:11px;color:#94a3b8;" class="mono">
                   <span id="avs-stage-status">STATUS: READY (W3C PLS LEXICON BOUND)</span>
-                  <span>ENVELOPE: 35ms / 45ms COSINE</span>
+                  <span>DSP: -12.0 dB LUFS</span>
                 </div>
-                <p id="avs-sample-text" style="margin:10px 0;font-size:13px;color:#e2e8f0;font-style:italic;">
+                <p id="avs-sample-text" style="margin:12px 0;font-size:13px;color:#e2e8f0;font-style:italic;line-height:1.5;">
                   "Welcome to Aaruni Cloud. Aaruni Compute Engine and Aaruni Object Vault synchronize mission-critical workloads across NVMe, RAID-1 NAS, and global Anycast edge nodes."
                 </p>
                 <div class="waveform-bars" id="avs-waveform" aria-hidden="true">
@@ -1589,35 +2230,35 @@
             </div>
 
             <div style="display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;">
-              <button type="button" class="btn-primary" id="avs-play-btn" onclick="runAvsAudition()">
-                &#9654; Synthesize &amp; Audition Sample
+              <button type="button" class="btn-dawn" id="avs-play-btn" onclick="runAvsAudition()">
+                <span>&#9654; Synthesize &amp; Audition Sample</span>
               </button>
               <span style="font-size:11.5px;color:var(--ac-text-muted);">Stock public voice &bull; Zero private voice clones exposed</span>
             </div>
           </div>
 
-          <!-- RIGHT: AARUNI CONVERSE AI (ACA) CHATBOT & AGENT -->
+          <!-- RIGHT: AARUNI CONVERSE AI (ACA) COPILOT -->
           <div class="workbench-card">
             <div>
-              <div style="display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:10px;">
-                <span class="pill-badge glyph-tools mono">ACA &bull; AI CHATBOT &amp; MULTI-INTENT AGENT</span>
-                <span class="mono" style="font-size:11.5px;color:var(--ac-link);font-weight:700;">RAG + Tool Execution</span>
+              <div style="display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:12px;">
+                <span class="pill-badge glyph-tools mono">ACA &bull; MULTI-INTENT AGENT</span>
+                <span class="mono rag-badge">RAG + Tool Execution</span>
               </div>
               <h3 style="margin:0 0 6px;font-size:20px;font-weight:800;">Aaruni Converse AI (ACA)</h3>
-              <p style="margin:0 0 12px;font-size:13.5px;color:var(--ac-text-secondary);">
-                Domain-scoped conversational AI assistant and multi-intent orchestrator that decomposes compound requests into verifiable compute, storage, slide, and audio service actions.
+              <p style="margin:0 0 14px;font-size:13.5px;color:var(--ac-text-secondary);line-height:1.5;">
+                Domain-scoped enterprise AI chatbot and task copilot that parses compound natural language requests into verified compute, storage, slide, and audio service actions.
               </p>
 
-              <div class="preset-chips" aria-label="Sample Converse AI Prompts">
+              <div class="preset-chips" aria-label="Sample Cloud Agent Prompts">
                 <button type="button" class="preset-chip" onclick="sendConversePreset('Provision 2 ACE compute nodes and mount 8TB AOV storage vault')">Provision ACE + AOV Vault</button>
                 <button type="button" class="preset-chip" onclick="sendConversePreset('Audit slide contrast and regenerate AVS voiceover in one shot')">Compound Slide + AVS Audio Fix</button>
                 <button type="button" class="preset-chip" onclick="sendConversePreset('Show AKF security encryption and Zero-OTP vault controls')">Query Security Controls</button>
               </div>
 
-              <div id="aca-chat-log" class="chat-log" role="log" aria-live="polite" aria-label="Aaruni Converse AI Conversation Log" tabindex="0">
+              <div id="aca-chat-log" class="chat-log" role="log" aria-live="polite" aria-label="Aaruni Converse AI Log" tabindex="0">
                 <div class="chat-msg-agent">
-                  <strong class="mono" style="color:#7dd3fc;display:block;font-size:11px;margin-bottom:3px;">Aaruni Converse AI (ACA) &bull; Ready</strong>
-                  Select a sample enterprise prompt above or ask a multi-intent question across <code>ACE</code>, <code>AOV</code>, <code>AVS</code>, or <code>AKF</code>.
+                  <strong class="mono" style="color:#7dd3fc;display:block;font-size:11px;margin-bottom:3px;">Aaruni Converse AI (ACA) &bull; Online</strong>
+                  Select a sample cloud prompt above or enter a compound command across <code>ACE</code>, <code>AOV</code>, <code>AVS</code>, or <code>AKF</code>.
                 </div>
               </div>
             </div>
@@ -1625,7 +2266,7 @@
             <form onsubmit="handleConverseSubmit(event)" style="display:flex;gap:8px;">
               <label for="aca-chat-input" class="sr-only">Ask Aaruni Converse AI</label>
               <input id="aca-chat-input" class="form-input" placeholder="Ask ACA Chatbot (e.g. Scale ACE cluster &amp; sync AOV)..." required />
-              <button type="submit" class="btn-primary">Send</button>
+              <button type="submit" class="btn-dawn" style="padding:0 18px;">Send</button>
             </form>
           </div>
         </div>
@@ -1633,75 +2274,75 @@
     </section>
 
     <!-- =====================================================================
-         5. FEATURED PRODUCTION CUSTOMER — SYLLOVO STUDIO (syllovo.com)
-         ===================================================================== -->
+       7. FEATURED CUSTOMER CASE STUDY — SYLLOVO STUDIO
+       ===================================================================== -->
     <section id="customer-syllovo" class="section">
       <div class="container">
         <div class="section-header">
           <div>
             <span class="eyebrow-tag">CUSTOMER CASE STUDY</span>
-            <h2 class="section-h2">Syllovo Studio Runs End-to-End Autonomous Production on Aaruni Cloud</h2>
+            <h2 class="section-h2">How Syllovo Studio Scales Autonomous 4K Production on Aaruni Cloud</h2>
             <p class="section-sub">
-              See how Syllovo (<a href="https://syllovo.com" target="_blank" rel="noopener" style="color:var(--ac-link);text-decoration:underline;">syllovo.com</a>) orchestrates ACE, AOV, AVS, ACA, and AMP to deliver studio-grade 1080p technical courses.
+              Learn how Syllovo (<a href="https://syllovo.com" target="_blank" rel="noopener" style="color:#38bdf8;text-decoration:underline;">syllovo.com</a>) orchestrates ACE, AOV, AVS, and ACA to automate end-to-end technical courses with 1080p video renders.
             </p>
           </div>
-          <a href="https://syllovo.com" target="_blank" rel="noopener" class="btn-primary">Visit syllovo.com &nearr;</a>
+          <a href="https://syllovo.com" target="_blank" rel="noopener" class="btn-console">Visit Syllovo.com &nearr;</a>
         </div>
 
         <div class="spotlight-box">
           <div class="spotlight-split">
             <div>
               <div style="display:flex;align-items:center;gap:12px;margin-bottom:12px;">
-                <div style="width:44px;height:44px;border-radius:10px;background:#0f172a;color:#ffffff;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:20px;">S</div>
+                <div style="width:46px;height:46px;border-radius:12px;background:linear-gradient(135deg,#0284c7,#38bdf8);color:#ffffff;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:22px;box-shadow:0 0 16px rgba(56,189,248,0.4);">S</div>
                 <div>
-                  <h3 style="margin:0;font-size:19px;font-weight:800;">Syllovo Autonomous Course Studio</h3>
-                  <span class="mono" style="font-size:12px;color:var(--ac-text-muted);">Powered by ACE + AOV + AVS + ACA + AMP</span>
+                  <h3 style="margin:0;font-size:20px;font-weight:800;">Syllovo Autonomous Course Studio</h3>
+                  <span class="mono case-tenant-label">Enterprise Case Study &bull; Production Tenant</span>
                 </div>
               </div>
-              <p style="font-size:14px;color:var(--ac-text-secondary);margin:0;">
+              <p style="font-size:14px;color:var(--ac-text-secondary);margin:0;line-height:1.6;">
                 Syllovo unifies outline validation, slide deck compilation, headless browser/CLI capture, two-stage neural speech generation, multi-intent AI review chat, and rule-timed multi-track video rendering inside one single-pane workspace backed by Aaruni Cloud.
               </p>
 
               <div class="kpi-grid-2">
                 <div class="kpi-card">
-                  <strong class="mono" style="font-size:22px;color:var(--ac-link);display:block;">4.2&times; Faster</strong>
+                  <strong class="mono" style="font-size:22px;color:#38bdf8;display:block;">4.2&times; Faster</strong>
                   <span style="font-size:12px;color:var(--ac-text-secondary);font-weight:600;">1080p Hardware Encoding on ACE Nodes</span>
                 </div>
                 <div class="kpi-card">
-                  <strong class="mono" style="font-size:22px;color:var(--ac-link);display:block;">$0 Drafts</strong>
-                  <span style="font-size:12px;color:var(--ac-text-secondary);font-weight:600;">Unlimited AVS Local Neural Speech Iterations</span>
+                  <strong class="mono" style="font-size:22px;color:#10b981;display:block;">$0 Drafts</strong>
+                  <span style="font-size:12px;color:var(--ac-text-secondary);font-weight:600;">Unlimited AVS Local Neural Iterations</span>
                 </div>
                 <div class="kpi-card">
-                  <strong class="mono" style="font-size:22px;color:var(--ac-link);display:block;">3-Tier AOV</strong>
+                  <strong class="mono" style="font-size:22px;color:#818cf8;display:block;">3-Tier AOV</strong>
                   <span style="font-size:12px;color:var(--ac-text-secondary);font-weight:600;">RAID-1 NAS + Global Edge + 30 TB ADA Vault</span>
                 </div>
                 <div class="kpi-card">
-                  <strong class="mono" style="font-size:22px;color:var(--ac-link);display:block;">ACA Copilot</strong>
-                  <span style="font-size:12px;color:var(--ac-text-secondary);font-weight:600;">Multi-Intent Slide &amp; Audio Repair with Receipts</span>
+                  <strong class="mono" style="font-size:22px;color:#fb923c;display:block;">ACA Copilot</strong>
+                  <span style="font-size:12px;color:var(--ac-text-secondary);font-weight:600;">Multi-Intent Slide &amp; Audio Repair Receipts</span>
                 </div>
               </div>
 
-              <div style="padding:11px 14px;border-radius:10px;background:var(--ac-surface-subtle);border:1px solid var(--ac-border-subtle);font-size:12px;color:var(--ac-text-muted);">
-                <strong>Transparent Portfolio Governance Disclosure:</strong> Syllovo (<a href="https://syllovo.com" target="_blank" rel="noopener" style="text-decoration:underline;">syllovo.com</a>) and Aaruni Cloud (<a href="https://aarunicloud.com" style="text-decoration:underline;">aarunicloud.com</a>) are sister platforms wholly owned and operated by <strong>Aaruni Tech Private Limited</strong> (<a href="https://aarunitech.com" target="_blank" rel="noopener" style="text-decoration:underline;">aarunitech.com</a>). Public showcase metrics use strictly isolated, vendor-neutral demo assets.
+              <div class="portfolio-gov-callout">
+                <strong>Transparent Portfolio Governance:</strong> Syllovo (<a href="https://syllovo.com" target="_blank" rel="noopener" style="text-decoration:underline;color:#38bdf8;">syllovo.com</a>) and Aaruni Cloud (<a href="https://aarunicloud.com" style="text-decoration:underline;color:#38bdf8;">aarunicloud.com</a>) are sister platforms wholly owned and operated by <strong>Aaruni Tech Private Limited</strong> (<a href="https://aarunitech.com" target="_blank" rel="noopener" style="text-decoration:underline;color:#38bdf8;">aarunitech.com</a>). Public showcase metrics use strictly isolated, vendor-neutral demo assets.
               </div>
             </div>
 
-            <div style="background:var(--ac-bg);border:1px solid var(--ac-border-subtle);border-radius:14px;padding:18px;display:grid;gap:10px;">
-              <strong style="font-size:13.5px;">End-to-End Aaruni Cloud Service Mapping in Syllovo</strong>
+            <div class="spotlight-mapping-box">
+              <strong style="font-size:14px;color:#38bdf8;">Aaruni Cloud Service Mapping in Syllovo</strong>
               <div class="kpi-card" style="padding:11px 13px;">
-                <strong class="mono" style="font-size:12px;color:var(--ac-link);">1. AKF (Aaruni Knowledge Fabric)</strong>
+                <strong class="mono" style="font-size:12px;color:#38bdf8;">1. AKF (Aaruni Knowledge Fabric)</strong>
                 <div style="font-size:12.5px;color:var(--ac-text-secondary);">Compiles primary docs &amp; RFCs into a weighted 100%-auditable RAG index.</div>
               </div>
               <div class="kpi-card" style="padding:11px 13px;">
-                <strong class="mono" style="font-size:12px;color:var(--ac-link);">2. ACE + ACG (Compute &amp; Container Grid)</strong>
+                <strong class="mono" style="font-size:12px;color:#38bdf8;">2. ACE + ACG (Compute &amp; Container Grid)</strong>
                 <div style="font-size:12.5px;color:var(--ac-text-secondary);">Executes deterministic 1920&times;1080 lab captures and hardware VideoToolbox renders.</div>
               </div>
               <div class="kpi-card" style="padding:11px 13px;">
-                <strong class="mono" style="font-size:12px;color:var(--ac-link);">3. AVS + ACA (Voice AI &amp; Converse AI)</strong>
+                <strong class="mono" style="font-size:12px;color:#38bdf8;">3. AVS + ACA (Voice AI &amp; Converse AI)</strong>
                 <div style="font-size:12.5px;color:var(--ac-text-secondary);">Powers zero-click -12 dB voiceovers and multi-intent reviewer copilot commands.</div>
               </div>
               <div class="kpi-card" style="padding:11px 13px;">
-                <strong class="mono" style="font-size:12px;color:var(--ac-link);">4. AMP + AOV + AZV (Pipeline &amp; Vault)</strong>
+                <strong class="mono" style="font-size:12px;color:#38bdf8;">4. AMP + AOV + AZV (Pipeline &amp; Vault)</strong>
                 <div style="font-size:12.5px;color:var(--ac-text-secondary);">Exports .cmproj/.key/.mp4 deliverables and locks finalized assets in read-only storage.</div>
               </div>
             </div>
@@ -1711,17 +2352,16 @@
     </section>
 
     <!-- =====================================================================
-         6. SUPPORTED CREATIVE PLUGINS, AI CONNECTORS & INFRASTRUCTURE VENDORS
-            (100% Legally Safe Nominative Fair Use)
-         ===================================================================== -->
+       8. CLOUD ECOSYSTEM, HEXAGONAL PLUGINS & INFRASTRUCTURE STACK
+       ===================================================================== -->
     <section id="ecosystem" class="section section-surface">
       <div class="container">
         <div class="section-header">
           <div>
-            <span class="eyebrow-tag">HEXAGONAL PLUGINS &amp; CLOUD STACK</span>
+            <span class="eyebrow-tag">HEXAGONAL ARCHITECTURE &amp; PARTNER STACK</span>
             <h2 class="section-h2">Supported Tool Plugins, AI Connectors &amp; Infrastructure Vendors</h2>
             <p class="section-sub">
-              Aaruni Cloud’s hexagonal port architecture interoperates cleanly with industry-standard desktop authoring formats, customer-configured speech APIs, open-source media engines, and resilient edge/storage hardware.
+              Aaruni Cloud’s hexagonal port architecture interoperates cleanly with industry-standard desktop authoring formats, customer speech APIs, open-source media engines, and resilient edge/storage hardware.
             </p>
           </div>
         </div>
@@ -1738,16 +2378,16 @@
     </section>
 
     <!-- =====================================================================
-         7. PRICING MODEL & WORKLOAD TCO ESTIMATOR + TRUST & LEGAL
-         ===================================================================== -->
+       9. WORKLOAD PRICING & TCO SIZING CALCULATOR + LEGAL GOVERNANCE
+       ===================================================================== -->
     <section id="tco-section" class="section">
       <div class="container">
         <div class="section-header">
           <div>
-            <span class="eyebrow-tag">TRANSPARENT ECONOMICS &amp; GOVERNANCE</span>
-            <h2 class="section-h2">Workload TCO Estimator &amp; Legal Compliance Center</h2>
+            <span class="eyebrow-tag">TRANSPARENT CLOUD ECONOMICS</span>
+            <h2 class="section-h2">Workload Sizing &amp; TCO Cost Estimator</h2>
             <p class="section-sub">
-              Estimate annual infrastructure optimization across ACE compute, AOV storage, and AVS two-stage voice synthesis—backed by verifiable security and IP governance.
+              Estimate infrastructure optimization across ACE compute, AOV zero-egress storage, and AVS two-stage speech synthesis compared to conventional on-demand cloud pricing.
             </p>
           </div>
         </div>
@@ -1755,33 +2395,33 @@
         <div class="ai-workbench-grid">
           <div class="workbench-card">
             <div>
-              <h3 style="margin:0 0 6px;font-size:18px;font-weight:800;">Aaruni Cloud Workload TCO Estimator</h3>
+              <h3 style="margin:0 0 6px;font-size:18px;font-weight:800;">Interactive Cloud Workload Sizing</h3>
               <p style="margin:0 0 18px;font-size:13px;color:var(--ac-text-muted);">
-                Vendor-neutral comparison against conventional on-demand rented cloud GPUs and per-character draft voice billing.
+                Vendor-neutral comparison against conventional on-demand rented cloud GPUs and per-character draft speech billing.
               </p>
 
               <div style="margin-bottom:16px;">
                 <div style="display:flex;justify-content:space-between;font-size:13px;font-weight:700;margin-bottom:6px;">
-                  <label for="tco-words">AVS Monthly Speech Synthesis Volume</label>
-                  <span id="tco-words-val" class="mono" style="color:var(--ac-link);">600,000 words</span>
+                  <label for="tco-words">AVS Monthly Speech Volume</label>
+                  <span id="tco-words-val" class="mono tco-slider-val">600,000 words</span>
                 </div>
-                <input type="range" id="tco-words" style="width:100%;accent-color:var(--ac-primary);" min="100000" max="3000000" step="100000" value="600000" oninput="updateTco()" />
+                <input type="range" id="tco-words" style="width:100%;accent-color:#0284c7;" min="100000" max="3000000" step="100000" value="600000" oninput="updateTco()" />
               </div>
 
               <div style="margin-bottom:16px;">
                 <div style="display:flex;justify-content:space-between;font-size:13px;font-weight:700;margin-bottom:6px;">
-                  <label for="tco-hours">ACE Monthly 1080p Render &amp; Lab Hours</label>
-                  <span id="tco-hours-val" class="mono" style="color:var(--ac-link);">140 hours</span>
+                  <label for="tco-hours">ACE Monthly 1080p Render Hours</label>
+                  <span id="tco-hours-val" class="mono tco-slider-val">140 hours</span>
                 </div>
-                <input type="range" id="tco-hours" style="width:100%;accent-color:var(--ac-primary);" min="20" max="500" step="20" value="140" oninput="updateTco()" />
+                <input type="range" id="tco-hours" style="width:100%;accent-color:#0284c7;" min="20" max="500" step="20" value="140" oninput="updateTco()" />
               </div>
 
               <div style="margin-bottom:16px;">
                 <div style="display:flex;justify-content:space-between;font-size:13px;font-weight:700;margin-bottom:6px;">
-                  <label for="tco-storage">AOV + ADA Replicated Storage Footprint</label>
-                  <span id="tco-storage-val" class="mono" style="color:var(--ac-link);">8 TB</span>
+                  <label for="tco-storage">AOV Storage Footprint</label>
+                  <span id="tco-storage-val" class="mono tco-slider-val">8 TB</span>
                 </div>
-                <input type="range" id="tco-storage" style="width:100%;accent-color:var(--ac-primary);" min="2" max="30" step="2" value="8" oninput="updateTco()" />
+                <input type="range" id="tco-storage" style="width:100%;accent-color:#0284c7;" min="2" max="30" step="2" value="8" oninput="updateTco()" />
               </div>
             </div>
 
@@ -1790,9 +2430,9 @@
                 <span style="font-size:11.5px;color:var(--ac-text-muted);display:block;">Conventional On-Demand Spend</span>
                 <strong id="tco-conv" class="mono" style="font-size:21px;display:block;margin-top:3px;">$1,494/mo</strong>
               </div>
-              <div class="kpi-card" style="background:var(--ac-green-soft);border-color:var(--ac-green-border);">
-                <span style="font-size:11.5px;color:var(--ac-green-fg);font-weight:700;display:block;">Estimated Annual Optimization</span>
-                <strong id="tco-save" class="mono" style="font-size:21px;color:var(--ac-green-fg);display:block;margin-top:3px;">$15,000/yr</strong>
+              <div class="kpi-card tco-save-card">
+                <span class="tco-save-label">Estimated Annual Optimization</span>
+                <strong id="tco-save" class="mono tco-save-val">$15,000/yr</strong>
               </div>
             </div>
           </div>
@@ -1804,26 +2444,26 @@
                 Transparent engineering controls and clean corporate IP boundaries under Aaruni Tech Private Limited.
               </p>
               <div style="display:grid;gap:10px;">
-                <button type="button" class="tile-action-btn" onclick="openLegalModal('SECURITY')">
+                <button type="button" class="btn-tile-secondary" style="justify-content:space-between;padding:12px 14px;" onclick="openLegalModal('SECURITY')">
                   <span>🔒 Zero-Trust Architecture, TLS 1.3 &amp; AES-256 Controls</span>
                   <span>Read &rarr;</span>
                 </button>
-                <button type="button" class="tile-action-btn" onclick="openLegalModal('TRADEMARKS')">
+                <button type="button" class="btn-tile-secondary" style="justify-content:space-between;padding:12px 14px;" onclick="openLegalModal('TRADEMARKS')">
                   <span>⚖️ Trademark Attribution &amp; Nominative Fair-Use Policy</span>
                   <span>Read &rarr;</span>
                 </button>
-                <button type="button" class="tile-action-btn" onclick="openLegalModal('PRIVACY')">
+                <button type="button" class="btn-tile-secondary" style="justify-content:space-between;padding:12px 14px;" onclick="openLegalModal('PRIVACY')">
                   <span>🛡️ Global Privacy, DPDP Compliance &amp; Voice/IP Isolation</span>
                   <span>Read &rarr;</span>
                 </button>
-                <button type="button" class="tile-action-btn" onclick="openLegalModal('TERMS')">
-                  <span>📜 Terms of Service &amp; Controlled Enterprise Pilot Access</span>
+                <button type="button" class="btn-tile-secondary" style="justify-content:space-between;padding:12px 14px;" onclick="openLegalModal('TERMS')">
+                  <span>📜 Terms of Service &amp; Controlled Enterprise Access</span>
                   <span>Read &rarr;</span>
                 </button>
               </div>
             </div>
-            <div style="margin-top:16px;padding-top:14px;border-top:1px solid var(--ac-border-subtle);display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;">
-              <span style="font-size:12.5px;color:var(--ac-text-secondary);font-weight:600;">Ready to evaluate ACE, AOV, AVS, or ACA? Email <a href="mailto:info@syllovo.com?subject=%5Baarunicloud%5D%20Aaruni%20Cloud%20Enterprise%20Inquiry" style="color:var(--ac-link);text-decoration:underline;">info@syllovo.com</a></span>
+            <div style="margin-top:16px;padding-top:14px;border-top:1px solid rgba(255,255,255,0.08);display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;">
+              <span style="font-size:12.5px;color:var(--ac-text-secondary);font-weight:600;">Ready to evaluate ACE, AOV, AVS, or ACA?</span>
               <button type="button" class="btn-dawn" style="min-height:38px;padding:0 14px;font-size:12.5px;" onclick="openPilotModal()">Request Enterprise Pilot</button>
             </div>
           </div>
@@ -1833,14 +2473,14 @@
   </main>
 
   <!-- =======================================================================
-       8. ENTERPRISE MULTI-COLUMN CLOUD FOOTER
+       10. ENTERPRISE MULTI-COLUMN CLOUD FOOTER
        ======================================================================= -->
   <footer class="site-footer">
     <div class="container">
       <div class="footer-cols">
         <div>
           <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px;">
-            <img src="/aaruni-cloud-icon.svg" alt="" width="34" height="34" style="border-radius:8px;" />
+            <img src="/aaruni-cloud-icon.svg" alt="Aaruni Cloud" width="34" height="34" style="border-radius:8px;" />
             <strong style="color:#ffffff;font-size:16px;">Aaruni Cloud</strong>
           </div>
           <p style="margin:0 0 12px;color:#94a3b8;font-size:12.5px;line-height:1.6;">
@@ -1906,20 +2546,20 @@
   </footer>
 
   <!-- =======================================================================
-       9. ACCESSIBLE MODAL DIALOG
+       11. ACCESSIBLE MODAL DIALOG
        ======================================================================= -->
   <div id="cloud-modal-backdrop" class="modal-backdrop" role="dialog" aria-modal="true" aria-labelledby="cloud-modal-title" onclick="handleBackdropClick(event)">
     <div class="modal-dialog">
-      <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:12px;padding-bottom:12px;border-bottom:1px solid var(--ac-border-subtle);margin-bottom:14px;">
+      <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:12px;padding-bottom:12px;border-bottom:1px solid rgba(255,255,255,0.08);margin-bottom:14px;">
         <h2 id="cloud-modal-title" style="margin:0;font-size:19px;font-weight:800;">Details</h2>
-        <button type="button" class="btn-secondary" style="min-height:36px;padding:0 12px;" onclick="closeCloudModal()" aria-label="Close">&times;</button>
+        <button type="button" class="btn-tile-secondary" style="min-height:36px;padding:0 12px;" onclick="closeCloudModal()" aria-label="Close">&times;</button>
       </div>
       <div id="cloud-modal-body"></div>
     </div>
   </div>
 
   <!-- =======================================================================
-       10. DOMAIN SERVICES & INTERACTIVE WORKBENCH CONTROLLERS
+       12. DOMAIN SERVICES & INTERACTIVE CONTROLLERS
        ======================================================================= -->
   <script>
     const CLOUD_SERVICES = [
@@ -2133,6 +2773,61 @@
       maya: "With Aaruni Voice AI and Aaruni Converse AI, enterprise teams iterate on technical narration at zero draft cost and execute multi-intent workflow updates in seconds."
     };
 
+    const TERMINAL_SNIPPETS = {
+      cli: `$ aaruni compute launch --type ace.m4.max --region ap-south-hyd-1
+[INFO] Connecting to Sovereign Control Plane at ap-south-hyd-1...
+✔ Verified Zero-Trust Vault Session (AZV Session ID: azv_9921_valid)
+✔ Allocated Apple Silicon M-Series Node (64GB Unified RAM, VideoToolbox HW)
+✔ Mounted 8TB RAID-1 AOV Vault (aov://production-vault-hyd)
+$ aaruni voice synthesize --text "Course Module 1 Complete" --lufs -12
+✔ W3C PLS Lexicon bound • Zero boundary clicks (35ms/45ms cosine)
+🚀 Cluster Ready at ace.api.aarunicloud.com (Latency: 12ms, Status: 🟢 ACTIVE)`,
+      curl: `curl -X POST https://ace.api.aarunicloud.com/v1/instances \
+  -H "Authorization: Bearer azv_token_881" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "node_type": "m4.max.64gb",
+    "vault_mount": "aov://production-vault-hyd",
+    "target_region": "ap-south-hyd-1"
+  }'
+
+# Response:
+# {"status": "ACTIVE", "instance_id": "ace-hyd-882", "latency_ms": 12}`,
+      python: `import aaruni_cloud as ac
+
+# Authenticate via Zero-Trust Vault Session
+client = ac.Client(region="ap-south-hyd-1")
+
+# Provision compute cluster with AOV storage vault
+node = client.compute.provision(
+    instance_type="ace.m4.max",
+    storage_vault="aov://production-vault-hyd"
+)
+
+# Synthesize broadcast speech with W3C PLS calibration
+audio = client.voice.synthesize(
+    text="Welcome to Aaruni Cloud",
+    target_lufs=-12.0
+)
+print(f"Cluster Online: {node.endpoint} (Status: {node.status})")`,
+      node: `import { AaruniCloud } from "@aaruni/cloud-sdk";
+
+const cloud = new AaruniCloud({ region: "ap-south-hyd-1" });
+
+// Launch ACE instance + AOV storage mount
+const cluster = await cloud.compute.launch({
+  type: "ace.m4.max",
+  mountVault: "aov://production-vault-hyd"
+});
+
+// Stream neural speech
+const voiceStream = await cloud.voice.synthesize({
+  text: "Pipeline verified with zero audio clicks.",
+  loudnessLufs: -12
+});
+console.log("Deployed:", cluster.endpoint);`
+    };
+
     const LEGAL_CONTENT = {
       TRADEMARKS: {
         title: "Trademark Attribution & Nominative Fair-Use Policy",
@@ -2167,6 +2862,30 @@
     let selectedCategory = "featured";
     let searchFilter = "";
     let waveTimer = null;
+    let activeTerminalTab = "cli";
+
+    function switchTerminalTab(tab) {
+      activeTerminalTab = tab;
+      document.querySelectorAll(".terminal-tab-btn").forEach(btn => {
+        btn.classList.toggle("active", btn.textContent.toLowerCase() === tab.toLowerCase());
+      });
+      const el = document.getElementById("terminal-content");
+      if (!el) return;
+      const snippet = TERMINAL_SNIPPETS[tab] || TERMINAL_SNIPPETS.cli;
+      el.textContent = snippet;
+    }
+
+    function copyTerminalSnippet() {
+      const snippet = TERMINAL_SNIPPETS[activeTerminalTab] || TERMINAL_SNIPPETS.cli;
+      navigator.clipboard.writeText(snippet).then(() => {
+        const btn = document.querySelector(".copy-code-btn");
+        if (btn) {
+          const old = btn.textContent;
+          btn.textContent = "✔ Copied!";
+          setTimeout(() => { btn.textContent = old; }, 1800);
+        }
+      });
+    }
 
     function renderServiceCatalog() {
       const container = document.getElementById("service-tiles-container");
@@ -2191,7 +2910,7 @@
         container.innerHTML = '<div class="service-tile" style="grid-column:1/-1;text-align:center;padding:32px;">' +
           '<strong>No matching Aaruni Cloud services found</strong>' +
           '<p style="font-size:13px;color:var(--ac-text-muted);margin:8px 0 14px;">Clear the filter to view all 11 Compute, Storage, Voice AI, and Converse AI services.</p>' +
-          '<button type="button" class="btn-secondary" onclick="resetCatalog()">Show All 11 Services</button>' +
+          '<button type="button" class="btn-tile-primary" style="margin:0 auto;" onclick="resetCatalog()">Show All 11 Services</button>' +
         '</div>';
         return;
       }
@@ -2211,10 +2930,14 @@
             '<p class="svc-desc">' + esc(s.desc) + '</p>' +
             '<ul class="svc-bullets">' + bullets + '</ul>' +
           '</div>' +
-          '<button type="button" class="tile-action-btn" onclick="openServiceSpec(\'' + s.id + '\')">' +
-            '<span>Service Spec &amp; CLI</span>' +
-            '<span aria-hidden="true">&rarr;</span>' +
-          '</button>' +
+          '<div class="tile-action-row">' +
+            '<button type="button" class="btn-tile-primary" data-svc="' + esc(s.name + ' (' + s.code + ')') + '" onclick="openPilotModal(this.dataset.svc)">' +
+              '<span>⚡ Provision</span>' +
+            '</button>' +
+            '<button type="button" class="btn-tile-secondary" data-id="' + esc(s.id) + '" onclick="openServiceSpec(this.dataset.id)">' +
+              '<span>API Spec &rarr;</span>' +
+            '</button>' +
+          '</div>' +
         '</article>';
       }).join("");
     }
@@ -2253,20 +2976,20 @@
         return '<article class="service-tile" style="padding:18px;">' +
           '<div>' +
             '<span class="pill-badge ' + item.cls + '" style="margin-bottom:10px;">' + esc(item.badge) + '</span>' +
-            '<h3 class="svc-title" style="font-size:15.5px;margin-bottom:6px;">' + esc(item.name) + '</h3>' +
-            '<p class="svc-desc" style="margin:0;">' + esc(item.desc) + '</p>' +
+            '<h3 class="svc-title" style="font-size:15px;margin-bottom:6px;">' + esc(item.name) + '</h3>' +
+            '<p class="svc-desc" style="margin:0;font-size:12.5px;">' + esc(item.desc) + '</p>' +
           '</div>' +
         '</article>';
       }).join("");
     }
 
     /* -----------------------------------------------------------------------
-       AARUNI VOICE AI (AVS) INTERACTIVE WORKBENCH (HONEST MULTI-STAGE DSP)
+       AVS INTERACTIVE WORKBENCH
        ----------------------------------------------------------------------- */
     function updateAvsScript() {
       const sel = document.getElementById("avs-persona-select").value;
       document.getElementById("avs-sample-text").textContent = '"' + (AVS_SAMPLES[sel] || AVS_SAMPLES.aria) + '"';
-      document.getElementById("avs-stage-status").textContent = "STATUS: READY (STOCK PERSONA: " + sel.toUpperCase() + ")";
+      document.getElementById("avs-stage-status").textContent = "STATUS: READY (PERSONA: " + sel.toUpperCase() + ")";
     }
 
     function runAvsAudition() {
@@ -2281,15 +3004,15 @@
         if ("speechSynthesis" in window) window.speechSynthesis.cancel();
         bars.forEach(function (b) { b.style.height = "24%"; });
         statusEl.textContent = "STATUS: STOPPED";
-        btn.innerHTML = "&#9654; Synthesize &amp; Audition Sample";
+        btn.innerHTML = "<span>&#9654; Synthesize &amp; Audition Sample</span>";
         return;
       }
 
       statusEl.textContent = "1/3 ANALYZING W3C PLS LEXICON...";
-      btn.textContent = "■ Stop Audition";
+      btn.innerHTML = "<span>■ Stop Audition</span>";
 
       setTimeout(function () {
-        statusEl.textContent = "2/3 APPLYING -12.0 dB DSP & COSINE ENVELOPE...";
+        statusEl.textContent = "2/3 APPLYING -12.0 dB DSP &amp; COSINE ENVELOPE...";
         waveTimer = setInterval(function () {
           bars.forEach(function (b, idx) {
             const h = 20 + ((Math.sin(Date.now() / 140 + idx) + 1) * 36);
@@ -2325,11 +3048,11 @@
       const st = document.getElementById("avs-stage-status");
       const btn = document.getElementById("avs-play-btn");
       if (st) st.textContent = "VERIFIED: -12.0 dB LUFS • ZERO BOUNDARY CLICKS";
-      if (btn) btn.innerHTML = "&#9654; Synthesize &amp; Audition Sample";
+      if (btn) btn.innerHTML = "<span>&#9654; Synthesize &amp; Audition Sample</span>";
     }
 
     /* -----------------------------------------------------------------------
-       AARUNI CONVERSE AI (ACA) MULTI-INTENT CHATBOT WORKBENCH
+       ACA MULTI-INTENT AGENT
        ----------------------------------------------------------------------- */
     function sendConversePreset(promptText) {
       const inp = document.getElementById("aca-chat-input");
@@ -2385,7 +3108,7 @@
     }
 
     /* -----------------------------------------------------------------------
-       TCO ESTIMATOR, MEGA-MENU, MODALS & THEME
+       TCO SIZING, MODALS & THEME CONTROLS
        ----------------------------------------------------------------------- */
     function updateTco() {
       const words = parseInt(document.getElementById("tco-words").value, 10) || 600000;
@@ -2411,35 +3134,35 @@
       showModal(
         s.name + " (" + s.code + ")",
         '<p style="font-size:14px;color:var(--ac-text-secondary);margin-top:0;">' + esc(s.desc) + '</p>' +
-        '<div style="background:#0b1222;color:#e2e8f0;padding:12px 14px;border-radius:10px;margin:14px 0;font-size:12px;" class="mono">' +
-          '<div style="color:#7dd3fc;margin-bottom:4px;"># Endpoint: https://' + esc(s.endpoint) + '</div>' +
+        '<div style="background:#090e1a;border:1px solid rgba(56,189,248,0.25);color:#e2e8f0;padding:12px 14px;border-radius:10px;margin:14px 0;font-size:12px;" class="mono">' +
+          '<div style="color:#7dd3fc;margin-bottom:4px;"># Live Endpoint: https://' + esc(s.endpoint) + '</div>' +
           '<div>$ ' + esc(s.cli) + '</div>' +
         '</div>' +
         '<ul style="padding-left:18px;font-size:13.5px;color:var(--ac-text-secondary);">' + list + '</ul>' +
         '<div style="display:flex;justify-content:flex-end;gap:10px;margin-top:18px;">' +
-          '<button type="button" class="btn-secondary" onclick="closeCloudModal()">Close</button>' +
-          '<button type="button" class="btn-dawn" style="min-height:40px;" onclick="openPilotModal(\'' + esc(s.name + " (" + s.code + ")") + '\')">Request ' + esc(s.code) + ' Pilot</button>' +
+          '<button type="button" class="btn-tile-secondary" onclick="closeCloudModal()">Close</button>' +
+          '<button type="button" class="btn-dawn" style="min-height:40px;" data-svc="' + esc(s.name + ' (' + s.code + ')') + '" onclick="openPilotModal(this.dataset.svc)">⚡ Provision ' + esc(s.code) + '</button>' +
         '</div>'
       );
     }
 
     function openLegalModal(key) {
       const doc = LEGAL_CONTENT[key] || LEGAL_CONTENT.TRADEMARKS;
-      showModal(doc.title, doc.html + '<div style="text-align:right;margin-top:18px;"><button type="button" class="btn-primary" onclick="closeCloudModal()">Close</button></div>');
+      showModal(doc.title, doc.html + '<div style="text-align:right;margin-top:18px;"><button type="button" class="btn-dawn" onclick="closeCloudModal()">Close</button></div>');
     }
 
     function openConsoleSignInModal() {
       showModal(
-        "Aaruni Cloud Console — Controlled Tenant Sign-In",
-        '<p style="font-size:13.5px;color:var(--ac-text-secondary);margin-top:0;">The Aaruni Cloud Management Console is restricted to provisioned enterprise tenants and Aaruni Tech portfolio operators.</p>' +
-        '<div style="padding:12px 14px;border-radius:10px;background:var(--ac-surface-subtle);border:1px solid var(--ac-border-subtle);font-size:12.5px;margin-bottom:16px;">' +
-          '<strong>Portfolio Quick Links:</strong><br/>' +
-          '&bull; Autonomous Course Studio: <a href="https://syllovo.com" target="_blank" rel="noopener" style="color:var(--ac-link);text-decoration:underline;">syllovo.com &nearr;</a><br/>' +
-          '&bull; Aaruni Corporate &amp; Staff Portal: <a href="https://my.aarunitech.com" target="_blank" rel="noopener" style="color:var(--ac-link);text-decoration:underline;">my.aarunitech.com &nearr;</a>' +
+        "Aaruni Cloud Management Console",
+        '<p style="font-size:13.5px;color:var(--ac-text-secondary);margin-top:0;">The Aaruni Cloud Console is restricted to provisioned enterprise tenants and authorized infrastructure operators.</p>' +
+        '<div style="padding:14px 16px;border-radius:10px;background:rgba(15,23,42,0.8);border:1px solid rgba(56,189,248,0.25);font-size:12.5px;margin-bottom:16px;">' +
+          '<strong style="color:#38bdf8;">Production Tenant Portals:</strong><br/>' +
+          '&bull; Autonomous Course Studio: <a href="https://syllovo.com" target="_blank" rel="noopener" style="color:#38bdf8;text-decoration:underline;">syllovo.com &nearr;</a><br/>' +
+          '&bull; Corporate &amp; Staff Operations: <a href="https://my.aarunitech.com" target="_blank" rel="noopener" style="color:#38bdf8;text-decoration:underline;">my.aarunitech.com &nearr;</a>' +
         '</div>' +
         '<div style="display:flex;justify-content:flex-end;gap:10px;">' +
-          '<button type="button" class="btn-secondary" onclick="closeCloudModal()">Close</button>' +
-          '<button type="button" class="btn-dawn" style="min-height:40px;" onclick="openPilotModal()">Request New Tenant Pilot</button>' +
+          '<button type="button" class="btn-tile-secondary" onclick="closeCloudModal()">Cancel</button>' +
+          '<button type="button" class="btn-dawn" style="min-height:40px;" onclick="openPilotModal()">Request Tenant Provisioning</button>' +
         '</div>'
       );
     }
@@ -2450,21 +3173,21 @@
         "Start Controlled Aaruni Cloud Pilot",
         '<form onsubmit="submitPilot(event)">' +
           '<div style="margin-bottom:12px;">' +
-            '<label for="p-org" style="display:block;font-size:13px;font-weight:700;margin-bottom:4px;">Organization Name</label>' +
-            '<input id="p-org" class="form-input" required placeholder="e.g. Acme Engineering" />' +
+            '<label for="p-org" style="display:block;font-size:13px;font-weight:700;margin-bottom:4px;color:#cbd5e1;">Organization Name</label>' +
+            '<input id="p-org" class="form-input" required placeholder="e.g. Acme Cloud Engineering" />' +
           '</div>' +
           '<div style="margin-bottom:12px;">' +
-            '<label for="p-mail" style="display:block;font-size:13px;font-weight:700;margin-bottom:4px;">Work Email</label>' +
+            '<label for="p-mail" style="display:block;font-size:13px;font-weight:700;margin-bottom:4px;color:#cbd5e1;">Work Email</label>' +
             '<input id="p-mail" type="email" class="form-input" required placeholder="cto@company.com" />' +
           '</div>' +
           '<div style="margin-bottom:12px;">' +
-            '<label for="p-svc" style="display:block;font-size:13px;font-weight:700;margin-bottom:4px;">Selected Aaruni Cloud Services</label>' +
+            '<label for="p-svc" style="display:block;font-size:13px;font-weight:700;margin-bottom:4px;color:#cbd5e1;">Selected Aaruni Cloud Services</label>' +
             '<input id="p-svc" class="form-input" value="' + esc(svc) + '" required />' +
           '</div>' +
-          '<div id="p-receipt" style="display:none;padding:11px;border-radius:8px;background:var(--ac-green-soft);color:var(--ac-green-fg);font-size:12.5px;font-weight:600;margin-bottom:12px;"></div>' +
+          '<div id="p-receipt" style="display:none;padding:12px;border-radius:8px;background:rgba(16,185,129,0.15);border:1px solid rgba(16,185,129,0.3);color:#86efac;font-size:12.5px;font-weight:600;margin-bottom:12px;"></div>' +
           '<div style="display:flex;justify-content:flex-end;gap:10px;">' +
-            '<button type="button" class="btn-secondary" onclick="closeCloudModal()">Cancel</button>' +
-            '<button type="submit" class="btn-dawn" style="min-height:40px;">Generate Pilot Request</button>' +
+            '<button type="button" class="btn-tile-secondary" onclick="closeCloudModal()">Cancel</button>' +
+            '<button type="submit" class="btn-dawn" style="min-height:40px;">⚡ Submit Pilot Request</button>' +
           '</div>' +
         '</form>'
       );
@@ -2502,12 +3225,12 @@
             (sentServer
               ? "✓ Auto-emailed to <code>info@syllovo.com</code> (labeled <code>[aarunicloud]</code>, Ref <code>" + ref + "</code>). "
               : "✓ Pilot Reference <code>" + ref + "</code> logged with label <code>[aarunicloud]</code>. ") +
-            "<a href=\"" + mailtoHref + "\" style=\"text-decoration:underline;margin-left:6px;\">Open in Mail App &rarr;</a>";
+            "<a href=\"" + mailtoHref + "\" style=\"text-decoration:underline;color:#38bdf8;margin-left:6px;\">Open in Mail App &rarr;</a>";
         })
         .catch(function () {
           box.innerHTML =
             "Pilot Reference <code>" + ref + "</code> logged with label <code>[aarunicloud]</code>. " +
-            "<a href=\"" + mailtoHref + "\" style=\"text-decoration:underline;margin-left:6px;\">Send to info@syllovo.com &rarr;</a>";
+            "<a href=\"" + mailtoHref + "\" style=\"text-decoration:underline;color:#38bdf8;margin-left:6px;\">Send to info@syllovo.com &rarr;</a>";
         });
     }
 
@@ -2554,7 +3277,7 @@
     }
 
     function syncThemeBtn() {
-      const t = document.documentElement.getAttribute("data-theme") || "light";
+      const t = document.documentElement.getAttribute("data-theme") || "dark";
       const ic = document.getElementById("theme-toggle-icon");
       const lb = document.getElementById("theme-toggle-label");
       const bt = document.getElementById("theme-toggle-btn");
@@ -2570,7 +3293,7 @@
     }
 
     function toggleCloudTheme() {
-      const cur = document.documentElement.getAttribute("data-theme") || "light";
+      const cur = document.documentElement.getAttribute("data-theme") || "dark";
       const nxt = cur === "dark" ? "light" : "dark";
       document.documentElement.setAttribute("data-theme", nxt);
       try { localStorage.setItem("aaruni_cloud_theme", nxt); } catch (e) {}

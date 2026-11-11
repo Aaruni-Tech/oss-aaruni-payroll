@@ -204,13 +204,13 @@
     .corp-links {
       display: flex;
       align-items: center;
-      gap: 18px;
+      gap: 12px;
       list-style: none;
       flex-wrap: nowrap;
     }
 
     .corp-link {
-      font-size: 0.88rem;
+      font-size: 0.84rem;
       font-weight: 600;
       color: var(--text-secondary);
       text-decoration: none;
@@ -1183,6 +1183,11 @@
     }
 
     @media (max-width: 1024px) {
+      .portal-app-card {
+        grid-template-columns: 1fr !important;
+        gap: 24px !important;
+        padding: 24px 20px !important;
+      }
       .offerings-grid {
         grid-template-columns: 1fr;
       }
@@ -1232,6 +1237,9 @@
         padding: 6px 9px !important;
         font-size: 0.74rem !important;
         white-space: nowrap !important;
+      }
+      .hide-micro {
+        display: none !important;
       }
       .btn-icon {
         width: 34px !important;
@@ -1379,6 +1387,12 @@
 
         <!-- Action Portals & Theme Toggle -->
         <div class="corp-nav-actions">
+          <!-- Mobile App Download & QR Button -->
+          <button onclick="openMobileAppModal()" class="btn btn-outline nav-action-desktop" style="font-size: 0.8rem; padding: 7px 11px; font-weight: 700; border-color: rgba(254,95,1,0.4); color: var(--dawn-orange); display: inline-flex; align-items: center; gap: 5px;" title="Get Aaruni Tech Mobile App">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="14" height="20" x="5" y="2" rx="2" ry="2"/><line x1="12" x2="12.01" y1="18" y2="18"/></svg>
+            <span>Mobile App</span>
+          </button>
+
           <!-- Cloud Console Badge Link -->
           <a href="https://aarunicloud.com" target="_blank" rel="noopener noreferrer" class="btn btn-outline nav-action-desktop" style="font-size: 0.82rem; padding: 7px 12px;" title="Launch Aaruni Cloud Console">
             <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17.5 19H9a7 7 0 1 1 6.71-9h1.79a4.5 4.5 0 1 1 0 9Z"/></svg>
@@ -1388,7 +1402,7 @@
           <!-- Employee Portal Direct Button (Visible on Mobile & Desktop) -->
           <a href="https://my.aarunitech.com" target="_blank" rel="noopener noreferrer" class="btn btn-portal" style="font-size: 0.8rem; padding: 7px 11px; font-weight: 700; border-color: rgba(254,95,1,0.5); display: inline-flex; align-items: center; gap: 5px;" title="Aaruni Employee Secure Workspace">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
-            <span>Employee Login</span>
+            <span class="hide-micro">Employee </span><span>Login</span>
           </a>
 
           <!-- Theme Toggle Button -->
@@ -1418,6 +1432,8 @@
       </ul>
       <div style="display:flex; flex-direction:column; gap:12px;">
         <a href="https://my.aarunitech.com" target="_blank" class="btn btn-portal w-full" style="background: linear-gradient(135deg, #fe5f01, #ea580c); color: #fff; font-weight: 800; justify-content: center; padding: 12px; font-size: 0.95rem; box-shadow: 0 4px 12px rgba(254,95,1,0.3);">🔐 Employee Login (my.aarunitech.com) ↗</a>
+        <a href="javascript:void(0)" onclick="toggleMobileMenu(); openMobileAppModal();" class="btn btn-outline w-full" style="border-color:var(--dawn-orange); color:var(--dawn-orange); justify-content: center; font-weight: 700;">📱 Scan / Install Mobile App</a>
+        <a href="/downloads/aaruni-payroll.apk" download="AaruniTech-v2.4.0.apk" class="btn btn-outline w-full" style="justify-content: center;">📥 Download Android APK (124 KB)</a>
         <a href="https://aarunicloud.com" target="_blank" class="btn btn-blue w-full">Launch Aaruni Cloud Console ↗</a>
         <a href="https://syllovo-creator-hub.pages.dev" target="_blank" class="btn btn-dawn w-full">Open Syllovo Studio ↗</a>
       </div>
@@ -1877,8 +1893,12 @@
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
               <span>Launch Employee Portal (my.aarunitech.com) ↗</span>
             </a>
+            <button onclick="openMobileAppModal()" class="btn btn-outline" style="padding:12px 18px; border-color:var(--dawn-orange); color:var(--dawn-orange);">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="14" height="20" x="5" y="2" rx="2" ry="2"/><line x1="12" x2="12.01" y1="18" y2="18"/></svg>
+              <span>📱 Scan Mobile App QR</span>
+            </button>
             <a href="/portal" class="btn btn-outline" style="padding:12px 18px;">
-              <span>Direct Portal Route (/portal)</span>
+              <span>Direct Route (/portal)</span>
             </a>
           </div>
         </div>
@@ -1902,6 +1922,58 @@
           <div style="display:flex; justify-content:space-between; align-items:center; margin-top:12px; font-size:0.78rem; color:var(--text-muted);">
             <span>🔒 Secured by Aaruni Zero-Trust Edge Authentication</span>
             <a href="https://my.aarunitech.com" target="_blank" style="color:var(--dawn-orange); text-decoration:none; font-weight:600;">Open Live Portal ↗</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- SCAN TO INSTALL MOBILE APP SHOWCASE -->
+      <div style="margin-top:40px; background:var(--bg-surface); border:1px solid var(--border-medium); border-radius:20px; padding:36px; box-shadow:var(--shadow-md); display:grid; grid-template-columns:1.3fr 1fr; gap:36px; align-items:center;" class="portal-app-card">
+        <div>
+          <div class="offering-badge" style="background:var(--dawn-orange-soft); color:var(--dawn-orange); margin-bottom:12px; display:inline-block;">Official Aaruni Tech Mobile Application</div>
+          <h3 style="font-size:1.6rem; font-weight:800; margin-bottom:12px;">Workforce Mobility on Android &amp; iOS</h3>
+          <p style="color:var(--text-secondary); font-size:0.92rem; line-height:1.6; margin-bottom:18px;">
+            Equip every employee and contractor with the lightweight <strong>Aaruni Tech</strong> mobile application. Instant entry/exit attendance with anti-tamper timestamps, interactive monthly timesheet calendars, and self-service encrypted salary slips on the go.
+          </p>
+          <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-bottom:24px;">
+            <div style="background:var(--bg-alt); padding:10px 14px; border-radius:10px; font-size:0.84rem; display:flex; align-items:center; gap:8px;">
+              <span style="color:var(--accent-emerald); font-weight:bold;">⏱️</span>
+              <span>1-Tap Punch In / Out</span>
+            </div>
+            <div style="background:var(--bg-alt); padding:10px 14px; border-radius:10px; font-size:0.84rem; display:flex; align-items:center; gap:8px;">
+              <span style="color:var(--primary-blue); font-weight:bold;">📅</span>
+              <span>Monthly Timesheet &amp; Leaves</span>
+            </div>
+            <div style="background:var(--bg-alt); padding:10px 14px; border-radius:10px; font-size:0.84rem; display:flex; align-items:center; gap:8px;">
+              <span style="color:var(--dawn-orange); font-weight:bold;">💰</span>
+              <span>Salary &amp; Payslip PDF</span>
+            </div>
+            <div style="background:var(--bg-alt); padding:10px 14px; border-radius:10px; font-size:0.84rem; display:flex; align-items:center; gap:8px;">
+              <span style="color:var(--accent-purple); font-weight:bold;">☁️</span>
+              <span>Cloud &amp; Studio Switcher</span>
+            </div>
+          </div>
+          <div style="display:flex; gap:12px; flex-wrap:wrap;">
+            <a href="/downloads/aaruni-payroll.apk" download="AaruniTech-v2.4.0.apk" class="btn btn-dawn" style="padding:11px 20px;">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" x2="12" y1="15" y2="3"/></svg>
+              <span>Download Android APK (124 KB)</span>
+            </a>
+            <a href="https://my.aarunitech.com/?source=mobile_qr" target="_blank" class="btn btn-outline" style="padding:11px 18px;">
+              <span>Launch Web App (iPhone / Android) ↗</span>
+            </a>
+          </div>
+        </div>
+
+        <!-- Right: Scannable QR Code Box -->
+        <div style="background:var(--bg-alt); border:1px solid var(--border-subtle); border-radius:16px; padding:24px; text-align:center; display:flex; flex-direction:column; align-items:center;">
+          <div style="font-weight:700; font-size:0.95rem; margin-bottom:6px;">Scan to Install / Open on Mobile</div>
+          <p style="font-size:0.78rem; color:var(--text-muted); margin-bottom:14px;">Point phone camera to install APK or launch web app instantly</p>
+          <div style="background:#ffffff; padding:12px; border-radius:12px; display:inline-block; box-shadow:var(--shadow-sm); border:1px solid #cbd5e1;">
+            <img src="assets/qr_aarunitech_app_apk.png" alt="Scan QR to install Aaruni Tech Mobile App" style="width:160px; height:160px; display:block;" />
+          </div>
+          <div style="margin-top:12px; display:flex; gap:8px; font-size:0.75rem; color:var(--text-muted); align-items:center;">
+            <span>🤖 Android APK</span>
+            <span>•</span>
+            <span>🍏 iOS Add to Home Screen</span>
           </div>
         </div>
       </div>
@@ -2265,6 +2337,8 @@
           <div class="footer-col-title">Enterprise Portal</div>
           <ul class="footer-links-list">
             <li class="footer-link-item"><a href="https://my.aarunitech.com" target="_blank" style="color:var(--dawn-orange); font-weight:600;">my.aarunitech.com ↗</a></li>
+            <li class="footer-link-item"><a href="javascript:void(0)" onclick="openMobileAppModal()" style="color:var(--dawn-orange); font-weight:600;">📱 Get Mobile App (Scan QR)</a></li>
+            <li class="footer-link-item"><a href="/downloads/aaruni-payroll.apk" download="AaruniTech-v2.4.0.apk">Download Android APK (124 KB)</a></li>
             <li class="footer-link-item"><a href="/portal">Employee Timesheet</a></li>
             <li class="footer-link-item"><a href="/portal">Encrypted Salary Vault</a></li>
             <li class="footer-link-item"><a href="/portal">Self-Service HR Letters</a></li>
@@ -2320,6 +2394,44 @@
     <div class="modal-box">
       <button class="modal-close-btn" onclick="closeBlogModal()" aria-label="Close Modal">✕</button>
       <div id="modalContent"></div>
+    </div>
+  </div>
+
+  <!-- =========================================================================
+       MOBILE APP QR SCAN & DOWNLOAD MODAL
+       ========================================================================= -->
+  <div id="appQrModal" class="modal-overlay" onclick="closeMobileAppModalOnOutside(event)">
+    <div class="modal-box" style="text-align:center; max-width:520px;">
+      <button class="modal-close-btn" onclick="closeMobileAppModal()" aria-label="Close Modal">✕</button>
+      <div class="offering-badge" style="background:var(--dawn-orange-soft); color:var(--dawn-orange); margin-bottom:12px; display:inline-block;">Aaruni Tech Mobile App (v2.4.0)</div>
+      <h3 style="font-size:1.55rem; font-weight:800; margin-bottom:8px;">Scan to Install &amp; Launch</h3>
+      <p style="font-size:0.86rem; color:var(--text-secondary); margin-bottom:18px; line-height:1.5;">
+        Access 1-tap Attendance Punch In/Out, Monthly Timesheet Approvals, and Encrypted Salary Payslips directly on your phone.
+      </p>
+
+      <!-- QR Tab Switcher -->
+      <div style="display:flex; justify-content:center; gap:8px; margin-bottom:16px;">
+        <button id="qrTabApkBtn" onclick="switchQrCodeTab('apk')" class="btn btn-dawn" style="padding:6px 14px; font-size:0.82rem;">🤖 Android APK</button>
+        <button id="qrTabPwaBtn" onclick="switchQrCodeTab('pwa')" class="btn btn-outline" style="padding:6px 14px; font-size:0.82rem;">🍏 iPhone / Web App (PWA)</button>
+      </div>
+
+      <!-- Scannable QR Container -->
+      <div style="background:#ffffff; padding:14px; border-radius:14px; display:inline-block; box-shadow:var(--shadow-md); border:1px solid #cbd5e1; margin-bottom:14px;">
+        <img id="qrModalImage" src="assets/qr_aarunitech_app_apk.png" alt="Aaruni Tech Mobile QR Code" style="width:190px; height:190px; display:block;" />
+      </div>
+
+      <div id="qrModalInstruction" style="font-size:0.82rem; color:var(--text-muted); margin-bottom:20px; line-height:1.5;">
+        Scan this QR code with your Android camera to download <strong>AaruniTech-v2.4.0.apk</strong> (124 KB).
+      </div>
+
+      <div style="display:flex; gap:10px; justify-content:center; flex-wrap:wrap;">
+        <a href="/downloads/aaruni-payroll.apk" download="AaruniTech-v2.4.0.apk" class="btn btn-dawn" style="font-size:0.88rem; padding:10px 18px;">
+          <span>📥 Download APK Directly</span>
+        </a>
+        <a href="https://my.aarunitech.com/?source=mobile_modal" target="_blank" class="btn btn-outline" style="font-size:0.88rem; padding:10px 18px;">
+          <span>Open Web App on Phone ↗</span>
+        </a>
+      </div>
     </div>
   </div>
 
@@ -2581,6 +2693,49 @@
     function closeBlogModalOnOutside(e) {
       if (e.target.id === "blogModal") {
         closeBlogModal();
+      }
+    }
+
+    // Mobile App Modal Controller
+    function openMobileAppModal() {
+      var modal = document.getElementById("appQrModal");
+      if (modal) {
+        modal.classList.add("open");
+        document.body.style.overflow = "hidden";
+      }
+    }
+
+    function closeMobileAppModal() {
+      var modal = document.getElementById("appQrModal");
+      if (modal) {
+        modal.classList.remove("open");
+        document.body.style.overflow = "auto";
+      }
+    }
+
+    function closeMobileAppModalOnOutside(e) {
+      if (e.target.id === "appQrModal") {
+        closeMobileAppModal();
+      }
+    }
+
+    function switchQrCodeTab(type) {
+      var img = document.getElementById("qrModalImage");
+      var txt = document.getElementById("qrModalInstruction");
+      var btnApk = document.getElementById("qrTabApkBtn");
+      var btnPwa = document.getElementById("qrTabPwaBtn");
+      if (!img || !txt) return;
+
+      if (type === 'apk') {
+        img.src = "assets/qr_aarunitech_app_apk.png";
+        txt.innerHTML = "Scan with your Android camera to download <strong>AaruniTech-v2.4.0.apk</strong> (124 KB).";
+        btnApk.className = "btn btn-dawn";
+        btnPwa.className = "btn btn-outline";
+      } else {
+        img.src = "assets/qr_aarunitech_mobile_launch.png";
+        txt.innerHTML = "Scan with iPhone or Android camera to launch <strong>my.aarunitech.com</strong>. On iPhone: tap Share ⬆️ &rarr; <em>Add to Home Screen</em>.";
+        btnApk.className = "btn btn-outline";
+        btnPwa.className = "btn btn-dawn";
       }
     }
   </script>
