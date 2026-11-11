@@ -2461,19 +2461,33 @@
           offering: offering,
           message: msgText
         })
-      }).catch(function() {});
-
-      setTimeout(function() {
-        btn.disabled = false;
-        btn.innerHTML = "<span>Submit Enterprise Request</span>";
-        status.style.display = "block";
-        status.innerHTML =
-          "<div style='color:var(--accent-emerald); font-weight:700; background:rgba(16, 185, 129, 0.1); padding:12px; border-radius:8px;'>" +
-            "✓ Thank you " + name + "! Inquiry <code>" + ref + "</code> logged under label <code>[" + label + "]</code>. " +
-            "<a href='" + mailtoUrl + "' style='color:var(--dawn-orange); text-decoration:underline; margin-left:6px;'>Send via info@syllovo.com &rarr;</a>" +
-          "</div>";
-        document.getElementById("enterpriseContactForm").reset();
-      }, 400);
+      })
+        .then(function(r) { return r.json(); })
+        .then(function(data) {
+          btn.disabled = false;
+          btn.innerHTML = "<span>Submit Enterprise Request</span>";
+          status.style.display = "block";
+          var sentServer = data && data.emailDelivery && data.emailDelivery.sent;
+          status.innerHTML =
+            "<div style='color:var(--accent-emerald); font-weight:700; background:rgba(16, 185, 129, 0.1); padding:12px; border-radius:8px;'>" +
+              "✓ Thank you " + name + "! Inquiry <code>" + ref + "</code> " +
+              (sentServer ? "auto-emailed via <code>info@syllovo.com</code> " : "logged ") +
+              "under label <code>[" + label + "]</code>. " +
+              "<a href='" + mailtoUrl + "' style='color:var(--dawn-orange); text-decoration:underline; margin-left:6px;'>Open in Mail App &rarr;</a>" +
+            "</div>";
+          document.getElementById("enterpriseContactForm").reset();
+        })
+        .catch(function() {
+          btn.disabled = false;
+          btn.innerHTML = "<span>Submit Enterprise Request</span>";
+          status.style.display = "block";
+          status.innerHTML =
+            "<div style='color:var(--accent-emerald); font-weight:700; background:rgba(16, 185, 129, 0.1); padding:12px; border-radius:8px;'>" +
+              "✓ Thank you " + name + "! Inquiry <code>" + ref + "</code> logged under label <code>[" + label + "]</code>. " +
+              "<a href='" + mailtoUrl + "' style='color:var(--dawn-orange); text-decoration:underline; margin-left:6px;'>Send via info@syllovo.com &rarr;</a>" +
+            "</div>";
+          document.getElementById("enterpriseContactForm").reset();
+        });
     }
 
     // Articles Content Dictionary

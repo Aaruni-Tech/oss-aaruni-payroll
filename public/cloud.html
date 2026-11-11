@@ -2487,16 +2487,28 @@
       );
       const mailtoHref = "mailto:info@syllovo.com?subject=" + subj + "&body=" + body;
 
+      box.style.display = "block";
+      box.innerHTML = "Dispatching pilot request <code>" + ref + "</code> to <code>info@syllovo.com</code>...";
+
       fetch("/api/inquiries", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ ref: ref, label: "aarunicloud", org: org, email: mail, services: svc })
-      }).catch(function () {});
-
-      box.style.display = "block";
-      box.innerHTML =
-        "Pilot Reference <code>" + ref + "</code> logged with label <code>[aarunicloud]</code>. " +
-        "<a href=\"" + mailtoHref + "\" style=\"text-decoration:underline;margin-left:6px;\">Send to info@syllovo.com &rarr;</a>";
+      })
+        .then(function (r) { return r.json(); })
+        .then(function (data) {
+          const sentServer = data && data.emailDelivery && data.emailDelivery.sent;
+          box.innerHTML =
+            (sentServer
+              ? "✓ Auto-emailed to <code>info@syllovo.com</code> (labeled <code>[aarunicloud]</code>, Ref <code>" + ref + "</code>). "
+              : "✓ Pilot Reference <code>" + ref + "</code> logged with label <code>[aarunicloud]</code>. ") +
+            "<a href=\"" + mailtoHref + "\" style=\"text-decoration:underline;margin-left:6px;\">Open in Mail App &rarr;</a>";
+        })
+        .catch(function () {
+          box.innerHTML =
+            "Pilot Reference <code>" + ref + "</code> logged with label <code>[aarunicloud]</code>. " +
+            "<a href=\"" + mailtoHref + "\" style=\"text-decoration:underline;margin-left:6px;\">Send to info@syllovo.com &rarr;</a>";
+        });
     }
 
     function showModal(title, html) {

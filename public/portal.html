@@ -5882,6 +5882,9 @@ button, a.button {
                 <button onclick="setTab('invites')" class="zoho-nav-btn ${state.activeTab === 'invites' ? 'active' : ''}">
                   <span style="font-size:15px;">📨</span> <span>Staff Invites</span>
                 </button>
+                <button onclick="openAdminLeadsModal('all')" class="zoho-nav-btn">
+                  <span style="font-size:15px;">📬</span> <span>Cloud &amp; Syllovo Leads</span>
+                </button>
                 <button onclick="openACSTaxDossierModal()" class="zoho-nav-btn">
                   <span style="font-size:15px;">📁</span> <span>Tax &amp; CA Dossier</span>
                 </button>
@@ -5918,6 +5921,9 @@ button, a.button {
                 </div>
               </div>
               <div style="display:flex;align-items:center;gap:8px;">
+                <button onclick="openAdminLeadsModal('all')" style="background:#0284c7;border:1px solid #0369a1;color:#fff;padding:9px 14px;border-radius:8px;font-size:12px;font-weight:700;cursor:pointer;display:inline-flex;align-items:center;gap:6px;">
+                  <span>📬</span> <span>Cloud &amp; Syllovo Leads</span>
+                </button>
                 <button onclick="openStaffInvitationsModal()" class="zoho-orange-btn">
                   <span>📨</span> <span>Staff Invitations</span>
                 </button>
@@ -5957,6 +5963,135 @@ button, a.button {
         }
       } catch (err) {
         console.log("D1 sync offline/idle:", err.message);
+      }
+    }
+
+    // ADMIN LEADS & INQUIRIES DASHBOARD (Aaruni Cloud / Syllovo / Aaruni Tech)
+    async function openAdminLeadsModal(filterLabel = "all") {
+      openModalWithHTML(
+        "📬 Cloud, Syllovo & Enterprise Leads (info@syllovo.com → rupesh@fullstackmaster.net)",
+        `<div style="padding:20px;text-align:center;color:#475569;font-size:13px;">Loading live inquiries from Cloudflare D1...</div>`
+      );
+      try {
+        const q = filterLabel && filterLabel !== "all" ? `?label=${encodeURIComponent(filterLabel)}` : "";
+        const res = await fetch("/api/inquiries" + q, { cache: "no-store" });
+        const json = await res.json();
+        const rows = (json && Array.isArray(json.data)) ? json.data : [];
+
+        const badges = [
+          { id: "all", name: "All Labels" },
+          { id: "aarunicloud", name: "[aarunicloud]" },
+          { id: "syllovo", name: "[syllovo]" },
+          { id: "aarunitech", name: "[aarunitech]" },
+          { id: "aarunitech-careers", name: "[aarunitech-careers]" }
+        ];
+
+        const html = `
+          <div style="font-family:'Inter',sans-serif;color:#0f172a;max-width:760px;margin:0 auto;">
+            <div style="background:#090D16;color:#fff;padding:14px 18px;border-radius:12px;margin-bottom:14px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;">
+              <div>
+                <div style="font-size:11px;font-weight:800;color:#38bdf8;text-transform:uppercase;">Server-Side Cloudflare Email Worker + D1 Ledger</div>
+                <div style="font-size:14px;font-weight:800;margin-top:2px;">Public: <code>info@syllovo.com</code> &rarr; Inbox: <code>rupesh@fullstackmaster.net</code></div>
+              </div>
+              <button onclick="sendTestInquiryFromAdmin('${filterLabel === 'all' ? 'aarunicloud' : filterLabel}')" style="background:#FE5F01;color:#fff;border:none;padding:8px 13px;border-radius:8px;font-size:11.5px;font-weight:800;cursor:pointer;">
+                ⚡ Send Live Test Email
+              </button>
+            </div>
+
+            <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px;">
+              ${badges.map(b => `
+                <button onclick="openAdminLeadsModal('${b.id}')" style="padding:6px 12px;border-radius:999px;font-size:11.5px;font-weight:700;cursor:pointer;border:1px solid ${filterLabel === b.id ? '#0284c7' : '#cbd5e1'};background:${filterLabel === b.id ? '#0284c7' : '#f8fafc'};color:${filterLabel === b.id ? '#ffffff' : '#334155'};">
+                  ${b.name}
+                </button>
+              `).join("")}
+            </div>
+
+            <div style="max-height:380px;overflow-y:auto;border:1px solid #e2e8f0;border-radius:12px;">
+              ${rows.length === 0 ? `
+                <div style="padding:28px;text-align:center;color:#64748b;font-size:12.5px;">
+                  No inquiries recorded for this filter yet. Click <strong>⚡ Send Live Test Email</strong> above to test end-to-end delivery.
+                </div>
+              ` : `
+                <table style="width:100%;border-collapse:collapse;font-size:12px;text-align:left;">
+                  <thead style="background:#f8fafc;border-bottom:1px solid #e2e8f0;position:sticky;top:0;">
+                    <tr style="color:#475569;font-size:10.5px;text-transform:uppercase;">
+                      <th style="padding:10px;">Ref &amp; Label</th>
+                      <th style="padding:10px;">Organization / Visitor</th>
+                      <th style="padding:10px;">Service / Scope</th>
+                      <th style="padding:10px;">Delivery</th>
+                      <th style="padding:10px;text-align:right;">Action</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    ${rows.map(r => {
+                      const subj = encodeURIComponent(`Re: [${r.label || 'aarunicloud'}] [${r.id}] ${r.offering || 'Inquiry'}`);
+                      const replyHref = `mailto:${r.senderEmail || 'info@syllovo.com'}?subject=${subj}`;
+                      const isSent = String(r.emailStatus || "").includes("sent");
+                      return `
+                        <tr style="border-bottom:1px solid #f1f5f9;">
+                          <td style="padding:10px;white-space:nowrap;">
+                            <div style="font-family:monospace;font-weight:800;color:#0f172a;">${r.id}</div>
+                            <span style="display:inline-block;margin-top:3px;padding:2px 7px;border-radius:999px;font-size:10px;font-weight:800;background:#e0f2fe;color:#0369a1;">[${r.label || 'aarunicloud'}]</span>
+                          </td>
+                          <td style="padding:10px;">
+                            <div style="font-weight:700;color:#0f172a;">${r.orgName || '-'}</div>
+                            <div style="font-size:11px;color:#0284c7;">${r.senderEmail || 'No email'}</div>
+                            <div style="font-size:10px;color:#94a3b8;">${r.createdAt || ''}</div>
+                          </td>
+                          <td style="padding:10px;max-width:220px;">
+                            <div style="font-weight:600;color:#1e293b;">${r.offering || '-'}</div>
+                            <div style="font-size:11px;color:#64748b;margin-top:2px;">${r.message || ''}</div>
+                          </td>
+                          <td style="padding:10px;white-space:nowrap;">
+                            <span style="font-size:10.5px;font-weight:700;padding:3px 8px;border-radius:999px;background:${isSent ? '#dcfce7' : '#fef3c7'};color:${isSent ? '#15803d' : '#b45309'};">
+                              ${isSent ? '🟢 Auto-Emailed' : '🟡 D1 Logged'}
+                            </span>
+                          </td>
+                          <td style="padding:10px;text-align:right;white-space:nowrap;">
+                            <a href="${replyHref}" style="display:inline-block;padding:6px 10px;border-radius:7px;background:#0f172a;color:#fff;font-size:11px;font-weight:700;text-decoration:none;">
+                              Reply &rarr;
+                            </a>
+                          </td>
+                        </tr>
+                      `;
+                    }).join("")}
+                  </tbody>
+                </table>
+              `}
+            </div>
+          </div>
+        `;
+        openModalWithHTML("📬 Cloud, Syllovo & Enterprise Leads", html);
+      } catch (err) {
+        openModalWithHTML("📬 Cloud & Syllovo Leads", `<div style="padding:20px;color:#dc2626;">Error loading inquiries: ${err.message}</div>`);
+      }
+    }
+
+    async function sendTestInquiryFromAdmin(label = "aarunicloud") {
+      showToast("📨 Sending Live Email...", `Dispatching [${label}] inquiry from info@syllovo.com to rupesh@fullstackmaster.net...`);
+      try {
+        const ref = "TEST-" + Math.floor(100000 + Math.random() * 899999);
+        const res = await fetch("/api/inquiries", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            ref,
+            label,
+            org: "Aaruni Admin Live Verification",
+            email: "rupesh@fullstackmaster.net",
+            services: "ACE Compute + AOV Vault + AVS Voice AI + ACA Converse AI",
+            message: "End-to-end server-side Cloudflare Email Worker verification."
+          })
+        });
+        const data = await res.json();
+        if (data && data.emailDelivery && data.emailDelivery.sent) {
+          showToast("✅ Email Sent to Inbox!", `Delivered [${label}] (${ref}) to rupesh@fullstackmaster.net!`);
+        } else {
+          showToast("✅ Logged in D1", `Reference ${ref} saved (${(data && data.emailDelivery && data.emailDelivery.error) || 'D1 mode'}).`);
+        }
+        openAdminLeadsModal(label);
+      } catch (err) {
+        showToast("⚠️ Error", err.message);
       }
     }
 

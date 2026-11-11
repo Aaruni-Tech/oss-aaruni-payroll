@@ -207,9 +207,52 @@ export default {
     }
 
     // 3. Enterprise & Cloud Inquiries API (/api/inquiries)
-    // Logs labeled inquiries (aarunicloud, syllovo, aarunitech, aarunitech-careers)
-    // addressed to info@syllovo.com -> forwarded to rupesh@fullstackmaster.net
+    // GET: Returns all inquiries stored in Cloudflare D1 for the Admin Leads Dashboard
+    // POST: Logs labeled inquiries (aarunicloud, syllovo, aarunitech, aarunitech-careers)
+    //       into D1 AND dispatches a real server-side email from info@syllovo.com -> rupesh@fullstackmaster.net
     if (url.pathname === "/api/inquiries") {
+      try {
+        await executeD1Query(env, `
+          CREATE TABLE IF NOT EXISTS inquiries (
+            id TEXT PRIMARY KEY,
+            label TEXT,
+            public_to TEXT,
+            forwarded_to TEXT,
+            org_name TEXT,
+            sender_email TEXT,
+            offering TEXT,
+            message TEXT,
+            email_status TEXT DEFAULT 'logged',
+            created_at TEXT
+          )
+        `);
+      } catch (e) {}
+
+      if (request.method === "GET") {
+        try {
+          const labelFilter = url.searchParams.get("label");
+          let sql = "SELECT id, label, public_to AS publicTo, forwarded_to AS forwardedTo, org_name AS orgName, sender_email AS senderEmail, offering, message, email_status AS emailStatus, created_at AS createdAt FROM inquiries";
+          let params = [];
+          if (labelFilter && labelFilter !== "all") {
+            sql += " WHERE label = ? ORDER BY created_at DESC LIMIT 200";
+            params = [labelFilter];
+          } else {
+            sql += " ORDER BY created_at DESC LIMIT 200";
+          }
+          const { results } = await executeD1Query(env, sql, params);
+          return new Response(JSON.stringify({
+            success: true,
+            count: results ? results.length : 0,
+            data: results || []
+          }), { headers: CORS_HEADERS });
+        } catch (err) {
+          return new Response(JSON.stringify({ success: false, error: err.message || String(err) }), {
+            status: 500,
+            headers: CORS_HEADERS
+          });
+        }
+      }
+
       if (request.method === "POST") {
         try {
           const body = await request.json();
@@ -219,26 +262,62 @@ export default {
           const senderEmail = (body && body.email) || "";
           const offering = (body && (body.services || body.offering)) || "General Inquiry";
           const message = (body && body.message) || "";
+          const customSubject = (body && body.subject) || `[${label}] [${ref}] ${offering} — ${org}`;
+
+          let emailDelivery = { sent: false, mode: "d1_logged" };
+
+          // Dispatch real server-side email via Cloudflare Email Worker (info@syllovo.com -> rupesh@fullstackmaster.net)
+          if (env && env.EMAIL_RELAY && typeof env.EMAIL_RELAY.fetch === "function") {
+            try {
+              const emailText = [
+                `=== AARUNI GROUP SERVER-SIDE INQUIRY DISPATCH ===`,
+                `Brand Label     : [${label}]`,
+                `Reference ID    : ${ref}`,
+                `Public Address  : info@syllovo.com`,
+                `Delivered To    : rupesh@fullstackmaster.net`,
+                `Organization    : ${org}`,
+                `Visitor Email   : ${senderEmail || "Not provided"}`,
+                `Service/Offering: ${offering}`,
+                `Timestamp (UTC) : ${new Date().toISOString()}`,
+                ``,
+                `--- Message / Scope ---`,
+                message || "(Submitted via quick pilot request)"
+              ].join("\n");
+
+              const relayRes = await env.EMAIL_RELAY.fetch("https://internal/send", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                  from: "info@syllovo.com",
+                  replyTo: senderEmail || "info@syllovo.com",
+                  subject: customSubject,
+                  text: emailText
+                })
+              });
+              const relayJson = await relayRes.json();
+              if (relayJson && relayJson.success) {
+                emailDelivery = { sent: true, mode: "cloudflare_email_worker", messageId: relayJson.messageId };
+              } else {
+                emailDelivery = { sent: false, mode: "relay_error", error: (relayJson && relayJson.error) || "Unknown" };
+              }
+            } catch (relayErr) {
+              emailDelivery = { sent: false, mode: "relay_exception", error: relayErr.message || String(relayErr) };
+            }
+          }
 
           try {
-            await executeD1Query(env, `
-              CREATE TABLE IF NOT EXISTS inquiries (
-                id TEXT PRIMARY KEY,
-                label TEXT,
-                public_to TEXT,
-                forwarded_to TEXT,
-                org_name TEXT,
-                sender_email TEXT,
-                offering TEXT,
-                message TEXT,
-                created_at TEXT
-              )
-            `);
             await executeD1Query(
               env,
-              `INSERT INTO inquiries (id, label, public_to, forwarded_to, org_name, sender_email, offering, message, created_at)
-               VALUES (?, ?, 'info@syllovo.com', 'rupesh@fullstackmaster.net', ?, ?, ?, ?, datetime('now'))`,
-              [ref, label, org, senderEmail, offering, message]
+              `INSERT INTO inquiries (id, label, public_to, forwarded_to, org_name, sender_email, offering, message, email_status, created_at)
+               VALUES (?, ?, 'info@syllovo.com', 'rupesh@fullstackmaster.net', ?, ?, ?, ?, ?, datetime('now'))
+               ON CONFLICT(id) DO UPDATE SET
+                 label=excluded.label,
+                 org_name=excluded.org_name,
+                 sender_email=excluded.sender_email,
+                 offering=excluded.offering,
+                 message=excluded.message,
+                 email_status=excluded.email_status`,
+              [ref, label, org, senderEmail, offering, message, emailDelivery.sent ? "sent_server_side" : emailDelivery.mode]
             );
           } catch (dbErr) {
             console.warn("D1 inquiry log warning:", dbErr);
@@ -249,7 +328,8 @@ export default {
             ref: ref,
             label: label,
             publicRecipient: "info@syllovo.com",
-            routedInbox: "rupesh@fullstackmaster.net"
+            routedInbox: "rupesh@fullstackmaster.net",
+            emailDelivery: emailDelivery
           }), { headers: CORS_HEADERS });
         } catch (err) {
           return new Response(JSON.stringify({ success: false, error: err.message || String(err) }), {
