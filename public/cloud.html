@@ -3,10 +3,10 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Aaruni Cloud (aarunicloud.com) — Sovereign Compute, Object Storage, Voice AI &amp; Converse AI</title>
-  <meta name="description" content="Aaruni Cloud (aarunicloud.com) delivers hyperscale sovereign cloud infrastructure: Aaruni Compute Engine (ACE), Aaruni Object Vault (AOV), Aaruni Voice AI (AVS), Aaruni Converse AI (ACA), and automated media studio toolchains." />
-  <meta property="og:title" content="Aaruni Cloud — Compute, Storage, Voice AI &amp; Converse AI Services" />
-  <meta property="og:description" content="Provision unified-memory compute clusters (ACE), zero-egress object storage (AOV), neural broadcast voice (AVS), and autonomous AI agents (ACA) on aarunicloud.com." />
+  <title>Aaruni Cloud (aarunicloud.com) — Aaruni Compute, Aaruni Storage, Aaruni Voice &amp; Aaruni Assistant</title>
+  <meta name="description" content="Aaruni Cloud (aarunicloud.com) makes enterprise cloud easy and accessible for everyone: Aaruni Compute (ACC), Aaruni Storage (ACS), Aaruni Voice (AVA), Aaruni Assistant (AAI), and Aaruni Render (ARN)." />
+  <meta property="og:title" content="Aaruni Cloud — Compute, Cloud Storage, Voice &amp; AI Assistant Services" />
+  <meta property="og:description" content="Simple, accessible sovereign cloud infrastructure: Aaruni Compute (ACC), zero-egress Aaruni Storage (ACS), neural Aaruni Voice (AVA), Aaruni Assistant (AAI), and Aaruni Render (ARN)." />
   <meta property="og:type" content="website" />
   <meta property="og:url" content="https://aarunicloud.com/" />
   <meta name="theme-color" content="#060913" />
@@ -1796,7 +1796,7 @@
         <div class="header-search-wrap">
           <label for="global-service-search" class="sr-only">Search Aaruni Cloud services, APIs, and tools</label>
           <svg class="header-search-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-          <input type="search" id="global-service-search" class="header-search-input" placeholder="Search ACE Compute, AOV Storage, AVS Voice, ACA Agents..." oninput="handleGlobalSearch(this.value)" />
+          <input type="search" id="global-service-search" class="header-search-input" placeholder="Search Aaruni Storage (ACS), Compute (ACC), Voice, Render..." oninput="handleGlobalSearch(this.value)" />
         </div>
 
         <div class="topbar-right">
@@ -1828,19 +1828,16 @@
             <span>Explore Products</span>
             <span aria-hidden="true">&#9662;</span>
           </button>
-          <a href="#products" class="subnav-item" onclick="selectCategory('compute')">Compute (ACE)</a>
-          <a href="#products" class="subnav-item" onclick="selectCategory('storage')">Storage &amp; Vault (AOV)</a>
-          <a href="#ai-workbench" class="subnav-item">Voice AI (AVS)</a>
-          <a href="#ai-workbench" class="subnav-item">Converse AI (ACA)</a>
+          <a href="#products" class="subnav-item" onclick="selectCategory('storage')">Aaruni Storage (ACS)</a>
+          <a href="#products" class="subnav-item" onclick="selectCategory('compute')">Aaruni Compute (ACC)</a>
+          <a href="#ai-workbench" class="subnav-item">Aaruni Voice (AVA)</a>
+          <a href="#ai-workbench" class="subnav-item">Aaruni Assistant (AAI)</a>
+          <a href="#products" class="subnav-item" onclick="selectCategory('tools')">Aaruni Render (ARN)</a>
           <a href="#blueprint" class="subnav-item">Architecture Flow</a>
           <a href="#customer-syllovo" class="subnav-item">Customer: Syllovo</a>
-          <a href="#ecosystem" class="subnav-item">Plugins &amp; Ecosystem</a>
           <a href="#tco-section" class="subnav-item">Pricing &amp; Sizing</a>
         </div>
-        <div style="display:flex;align-items:center;gap:8px;">
-          <button type="button" class="subnav-item" onclick="openCloudMobileModal()" style="color:#fb923c; border:1px solid rgba(251,146,60,0.35); border-radius:6px; padding:2px 8px; font-size:12px;">📱 Mobile App &amp; Console</button>
-          <a href="https://aarunitech.com" target="_blank" rel="noopener" class="subnav-item mono" style="color:#38bdf8;">Parent: aarunitech.com &nearr;</a>
-        </div>
+        <a href="https://aarunitech.com" target="_blank" rel="noopener" class="subnav-item mono" style="color:#38bdf8;">Parent: aarunitech.com &nearr;</a>
       </div>
     </nav>
 
@@ -1848,39 +1845,39 @@
     <div id="products-mega-menu" class="mega-menu" role="region" aria-label="All Aaruni Cloud Products">
       <div class="container mega-grid">
         <div>
+          <h3 class="mega-col-title">Cloud Storage</h3>
+          <ul class="mega-list">
+            <li><a href="#products" class="mega-link" onclick="closeMegaMenu(); selectCategory('storage');"><strong>Aaruni Storage (ACS)</strong><span>High-speed 3-tier cloud storage with $0 egress</span></a></li>
+            <li><a href="#products" class="mega-link" onclick="closeMegaMenu(); selectCategory('storage');"><strong>Aaruni Archive (ARC)</strong><span>30 TB AES-256 encrypted cold backup storage</span></a></li>
+          </ul>
+        </div>
+        <div>
           <h3 class="mega-col-title">Compute &amp; Containers</h3>
           <ul class="mega-list">
-            <li><a href="#products" class="mega-link" onclick="closeMegaMenu(); selectCategory('compute');"><strong>Aaruni Compute Engine (ACE)</strong><span>Unified-memory M-Series GPU clusters</span></a></li>
-            <li><a href="#products" class="mega-link" onclick="closeMegaMenu(); selectCategory('compute');"><strong>Aaruni Container Grid (ACG)</strong><span>Elastic OCI sandboxes &amp; Xvfb runners</span></a></li>
+            <li><a href="#products" class="mega-link" onclick="closeMegaMenu(); selectCategory('compute');"><strong>Aaruni Compute (ACC)</strong><span>Dedicated M-Series &amp; Linux worker machines</span></a></li>
+            <li><a href="#products" class="mega-link" onclick="closeMegaMenu(); selectCategory('compute');"><strong>Aaruni Containers (ACN)</strong><span>Isolated Docker sandboxes &amp; headless runners</span></a></li>
           </ul>
         </div>
         <div>
-          <h3 class="mega-col-title">Storage &amp; Buckets</h3>
+          <h3 class="mega-col-title">Voice &amp; AI Services</h3>
           <ul class="mega-list">
-            <li><a href="#products" class="mega-link" onclick="closeMegaMenu(); selectCategory('storage');"><strong>Aaruni Object Vault (AOV)</strong><span>RAID-1 Gigabit, Anycast edge cache &amp; zero egress</span></a></li>
-            <li><a href="#products" class="mega-link" onclick="closeMegaMenu(); selectCategory('storage');"><strong>Aaruni Deep Archive (ADA)</strong><span>30 TB AES-256 encrypted cold archive</span></a></li>
+            <li><a href="#ai-workbench" class="mega-link" onclick="closeMegaMenu();"><strong>Aaruni Voice (AVA)</strong><span>Neural speech synthesis, W3C PLS &amp; -12 dB DSP</span></a></li>
+            <li><a href="#ai-workbench" class="mega-link" onclick="closeMegaMenu();"><strong>Aaruni Assistant (AAI)</strong><span>Multi-intent enterprise chatbot &amp; task copilot</span></a></li>
+            <li><a href="#products" class="mega-link" onclick="closeMegaMenu(); selectCategory('ai');"><strong>Aaruni Knowledge (AKB)</strong><span>Fast SQLite FTS5 RAG &amp; compliance knowledge base</span></a></li>
           </ul>
         </div>
         <div>
-          <h3 class="mega-col-title">Applied AI &amp; Voice</h3>
+          <h3 class="mega-col-title">Cloud Render &amp; QA</h3>
           <ul class="mega-list">
-            <li><a href="#ai-workbench" class="mega-link" onclick="closeMegaMenu();"><strong>Aaruni Voice AI (AVS)</strong><span>Neural speech synthesis, W3C PLS &amp; -12 dB DSP</span></a></li>
-            <li><a href="#ai-workbench" class="mega-link" onclick="closeMegaMenu();"><strong>Aaruni Converse AI (ACA)</strong><span>Multi-intent enterprise RAG agent &amp; copilot</span></a></li>
-            <li><a href="#products" class="mega-link" onclick="closeMegaMenu(); selectCategory('ai');"><strong>Aaruni Knowledge Fabric (AKF)</strong><span>SQLite FTS5 RAG &amp; compliance linter</span></a></li>
+            <li><a href="#products" class="mega-link" onclick="closeMegaMenu(); selectCategory('tools');"><strong>Aaruni Render (ARN)</strong><span>Cloud 1080p MP4, FFmpeg &amp; timeline render engine</span></a></li>
+            <li><a href="#products" class="mega-link" onclick="closeMegaMenu(); selectCategory('tools');"><strong>Aaruni Quality (AQA)</strong><span>Automated 7-device Playwright &amp; WCAG QA suite</span></a></li>
           </ul>
         </div>
         <div>
-          <h3 class="mega-col-title">Studio &amp; Media Tools</h3>
+          <h3 class="mega-col-title">Edge &amp; Security</h3>
           <ul class="mega-list">
-            <li><a href="#products" class="mega-link" onclick="closeMegaMenu(); selectCategory('tools');"><strong>Aaruni Media Pipeline (AMP)</strong><span>Slide, timeline &amp; 1080p MP4 compiler</span></a></li>
-            <li><a href="#products" class="mega-link" onclick="closeMegaMenu(); selectCategory('tools');"><strong>Aaruni Assurance Lab (AAL)</strong><span>7-device Playwright &amp; WCAG auditor</span></a></li>
-          </ul>
-        </div>
-        <div>
-          <h3 class="mega-col-title">Security &amp; Mesh</h3>
-          <ul class="mega-list">
-            <li><a href="#products" class="mega-link" onclick="closeMegaMenu(); selectCategory('security');"><strong>Aaruni Zero-Trust Vault (AZV)</strong><span>Zero-OTP remote browser session vault</span></a></li>
-            <li><a href="#products" class="mega-link" onclick="closeMegaMenu(); selectCategory('security');"><strong>Aaruni Edge Mesh (AEM)</strong><span>Global Anycast delivery &amp; outbound tunnels</span></a></li>
+            <li><a href="#products" class="mega-link" onclick="closeMegaMenu(); selectCategory('security');"><strong>Aaruni Edge (AED)</strong><span>Global Anycast CDN, DNS &amp; TLS 1.3 edge network</span></a></li>
+            <li><a href="#products" class="mega-link" onclick="closeMegaMenu(); selectCategory('security');"><strong>Aaruni Guard (AGD)</strong><span>Zero-Trust identity, keys &amp; session security</span></a></li>
           </ul>
         </div>
       </div>
@@ -1889,13 +1886,13 @@
     <!-- Mobile Drawer -->
     <div id="mobile-nav-drawer" class="mobile-drawer" aria-label="Mobile Navigation">
       <div class="mobile-nav-grid">
-        <a href="#products" onclick="closeMobileDrawer(); selectCategory('compute');"><span>Compute: Aaruni Compute Engine (ACE)</span><span>&rarr;</span></a>
-        <a href="#products" onclick="closeMobileDrawer(); selectCategory('storage');"><span>Storage: Aaruni Object Vault (AOV)</span><span>&rarr;</span></a>
-        <a href="#ai-workbench" onclick="closeMobileDrawer();"><span>Speech AI: Aaruni Voice AI (AVS)</span><span>&rarr;</span></a>
-        <a href="#ai-workbench" onclick="closeMobileDrawer();"><span>Agent AI: Aaruni Converse AI (ACA)</span><span>&rarr;</span></a>
+        <a href="#products" onclick="closeMobileDrawer(); selectCategory('storage');"><span>Storage: Aaruni Storage (ACS)</span><span>&rarr;</span></a>
+        <a href="#products" onclick="closeMobileDrawer(); selectCategory('compute');"><span>Compute: Aaruni Compute (ACC)</span><span>&rarr;</span></a>
+        <a href="#ai-workbench" onclick="closeMobileDrawer();"><span>Speech AI: Aaruni Voice (AVA)</span><span>&rarr;</span></a>
+        <a href="#ai-workbench" onclick="closeMobileDrawer();"><span>Chat AI: Aaruni Assistant (AAI)</span><span>&rarr;</span></a>
+        <a href="#products" onclick="closeMobileDrawer(); selectCategory('tools');"><span>Media Render: Aaruni Render (ARN)</span><span>&rarr;</span></a>
         <a href="#blueprint" onclick="closeMobileDrawer();"><span>Architecture Blueprint</span><span>&rarr;</span></a>
         <a href="#customer-syllovo" onclick="closeMobileDrawer();"><span>Customer Story: Syllovo</span><span>&rarr;</span></a>
-        <a href="#ecosystem" onclick="closeMobileDrawer();"><span>Ecosystem &amp; Plugins</span><span>&rarr;</span></a>
         <a href="#tco-section" onclick="closeMobileDrawer();"><span>Pricing &amp; Sizing Calculator</span><span>&rarr;</span></a>
       </div>
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
@@ -1913,13 +1910,13 @@
       <div class="container hero-split">
         <div>
           <div class="hero-tag">
-            <span>⚡ THE ENTERPRISE CLOUD FOR APPLIED AI &amp; MEDIA PIPELINES</span>
+            <span>⚡ CLOUD MADE EASY &amp; ACCESSIBLE FOR EVERYONE</span>
           </div>
           <h1 class="hero-h1">
-            Build, Train &amp; Scale on <span class="gradient-text">Sovereign Cloud Infrastructure</span>
+            Simple, Sovereign <span class="gradient-text">Cloud Infrastructure &amp; AI</span>
           </h1>
           <p class="hero-lead">
-            Provision dedicated unified-memory compute clusters (<strong>ACE</strong>), store petabytes in zero-egress vaults (<strong>AOV</strong>), synthesize broadcast neural speech (<strong>AVS</strong>), and orchestrate autonomous multi-intent agents (<strong>ACA</strong>).
+            Store media &amp; datasets with zero egress fees in <strong>Aaruni Storage (ACS)</strong>, launch dedicated unified-memory machines on <strong>Aaruni Compute (ACC)</strong>, synthesize natural narration with <strong>Aaruni Voice (AVA)</strong>, and automate workflows with <strong>Aaruni Assistant (AAI)</strong> &amp; <strong>Aaruni Render (ARN)</strong>.
           </p>
 
           <div class="hero-metrics-strip">
@@ -1929,11 +1926,11 @@
             </div>
             <div class="hero-metric-item">
               <span class="metric-val mono">$0.00</span>
-              <span class="metric-lbl">Egress Fees (AOV)</span>
+              <span class="metric-lbl">Egress (ACS Storage)</span>
             </div>
             <div class="hero-metric-item">
               <span class="metric-val mono">4.2×</span>
-              <span class="metric-lbl">Encoding Speed</span>
+              <span class="metric-lbl">Render Speed (ARN)</span>
             </div>
             <div class="hero-metric-item">
               <span class="metric-val mono">11</span>
@@ -1943,7 +1940,7 @@
 
           <div class="hero-btn-row">
             <button type="button" class="btn-dawn" onclick="openPilotModal()">
-              <span>🚀 Start Enterprise Pilot</span>
+              <span>🚀 Start Cloud Pilot</span>
               <span>&rarr;</span>
             </button>
             <button type="button" class="btn-console" onclick="openConsoleSignInModal()">
@@ -1970,18 +1967,18 @@
           </div>
 
           <div class="terminal-body mono" id="terminal-content">
-            <div><span class="t-prompt">$</span> <span class="t-cmd">aaruni compute launch --type ace.m4.max --region ap-south-hyd-1</span></div>
-            <div class="t-info">[INFO] Connecting to Sovereign Control Plane at ap-south-hyd-1...</div>
-            <div class="t-success">✔ Verified Zero-Trust Vault Session (AZV Session ID: azv_9921_valid)</div>
-            <div class="t-success">✔ Allocated Apple Silicon M-Series Node (64GB Unified RAM, VideoToolbox HW)</div>
-            <div class="t-success">✔ Mounted 8TB RAID-1 AOV Vault (aov://production-vault-hyd)</div>
-            <div><span class="t-prompt">$</span> <span class="t-cmd">aaruni voice synthesize --text "Course Module 1 Complete" --lufs -12</span></div>
+            <div><span class="t-prompt">$</span> <span class="t-cmd">aaruni compute launch --type acc.m4.max --region ap-south-hyd-1</span></div>
+            <div class="t-info">[INFO] Connecting to Aaruni Cloud Control Plane at ap-south-hyd-1...</div>
+            <div class="t-success">✔ Verified Aaruni Guard Session (AGD Key ID: agd_9921_valid)</div>
+            <div class="t-success">✔ Allocated Aaruni Compute Node (64GB Unified RAM, Hardware VideoToolbox)</div>
+            <div class="t-success">✔ Mounted 8TB Aaruni Storage (acs://media-production-hyd • $0 Egress)</div>
+            <div><span class="t-prompt">$</span> <span class="t-cmd">aaruni voice synthesize --text "Module 1 Ready" --lufs -12</span></div>
             <div class="t-success">✔ W3C PLS Lexicon bound • Zero boundary clicks (35ms/45ms cosine)</div>
-            <div class="t-info">🚀 Cluster Ready at ace.api.aarunicloud.com (Latency: 12ms, Status: 🟢 ACTIVE)</div>
+            <div class="t-info">🚀 Instance Ready at compute.api.aarunicloud.com (Latency: 12ms, Status: 🟢 ACTIVE)</div>
           </div>
 
           <div class="terminal-footer mono">
-            <div>Region: <strong>ap-south-hyd-1</strong> &bull; Node: <strong>ACE-HYD-04</strong></div>
+            <div>Region: <strong>ap-south-hyd-1</strong> &bull; Node: <strong>ACC-HYD-04</strong></div>
             <button type="button" class="copy-code-btn" onclick="copyTerminalSnippet()">📋 Copy Snippet</button>
           </div>
         </div>
@@ -1993,32 +1990,32 @@
        ===================================================================== -->
     <div class="launchpad-strip">
       <div class="container launchpad-grid">
-        <div class="cloud-shop-card">
+        <div class="cloud-shop-card card-pillar-storage">
           <div>
             <div class="card-top-badge">
-              <span class="cloud-acronym-pill mono">ACE</span>
-              <span class="cloud-spec-chip mono">64–128GB Unified RAM</span>
+              <span class="cloud-acronym-pill mono" style="color:#34d399;border-color:rgba(16,185,129,0.3);background:rgba(16,185,129,0.15);">ACS</span>
+              <span class="cloud-spec-chip mono">$0 Egress Fees</span>
             </div>
-            <h2 class="card-title">Aaruni Compute Engine</h2>
-            <p class="card-desc">Dedicated unified-memory Apple Silicon clusters running 24/7 dark-monitor server mode with VideoToolbox hardware acceleration.</p>
+            <h2 class="card-title">Aaruni Storage</h2>
+            <p class="card-desc">Simple, high-speed cloud storage for videos, datasets, and backups—uniting NVMe cache, 8TB RAID-1 NAS, and global CDN delivery.</p>
           </div>
-          <button type="button" class="card-action-link" onclick="openServiceSpec('ace')">
-            <span>Provision ACE Instance</span>
+          <button type="button" class="card-action-link" style="color:#34d399;" onclick="openServiceSpec('acs')">
+            <span>Create Storage Space</span>
             <span aria-hidden="true">&rarr;</span>
           </button>
         </div>
 
-        <div class="cloud-shop-card card-pillar-storage">
+        <div class="cloud-shop-card">
           <div>
             <div class="card-top-badge">
-              <span class="cloud-acronym-pill mono" style="color:#34d399;border-color:rgba(16,185,129,0.3);background:rgba(16,185,129,0.15);">AOV</span>
-              <span class="cloud-spec-chip mono">$0 Egress Caching</span>
+              <span class="cloud-acronym-pill mono">ACC</span>
+              <span class="cloud-spec-chip mono">64–128GB Unified RAM</span>
             </div>
-            <h2 class="card-title">Aaruni Object Vault</h2>
-            <p class="card-desc">High-throughput 3-tier storage fabric uniting local NVMe scratch, 8TB Gigabit RAID-1 NAS, and zero-egress Anycast edge caches.</p>
+            <h2 class="card-title">Aaruni Compute</h2>
+            <p class="card-desc">Dedicated Apple Silicon M-Series &amp; Linux compute machines running 24/7 with zero per-minute GPU surcharges.</p>
           </div>
-          <button type="button" class="card-action-link" style="color:#34d399;" onclick="openServiceSpec('aov')">
-            <span>Mount AOV Vault</span>
+          <button type="button" class="card-action-link" onclick="openServiceSpec('acc')">
+            <span>Launch Compute Node</span>
             <span aria-hidden="true">&rarr;</span>
           </button>
         </div>
@@ -2026,14 +2023,14 @@
         <div class="cloud-shop-card card-pillar-voice">
           <div>
             <div class="card-top-badge">
-              <span class="cloud-acronym-pill mono" style="color:#c084fc;border-color:rgba(139,92,246,0.3);background:rgba(139,92,246,0.15);">AVS</span>
+              <span class="cloud-acronym-pill mono" style="color:#c084fc;border-color:rgba(139,92,246,0.3);background:rgba(139,92,246,0.15);">AVA</span>
               <span class="cloud-spec-chip mono">-12.0 dB LUFS DSP</span>
             </div>
-            <h2 class="card-title">Aaruni Voice AI</h2>
-            <p class="card-desc">Two-stage neural speech generation with W3C PLS technical lexicons, zero-cost local MLX drafts, and 1-click studio voice API upgrades.</p>
+            <h2 class="card-title">Aaruni Voice</h2>
+            <p class="card-desc">Natural neural speech synthesis with W3C PLS technical pronunciation, free local drafts, and 1-click premium studio voice upgrades.</p>
           </div>
           <a href="#ai-workbench" class="card-action-link" style="color:#c084fc;">
-            <span>Launch Voice Studio</span>
+            <span>Try Voice Playground</span>
             <span aria-hidden="true">&rarr;</span>
           </a>
         </div>
@@ -2041,14 +2038,14 @@
         <div class="cloud-shop-card card-pillar-chat">
           <div>
             <div class="card-top-badge">
-              <span class="cloud-acronym-pill mono" style="color:#fb923c;border-color:rgba(249,115,22,0.3);background:rgba(249,115,22,0.15);">ACA</span>
-              <span class="cloud-spec-chip mono">Multi-Intent RAG</span>
+              <span class="cloud-acronym-pill mono" style="color:#fb923c;border-color:rgba(249,115,22,0.3);background:rgba(249,115,22,0.15);">AAI</span>
+              <span class="cloud-spec-chip mono">Multi-Intent Copilot</span>
             </div>
-            <h2 class="card-title">Aaruni Converse AI</h2>
-            <p class="card-desc">Domain-scoped enterprise AI chatbot and task copilot that parses compound instructions into verified compute and audio service receipts.</p>
+            <h2 class="card-title">Aaruni Assistant</h2>
+            <p class="card-desc">Enterprise AI chatbot and workflow copilot that turns plain-English instructions into verified compute, storage, and audio actions.</p>
           </div>
           <a href="#ai-workbench" class="card-action-link" style="color:#fb923c;">
-            <span>Open Agent Playground</span>
+            <span>Open AI Assistant</span>
             <span aria-hidden="true">&rarr;</span>
           </a>
         </div>
@@ -2063,56 +2060,56 @@
         <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;flex-wrap:wrap;gap:12px;">
           <div>
             <span class="eyebrow-tag">SOLUTIONS ARCHITECTURE BLUEPRINT</span>
-            <h3 style="margin:4px 0 0;font-size:20px;font-weight:800;">End-to-End Sovereign Cloud Pipeline Flow</h3>
+            <h3 style="margin:4px 0 0;font-size:20px;font-weight:800;">How Aaruni Cloud Services Work Together</h3>
           </div>
           <div class="mono" style="font-size:12px;color:#86efac;">● 100% Zero-Trust Encrypted Ingress &bull; ap-south-hyd-1</div>
         </div>
 
         <div class="arch-flow-wrap" role="region" aria-label="Aaruni Cloud Architecture Pipeline" tabindex="0">
-          <div class="arch-node active" onclick="openServiceSpec('aem')">
-            <span class="arch-node-code mono">1. EDGE INGRESS</span>
-            <span class="arch-node-name">AEM Edge Mesh</span>
+          <div class="arch-node active" onclick="openServiceSpec('aed')">
+            <span class="arch-node-code mono">1. EDGE NETWORK</span>
+            <span class="arch-node-name">Aaruni Edge (AED)</span>
             <span class="arch-node-spec">TLS 1.3 Anycast CDN</span>
           </div>
 
           <div class="arch-arrow">&rarr;</div>
 
-          <div class="arch-node" onclick="openServiceSpec('azv')">
-            <span class="arch-node-code mono">2. AUTHENTICATION</span>
-            <span class="arch-node-name">AZV Zero-Trust</span>
-            <span class="arch-node-spec">Encrypted Session Vault</span>
+          <div class="arch-node" onclick="openServiceSpec('agd')">
+            <span class="arch-node-code mono">2. SECURITY &amp; KEYS</span>
+            <span class="arch-node-name">Aaruni Guard (AGD)</span>
+            <span class="arch-node-spec">Zero-Trust Auth &amp; Secrets</span>
           </div>
 
           <div class="arch-arrow">&rarr;</div>
 
-          <div class="arch-node" onclick="openServiceSpec('ace')">
-            <span class="arch-node-code mono">3. SOVEREIGN COMPUTE</span>
-            <span class="arch-node-name">ACE Compute</span>
-            <span class="arch-node-spec">M-Series Metal Hardware</span>
+          <div class="arch-node" onclick="openServiceSpec('acc')">
+            <span class="arch-node-code mono">3. CLOUD COMPUTE</span>
+            <span class="arch-node-name">Aaruni Compute (ACC)</span>
+            <span class="arch-node-spec">Dedicated M-Series Nodes</span>
           </div>
 
           <div class="arch-arrow">&harr;</div>
 
-          <div class="arch-node" onclick="openServiceSpec('aov')">
-            <span class="arch-node-code mono">4. 3-TIER STORAGE</span>
-            <span class="arch-node-name">AOV Object Vault</span>
-            <span class="arch-node-spec">RAID-1 NAS + Edge</span>
+          <div class="arch-node" onclick="openServiceSpec('acs')">
+            <span class="arch-node-code mono">4. CLOUD STORAGE</span>
+            <span class="arch-node-name">Aaruni Storage (ACS)</span>
+            <span class="arch-node-spec">$0 Egress + RAID-1 NAS</span>
           </div>
 
           <div class="arch-arrow">&rarr;</div>
 
-          <div class="arch-node" onclick="openServiceSpec('avs')">
-            <span class="arch-node-code mono">5. APPLIED AI</span>
-            <span class="arch-node-name">AVS Voice + ACA</span>
-            <span class="arch-node-spec">W3C PLS &amp; Multi-Intent</span>
+          <div class="arch-node" onclick="openServiceSpec('ava')">
+            <span class="arch-node-code mono">5. VOICE &amp; AI</span>
+            <span class="arch-node-name">Voice + Assistant</span>
+            <span class="arch-node-spec">AVA Speech &amp; AAI Copilot</span>
           </div>
 
           <div class="arch-arrow">&rarr;</div>
 
-          <div class="arch-node" onclick="openServiceSpec('amp')">
-            <span class="arch-node-code mono">6. PRODUCTION</span>
-            <span class="arch-node-name">AMP Media Pipeline</span>
-            <span class="arch-node-spec">Synchronized 1080p MP4</span>
+          <div class="arch-node" onclick="openServiceSpec('arn')">
+            <span class="arch-node-code mono">6. CLOUD RENDER</span>
+            <span class="arch-node-name">Aaruni Render (ARN)</span>
+            <span class="arch-node-spec">1080p MP4 &amp; Slide Engine</span>
           </div>
         </div>
       </div>
@@ -2126,14 +2123,14 @@
         <div class="section-header">
           <div>
             <span class="eyebrow-tag">AARUNI CLOUD SERVICE CATALOG</span>
-            <h2 class="section-h2">Cloud Products &amp; Managed Services Directory</h2>
+            <h2 class="section-h2">Simple, Memorable Cloud Services for Every Team</h2>
             <p class="section-sub">
-              Explore our enterprise sovereign compute, scalable object storage, generative speech AI, media timeline compilers, and zero-trust perimeter services.
+              Clear, accessible cloud primitives—no cryptic jargon. Explore Aaruni Storage (ACS), Aaruni Compute (ACC), Aaruni Voice (AVA), Aaruni Assistant (AAI), and Aaruni Render (ARN).
             </p>
           </div>
           <div style="min-width:260px;">
             <label for="catalog-inline-filter" class="sr-only">Filter cloud services</label>
-            <input type="search" id="catalog-inline-filter" class="form-input" placeholder="Quick filter (e.g. ACE, AOV, Voice, Chat)..." oninput="handleGlobalSearch(this.value)" />
+            <input type="search" id="catalog-inline-filter" class="form-input" placeholder="Quick filter (e.g. Storage, Compute, Voice, Render)..." oninput="handleGlobalSearch(this.value)" />
           </div>
         </div>
 
@@ -2148,24 +2145,24 @@
               <span>&#8862; All Cloud Services</span>
               <span class="rail-count">11</span>
             </button>
+            <button type="button" role="tab" class="rail-btn" data-cat="storage" aria-selected="false" onclick="selectCategory('storage')">
+              <span>📦 Cloud Storage &amp; Archive</span>
+              <span class="rail-count">2</span>
+            </button>
             <button type="button" role="tab" class="rail-btn" data-cat="compute" aria-selected="false" onclick="selectCategory('compute')">
               <span>⚡ Compute &amp; Containers</span>
               <span class="rail-count">2</span>
             </button>
-            <button type="button" role="tab" class="rail-btn" data-cat="storage" aria-selected="false" onclick="selectCategory('storage')">
-              <span>🗄️ Storage &amp; Buckets</span>
-              <span class="rail-count">2</span>
-            </button>
             <button type="button" role="tab" class="rail-btn" data-cat="ai" aria-selected="false" onclick="selectCategory('ai')">
-              <span>🎙️ Applied AI &amp; Speech</span>
+              <span>🎙️ Voice &amp; AI Services</span>
               <span class="rail-count">3</span>
             </button>
             <button type="button" role="tab" class="rail-btn" data-cat="tools" aria-selected="false" onclick="selectCategory('tools')">
-              <span>⚙️ Media &amp; Dev Tools</span>
+              <span>🎬 Cloud Render &amp; QA</span>
               <span class="rail-count">2</span>
             </button>
             <button type="button" role="tab" class="rail-btn" data-cat="security" aria-selected="false" onclick="selectCategory('security')">
-              <span>🛡️ Security &amp; Mesh</span>
+              <span>🛡️ Edge &amp; Security</span>
               <span class="rail-count">2</span>
             </button>
           </div>
@@ -2179,31 +2176,31 @@
     </section>
 
     <!-- =====================================================================
-       6. INTERACTIVE AI SERVICES PLAYGROUND (AVS + ACA)
+       6. INTERACTIVE AI SERVICES PLAYGROUND (AVA + AAI)
        ===================================================================== -->
     <section id="ai-workbench" class="section section-surface">
       <div class="container">
         <div class="section-header">
           <div>
             <span class="eyebrow-tag">INTERACTIVE CLOUD AI PLAYGROUND</span>
-            <h2 class="section-h2">Aaruni Voice AI (AVS) &amp; Converse AI (ACA) Studio</h2>
+            <h2 class="section-h2">Aaruni Voice (AVA) &amp; Aaruni Assistant (AAI) Workbench</h2>
             <p class="section-sub">
-              Test our flagship neural speech synthesis pipeline and our multi-intent conversational workflow copilot live in your browser.
+              Audition our natural neural speech engine and test our plain-English cloud workflow assistant right in your browser.
             </p>
           </div>
         </div>
 
         <div class="ai-workbench-grid">
-          <!-- LEFT: AARUNI VOICE AI (AVS) STUDIO -->
+          <!-- LEFT: AARUNI VOICE (AVA) -->
           <div class="workbench-card">
             <div>
               <div style="display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:12px;">
-                <span class="pill-badge glyph-ai mono">AVS &bull; SPEECH SYNTHESIS ENGINE</span>
+                <span class="pill-badge glyph-ai mono">AVA &bull; SPEECH SYNTHESIS ENGINE</span>
                 <span class="mono dsp-badge">-12.0 dB LUFS DSP Standard</span>
               </div>
-              <h3 style="margin:0 0 6px;font-size:20px;font-weight:800;">Aaruni Voice AI (AVS)</h3>
+              <h3 style="margin:0 0 6px;font-size:20px;font-weight:800;">Aaruni Voice (AVA)</h3>
               <p style="margin:0 0 14px;font-size:13.5px;color:var(--ac-text-secondary);line-height:1.5;">
-                Generates broadcast-grade technical narration with strict W3C PLS phonetic lexicons, zero-cost local neural drafts, 35ms/45ms raised-cosine de-clicking, and 1-click studio API connectors.
+                Generates broadcast-grade technical narration with strict W3C PLS phonetic lexicons, unlimited free local neural drafts, 35ms/45ms raised-cosine de-clicking, and 1-click premium voice API connectors.
               </p>
 
               <div style="margin-bottom:12px;">
@@ -2221,7 +2218,7 @@
                   <span>DSP: -12.0 dB LUFS</span>
                 </div>
                 <p id="avs-sample-text" style="margin:12px 0;font-size:13px;color:#e2e8f0;font-style:italic;line-height:1.5;">
-                  "Welcome to Aaruni Cloud. Aaruni Compute Engine and Aaruni Object Vault synchronize mission-critical workloads across NVMe, RAID-1 NAS, and global Anycast edge nodes."
+                  "Welcome to Aaruni Cloud. Aaruni Compute and Aaruni Storage keep your videos, datasets, and applications fast, simple, and accessible—with zero egress fees."
                 </p>
                 <div class="waveform-bars" id="avs-waveform" aria-hidden="true">
                   <span class="wave-bar"></span><span class="wave-bar"></span><span class="wave-bar"></span><span class="wave-bar"></span>
@@ -2240,35 +2237,35 @@
             </div>
           </div>
 
-          <!-- RIGHT: AARUNI CONVERSE AI (ACA) COPILOT -->
+          <!-- RIGHT: AARUNI ASSISTANT (AAI) COPILOT -->
           <div class="workbench-card">
             <div>
               <div style="display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:12px;">
-                <span class="pill-badge glyph-tools mono">ACA &bull; MULTI-INTENT AGENT</span>
+                <span class="pill-badge glyph-tools mono">AAI &bull; MULTI-INTENT COPILOT</span>
                 <span class="mono rag-badge">RAG + Tool Execution</span>
               </div>
-              <h3 style="margin:0 0 6px;font-size:20px;font-weight:800;">Aaruni Converse AI (ACA)</h3>
+              <h3 style="margin:0 0 6px;font-size:20px;font-weight:800;">Aaruni Assistant (AAI)</h3>
               <p style="margin:0 0 14px;font-size:13.5px;color:var(--ac-text-secondary);line-height:1.5;">
-                Domain-scoped enterprise AI chatbot and task copilot that parses compound natural language requests into verified compute, storage, slide, and audio service actions.
+                Enterprise AI chatbot and cloud copilot that turns plain-English requests into verified compute, cloud storage, rendering, and voice actions.
               </p>
 
               <div class="preset-chips" aria-label="Sample Cloud Agent Prompts">
-                <button type="button" class="preset-chip" onclick="sendConversePreset('Provision 2 ACE compute nodes and mount 8TB AOV storage vault')">Provision ACE + AOV Vault</button>
-                <button type="button" class="preset-chip" onclick="sendConversePreset('Audit slide contrast and regenerate AVS voiceover in one shot')">Compound Slide + AVS Audio Fix</button>
-                <button type="button" class="preset-chip" onclick="sendConversePreset('Show AKF security encryption and Zero-OTP vault controls')">Query Security Controls</button>
+                <button type="button" class="preset-chip" onclick="sendConversePreset('Launch 2 Aaruni Compute nodes and attach 8TB Aaruni Storage')">Launch Compute + Storage</button>
+                <button type="button" class="preset-chip" onclick="sendConversePreset('Render 1080p video via Aaruni Render and synthesize Aaruni Voice')">Render Video + Voiceover</button>
+                <button type="button" class="preset-chip" onclick="sendConversePreset('Verify Aaruni Guard security encryption and Zero-OTP controls')">Check Guard Security</button>
               </div>
 
-              <div id="aca-chat-log" class="chat-log" role="log" aria-live="polite" aria-label="Aaruni Converse AI Log" tabindex="0">
+              <div id="aca-chat-log" class="chat-log" role="log" aria-live="polite" aria-label="Aaruni Assistant Log" tabindex="0">
                 <div class="chat-msg-agent">
-                  <strong class="mono" style="color:#7dd3fc;display:block;font-size:11px;margin-bottom:3px;">Aaruni Converse AI (ACA) &bull; Online</strong>
-                  Select a sample cloud prompt above or enter a compound command across <code>ACE</code>, <code>AOV</code>, <code>AVS</code>, or <code>AKF</code>.
+                  <strong class="mono" style="color:#7dd3fc;display:block;font-size:11px;margin-bottom:3px;">Aaruni Assistant (AAI) &bull; Online</strong>
+                  Select a sample prompt above or ask a compound command across <code>ACS</code>, <code>ACC</code>, <code>AVA</code>, or <code>ARN</code>.
                 </div>
               </div>
             </div>
 
             <form onsubmit="handleConverseSubmit(event)" style="display:flex;gap:8px;">
-              <label for="aca-chat-input" class="sr-only">Ask Aaruni Converse AI</label>
-              <input id="aca-chat-input" class="form-input" placeholder="Ask ACA Chatbot (e.g. Scale ACE cluster &amp; sync AOV)..." required />
+              <label for="aca-chat-input" class="sr-only">Ask Aaruni Assistant</label>
+              <input id="aca-chat-input" class="form-input" placeholder="Ask Aaruni Assistant (e.g. Scale Compute &amp; sync Storage)..." required />
               <button type="submit" class="btn-dawn" style="padding:0 18px;">Send</button>
             </form>
           </div>
@@ -2277,16 +2274,16 @@
     </section>
 
     <!-- =====================================================================
-       7. FEATURED CUSTOMER CASE STUDY — SYLLOVO STUDIO
+       7. FEATURED CUSTOMER CASE STUDY — SYLLOVO STUDIO (AUTHORING EDITOR)
        ===================================================================== -->
     <section id="customer-syllovo" class="section">
       <div class="container">
         <div class="section-header">
           <div>
-            <span class="eyebrow-tag">CUSTOMER CASE STUDY</span>
-            <h2 class="section-h2">How Syllovo Studio Scales Autonomous 4K Production on Aaruni Cloud</h2>
+            <span class="eyebrow-tag">CUSTOMER CASE STUDY &bull; AUTHORING WORKSPACE</span>
+            <h2 class="section-h2">How the Syllovo Authoring Editor Runs on Aaruni Cloud</h2>
             <p class="section-sub">
-              Learn how Syllovo (<a href="https://syllovo.com" target="_blank" rel="noopener" style="color:#38bdf8;text-decoration:underline;">syllovo.com</a>) orchestrates ACE, AOV, AVS, and ACA to automate end-to-end technical courses with 1080p video renders.
+              Syllovo (<a href="https://syllovo.com" target="_blank" rel="noopener" style="color:#38bdf8;text-decoration:underline;">syllovo.com</a>) is our flagship authoring editor for course creators—powered behind the scenes by Aaruni Storage (ACS), Aaruni Compute (ACC), Aaruni Voice (AVA), and Aaruni Render (ARN).
             </p>
           </div>
           <a href="https://syllovo.com" target="_blank" rel="noopener" class="btn-console">Visit Syllovo.com &nearr;</a>
@@ -2298,29 +2295,29 @@
               <div style="display:flex;align-items:center;gap:12px;margin-bottom:12px;">
                 <div style="width:46px;height:46px;border-radius:12px;background:linear-gradient(135deg,#0284c7,#38bdf8);color:#ffffff;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:22px;box-shadow:0 0 16px rgba(56,189,248,0.4);">S</div>
                 <div>
-                  <h3 style="margin:0;font-size:20px;font-weight:800;">Syllovo Autonomous Course Studio</h3>
-                  <span class="mono case-tenant-label">Enterprise Case Study &bull; Production Tenant</span>
+                  <h3 style="margin:0;font-size:20px;font-weight:800;">Syllovo Autonomous Course Editor</h3>
+                  <span class="mono case-tenant-label">Flagship Creator App &bull; Powered by Aaruni Cloud</span>
                 </div>
               </div>
               <p style="font-size:14px;color:var(--ac-text-secondary);margin:0;line-height:1.6;">
-                Syllovo unifies outline validation, slide deck compilation, headless browser/CLI capture, two-stage neural speech generation, multi-intent AI review chat, and rule-timed multi-track video rendering inside one single-pane workspace backed by Aaruni Cloud.
+                Course authors edit scripts, slides, and timelines inside the Syllovo creator app while heavy infrastructure jobs—cloud storage, headless capture, neural speech synthesis, and 1080p MP4 rendering—execute seamlessly on Aaruni Cloud.
               </p>
 
               <div class="kpi-grid-2">
                 <div class="kpi-card">
                   <strong class="mono" style="font-size:22px;color:#38bdf8;display:block;">4.2&times; Faster</strong>
-                  <span style="font-size:12px;color:var(--ac-text-secondary);font-weight:600;">1080p Hardware Encoding on ACE Nodes</span>
+                  <span style="font-size:12px;color:var(--ac-text-secondary);font-weight:600;">1080p Hardware Encoding on ACC Nodes</span>
                 </div>
                 <div class="kpi-card">
                   <strong class="mono" style="font-size:22px;color:#10b981;display:block;">$0 Drafts</strong>
-                  <span style="font-size:12px;color:var(--ac-text-secondary);font-weight:600;">Unlimited AVS Local Neural Iterations</span>
+                  <span style="font-size:12px;color:var(--ac-text-secondary);font-weight:600;">Unlimited AVA Local Neural Iterations</span>
                 </div>
                 <div class="kpi-card">
-                  <strong class="mono" style="font-size:22px;color:#818cf8;display:block;">3-Tier AOV</strong>
-                  <span style="font-size:12px;color:var(--ac-text-secondary);font-weight:600;">RAID-1 NAS + Global Edge + 30 TB ADA Vault</span>
+                  <strong class="mono" style="font-size:22px;color:#818cf8;display:block;">3-Tier ACS</strong>
+                  <span style="font-size:12px;color:var(--ac-text-secondary);font-weight:600;">RAID-1 NAS + Edge CDN + 30 TB ARC Archive</span>
                 </div>
                 <div class="kpi-card">
-                  <strong class="mono" style="font-size:22px;color:#fb923c;display:block;">ACA Copilot</strong>
+                  <strong class="mono" style="font-size:22px;color:#fb923c;display:block;">AAI Copilot</strong>
                   <span style="font-size:12px;color:var(--ac-text-secondary);font-weight:600;">Multi-Intent Slide &amp; Audio Repair Receipts</span>
                 </div>
               </div>
@@ -2331,22 +2328,22 @@
             </div>
 
             <div class="spotlight-mapping-box">
-              <strong style="font-size:14px;color:#38bdf8;">Aaruni Cloud Service Mapping in Syllovo</strong>
+              <strong style="font-size:14px;color:#38bdf8;">Aaruni Cloud Services Powering Syllovo</strong>
               <div class="kpi-card" style="padding:11px 13px;">
-                <strong class="mono" style="font-size:12px;color:#38bdf8;">1. AKF (Aaruni Knowledge Fabric)</strong>
+                <strong class="mono" style="font-size:12px;color:#38bdf8;">1. Aaruni Knowledge (AKB)</strong>
                 <div style="font-size:12.5px;color:var(--ac-text-secondary);">Compiles primary docs &amp; RFCs into a weighted 100%-auditable RAG index.</div>
               </div>
               <div class="kpi-card" style="padding:11px 13px;">
-                <strong class="mono" style="font-size:12px;color:#38bdf8;">2. ACE + ACG (Compute &amp; Container Grid)</strong>
-                <div style="font-size:12.5px;color:var(--ac-text-secondary);">Executes deterministic 1920&times;1080 lab captures and hardware VideoToolbox renders.</div>
+                <strong class="mono" style="font-size:12px;color:#38bdf8;">2. Aaruni Compute (ACC) + Containers (ACN)</strong>
+                <div style="font-size:12.5px;color:var(--ac-text-secondary);">Executes deterministic 1920&times;1080 lab captures and hardware VideoToolbox builds.</div>
               </div>
               <div class="kpi-card" style="padding:11px 13px;">
-                <strong class="mono" style="font-size:12px;color:#38bdf8;">3. AVS + ACA (Voice AI &amp; Converse AI)</strong>
-                <div style="font-size:12.5px;color:var(--ac-text-secondary);">Powers zero-click -12 dB voiceovers and multi-intent reviewer copilot commands.</div>
+                <strong class="mono" style="font-size:12px;color:#38bdf8;">3. Aaruni Voice (AVA) + Assistant (AAI)</strong>
+                <div style="font-size:12.5px;color:var(--ac-text-secondary);">Powers zero-click -12 dB voiceovers and multi-intent author copilot commands.</div>
               </div>
               <div class="kpi-card" style="padding:11px 13px;">
-                <strong class="mono" style="font-size:12px;color:#38bdf8;">4. AMP + AOV + AZV (Pipeline &amp; Vault)</strong>
-                <div style="font-size:12.5px;color:var(--ac-text-secondary);">Exports .cmproj/.key/.mp4 deliverables and locks finalized assets in read-only storage.</div>
+                <strong class="mono" style="font-size:12px;color:#38bdf8;">4. Aaruni Render (ARN) + Storage (ACS)</strong>
+                <div style="font-size:12.5px;color:var(--ac-text-secondary);">Compiles .cmproj/.key/.mp4 deliverables and stores finalized assets with $0 egress.</div>
               </div>
             </div>
           </div>
@@ -2375,7 +2372,7 @@
 
         <div class="legal-notice-box" role="note" aria-label="Trademark Attribution and Non-Affiliation Notice">
           <strong>⚖️ Trademark Attribution &amp; Non-Affiliation Notice (Nominative Fair Use):</strong>
-          All third-party product names, trademarks, and registered marks—including <em>TechSmith Camtasia&reg;</em>, <em>ElevenLabs&reg;</em>, <em>Apple&reg;</em>, <em>macOS&reg;</em>, <em>Keynote&reg;</em>, <em>Apple Silicon&reg;</em>, <em>Cloudflare&reg;</em>, <em>Synology&reg;</em>, <em>Google Workspace&trade; / Google Drive&trade;</em>, <em>Docker&reg;</em>, <em>Playwright&trade;</em>, <em>FFmpeg&reg;</em>, and <em>GitHub&reg;</em>—belong to their respective owners. Aaruni Cloud references these technologies solely to describe technical file/API interoperability (such as <code>.cmproj</code>, <code>.libzip</code>, and <code>.key</code> adapters) and licensed underlying infrastructure. Aaruni Cloud is an independent platform and is <strong>not</strong> affiliated with, endorsed by, sponsored by, or formally partnered with Amazon Web Services (AWS) or any listed third-party trademark owner.
+          All third-party product names, trademarks, and registered marks—including <em>TechSmith Camtasia&reg;</em>, <em>ElevenLabs&reg;</em>, <em>Apple&reg;</em>, <em>macOS&reg;</em>, <em>Keynote&reg;</em>, <em>Apple Silicon&reg;</em>, <em>Cloudflare&reg;</em>, <em>Synology&reg;</em>, <em>Google Cloud&trade; / Google Workspace&trade;</em>, <em>Docker&reg;</em>, <em>Playwright&trade;</em>, <em>FFmpeg&reg;</em>, and <em>GitHub&reg;</em>—belong to their respective owners. Aaruni Cloud references these technologies solely to describe technical file/API interoperability (such as <code>.cmproj</code>, <code>.libzip</code>, and <code>.key</code> adapters) and licensed underlying infrastructure. Aaruni Cloud is an independent platform and is <strong>not</strong> affiliated with, endorsed by, sponsored by, or formally partnered with Amazon Web Services (AWS) or any listed third-party trademark owner.
         </div>
       </div>
     </section>
@@ -2390,7 +2387,7 @@
             <span class="eyebrow-tag">TRANSPARENT CLOUD ECONOMICS</span>
             <h2 class="section-h2">Workload Sizing &amp; TCO Cost Estimator</h2>
             <p class="section-sub">
-              Estimate infrastructure optimization across ACE compute, AOV zero-egress storage, and AVS two-stage speech synthesis compared to conventional on-demand cloud pricing.
+              Estimate infrastructure savings across Aaruni Compute (ACC), zero-egress Aaruni Storage (ACS), and Aaruni Voice (AVA) compared to conventional on-demand cloud billing.
             </p>
           </div>
         </div>
@@ -2405,7 +2402,7 @@
 
               <div style="margin-bottom:16px;">
                 <div style="display:flex;justify-content:space-between;font-size:13px;font-weight:700;margin-bottom:6px;">
-                  <label for="tco-words">AVS Monthly Speech Volume</label>
+                  <label for="tco-words">Aaruni Voice (AVA) Monthly Words</label>
                   <span id="tco-words-val" class="mono tco-slider-val">600,000 words</span>
                 </div>
                 <input type="range" id="tco-words" style="width:100%;accent-color:#0284c7;" min="100000" max="3000000" step="100000" value="600000" oninput="updateTco()" />
@@ -2413,7 +2410,7 @@
 
               <div style="margin-bottom:16px;">
                 <div style="display:flex;justify-content:space-between;font-size:13px;font-weight:700;margin-bottom:6px;">
-                  <label for="tco-hours">ACE Monthly 1080p Render Hours</label>
+                  <label for="tco-hours">Aaruni Compute (ACC) Render Hours</label>
                   <span id="tco-hours-val" class="mono tco-slider-val">140 hours</span>
                 </div>
                 <input type="range" id="tco-hours" style="width:100%;accent-color:#0284c7;" min="20" max="500" step="20" value="140" oninput="updateTco()" />
@@ -2421,7 +2418,7 @@
 
               <div style="margin-bottom:16px;">
                 <div style="display:flex;justify-content:space-between;font-size:13px;font-weight:700;margin-bottom:6px;">
-                  <label for="tco-storage">AOV Storage Footprint</label>
+                  <label for="tco-storage">Aaruni Storage (ACS) Footprint</label>
                   <span id="tco-storage-val" class="mono tco-slider-val">8 TB</span>
                 </div>
                 <input type="range" id="tco-storage" style="width:100%;accent-color:#0284c7;" min="2" max="30" step="2" value="8" oninput="updateTco()" />
@@ -2466,7 +2463,7 @@
               </div>
             </div>
             <div style="margin-top:16px;padding-top:14px;border-top:1px solid rgba(255,255,255,0.08);display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;">
-              <span style="font-size:12.5px;color:var(--ac-text-secondary);font-weight:600;">Ready to evaluate ACE, AOV, AVS, or ACA?</span>
+              <span style="font-size:12.5px;color:var(--ac-text-secondary);font-weight:600;">Ready to try Aaruni Storage, Compute, Voice, or Assistant?</span>
               <button type="button" class="btn-dawn" style="min-height:38px;padding:0 14px;font-size:12.5px;" onclick="openPilotModal()">Request Enterprise Pilot</button>
             </div>
           </div>
@@ -2487,7 +2484,7 @@
             <strong style="color:#ffffff;font-size:16px;">Aaruni Cloud</strong>
           </div>
           <p style="margin:0 0 12px;color:#94a3b8;font-size:12.5px;line-height:1.6;">
-            Official cloud infrastructure &amp; AI platform at <strong>aarunicloud.com</strong> — offering Aaruni Compute Engine (ACE), Aaruni Object Vault (AOV), Aaruni Voice AI (AVS), and Aaruni Converse AI (ACA).
+            Accessible cloud infrastructure &amp; AI platform at <strong>aarunicloud.com</strong> — offering Aaruni Storage (ACS), Aaruni Compute (ACC), Aaruni Voice (AVA), Aaruni Assistant (AAI), and Aaruni Render (ARN).
           </p>
           <div class="mono" style="font-size:11.5px;color:#cbd5e1;">
             Hyderabad Tech Hub &bull; Beeramguda, Hyderabad, Telangana 502032, India
@@ -2495,31 +2492,31 @@
         </div>
 
         <div>
-          <h3 class="footer-h">Compute &amp; Storage</h3>
+          <h3 class="footer-h">Storage &amp; Compute</h3>
           <ul class="footer-ul">
-            <li><a href="#products" onclick="selectCategory('compute')">Aaruni Compute Engine (ACE)</a></li>
-            <li><a href="#products" onclick="selectCategory('compute')">Aaruni Container Grid (ACG)</a></li>
-            <li><a href="#products" onclick="selectCategory('storage')">Aaruni Object Vault (AOV)</a></li>
-            <li><a href="#products" onclick="selectCategory('storage')">Aaruni Deep Archive (ADA)</a></li>
+            <li><a href="#products" onclick="selectCategory('storage')">Aaruni Storage (ACS)</a></li>
+            <li><a href="#products" onclick="selectCategory('storage')">Aaruni Archive (ARC)</a></li>
+            <li><a href="#products" onclick="selectCategory('compute')">Aaruni Compute (ACC)</a></li>
+            <li><a href="#products" onclick="selectCategory('compute')">Aaruni Containers (ACN)</a></li>
           </ul>
         </div>
 
         <div>
-          <h3 class="footer-h">AI &amp; Studio Tools</h3>
+          <h3 class="footer-h">Voice, AI &amp; Render</h3>
           <ul class="footer-ul">
-            <li><a href="#ai-workbench">Aaruni Voice AI (AVS)</a></li>
-            <li><a href="#ai-workbench">Aaruni Converse AI (ACA)</a></li>
-            <li><a href="#products" onclick="selectCategory('ai')">Aaruni Knowledge Fabric (AKF)</a></li>
-            <li><a href="#products" onclick="selectCategory('tools')">Aaruni Media Pipeline (AMP)</a></li>
-            <li><a href="#products" onclick="selectCategory('tools')">Aaruni Assurance Lab (AAL)</a></li>
+            <li><a href="#ai-workbench">Aaruni Voice (AVA)</a></li>
+            <li><a href="#ai-workbench">Aaruni Assistant (AAI)</a></li>
+            <li><a href="#products" onclick="selectCategory('ai')">Aaruni Knowledge (AKB)</a></li>
+            <li><a href="#products" onclick="selectCategory('tools')">Aaruni Render (ARN)</a></li>
+            <li><a href="#products" onclick="selectCategory('tools')">Aaruni Quality (AQA)</a></li>
           </ul>
         </div>
 
         <div>
-          <h3 class="footer-h">Security &amp; Legal</h3>
+          <h3 class="footer-h">Edge, Security &amp; Legal</h3>
           <ul class="footer-ul">
-            <li><a href="#products" onclick="selectCategory('security')">Aaruni Zero-Trust Vault (AZV)</a></li>
-            <li><a href="#products" onclick="selectCategory('security')">Aaruni Edge Mesh (AEM)</a></li>
+            <li><a href="#products" onclick="selectCategory('security')">Aaruni Edge (AED)</a></li>
+            <li><a href="#products" onclick="selectCategory('security')">Aaruni Guard (AGD)</a></li>
             <li><button type="button" onclick="openLegalModal('TRADEMARKS')">Trademark &amp; Fair-Use Policy</button></li>
             <li><button type="button" onclick="openLegalModal('PRIVACY')">Global Privacy Policy</button></li>
             <li><button type="button" onclick="openLegalModal('TERMS')">Terms of Service</button></li>
@@ -2532,7 +2529,7 @@
             <li><a href="https://aarunitech.com" target="_blank" rel="noopener">Parent: aarunitech.com &nearr;</a></li>
             <li><a href="https://syllovo.com" target="_blank" rel="noopener">Customer: syllovo.com &nearr;</a></li>
             <li><a href="https://my.aarunitech.com" target="_blank" rel="noopener">Staff Portal (my.aarunitech.com) &nearr;</a></li>
-            <li><a href="mailto:sales@aarunitech.com?subject=%5Baarunicloud%5D%20Aaruni%20Cloud%20Sales%20%26%20Support">Contact: sales@aarunitech.com</a></li>
+            <li><a href="mailto:info@syllovo.com?subject=%5Baarunicloud%5D%20Aaruni%20Cloud%20Sales%20%26%20Support">Contact: info@syllovo.com</a></li>
           </ul>
         </div>
       </div>
@@ -2567,285 +2564,276 @@
   <script>
     const CLOUD_SERVICES = [
       {
-        id: "ace",
-        code: "ACE",
-        name: "Aaruni Compute Engine",
-        pillar: "Compute",
+        id: "acs",
+        code: "ACS",
+        name: "Aaruni Storage",
+        pillar: "Cloud Storage",
+        category: "storage",
+        featured: true,
+        glyphClass: "glyph-storage",
+        endpoint: "storage.api.aarunicloud.com",
+        desc: "Simple, fast, S3-compatible cloud storage for videos, media, datasets, and application files—combining NVMe cache, 8 TB RAID-1 NAS, and global $0-egress CDN delivery.",
+        bullets: [
+          "Zero egress fees ($0/GB) with instant global HTTP 206 streaming",
+          "Real-time Gigabit RAID-1 mirroring with SHA-256 checksums",
+          "Read-only finalization lock prevents accidental file overwrites"
+        ],
+        cli: "aaruni storage sync ./media acs://production-media"
+      },
+      {
+        id: "arc",
+        code: "ARC",
+        name: "Aaruni Archive",
+        pillar: "Cold Backup",
+        category: "storage",
+        featured: false,
+        glyphClass: "glyph-storage",
+        endpoint: "archive.api.aarunicloud.com",
+        desc: "30 TB AES-256 encrypted offsite cold backup storage engineered for long-term media preservation, disaster recovery, and statutory audit retention.",
+        bullets: [
+          "Offsite geo-isolated cold storage immune to local power events",
+          "AES-256 encryption at rest with strict role-gated access",
+          "Immutable SHA-256 verification receipts on every backup bundle"
+        ],
+        cli: "aaruni archive seal --target arc://cold-backup-30tb"
+      },
+      {
+        id: "acc",
+        code: "ACC",
+        name: "Aaruni Compute",
+        pillar: "Cloud Compute",
         category: "compute",
         featured: true,
         glyphClass: "glyph-compute",
-        endpoint: "ace.api.aarunicloud.com",
-        desc: "Dedicated unified-memory Apple Silicon M-Series compute clusters running 24/7 in headless dark-monitor server mode for AI inference and hardware media encoding.",
+        endpoint: "compute.api.aarunicloud.com",
+        desc: "Dedicated unified-memory Apple Silicon M-Series and Linux compute machines running 24/7 for fast AI inference, builds, and hardware video encoding.",
         bullets: [
-          "Hardware H.264/HEVC VideoToolbox 1080p/4K acceleration",
-          "Auto-reboot power recovery & Wake-on-LAN continuity",
-          "Zero per-minute GPU rental fees across iterative builds"
+          "Hardware H.264/HEVC VideoToolbox 1080p/4K media acceleration",
+          "Auto-reboot power recovery & Wake-on-LAN high availability",
+          "Predictable flat monthly pricing with zero per-minute GPU surcharges"
         ],
-        cli: "aaruni compute instances list --region ap-south-hyd-1"
+        cli: "aaruni compute list --region ap-south-hyd-1"
       },
       {
-        id: "acg",
-        code: "ACG",
-        name: "Aaruni Container Grid",
-        pillar: "Compute",
+        id: "acn",
+        code: "ACN",
+        name: "Aaruni Containers",
+        pillar: "Containers",
         category: "compute",
         featured: false,
         glyphClass: "glyph-compute",
-        endpoint: "acg.api.aarunicloud.com",
-        desc: "Elastic Docker/OCI container sandboxes and serverless Linux Xvfb (1920x1080) headless runners for deterministic CLI/browser capture and automatic failover.",
+        endpoint: "containers.api.aarunicloud.com",
+        desc: "Isolated Docker/OCI container sandboxes and serverless Linux Xvfb (1920x1080) headless workers for clean app testing, browser capture, and cloud failover.",
         bullets: [
-          "Seamless cloud runner failover if local LAN power drops",
-          "Isolated security & microservice lab containers",
+          "Automatic cloud runner failover if local LAN connectivity drops",
+          "Clean, ephemeral microservice & code execution sandboxes",
           "Parallel multi-viewport headless Chromium execution"
         ],
-        cli: "aaruni container run --profile xvfb-1080p-capture"
+        cli: "aaruni containers run --image xvfb-1080p-worker"
       },
       {
-        id: "aov",
-        code: "AOV",
-        name: "Aaruni Object Vault",
-        pillar: "Storage",
-        category: "storage",
-        featured: true,
-        glyphClass: "glyph-storage",
-        endpoint: "aov.api.aarunicloud.com",
-        desc: "High-throughput 3-tier cloud storage fabric uniting local NVMe scratch, 8 TB RAID-1 Gigabit NAS mirrors, and global zero-egress Anycast edge object caches.",
-        bullets: [
-          "HTTP 206 Partial Content byte-range video/audio streaming",
-          "Real-time LAN RAID-1 mirroring with checksum verification",
-          "Read-only finalization gate prevents accidental overwrites"
-        ],
-        cli: "aaruni storage sync ./dist aov://studio-production-vault"
-      },
-      {
-        id: "ada",
-        code: "ADA",
-        name: "Aaruni Deep Archive",
-        pillar: "Storage",
-        category: "storage",
-        featured: false,
-        glyphClass: "glyph-storage",
-        endpoint: "ada.api.aarunicloud.com",
-        desc: "30 TB AES-256 encrypted offsite cold archive and statutory compliance vault engineered for disaster-immune backups and corporate audit retention.",
-        bullets: [
-          "Scoped offsite vault folder immune to local power events",
-          "AES-256 encryption at rest with role-gated access",
-          "Immutable SHA-256 audit receipts on archived packages"
-        ],
-        cli: "aaruni archive seal --vault ada://statutory-cold-30tb"
-      },
-      {
-        id: "avs",
-        code: "AVS",
-        name: "Aaruni Voice AI",
-        pillar: "AI Voice",
+        id: "ava",
+        code: "AVA",
+        name: "Aaruni Voice",
+        pillar: "Voice AI",
         category: "ai",
         featured: true,
         glyphClass: "glyph-ai",
-        endpoint: "avs.api.aarunicloud.com",
-        desc: "Enterprise AI voice generation and broadcast DSP service combining unlimited zero-cost local neural speech drafts with 1-click studio voice API upgrades.",
+        endpoint: "voice.api.aarunicloud.com",
+        desc: "Natural neural speech synthesis and broadcast audio mastering combining unlimited free local draft iterations with 1-click premium studio voice APIs.",
         bullets: [
-          "W3C PLS technical pronunciation lexicon enforcement",
+          "W3C PLS technical pronunciation lexicon for developer terms",
           "35ms/45ms raised-cosine valley slicing for zero audio clicks",
-          "Broadcast -12 dB to -6 dB loudness & high-pass DSP"
+          "Automatic broadcast -12 dB to -6 dB loudness mastering"
         ],
         cli: "aaruni voice synthesize --lexicon w3c-pls --target-lufs -12"
       },
       {
-        id: "aca",
-        code: "ACA",
-        name: "Aaruni Converse AI",
-        pillar: "AI Chatbot",
+        id: "aai",
+        code: "AAI",
+        name: "Aaruni Assistant",
+        pillar: "AI Copilot",
         category: "ai",
         featured: true,
         glyphClass: "glyph-ai",
-        endpoint: "aca.api.aarunicloud.com",
-        desc: "Multi-intent enterprise AI chatbot and scoped workflow copilot that parses compound natural-language instructions into verified domain actions.",
+        endpoint: "assistant.api.aarunicloud.com",
+        desc: "Multi-intent enterprise AI chatbot and cloud copilot that turns plain-English instructions into verified storage, compute, rendering, and audio actions.",
         bullets: [
-          "Simultaneous multi-intent parsing (visual + audio + infra)",
-          "Honest multi-stage progress streaming (Analyze -> Verify)",
-          "Grounded in AKF citations with zero hallucinated claims"
+          "Simultaneous multi-intent execution across cloud services",
+          "Honest step-by-step progress streaming with audit receipts",
+          "Grounded in Aaruni Knowledge (AKB) with zero hallucinations"
         ],
-        cli: "aaruni converse execute --scope studio-agent --verify-receipt"
+        cli: "aaruni assistant ask --prompt 'Sync ACS storage and render MP4'"
       },
       {
-        id: "akf",
-        code: "AKF",
-        name: "Aaruni Knowledge Fabric",
-        pillar: "Knowledge RAG",
+        id: "akb",
+        code: "AKB",
+        name: "Aaruni Knowledge",
+        pillar: "Knowledge Base",
         category: "ai",
         featured: false,
         glyphClass: "glyph-ai",
-        endpoint: "akf.api.aarunicloud.com",
-        desc: "Managed SQLite FTS5 full-text and semantic RAG engine with weighted authority scoring across official docs, RFCs, and automated pre-flight compliance linters.",
+        endpoint: "knowledge.api.aarunicloud.com",
+        desc: "Managed SQLite FTS5 full-text and semantic RAG knowledge base with weighted source authority scoring and automated pre-flight compliance checks.",
         bullets: [
-          "Weighted confidence ledger (Docs 40%, RFCs 20%, Labs 40%)",
+          "Weighted source ledger across docs, RFCs, and verified code",
           "Sub-50ms indexed rule lookup and citation verification",
-          "Blocks duplicate coverage and policy violations pre-build"
+          "Catches policy & quality issues before compute jobs run"
         ],
-        cli: "aaruni kb lint --target ./course-manifest.json --gate 99"
+        cli: "aaruni knowledge search --query 'audio loudness standard'"
       },
       {
-        id: "amp",
-        code: "AMP",
-        name: "Aaruni Media Pipeline",
-        pillar: "Media Tools",
+        id: "arn",
+        code: "ARN",
+        name: "Aaruni Render",
+        pillar: "Cloud Render",
         category: "tools",
         featured: true,
         glyphClass: "glyph-tools",
-        endpoint: "amp.api.aarunicloud.com",
-        desc: "Hexagonal slide-to-timeline compiler producing synchronized multi-track video timelines (.cmproj), native slide decks (.key/.pdf), and 1080p MP4 masters.",
+        endpoint: "render.api.aarunicloud.com",
+        desc: "Cloud background rendering engine that compiles slide decks (.key/.pdf), multi-track timelines (.cmproj), and synchronized 1080p MP4 videos.",
         bullets: [
-          "1:1 script, narration, caption, and visual cue alignment",
-          "Pluggable adapters for Camtasia®, Keynote® & FFmpeg®",
-          "HTML5 Canvas pixel-diff verification on exported stages"
+          "Exact 1:1 narration, caption, and visual transition alignment",
+          "Clean adapters for Camtasia®, Keynote®, and FFmpeg®",
+          "Decoupled cloud render backend powering authoring editors"
         ],
-        cli: "aaruni media build --edl clip-edl.json --format mp4,cmproj"
+        cli: "aaruni render build --timeline project.json --format mp4"
       },
       {
-        id: "aal",
-        code: "AAL",
-        name: "Aaruni Assurance Lab",
-        pillar: "Dev & QA Tools",
+        id: "aqa",
+        code: "AQA",
+        name: "Aaruni Quality",
+        pillar: "Automated QA",
         category: "tools",
         featured: false,
         glyphClass: "glyph-tools",
-        endpoint: "aal.api.aarunicloud.com",
-        desc: "Automated 7-device responsive UI/UX, offscreen Canvas visual integrity, and axe-core WCAG 2.1 Level AA accessibility testing service.",
+        endpoint: "qa.api.aarunicloud.com",
+        desc: "Automated 7-device responsive layout, HTML5 Canvas visual inspection, and axe-core WCAG 2.1 Level AA accessibility testing service.",
         bullets: [
           "Tests 360px Android through 1440px Desktop in Light & Dark",
           "SHA-256 bug fingerprinting & root-cause deduplication",
-          "Enforces zero P0/P1 overflow or contrast regressions"
+          "Blocks horizontal overflow and contrast regressions pre-deploy"
         ],
-        cli: "aaruni qa audit --devices 7 --wcag aa --strict"
+        cli: "aaruni qa audit --devices 7 --wcag aa"
       },
       {
-        id: "azv",
-        code: "AZV",
-        name: "Aaruni Zero-Trust Vault",
-        pillar: "Security",
+        id: "agd",
+        code: "AGD",
+        name: "Aaruni Guard",
+        pillar: "Security & Auth",
         category: "security",
         featured: true,
         glyphClass: "glyph-sec",
-        endpoint: "azv.api.aarunicloud.com",
-        desc: "Remote mobile browser session vault allowing owners to complete MFA logins once and hand off encrypted session state without exposing passwords or OTPs.",
+        endpoint: "guard.api.aarunicloud.com",
+        desc: "Zero-Trust identity, encrypted API secret management, and Zero-OTP remote browser session handoff so teams work safely without sharing passwords.",
         bullets: [
           "Zero password or 2FA OTP exposure to staff operators",
-          "Encrypted Playwright storageState session persistence",
-          "1-tap mobile session lock, audit log, and instant revoke"
+          "Encrypted session state handoff with 1-tap mobile revoke",
+          "Full audit trail across every cloud API action"
         ],
-        cli: "aaruni auth session-handoff --vault azv://owner-approved"
+        cli: "aaruni guard session-handoff --profile production"
       },
       {
-        id: "aem",
-        code: "AEM",
-        name: "Aaruni Edge Mesh",
-        pillar: "Networking",
+        id: "aed",
+        code: "AED",
+        name: "Aaruni Edge",
+        pillar: "Edge & CDN",
         category: "security",
         featured: false,
         glyphClass: "glyph-sec",
-        endpoint: "aem.api.aarunicloud.com",
-        desc: "Global TLS 1.3 Anycast web delivery and outbound-only encrypted worker tunnels connecting private compute clusters with zero open inbound firewall ports.",
+        endpoint: "edge.api.aarunicloud.com",
+        desc: "Global TLS 1.3 Anycast CDN, DNS routing, and outbound-only encrypted worker tunnels connecting private compute nodes with zero open firewall ports.",
         bullets: [
-          "Zero public static IP exposure on office worker nodes",
-          "Host-aware edge routing & DDoS-resilient static delivery",
-          "Low-latency review synchronization across regions"
+          "Zero public static IP exposure on private compute hardware",
+          "Host-aware global edge routing & DDoS protection",
+          "Sub-20ms asset & review delivery worldwide"
         ],
-        cli: "aaruni edge tunnel status --region global-anycast"
+        cli: "aaruni edge status --region global-anycast"
       }
     ];
 
     const ECOSYSTEM_LIST = [
-      { badge: "File & Timeline Plugin", cls: "glyph-ai", name: "TechSmith Camtasia®", desc: "Interoperable .cmproj multi-track timeline generation and .libzip callout stamping via AMP." },
-      { badge: "Customer API Connector", cls: "glyph-compute", name: "ElevenLabs®", desc: "Optional Multilingual v2 studio voice synthesis connector paired with AVS W3C PLS lexicons." },
-      { badge: "macOS Deck Adapter", cls: "glyph-tools", name: "Apple Keynote®", desc: "Automated JXA .key and HiDPI .pdf slide deck generation synchronized to narration cues." },
+      { badge: "Timeline Format Adapter", cls: "glyph-ai", name: "TechSmith Camtasia®", desc: "Interoperable .cmproj multi-track timeline generation and .libzip callouts via Aaruni Render (ARN)." },
+      { badge: "Customer API Connector", cls: "glyph-compute", name: "ElevenLabs®", desc: "Optional Multilingual v2 voice synthesis connector paired with Aaruni Voice (AVA) W3C PLS lexicons." },
+      { badge: "macOS Slide Adapter", cls: "glyph-tools", name: "Apple Keynote®", desc: "Automated JXA .key and HiDPI .pdf slide compilation rendered cleanly via Aaruni Render (ARN)." },
       { badge: "Open-Source Media DSP", cls: "glyph-storage", name: "FFmpeg® & WebCodecs", desc: "Hardware VideoToolbox H.264/HEVC encoding, high-pass filtering, and cosine audio de-clicking." },
-      { badge: "Open-Source QA & Capture", cls: "glyph-storage", name: "Playwright™ & axe-core", desc: "Deterministic 1920x1080 Chromium capture and automated 7-viewport WCAG 2.1 AA verification." },
-      { badge: "Open-Source AI Runtime", cls: "glyph-ai", name: "MLX & ONNX Speech", desc: "Local unified-memory neural speech synthesis powering unlimited zero-cost AVS draft cycles." },
-      { badge: "Edge Infrastructure", cls: "glyph-sec", name: "Cloudflare® Edge & Tunnels", desc: "Underlying global Anycast CDN, serverless edge workers, metadata stores, and outbound tunnels." },
-      { badge: "Compute Hardware", cls: "glyph-compute", name: "Apple Silicon® Clusters", desc: "Licensed unified-memory M-Series workstation nodes powering ACE 24/7 dark-monitor clusters." },
-      { badge: "RAID-1 NAS Hardware", cls: "glyph-storage", name: "Synology® Enterprise NAS", desc: "Mirrored 8 TB RAID-1 Gigabit LAN storage array backing AOV local hot-tier asset caching." },
-      { badge: "Offsite Archive Vault", cls: "glyph-tools", name: "Google Cloud Drive™", desc: "Scoped 30 TB offsite cloud vault backing ADA disaster-resilient cold archive replication." },
-      { badge: "Container Runtime", cls: "glyph-sec", name: "Docker® & OCI", desc: "Standardized container sandboxes powering ACG isolated microservice and security labs." },
-      { badge: "GitOps & CI Failover", cls: "glyph-compute", name: "GitHub® Actions", desc: "Immutable source-lock repositories, assurance issue sync, and Linux Xvfb failover runners." }
+      { badge: "Open-Source QA & Capture", cls: "glyph-storage", name: "Playwright™ & axe-core", desc: "Deterministic 1920x1080 Chromium capture and automated 7-viewport WCAG 2.1 AA audits via AQA." },
+      { badge: "Open-Source AI Runtime", cls: "glyph-ai", name: "MLX & ONNX Speech", desc: "Local unified-memory neural speech synthesis powering unlimited free Aaruni Voice (AVA) drafts." },
+      { badge: "Edge Infrastructure", cls: "glyph-sec", name: "Cloudflare® Edge & Tunnels", desc: "Underlying global Anycast CDN, serverless workers, metadata stores, and outbound tunnels for AED." },
+      { badge: "Compute Hardware", cls: "glyph-compute", name: "Apple Silicon® Nodes", desc: "Licensed unified-memory M-Series workstation hardware powering Aaruni Compute (ACC) 24/7 nodes." },
+      { badge: "RAID-1 NAS Hardware", cls: "glyph-storage", name: "Synology® Enterprise NAS", desc: "Mirrored 8 TB RAID-1 Gigabit LAN storage array backing Aaruni Storage (ACS) hot-tier speed." },
+      { badge: "Offsite Cold Infrastructure", cls: "glyph-tools", name: "Google Cloud™ Infrastructure", desc: "Encrypted 30 TB offsite cloud infrastructure backing Aaruni Archive (ARC) disaster recovery." },
+      { badge: "Container Runtime", cls: "glyph-sec", name: "Docker® & OCI", desc: "Standardized container sandboxes powering Aaruni Containers (ACN) isolated build & lab jobs." },
+      { badge: "GitOps & CI Failover", cls: "glyph-compute", name: "GitHub® Actions", desc: "Immutable source-lock repositories, QA issue tracking, and Linux Xvfb failover runners." }
     ];
 
     const AVS_SAMPLES = {
-      aria: "Welcome to Aaruni Cloud. Aaruni Compute Engine and Aaruni Object Vault synchronize mission-critical workloads across NVMe, RAID-1 NAS, and global Anycast edge nodes.",
-      dev: "Pre-flight check passed. Aaruni Container Grid verified zero WCAG contrast regressions across seven device viewports and sealed the build receipt in Aaruni Object Vault.",
-      maya: "With Aaruni Voice AI and Aaruni Converse AI, enterprise teams iterate on technical narration at zero draft cost and execute multi-intent workflow updates in seconds."
+      aria: "Welcome to Aaruni Cloud. Aaruni Compute and Aaruni Storage keep your videos, datasets, and applications fast, simple, and accessible—with zero egress fees.",
+      dev: "Pre-flight check passed. Aaruni Quality verified zero WCAG contrast regressions across seven viewports and saved the build package to Aaruni Storage.",
+      maya: "With Aaruni Voice and Aaruni Assistant, every creator and startup team can synthesize studio audio at zero draft cost and automate cloud rendering in seconds."
     };
 
     const TERMINAL_SNIPPETS = {
-      cli: `$ aaruni compute launch --type ace.m4.max --region ap-south-hyd-1
-[INFO] Connecting to Sovereign Control Plane at ap-south-hyd-1...
-✔ Verified Zero-Trust Vault Session (AZV Session ID: azv_9921_valid)
-✔ Allocated Apple Silicon M-Series Node (64GB Unified RAM, VideoToolbox HW)
-✔ Mounted 8TB RAID-1 AOV Vault (aov://production-vault-hyd)
-$ aaruni voice synthesize --text "Course Module 1 Complete" --lufs -12
+      cli: `$ aaruni compute launch --type acc.m4.max --region ap-south-hyd-1
+[INFO] Connecting to Aaruni Cloud Control Plane at ap-south-hyd-1...
+✔ Verified Aaruni Guard Session (AGD Key ID: agd_9921_valid)
+✔ Allocated Aaruni Compute Node (64GB Unified RAM, Hardware VideoToolbox)
+✔ Mounted 8TB Aaruni Storage (acs://media-production-hyd • $0 Egress)
+$ aaruni voice synthesize --text "Module 1 Ready" --lufs -12
 ✔ W3C PLS Lexicon bound • Zero boundary clicks (35ms/45ms cosine)
-🚀 Cluster Ready at ace.api.aarunicloud.com (Latency: 12ms, Status: 🟢 ACTIVE)`,
-      curl: `curl -X POST https://ace.api.aarunicloud.com/v1/instances \
-  -H "Authorization: Bearer azv_token_881" \
-  -H "Content-Type: application/json" \
-  -d '{
-    "node_type": "m4.max.64gb",
-    "vault_mount": "aov://production-vault-hyd",
-    "target_region": "ap-south-hyd-1"
+🚀 Instance Ready at compute.api.aarunicloud.com (Latency: 12ms, Status: 🟢 ACTIVE)`,
+      curl: `curl -X POST https://compute.api.aarunicloud.com/v1/nodes   -H "Authorization: Bearer agd_token_881"   -H "Content-Type: application/json"   -d '{
+    "node_type": "acc.m4.max.64gb",
+    "storage_mount": "acs://media-production-hyd",
+    "region": "ap-south-hyd-1"
   }'
 
 # Response:
-# {"status": "ACTIVE", "instance_id": "ace-hyd-882", "latency_ms": 12}`,
+# {"status": "ACTIVE", "node_id": "acc-hyd-04", "egress_fee": 0.0, "latency_ms": 12}`,
       python: `import aaruni_cloud as ac
 
-# Authenticate via Zero-Trust Vault Session
-client = ac.Client(region="ap-south-hyd-1")
+# Connect with Aaruni Guard API credentials
+cloud = ac.Client(region="ap-south-hyd-1")
 
-# Provision compute cluster with AOV storage vault
-node = client.compute.provision(
-    instance_type="ace.m4.max",
-    storage_vault="aov://production-vault-hyd"
-)
+# Upload media to Aaruni Storage (ACS) with $0 egress
+cloud.storage.upload("./demo.mp4", space="acs://media-production-hyd")
 
-# Synthesize broadcast speech with W3C PLS calibration
-audio = client.voice.synthesize(
-    text="Welcome to Aaruni Cloud",
+# Synthesize broadcast speech with Aaruni Voice (AVA)
+audio = cloud.voice.synthesize(
+    text="Welcome to Aaruni Cloud — simple cloud for everyone.",
     target_lufs=-12.0
 )
-print(f"Cluster Online: {node.endpoint} (Status: {node.status})")`,
-      node: `import { AaruniCloud } from "@aaruni/cloud-sdk";
+print("Uploaded & synthesized:", audio.url)`,
+      node: `import { AaruniCloud } from "@aaruni/sdk";
 
 const cloud = new AaruniCloud({ region: "ap-south-hyd-1" });
 
-// Launch ACE instance + AOV storage mount
-const cluster = await cloud.compute.launch({
-  type: "ace.m4.max",
-  mountVault: "aov://production-vault-hyd"
+// Store assets in Aaruni Storage (ACS) & launch Aaruni Compute (ACC)
+const node = await cloud.compute.launch({
+  type: "acc.m4.max",
+  storage: "acs://media-production-hyd"
 });
 
-// Stream neural speech
-const voiceStream = await cloud.voice.synthesize({
-  text: "Pipeline verified with zero audio clicks.",
-  loudnessLufs: -12
-});
-console.log("Deployed:", cluster.endpoint);`
+// Trigger background 1080p MP4 build via Aaruni Render (ARN)
+const job = await cloud.render.build({ timeline: "lesson-01.cmproj" });
+console.log("Render complete:", job.mp4Url);`
     };
 
     const LEGAL_CONTENT = {
       TRADEMARKS: {
         title: "Trademark Attribution & Nominative Fair-Use Policy",
         html: `
-          <p style="font-size:13.5px;color:var(--ac-text-secondary);"><strong>Aaruni Cloud</strong> (<code>aarunicloud.com</code>), <strong>Aaruni Compute Engine (ACE)</strong>, <strong>Aaruni Object Vault (AOV)</strong>, <strong>Aaruni Voice AI (AVS)</strong>, <strong>Aaruni Converse AI (ACA)</strong>, and <strong>Syllovo</strong> are proprietary brands of <strong>Aaruni Tech Private Limited</strong>.</p>
+          <p style="font-size:13.5px;color:var(--ac-text-secondary);"><strong>Aaruni Cloud</strong> (<code>aarunicloud.com</code>), <strong>Aaruni Storage (ACS)</strong>, <strong>Aaruni Compute (ACC)</strong>, <strong>Aaruni Voice (AVA)</strong>, <strong>Aaruni Assistant (AAI)</strong>, <strong>Aaruni Render (ARN)</strong>, and <strong>Syllovo</strong> are proprietary brands of <strong>Aaruni Tech Private Limited</strong>.</p>
           <h3 style="font-size:15px;margin:14px 0 6px;">1. Non-Affiliation with AWS &amp; Third-Party Vendors</h3>
-          <p style="font-size:13.5px;color:var(--ac-text-secondary);">Aaruni Cloud is an independent enterprise cloud platform and is <strong>not</strong> affiliated with, endorsed by, sponsored by, or formally partnered with Amazon Web Services, Inc. (AWS), TechSmith Corporation, ElevenLabs Inc., Apple Inc., Cloudflare, Inc., Synology Inc., Google LLC, Docker Inc., or GitHub, Inc.</p>
+          <p style="font-size:13.5px;color:var(--ac-text-secondary);">Aaruni Cloud is an independent cloud platform and is <strong>not</strong> affiliated with, endorsed by, sponsored by, or formally partnered with Amazon Web Services, Inc. (AWS), TechSmith Corporation, ElevenLabs Inc., Apple Inc., Cloudflare, Inc., Synology Inc., Google LLC, Docker Inc., or GitHub, Inc.</p>
           <h3 style="font-size:15px;margin:14px 0 6px;">2. Nominative Fair Use</h3>
           <p style="font-size:13.5px;color:var(--ac-text-secondary);">References to third-party formats (<code>.cmproj</code>, <code>.libzip</code>, <code>.key</code>), customer-configured APIs, open-source engines, and licensed infrastructure hardware describe technical compatibility and architecture only.</p>
         `
       },
       SECURITY: {
-        title: "Security Architecture & Zero-OTP Session Isolation",
+        title: "Aaruni Guard Security & Zero-OTP Session Isolation",
         html: `
-          <p style="font-size:13.5px;color:var(--ac-text-secondary);">Aaruni Cloud enforces TLS 1.3 in transit, AES-256 encrypted vault storage at rest, outbound-only encrypted worker tunnels (zero open inbound router ports), and Zero-OTP remote browser session isolation.</p>
+          <p style="font-size:13.5px;color:var(--ac-text-secondary);">Aaruni Cloud enforces TLS 1.3 in transit via Aaruni Edge (AED), AES-256 encrypted storage at rest across Aaruni Storage (ACS) &amp; Aaruni Archive (ARC), outbound-only encrypted worker tunnels, and Aaruni Guard (AGD) Zero-OTP session isolation.</p>
         `
       },
       PRIVACY: {
@@ -2857,7 +2845,7 @@ console.log("Deployed:", cluster.endpoint);`
       TERMS: {
         title: "Terms of Service & Controlled Enterprise Access",
         html: `
-          <p style="font-size:13.5px;color:var(--ac-text-secondary);">Operated by Aaruni Tech Private Limited (Hyderabad, Telangana, India). Aaruni Cloud serves portfolio production workloads and approved enterprise pilot tenants. Authorized users retain 100% IP ownership of their data and rendered media.</p>
+          <p style="font-size:13.5px;color:var(--ac-text-secondary);">Operated by Aaruni Tech Private Limited (Hyderabad, Telangana, India). Aaruni Cloud serves portfolio production workloads and approved startup &amp; enterprise pilot tenants. Authorized users retain 100% IP ownership of their data and rendered media.</p>
         `
       }
     };
@@ -2912,7 +2900,7 @@ console.log("Deployed:", cluster.endpoint);`
       if (matches.length === 0) {
         container.innerHTML = '<div class="service-tile" style="grid-column:1/-1;text-align:center;padding:32px;">' +
           '<strong>No matching Aaruni Cloud services found</strong>' +
-          '<p style="font-size:13px;color:var(--ac-text-muted);margin:8px 0 14px;">Clear the filter to view all 11 Compute, Storage, Voice AI, and Converse AI services.</p>' +
+          '<p style="font-size:13px;color:var(--ac-text-muted);margin:8px 0 14px;">Clear the filter to view all 11 Aaruni Storage, Compute, Voice, Assistant, and Render services.</p>' +
           '<button type="button" class="btn-tile-primary" style="margin:0 auto;" onclick="resetCatalog()">Show All 11 Services</button>' +
         '</div>';
         return;
@@ -3031,12 +3019,12 @@ console.log("Deployed:", cluster.endpoint);`
             utter.onend = finishAvsAudition;
             utter.onerror = finishAvsAudition;
             window.speechSynthesis.speak(utter);
-            statusEl.textContent = "3/3 STREAMING VERIFIED AVS AUDIO (-12.0 dB)";
+            statusEl.textContent = "3/3 STREAMING VERIFIED AVA AUDIO (-12.0 dB)";
           } catch (e) {
             setTimeout(finishAvsAudition, 3200);
           }
         } else {
-          statusEl.textContent = "3/3 SIMULATING AVS WAVEFORM (-12.0 dB)";
+          statusEl.textContent = "3/3 SIMULATING AVA WAVEFORM (-12.0 dB)";
           setTimeout(finishAvsAudition, 3200);
         }
       }, 280);
@@ -3083,25 +3071,25 @@ console.log("Deployed:", cluster.endpoint);`
 
       const agentBubble = document.createElement("div");
       agentBubble.className = "chat-msg-agent";
-      agentBubble.innerHTML = '<strong class="mono" style="color:#7dd3fc;display:block;font-size:11px;">ACA Status: Analyzing Multi-Intent Request...</strong>';
+      agentBubble.innerHTML = '<strong class="mono" style="color:#7dd3fc;display:block;font-size:11px;">AAI Status: Analyzing Multi-Intent Request...</strong>';
       log.appendChild(agentBubble);
       log.scrollTop = log.scrollHeight;
 
       const lower = query.toLowerCase();
       let planLines = [];
-      if (lower.includes("ace") || lower.includes("compute") || lower.includes("aov") || lower.includes("vault")) {
-        planLines.push("• [ACE Compute] Allocated 2 unified-memory worker nodes in ap-south-hyd-1.");
-        planLines.push("• [AOV Storage] Mounted 8 TB RAID-1 vault + Anycast edge cache with AES-256 lock.");
+      if (lower.includes("acc") || lower.includes("compute") || lower.includes("acs") || lower.includes("storage")) {
+        planLines.push("• [Aaruni Compute • ACC] Launched 2 unified-memory worker nodes in ap-south-hyd-1.");
+        planLines.push("• [Aaruni Storage • ACS] Attached 8 TB RAID-1 + $0-egress CDN storage space.");
       }
-      if (lower.includes("slide") || lower.includes("audio") || lower.includes("avs") || lower.includes("voice")) {
-        planLines.push("• [AMP Slide Visual] Audited stage contrast & verified clean 1920x1080 canvas.");
-        planLines.push("• [AVS Voice AI] Synthesized W3C PLS narration with 35ms/45ms cosine de-clicking at -12.0 dB.");
+      if (lower.includes("render") || lower.includes("video") || lower.includes("slide") || lower.includes("audio") || lower.includes("ava") || lower.includes("voice")) {
+        planLines.push("• [Aaruni Render • ARN] Compiled 1920x1080 timeline & verified stage contrast.");
+        planLines.push("• [Aaruni Voice • AVA] Synthesized W3C PLS narration with cosine de-clicking at -12.0 dB.");
       }
-      if (lower.includes("security") || lower.includes("akf") || lower.includes("zero-otp") || planLines.length === 0) {
-        planLines.push("• [AKF + AZV] Verified TLS 1.3 transport, AES-256 cold archive, and Zero-OTP session isolation.");
+      if (lower.includes("security") || lower.includes("guard") || lower.includes("agd") || lower.includes("zero-otp") || planLines.length === 0) {
+        planLines.push("• [Aaruni Guard • AGD] Verified TLS 1.3 edge transport, AES-256 storage encryption, and Zero-OTP session safety.");
       }
 
-      const receiptId = "ACA-RCPT-" + Math.floor(10000 + Math.random() * 89999);
+      const receiptId = "AAI-RCPT-" + Math.floor(10000 + Math.random() * 89999);
       setTimeout(function () {
         agentBubble.innerHTML =
           '<strong class="mono" style="color:#86efac;display:block;font-size:11px;margin-bottom:4px;">✓ Verified Multi-Service Plan (' + receiptId + ')</strong>' +
@@ -3154,93 +3142,27 @@ console.log("Deployed:", cluster.endpoint);`
       showModal(doc.title, doc.html + '<div style="text-align:right;margin-top:18px;"><button type="button" class="btn-dawn" onclick="closeCloudModal()">Close</button></div>');
     }
 
-    function openCloudMobileModal() {
-      showModal(
-        "📱 Aaruni Mobile Ecosystem & Cloud Console",
-        '<div style="text-align:center;max-width:480px;margin:0 auto;">' +
-          '<div style="display:flex;justify-content:center;gap:6px;margin-bottom:14px;flex-wrap:wrap;">' +
-            '<button type="button" class="btn-tile-secondary" id="c-qr-cloud-apk-btn" style="min-height:34px;padding:4px 10px;font-size:11.5px;background:rgba(56,189,248,0.2);color:#38bdf8;border-color:#38bdf8;" onclick="switchCloudQrTab(\'cloud-apk\')">☁️ Cloud Console APK</button>' +
-            '<button type="button" class="btn-tile-secondary" id="c-qr-work-apk-btn" style="min-height:34px;padding:4px 10px;font-size:11.5px;" onclick="switchCloudQrTab(\'work-apk\')">👷‍♂️ Workforce APK</button>' +
-            '<button type="button" class="btn-tile-secondary" id="c-qr-hub-apk-btn" style="min-height:34px;padding:4px 10px;font-size:11.5px;" onclick="switchCloudQrTab(\'hub-apk\')">🏢 Flagship Hub APK</button>' +
-            '<button type="button" class="btn-tile-secondary" id="c-qr-web-btn" style="min-height:34px;padding:4px 10px;font-size:11.5px;" onclick="switchCloudQrTab(\'web\')">🍏 Web Console</button>' +
-          '</div>' +
-          '<div style="background:#ffffff;padding:12px;border-radius:14px;display:inline-block;box-shadow:0 8px 24px rgba(0,0,0,0.4);border:1px solid #cbd5e1;margin-bottom:12px;">' +
-            '<img id="cloudQrImg" src="assets/qr_aarunicloud_console_apk.png" alt="Scan QR for mobile" style="width:175px;height:175px;display:block;" />' +
-          '</div>' +
-          '<div id="cloudQrDesc" style="font-size:12px;color:var(--ac-text-muted);margin-bottom:14px;line-height:1.5;">' +
-            'Scan with your Android camera to download <strong>AaruniCloud-Console-v1.0.0.apk</strong> (116 KB) for Cloud Infrastructure &amp; D1 Database Monitoring.' +
-          '</div>' +
-          '<div style="display:flex;gap:8px;justify-content:center;flex-wrap:wrap;">' +
-            '<a id="cloudModalDownloadBtn" href="/downloads/aarunicloud-console.apk" download="AaruniCloud-Console-v1.0.0.apk" class="btn-dawn" style="min-height:36px;text-decoration:none;font-size:11.5px;padding:0 14px;display:inline-flex;align-items:center;">📥 Download Cloud Console APK</a>' +
-            '<a id="cloudModalLaunchBtn" href="https://aarunicloud.com/?source=mobile_modal" target="_blank" class="btn-tile-secondary" style="min-height:36px;text-decoration:none;font-size:11.5px;padding:0 14px;display:inline-flex;align-items:center;">Launch Web Console ↗</a>' +
-          '</div>' +
-        '</div>'
-      );
-    }
-
-    function switchCloudQrTab(type) {
-      const img = document.getElementById("cloudQrImg");
-      const desc = document.getElementById("cloudQrDesc");
-      const dBtn = document.getElementById("cloudModalDownloadBtn");
-      const lBtn = document.getElementById("cloudModalLaunchBtn");
-      const bCloudApk = document.getElementById("c-qr-cloud-apk-btn");
-      const bWorkApk = document.getElementById("c-qr-work-apk-btn");
-      const bHubApk = document.getElementById("c-qr-hub-apk-btn");
-      const bWeb = document.getElementById("c-qr-web-btn");
-      if (!img || !desc) return;
-
-      const resetBtns = () => {
-        [bCloudApk, bWorkApk, bHubApk, bWeb].forEach(b => {
-          if (b) { b.style.background = ""; b.style.color = ""; b.style.borderColor = ""; }
-        });
-      };
-      resetBtns();
-
-      if (type === 'work-apk') {
-        img.src = "assets/qr_aaruni_workforce_apk.png";
-        desc.innerHTML = "Scan with Android to download <strong>AaruniTech-Workforce-v2.4.0.apk</strong> (116 KB) for Attendance, Timesheet &amp; Payroll.";
-        if (bWorkApk) { bWorkApk.style.background = "rgba(254,95,1,0.15)"; bWorkApk.style.color = "#fe5f01"; bWorkApk.style.borderColor = "#fe5f01"; }
-        if (dBtn) { dBtn.href = "/downloads/aaruni-payroll.apk"; dBtn.setAttribute("download", "AaruniTech-Workforce-v2.4.0.apk"); dBtn.innerHTML = "📥 Download Workforce APK"; dBtn.style.display = "inline-flex"; }
-        if (lBtn) { lBtn.href = "https://my.aarunitech.com/?source=mobile_modal"; lBtn.innerHTML = "Open Workforce Portal ↗"; }
-      } else if (type === 'hub-apk') {
-        img.src = "assets/qr_aarunitech_hub_apk.png";
-        desc.innerHTML = "Scan with Android to download <strong>AaruniTech-Flagship-v1.0.0.apk</strong> (116 KB) for the parent conglomerate mobile hub.";
-        if (bHubApk) { bHubApk.style.background = "rgba(16,185,129,0.15)"; bHubApk.style.color = "#10b981"; bHubApk.style.borderColor = "#10b981"; }
-        if (dBtn) { dBtn.href = "/downloads/aarunitech-hub.apk"; dBtn.setAttribute("download", "AaruniTech-Flagship-v1.0.0.apk"); dBtn.innerHTML = "📥 Download Flagship Hub APK"; dBtn.style.display = "inline-flex"; }
-        if (lBtn) { lBtn.href = "https://aarunitech.com/?source=mobile_modal"; lBtn.innerHTML = "Open Corporate Flagship ↗"; }
-      } else if (type === 'web') {
-        img.src = "assets/qr_aarunicloud_mobile.png";
-        desc.innerHTML = "Scan with your phone camera to launch <strong>aarunicloud.com</strong> in browser. On iPhone: tap Share ⬆️ &rarr; <em>Add to Home Screen</em>.";
-        if (bWeb) { bWeb.style.background = "rgba(56,189,248,0.2)"; bWeb.style.color = "#38bdf8"; bWeb.style.borderColor = "#38bdf8"; }
-        if (dBtn) { dBtn.style.display = "none"; }
-        if (lBtn) { lBtn.href = "https://aarunicloud.com/?source=mobile_modal"; lBtn.innerHTML = "Launch Web Console ↗"; }
-      } else {
-        img.src = "assets/qr_aarunicloud_console_apk.png";
-        desc.innerHTML = "Scan with your Android camera to download <strong>AaruniCloud-Console-v1.0.0.apk</strong> (116 KB) for Cloud Infrastructure &amp; D1 Database Monitoring.";
-        if (bCloudApk) { bCloudApk.style.background = "rgba(56,189,248,0.2)"; bCloudApk.style.color = "#38bdf8"; bCloudApk.style.borderColor = "#38bdf8"; }
-        if (dBtn) { dBtn.href = "/downloads/aarunicloud-console.apk"; dBtn.setAttribute("download", "AaruniCloud-Console-v1.0.0.apk"); dBtn.innerHTML = "📥 Download Cloud Console APK"; dBtn.style.display = "inline-flex"; }
-        if (lBtn) { lBtn.href = "https://aarunicloud.com/?source=mobile_modal"; lBtn.innerHTML = "Launch Web Console ↗"; }
-      }
-    }
-
     function openConsoleSignInModal() {
       showModal(
         "Aaruni Cloud Management Console",
-        '<p style="font-size:13.5px;color:var(--ac-text-secondary);margin-top:0;">The Aaruni Cloud Console is restricted to provisioned enterprise tenants and authorized infrastructure operators.</p>' +
-        '<div style="padding:14px 16px;border-radius:10px;background:rgba(15,23,42,0.8);border:1px solid rgba(56,189,248,0.25);font-size:12.5px;margin-bottom:16px;">' +
-          '<strong style="color:#38bdf8;">Production Tenant Portals:</strong><br/>' +
-          '&bull; Autonomous Course Studio: <a href="https://syllovo.com" target="_blank" rel="noopener" style="color:#38bdf8;text-decoration:underline;">syllovo.com &nearr;</a><br/>' +
-          '&bull; Corporate &amp; Staff Operations: <a href="https://my.aarunitech.com" target="_blank" rel="noopener" style="color:#38bdf8;text-decoration:underline;">my.aarunitech.com &nearr;</a>' +
+        '<p style="font-size:13.5px;color:var(--ac-text-secondary);margin-top:0;">Sign in to manage your Aaruni Storage (ACS), Aaruni Compute (ACC), Aaruni Voice (AVA), and Aaruni Render (ARN) workloads, or scan below for mobile console access.</p>' +
+        '<div style="display:flex;align-items:center;gap:16px;flex-wrap:wrap;padding:14px 16px;border-radius:10px;background:rgba(15,23,42,0.8);border:1px solid rgba(56,189,248,0.25);font-size:12.5px;margin-bottom:16px;">' +
+          '<img src="/assets/qr_aarunicloud_mobile.png" alt="Scan to open Aaruni Cloud Mobile Console" width="84" height="84" style="border-radius:8px;background:#fff;padding:4px;flex-shrink:0;" />' +
+          '<div>' +
+            '<strong style="color:#38bdf8;display:block;margin-bottom:4px;">Active Portals &amp; Mobile Quick-Launch:</strong>' +
+            '&bull; Syllovo Authoring Editor: <a href="https://syllovo.com" target="_blank" rel="noopener" style="color:#38bdf8;text-decoration:underline;">syllovo.com &nearr;</a><br/>' +
+            '&bull; Staff &amp; Operations Portal: <a href="https://my.aarunitech.com" target="_blank" rel="noopener" style="color:#38bdf8;text-decoration:underline;">my.aarunitech.com &nearr;</a>' +
+          '</div>' +
         '</div>' +
         '<div style="display:flex;justify-content:flex-end;gap:10px;">' +
           '<button type="button" class="btn-tile-secondary" onclick="closeCloudModal()">Cancel</button>' +
-          '<button type="button" class="btn-dawn" style="min-height:40px;" onclick="openPilotModal()">Request Tenant Provisioning</button>' +
+          '<button type="button" class="btn-dawn" style="min-height:40px;" onclick="openPilotModal()">Request Cloud Access</button>' +
         '</div>'
       );
     }
 
     function openPilotModal(preselected) {
-      const svc = preselected || "ACE Compute + AOV Storage + AVS Voice AI + ACA Chatbot";
+      const svc = preselected || "Aaruni Storage (ACS) + Aaruni Compute (ACC) + Aaruni Voice (AVA) + Aaruni Assistant (AAI)";
       showModal(
         "Start Controlled Aaruni Cloud Pilot",
         '<form onsubmit="submitPilot(event)">' +
@@ -3280,10 +3202,10 @@ console.log("Deployed:", cluster.endpoint);`
         "Work Email: " + mail + "\n" +
         "Selected Services: " + svc + "\n"
       );
-      const mailtoHref = "mailto:sales@aarunitech.com?subject=" + subj + "&body=" + body;
+      const mailtoHref = "mailto:info@syllovo.com?subject=" + subj + "&body=" + body;
 
       box.style.display = "block";
-      box.innerHTML = "Dispatching pilot request <code>" + ref + "</code> to <code>sales@aarunitech.com</code>...";
+      box.innerHTML = "Dispatching pilot request <code>" + ref + "</code> to <code>info@syllovo.com</code>...";
 
       fetch("/api/inquiries", {
         method: "POST",
@@ -3295,14 +3217,14 @@ console.log("Deployed:", cluster.endpoint);`
           const sentServer = data && data.emailDelivery && data.emailDelivery.sent;
           box.innerHTML =
             (sentServer
-              ? "✓ Auto-emailed to <code>sales@aarunitech.com</code> (labeled <code>[aarunicloud]</code>, Ref <code>" + ref + "</code>). "
+              ? "✓ Auto-emailed to <code>info@syllovo.com</code> (labeled <code>[aarunicloud]</code>, Ref <code>" + ref + "</code>). "
               : "✓ Pilot Reference <code>" + ref + "</code> logged with label <code>[aarunicloud]</code>. ") +
             "<a href=\"" + mailtoHref + "\" style=\"text-decoration:underline;color:#38bdf8;margin-left:6px;\">Open in Mail App &rarr;</a>";
         })
         .catch(function () {
           box.innerHTML =
             "Pilot Reference <code>" + ref + "</code> logged with label <code>[aarunicloud]</code>. " +
-            "<a href=\"" + mailtoHref + "\" style=\"text-decoration:underline;color:#38bdf8;margin-left:6px;\">Send to sales@aarunitech.com &rarr;</a>";
+            "<a href=\"" + mailtoHref + "\" style=\"text-decoration:underline;color:#38bdf8;margin-left:6px;\">Send to info@syllovo.com &rarr;</a>";
         });
     }
 
