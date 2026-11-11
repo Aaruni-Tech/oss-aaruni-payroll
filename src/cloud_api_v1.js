@@ -553,19 +553,21 @@ export async function handleCloudApiV1(request, env, executeD1Query) {
       if (!auth.ok || auth.principal.role !== "admin") {
         return jsonRes({ ok: false, error: "Admin Aaruni Guard key required for outbound worker job pull." }, 403);
       }
-      const { results } = await executeD1Query(
-        env,
-        "SELECT job_id AS jobId, service, action, payload_json AS payloadJson, region, created_at AS createdAt FROM cloud_jobs WHERE status = 'QUEUED' AND owner_key_id = ? ORDER BY created_at ASC LIMIT 1",
-        [auth.principal.key_id]
-      );
+      const body = await request.json().catch(() => ({}));
+      const svcFilter = body.service ? String(body.service).toUpperCase() : null;
+      const sql = svcFilter
+        ? "SELECT job_id AS jobId, service, action, payload_json AS payloadJson, region, created_at AS createdAt FROM cloud_jobs WHERE status = 'QUEUED' AND owner_key_id = ? AND service = ? ORDER BY created_at ASC LIMIT 1"
+        : "SELECT job_id AS jobId, service, action, payload_json AS payloadJson, region, created_at AS createdAt FROM cloud_jobs WHERE status = 'QUEUED' AND owner_key_id = ? ORDER BY created_at ASC LIMIT 1";
+      const params = svcFilter ? [auth.principal.key_id, svcFilter] : [auth.principal.key_id];
+      const { results } = await executeD1Query(env, sql, params);
       if (!results || results.length === 0) {
-        return jsonRes({ ok: true, service: "ACC", job: null });
+        return jsonRes({ ok: true, service: svcFilter || "ACC", job: null });
       }
       const job = results[0];
       await executeD1Query(env, "UPDATE cloud_jobs SET status = 'CLAIMED', updated_at = datetime('now') WHERE job_id = ?", [job.jobId]);
       return jsonRes({
         ok: true,
-        service: "ACC",
+        service: job.service,
         job: {
           jobId: job.jobId,
           service: job.service,
@@ -617,14 +619,58 @@ export async function handleCloudApiV1(request, env, executeD1Query) {
     }
 
     // -------------------------------------------------------------------------
-    // 6. AARUNI VOICE (AVA) — STATELESS PREVIEW FOR PUBLIC, PERSISTED FOR OWNER
+    // 6. AARUNI VOICE (AVA) — STATELESS PREVIEW FOR PUBLIC, MLX WORKER QUEUE FOR OWNER
     // -------------------------------------------------------------------------
     if (path === "/v1/voice/synthesize" && request.method === "POST") {
-      const principal = await tryOptionalPrivateGuard(request, env, executeD1Query);
       const body = await request.json().catch(() => ({}));
       const rawText = String(body.text || "").trim();
       if (!rawText) return jsonRes({ ok: false, error: "Missing 'text' field for Aaruni Voice synthesis." }, 400);
 
+      const engine = String(body.engine || "pls-preview").toLowerCase();
+      const wantsMlxQueue = engine === "mlx" || engine === "f5-tts-mlx" || Boolean(body.queue);
+
+      if (wantsMlxQueue) {
+        const auth = await authenticatePrivateGuard(request, env, executeD1Query);
+        if (!auth.ok) return jsonRes({ ok: false, error: auth.error }, auth.status);
+        const check = assertSafeWorkloadPayload(body);
+        if (!check.ok) return jsonRes({ ok: false, error: check.error }, 400);
+
+        const pls = applyPlsLexicon(rawText);
+        const jobId = makeId("job_ava");
+        const speed = Number(body.speed || 0.94);
+        const steps = Number(body.steps || 32);
+        const style = String(body.style || "auto");
+        const payloadObj = {
+          originalText: rawText,
+          normalizedText: pls.normalizedText,
+          speed,
+          steps,
+          style,
+          plsReplacements: pls.replacements
+        };
+        await executeD1Query(
+          env,
+          `INSERT INTO cloud_jobs (job_id, service, action, payload_json, result_json, status, region, owner_key_id, created_at, updated_at)
+           VALUES (?, 'AVA', 'synthesize_mlx', ?, '{}', 'QUEUED', 'ap-south-hyd-1', ?, datetime('now'), datetime('now'))`,
+          [jobId, JSON.stringify(payloadObj), auth.principal.key_id]
+        );
+        await logAudit(env, executeD1Query, auth.principal.key_id, "AVA", `queue_mlx:${jobId}`);
+
+        return jsonRes({
+          ok: true,
+          service: "AVA",
+          mode: "QUEUED_MLX_NEURAL_WORKER",
+          jobId,
+          status: "QUEUED",
+          originalText: rawText,
+          normalizedText: pls.normalizedText,
+          plsReplacements: pls.replacements,
+          statusUrl: `https://api.aarunicloud.com/v1/jobs/${jobId}`,
+          createdAt: new Date().toISOString()
+        }, 202, { "X-Aaruni-Service": "AVA" });
+      }
+
+      const principal = await tryOptionalPrivateGuard(request, env, executeD1Query);
       const targetLufs = Number(body.targetLufs || body.lufs || -12.0);
       const persona = String(body.persona || "aria").toLowerCase();
       const pls = applyPlsLexicon(rawText);
@@ -704,6 +750,25 @@ export async function handleCloudApiV1(request, env, executeD1Query) {
         statusUrl: `https://api.aarunicloud.com/v1/jobs/${jobId}`,
         createdAt: new Date().toISOString()
       }, 201, { "X-Aaruni-Service": "ARN" });
+    }
+
+    const completeMatch = path.match(/^\/v1\/jobs\/([a-zA-Z0-9_-]+)\/complete$/);
+    if (completeMatch && request.method === "POST") {
+      const auth = await authenticatePrivateGuard(request, env, executeD1Query);
+      if (!auth.ok || auth.principal.role !== "admin") {
+        return jsonRes({ ok: false, error: "Admin Aaruni Guard key required to complete worker jobs." }, 403);
+      }
+      const jobId = completeMatch[1];
+      const body = await request.json().catch(() => ({}));
+      const status = body.status === "FAILED" ? "FAILED" : "COMPLETED";
+      const resultObj = body.result || {};
+      await executeD1Query(
+        env,
+        "UPDATE cloud_jobs SET status = ?, result_json = ?, updated_at = datetime('now') WHERE job_id = ? AND owner_key_id = ?",
+        [status, JSON.stringify(resultObj), jobId, auth.principal.key_id]
+      );
+      await logAudit(env, executeD1Query, auth.principal.key_id, "ACC", `complete:${jobId}:${status}`);
+      return jsonRes({ ok: true, jobId, status, result: resultObj });
     }
 
     const jobMatch = path.match(/^\/v1\/(?:render\/)?jobs\/([a-zA-Z0-9_-]+)$/);
