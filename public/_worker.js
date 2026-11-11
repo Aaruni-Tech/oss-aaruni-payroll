@@ -209,7 +209,7 @@ export default {
     // 3. Enterprise & Cloud Inquiries API (/api/inquiries)
     // GET: Returns all inquiries stored in Cloudflare D1 for the Admin Leads Dashboard
     // POST: Logs labeled inquiries (aarunicloud, syllovo, aarunitech, aarunitech-careers)
-    //       into D1 AND dispatches a real server-side email from info@syllovo.com -> rupesh@fullstackmaster.net
+    //       into D1 AND dispatches a real server-side email from contact@aarunitech.com -> rupesh@fullstackmaster.net
     if (url.pathname === "/api/inquiries") {
       try {
         await executeD1Query(env, `
@@ -266,14 +266,14 @@ export default {
 
           let emailDelivery = { sent: false, mode: "d1_logged" };
 
-          // Dispatch real server-side email via Cloudflare Email Worker (info@syllovo.com -> rupesh@fullstackmaster.net)
+          // Dispatch real server-side email via Cloudflare Email Worker (contact@aarunitech.com -> rupesh@fullstackmaster.net)
           if (env && env.EMAIL_RELAY && typeof env.EMAIL_RELAY.fetch === "function") {
             try {
               const emailText = [
                 `=== AARUNI GROUP SERVER-SIDE INQUIRY DISPATCH ===`,
                 `Brand Label     : [${label}]`,
                 `Reference ID    : ${ref}`,
-                `Public Address  : info@syllovo.com`,
+                `Public Address  : contact@aarunitech.com`,
                 `Delivered To    : rupesh@fullstackmaster.net`,
                 `Organization    : ${org}`,
                 `Visitor Email   : ${senderEmail || "Not provided"}`,
@@ -288,8 +288,8 @@ export default {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({
-                  from: "info@syllovo.com",
-                  replyTo: senderEmail || "info@syllovo.com",
+                  from: "contact@aarunitech.com",
+                  replyTo: senderEmail || "contact@aarunitech.com",
                   subject: customSubject,
                   text: emailText
                 })
@@ -309,7 +309,7 @@ export default {
             await executeD1Query(
               env,
               `INSERT INTO inquiries (id, label, public_to, forwarded_to, org_name, sender_email, offering, message, email_status, created_at)
-               VALUES (?, ?, 'info@syllovo.com', 'rupesh@fullstackmaster.net', ?, ?, ?, ?, ?, datetime('now'))
+               VALUES (?, ?, 'contact@aarunitech.com', 'rupesh@fullstackmaster.net', ?, ?, ?, ?, ?, datetime('now'))
                ON CONFLICT(id) DO UPDATE SET
                  label=excluded.label,
                  org_name=excluded.org_name,
@@ -327,7 +327,7 @@ export default {
             success: true,
             ref: ref,
             label: label,
-            publicRecipient: "info@syllovo.com",
+            publicRecipient: "contact@aarunitech.com",
             routedInbox: "rupesh@fullstackmaster.net",
             emailDelivery: emailDelivery
           }), { headers: CORS_HEADERS });

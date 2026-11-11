@@ -243,6 +243,7 @@
     }
 
     @media (max-width: 768px) {
+      .benefits-modal-grid { grid-template-columns: 1fr !important; }
       .nav-action-desktop {
         display: none !important;
       }
@@ -1926,6 +1927,83 @@
         </div>
       </div>
 
+      <!-- WORKING STYLE & EMPLOYEE BENEFITS SHOWCASE -->
+      <div style="margin-top:32px; background:linear-gradient(135deg, rgba(254,95,1,0.05) 0%, rgba(2,132,199,0.05) 100%); border:1px solid rgba(254,95,1,0.25); border-radius:20px; padding:32px; box-shadow:var(--shadow-sm);">
+        <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:16px; margin-bottom:20px;">
+          <div>
+            <div class="offering-badge" style="background:var(--dawn-orange-soft); color:var(--dawn-orange); margin-bottom:8px; display:inline-block;">Aaruni Tech Culture &amp; Staff Care</div>
+            <h3 style="font-size:1.5rem; font-weight:800; margin:0;">Working Style &amp; Comprehensive Employee Benefits</h3>
+            <p style="color:var(--text-secondary); font-size:0.9rem; margin-top:6px; max-width:680px; line-height:1.5;">
+              We operate on high trust, asynchronous autonomy, Maker's time, and unconditional financial and statutory protection for our engineers, creators, and consultants.
+            </p>
+          </div>
+          <div style="display:flex; gap:10px; flex-wrap:wrap;">
+            <a href="https://my.aarunitech.com/?tab=benefits" target="_blank" rel="noopener noreferrer" class="btn btn-dawn" style="padding:10px 18px; font-size:0.88rem;">
+              <span>Explore Benefits in Portal ↗</span>
+            </a>
+            <button onclick="openWorkingStyleBenefitsModalIndex()" class="btn btn-outline" style="padding:10px 18px; font-size:0.88rem;">
+              <span>Read Manifesto &bull; 6 Pillars</span>
+            </button>
+          </div>
+        </div>
+
+        <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(260px, 1fr)); gap:14px;">
+          <div style="background:var(--bg-surface); padding:16px; border-radius:12px; border:1px solid var(--border-subtle);">
+            <div style="font-weight:700; font-size:0.92rem; margin-bottom:4px; display:flex; align-items:center; gap:8px;">
+              <span>🚀</span> <span>Remote-First &amp; Async</span>
+            </div>
+            <p style="color:var(--text-secondary); font-size:0.82rem; line-height:1.5; margin:0;">
+              Zero pointless status meetings. Protected 4-hour Maker blocks for deep architecture and production without interruptions.
+            </p>
+          </div>
+
+          <div style="background:var(--bg-surface); padding:16px; border-radius:12px; border:1px solid var(--border-subtle);">
+            <div style="font-weight:700; font-size:0.92rem; margin-bottom:4px; display:flex; align-items:center; gap:8px;">
+              <span>💳</span> <span>On-Time Salary Vault</span>
+            </div>
+            <p style="color:var(--text-secondary); font-size:0.82rem; line-height:1.5; margin:0;">
+              Guaranteed electronic bank disbursement between 1st–4th of every month. 100% on-time track record with zero delays.
+            </p>
+          </div>
+
+          <div style="background:var(--bg-surface); padding:16px; border-radius:12px; border:1px solid var(--border-subtle);">
+            <div style="font-weight:700; font-size:0.92rem; margin-bottom:4px; display:flex; align-items:center; gap:8px;">
+              <span>💻</span> <span>Apple M4 Pro Hardware</span>
+            </div>
+            <p style="color:var(--text-secondary); font-size:0.82rem; line-height:1.5; margin:0;">
+              High-spec Apple Silicon Mac Mini M4 Pro (24GB RAM) or MacBook Pros, dual 4K monitors, fast NVMe, and home office budget.
+            </p>
+          </div>
+
+          <div style="background:var(--bg-surface); padding:16px; border-radius:12px; border:1px solid var(--border-subtle);">
+            <div style="font-weight:700; font-size:0.92rem; margin-bottom:4px; display:flex; align-items:center; gap:8px;">
+              <span>🏛️</span> <span>Zero Tax-Loss Policy</span>
+            </div>
+            <p style="color:var(--text-secondary); font-size:0.82rem; line-height:1.5; margin:0;">
+              Professional in-house Chartered Accountant advisory for Section 80C/80D/HRA deductions and Form 16 issuance.
+            </p>
+          </div>
+
+          <div style="background:var(--bg-surface); padding:16px; border-radius:12px; border:1px solid var(--border-subtle);">
+            <div style="font-weight:700; font-size:0.92rem; margin-bottom:4px; display:flex; align-items:center; gap:8px;">
+              <span>💰</span> <span>Sunday 1-Day Extra Pay</span>
+            </div>
+            <p style="color:var(--text-secondary); font-size:0.82rem; line-height:1.5; margin:0;">
+              100% extra daily compensation for any approved emergency client deployment or publisher weekend production work.
+            </p>
+          </div>
+
+          <div style="background:var(--bg-surface); padding:16px; border-radius:12px; border:1px solid var(--border-subtle);">
+            <div style="font-weight:700; font-size:0.92rem; margin-bottom:4px; display:flex; align-items:center; gap:8px;">
+              <span>🎯</span> <span>Forte Mentocracy &amp; Budget</span>
+            </div>
+            <p style="color:var(--text-secondary); font-size:0.82rem; line-height:1.5; margin:0;">
+              1:1 bi-annual Forte reviews with Founder Rupesh Tiwari, plus 100% sponsored AWS/Azure/GCP cloud certifications.
+            </p>
+          </div>
+        </div>
+      </div>
+
       <!-- SCAN TO INSTALL MOBILE APP SHOWCASE -->
       <div style="margin-top:40px; background:var(--bg-surface); border:1px solid var(--border-medium); border-radius:20px; padding:36px; box-shadow:var(--shadow-md); display:grid; grid-template-columns:1.3fr 1fr; gap:36px; align-items:center;" class="portal-app-card">
         <div>
@@ -2173,8 +2251,8 @@
           <span style="font-size:0.88rem; color:var(--text-secondary);">
             🌟 Benefits: Flexible global remote, continuous learning budget, high-spec Mac hardware, and equity grants.
           </span>
-          <a href="mailto:info@syllovo.com?subject=%5Baarunitech-careers%5D%20Job%20Application%20%E2%80%94%20Aaruni%20Tech" style="color:var(--dawn-orange); font-size:0.88rem; font-weight:700; text-decoration:none;">
-            Email resume to info@syllovo.com →
+          <a href="mailto:careers@aarunitech.com?subject=%5Baarunitech-careers%5D%20Job%20Application%20%E2%80%94%20Aaruni%20Tech" style="color:var(--dawn-orange); font-size:0.88rem; font-weight:700; text-decoration:none;">
+            Email resume to careers@aarunitech.com →
           </a>
         </div>
       </div>
@@ -2202,8 +2280,8 @@
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
               </div>
               <div>
-                <div style="font-weight:700; font-size:0.95rem;">General Inquiries &amp; Syllovo Enterprise</div>
-                <div style="font-size:0.88rem; color:var(--text-muted);"><a href="mailto:info@syllovo.com?subject=%5Bsyllovo%5D%20Enterprise%20%26%20Syllovo%20Studio%20Inquiry" style="color:var(--dawn-orange); text-decoration:none;">info@syllovo.com</a> <span style="font-size:0.78rem;">(tagged <code>[syllovo]</code> / <code>[aarunitech]</code>)</span></div>
+                <div style="font-weight:700; font-size:0.95rem;">General Inquiries &amp; Corporate Desk</div>
+                <div style="font-size:0.88rem; color:var(--text-muted);"><a href="mailto:contact@aarunitech.com?subject=%5Baarunitech%5D%20Corporate%20Inquiry" style="color:var(--dawn-orange); text-decoration:none;">contact@aarunitech.com</a></div>
               </div>
             </li>
 
@@ -2212,8 +2290,8 @@
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17.5 19H9a7 7 0 1 1 6.71-9h1.79a4.5 4.5 0 1 1 0 9Z"/></svg>
               </div>
               <div>
-                <div style="font-weight:700; font-size:0.95rem;">Aaruni Cloud Solutions &amp; API Access</div>
-                <div style="font-size:0.88rem; color:var(--text-muted);"><a href="mailto:info@syllovo.com?subject=%5Baarunicloud%5D%20Aaruni%20Cloud%20Solutions%20%26%20API%20Inquiry" style="color:var(--dawn-orange); text-decoration:none;">info@syllovo.com</a> <span style="font-size:0.78rem;">(tagged <code>[aarunicloud]</code>)</span></div>
+                <div style="font-weight:700; font-size:0.95rem;">Aaruni Cloud Solutions &amp; Enterprise Sales</div>
+                <div style="font-size:0.88rem; color:var(--text-muted);"><a href="mailto:sales@aarunitech.com?subject=%5Baarunicloud%5D%20Aaruni%20Cloud%20Solutions%20%26%20API%20Inquiry" style="color:var(--dawn-orange); text-decoration:none;">sales@aarunitech.com</a></div>
               </div>
             </li>
 
@@ -2437,6 +2515,108 @@
 
 
   <!-- =========================================================================
+       WORKING STYLE & EMPLOYEE BENEFITS MODAL (INDEX)
+       ========================================================================= -->
+  <div id="benefitsModal" class="modal-overlay" onclick="closeBenefitsModalOnOutside(event)">
+    <div class="modal-box" style="text-align:left; max-width:760px; max-height:90vh; overflow-y:auto;">
+      <button class="modal-close-btn" onclick="closeBenefitsModal()" aria-label="Close Modal">✕</button>
+      <div style="text-align:center; margin-bottom:20px;">
+        <div class="offering-badge" style="background:var(--dawn-orange-soft); color:var(--dawn-orange); margin-bottom:8px; display:inline-block;">Engineering Culture Manifesto</div>
+        <h3 style="font-size:1.7rem; font-weight:800; margin:0 0 6px 0;">Working Style &amp; Employee Benefits</h3>
+        <p style="font-size:0.9rem; color:var(--text-secondary); margin:0;">Aaruni Tech Private Limited &bull; Autonomy, Craftsmanship &amp; Comprehensive Protection</p>
+      </div>
+
+      <div style="background:var(--bg-alt); border-radius:12px; padding:18px; margin-bottom:20px; border-left:4px solid var(--dawn-orange);">
+        <p style="margin:0; font-size:0.92rem; line-height:1.6; color:var(--text-primary);">
+          At Aaruni Tech, we believe exceptional software architecture and media pipelines emerge when craftsmen are empowered with <strong>uninterrupted Maker time</strong>, <strong>100% on-time compensation</strong>, and <strong>top-tier hardware</strong>. We reject bureaucratic overhead in favor of true technical ownership.
+        </p>
+      </div>
+
+      <div style="display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-bottom:24px;" class="benefits-modal-grid">
+        <div style="background:var(--bg-surface); border:1px solid var(--border-medium); border-radius:12px; padding:16px;">
+          <div style="font-weight:700; font-size:0.95rem; margin-bottom:6px; display:flex; align-items:center; gap:8px;">
+            <span>🚀</span> <span>Remote-First &amp; Async Autonomy</span>
+          </div>
+          <div style="font-size:0.84rem; color:var(--text-secondary); line-height:1.55;">
+            • Zero pointless status meetings. Progress is tracked via code PRs and async updates.<br/>
+            • 4-Hour daily protected focus blocks for deep architecture and production.<br/>
+            • Flexible working hours tailored around your creative rhythm.
+          </div>
+        </div>
+
+        <div style="background:var(--bg-surface); border:1px solid var(--border-medium); border-radius:12px; padding:16px;">
+          <div style="font-weight:700; font-size:0.95rem; margin-bottom:6px; display:flex; align-items:center; gap:8px;">
+            <span>💳</span> <span>Encrypted Monthly Salary Vault</span>
+          </div>
+          <div style="font-size:0.84rem; color:var(--text-secondary); line-height:1.55;">
+            • Disbursed strictly between the 1st and 4th of every month via Axis Bank NEFT.<br/>
+            • 100% on-time track record with zero delays, even on bank holidays.<br/>
+            • Self-service instant encrypted payslips with AES-256 verification.
+          </div>
+        </div>
+
+        <div style="background:var(--bg-surface); border:1px solid var(--border-medium); border-radius:12px; padding:16px;">
+          <div style="font-weight:700; font-size:0.95rem; margin-bottom:6px; display:flex; align-items:center; gap:8px;">
+            <span>💻</span> <span>Apple Silicon M4 Pro Workstations</span>
+          </div>
+          <div style="font-size:0.84rem; color:var(--text-secondary); line-height:1.55;">
+            • Apple Silicon Mac Mini M4 Pro (24GB Unified RAM) or MacBook Pro assigned.<br/>
+            • Dual 4K monitor support, high-speed NVMe storage, and private cloud sandbox.<br/>
+            • Workstation ergonomics and high-speed fiber internet reimbursement.
+          </div>
+        </div>
+
+        <div style="background:var(--bg-surface); border:1px solid var(--border-medium); border-radius:12px; padding:16px;">
+          <div style="font-weight:700; font-size:0.95rem; margin-bottom:6px; display:flex; align-items:center; gap:8px;">
+            <span>🏛️</span> <span>CA-Audited Zero Tax-Loss Policy</span>
+          </div>
+          <div style="font-size:0.84rem; color:var(--text-secondary); line-height:1.55;">
+            • Professional in-house Chartered Accountant advice for Section 80C, 80D, and HRA.<br/>
+            • Maximizes legal take-home pay while maintaining 100% statutory compliance.<br/>
+            • Digitally signed Form 16 Part A &amp; B issued automatically every fiscal year.
+          </div>
+        </div>
+
+        <div style="background:var(--bg-surface); border:1px solid var(--border-medium); border-radius:12px; padding:16px;">
+          <div style="font-weight:700; font-size:0.95rem; margin-bottom:6px; display:flex; align-items:center; gap:8px;">
+            <span>💰</span> <span>Sunday 1-Day Extra Pay (Compensatory)</span>
+          </div>
+          <div style="font-size:0.84rem; color:var(--text-secondary); line-height:1.55;">
+            • Weekends are respected for personal rest and family.<br/>
+            • 100% daily bonus added for any approved emergency enterprise or publisher release.<br/>
+            • Zero deductions for standard Sunday rest days.
+          </div>
+        </div>
+
+        <div style="background:var(--bg-surface); border:1px solid var(--border-medium); border-radius:12px; padding:16px;">
+          <div style="font-weight:700; font-size:0.95rem; margin-bottom:6px; display:flex; align-items:center; gap:8px;">
+            <span>🎯</span> <span>Forte Meritocracy &amp; Learning</span>
+          </div>
+          <div style="font-size:0.84rem; color:var(--text-secondary); line-height:1.55;">
+            • Bi-annual Forte reviews with Founder &amp; Principal Architect Rupesh Tiwari.<br/>
+            • 100% company-paid cloud certifications (AWS, Azure, GCP, Kubernetes).<br/>
+            • Global publishing authorship opportunities for high-impact practitioners.
+          </div>
+        </div>
+      </div>
+
+      <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px; border-top:1px solid var(--border-subtle); padding-top:16px;">
+        <span style="font-size:0.84rem; color:var(--text-muted);">
+          Explore active roles: <a href="mailto:careers@aarunitech.com" style="color:var(--dawn-orange); text-decoration:none; font-weight:700;">careers@aarunitech.com</a>
+        </span>
+        <div style="display:flex; gap:10px;">
+          <a href="https://my.aarunitech.com/?tab=benefits" target="_blank" class="btn btn-dawn" style="padding:9px 18px; font-size:0.85rem;">
+            <span>Open in Employee Portal ↗</span>
+          </a>
+          <button onclick="closeBenefitsModal()" class="btn btn-outline" style="padding:9px 16px; font-size:0.85rem;">
+            <span>Close</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- =========================================================================
        CLIENT-SIDE INTERACTIVITY & STATE LOGIC
        ========================================================================= -->
   <script>
@@ -2524,7 +2704,7 @@
       }
     }
 
-    // Contact Form Submission (Routes via info@syllovo.com -> rupesh@fullstackmaster.net with brand label)
+    // Contact Form Submission (Routes via contact@aarunitech.com / careers@aarunitech.com)
     function handleContactSubmit(e) {
       e.preventDefault();
       var btn = document.getElementById("contactSubmitBtn");
@@ -2537,12 +2717,16 @@
 
       var lowerOff = offering.toLowerCase();
       var label = "aarunitech";
-      if (lowerOff.indexOf("aaruni cloud") !== -1 || lowerOff.indexOf("compute") !== -1) {
+      var targetEmail = "contact@aarunitech.com";
+      if (lowerOff.indexOf("career") !== -1) {
+        label = "aarunitech-careers";
+        targetEmail = "careers@aarunitech.com";
+      } else if (lowerOff.indexOf("aaruni cloud") !== -1 || lowerOff.indexOf("compute") !== -1) {
         label = "aarunicloud";
+        targetEmail = "sales@aarunitech.com";
       } else if (lowerOff.indexOf("syllovo") !== -1) {
         label = "syllovo";
-      } else if (lowerOff.indexOf("career") !== -1) {
-        label = "aarunitech-careers";
+        targetEmail = "contact@aarunitech.com";
       }
 
       var ref = "INQ-" + Math.floor(100000 + Math.random() * 899999);
@@ -2556,7 +2740,7 @@
         "Offering: " + offering + "\n\n" +
         "Details:\n" + msgText + "\n"
       );
-      var mailtoUrl = "mailto:info@syllovo.com?subject=" + subj + "&body=" + body;
+      var mailtoUrl = "mailto:" + targetEmail + "?subject=" + subj + "&body=" + body;
 
       btn.disabled = true;
       btn.innerHTML = "<span>Transmitting Enterprise Request...</span>";
@@ -2583,7 +2767,7 @@
           status.innerHTML =
             "<div style='color:var(--accent-emerald); font-weight:700; background:rgba(16, 185, 129, 0.1); padding:12px; border-radius:8px;'>" +
               "✓ Thank you " + name + "! Inquiry <code>" + ref + "</code> " +
-              (sentServer ? "auto-emailed via <code>info@syllovo.com</code> " : "logged ") +
+              (sentServer ? "dispatched to <code>" + targetEmail + "</code> " : "logged ") +
               "under label <code>[" + label + "]</code>. " +
               "<a href='" + mailtoUrl + "' style='color:var(--dawn-orange); text-decoration:underline; margin-left:6px;'>Open in Mail App &rarr;</a>" +
             "</div>";
@@ -2596,7 +2780,7 @@
           status.innerHTML =
             "<div style='color:var(--accent-emerald); font-weight:700; background:rgba(16, 185, 129, 0.1); padding:12px; border-radius:8px;'>" +
               "✓ Thank you " + name + "! Inquiry <code>" + ref + "</code> logged under label <code>[" + label + "]</code>. " +
-              "<a href='" + mailtoUrl + "' style='color:var(--dawn-orange); text-decoration:underline; margin-left:6px;'>Send via info@syllovo.com &rarr;</a>" +
+              "<a href='" + mailtoUrl + "' style='color:var(--dawn-orange); text-decoration:underline; margin-left:6px;'>Send via " + targetEmail + " &rarr;</a>" +
             "</div>";
           document.getElementById("enterpriseContactForm").reset();
         });
@@ -2697,6 +2881,28 @@
     }
 
     // Mobile App Modal Controller
+    function openWorkingStyleBenefitsModalIndex() {
+      var modal = document.getElementById("benefitsModal");
+      if (modal) {
+        modal.classList.add("active");
+        document.body.style.overflow = "hidden";
+      }
+    }
+
+    function closeBenefitsModal() {
+      var modal = document.getElementById("benefitsModal");
+      if (modal) {
+        modal.classList.remove("active");
+        document.body.style.overflow = "";
+      }
+    }
+
+    function closeBenefitsModalOnOutside(e) {
+      if (e.target.id === "benefitsModal") {
+        closeBenefitsModal();
+      }
+    }
+
     function openMobileAppModal() {
       var modal = document.getElementById("appQrModal");
       if (modal) {

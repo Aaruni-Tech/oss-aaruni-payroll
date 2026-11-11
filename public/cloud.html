@@ -2532,7 +2532,7 @@
             <li><a href="https://aarunitech.com" target="_blank" rel="noopener">Parent: aarunitech.com &nearr;</a></li>
             <li><a href="https://syllovo.com" target="_blank" rel="noopener">Customer: syllovo.com &nearr;</a></li>
             <li><a href="https://my.aarunitech.com" target="_blank" rel="noopener">Staff Portal (my.aarunitech.com) &nearr;</a></li>
-            <li><a href="mailto:info@syllovo.com?subject=%5Baarunicloud%5D%20Aaruni%20Cloud%20Sales%20%26%20Support">Contact: info@syllovo.com</a></li>
+            <li><a href="mailto:sales@aarunitech.com?subject=%5Baarunicloud%5D%20Aaruni%20Cloud%20Sales%20%26%20Support">Contact: sales@aarunitech.com</a></li>
           </ul>
         </div>
       </div>
@@ -3252,10 +3252,10 @@ console.log("Deployed:", cluster.endpoint);`
         "Work Email: " + mail + "\n" +
         "Selected Services: " + svc + "\n"
       );
-      const mailtoHref = "mailto:info@syllovo.com?subject=" + subj + "&body=" + body;
+      const mailtoHref = "mailto:sales@aarunitech.com?subject=" + subj + "&body=" + body;
 
       box.style.display = "block";
-      box.innerHTML = "Dispatching pilot request <code>" + ref + "</code> to <code>info@syllovo.com</code>...";
+      box.innerHTML = "Dispatching pilot request <code>" + ref + "</code> to <code>sales@aarunitech.com</code>...";
 
       fetch("/api/inquiries", {
         method: "POST",
@@ -3267,14 +3267,14 @@ console.log("Deployed:", cluster.endpoint);`
           const sentServer = data && data.emailDelivery && data.emailDelivery.sent;
           box.innerHTML =
             (sentServer
-              ? "✓ Auto-emailed to <code>info@syllovo.com</code> (labeled <code>[aarunicloud]</code>, Ref <code>" + ref + "</code>). "
+              ? "✓ Auto-emailed to <code>sales@aarunitech.com</code> (labeled <code>[aarunicloud]</code>, Ref <code>" + ref + "</code>). "
               : "✓ Pilot Reference <code>" + ref + "</code> logged with label <code>[aarunicloud]</code>. ") +
             "<a href=\"" + mailtoHref + "\" style=\"text-decoration:underline;color:#38bdf8;margin-left:6px;\">Open in Mail App &rarr;</a>";
         })
         .catch(function () {
           box.innerHTML =
             "Pilot Reference <code>" + ref + "</code> logged with label <code>[aarunicloud]</code>. " +
-            "<a href=\"" + mailtoHref + "\" style=\"text-decoration:underline;color:#38bdf8;margin-left:6px;\">Send to info@syllovo.com &rarr;</a>";
+            "<a href=\"" + mailtoHref + "\" style=\"text-decoration:underline;color:#38bdf8;margin-left:6px;\">Send to sales@aarunitech.com &rarr;</a>";
         });
     }
 

@@ -807,6 +807,10 @@ button, a.button {
       </div>
 
       <div class="flex items-center gap-3 flex-wrap text-xs">
+        <button onclick="openPolicyModal('BENEFITS')" class="text-amber-400 hover:text-orange-400 underline cursor-pointer font-bold">
+          🌟 Working Style &amp; Benefits
+        </button>
+        <span class="text-slate-700">&bull;</span>
         <button onclick="openPolicyModal('HIERARCHY')" class="text-slate-300 hover:text-orange-400 underline cursor-pointer font-bold">
           🏢 Company Group
         </button>
@@ -1788,7 +1792,13 @@ button, a.button {
         box.innerHTML = `
           <div class="flex items-center gap-2 flex-wrap">
             <nav class="hidden md:flex items-center gap-1 text-xs font-semibold" style="color: var(--at-text-secondary);">
-              <button onclick="openAboutUsModal()" class="px-2.5 py-1.5 rounded-lg hover:text-orange-500 hover:bg-slate-100 dark:hover:bg-slate-800 transition-all cursor-pointer">
+              <button onclick="openWorkingStyleBenefitsModal()" class="px-2.5 py-1.5 rounded-lg hover:text-orange-500 hover:bg-slate-100 dark:hover:bg-slate-800 transition-all cursor-pointer font-bold text-amber-600 dark:text-amber-400 flex items-center gap-1">
+                <span>✨</span> <span>Benefits &amp; Culture</span>
+              </button>
+              <button onclick="openWorkingStyleBenefitsModal()" class="px-3 py-1.5 rounded-lg text-xs font-bold text-amber-900 dark:text-amber-200 bg-amber-50 dark:bg-amber-950/40 hover:bg-amber-100 dark:hover:bg-amber-900/50 border border-amber-300 dark:border-amber-700 transition-all cursor-pointer shadow-sm flex items-center gap-1.5">
+                    <span>✨</span> <span>Working Style &amp; Benefits</span>
+                  </button>
+                  <button onclick="openAboutUsModal()" class="px-2.5 py-1.5 rounded-lg hover:text-orange-500 hover:bg-slate-100 dark:hover:bg-slate-800 transition-all cursor-pointer">
                 About Us
               </button>
               <button onclick="openPolicyModal('HIERARCHY')" class="px-2.5 py-1.5 rounded-lg hover:text-orange-500 hover:bg-slate-100 dark:hover:bg-slate-800 transition-all cursor-pointer">
@@ -1877,6 +1887,10 @@ button, a.button {
             </button>
 
             <!-- Corporate Policies -->
+            <button onclick="openWorkingStyleBenefitsModal(); toggleProfileDropdown();" class="w-full text-left px-3 py-2 rounded-xl text-xs text-amber-400 hover:bg-slate-800 flex items-center gap-2.5 cursor-pointer transition-all font-bold">
+              <span>🌟</span>
+              <span>Working Style &amp; Benefits</span>
+            </button>
             <button onclick="openPolicyModal('SALARY_ATTENDANCE'); toggleProfileDropdown();" class="w-full text-left px-3 py-2 rounded-xl text-xs text-slate-200 hover:bg-slate-800 flex items-center gap-2.5 cursor-pointer transition-all">
               <span>📜</span>
               <span>Salary &amp; Attendance Policy</span>
@@ -2006,6 +2020,49 @@ button, a.button {
                     <p class="text-xs text-slate-500 dark:text-slate-400 leading-relaxed m-0">
                       Domain-driven design (DDD), single-purpose microservices, AI coding agents, and high-concurrency systems delivery led by Founder Rupesh Kumar Tiwari.
                     </p>
+                  </div>
+                </div>
+
+                <!-- WORKING STYLE & EMPLOYEE BENEFITS FEATURE CARD -->
+                <div class="p-4 rounded-xl border transition-all mt-4" style="background: linear-gradient(135deg, rgba(254,95,1,0.06) 0%, rgba(2,132,199,0.06) 100%); border-color: rgba(254,95,1,0.35);">
+                  <div class="flex items-center justify-between gap-2 mb-2 flex-wrap">
+                    <div class="flex items-center gap-2">
+                      <span class="text-xl">🌟</span>
+                      <strong class="text-sm font-extrabold" style="color: var(--at-text);">Working Style &amp; Employee Benefits</strong>
+                      <span class="text-[10px] px-2 py-0.5 rounded-full bg-orange-500/10 text-orange-600 dark:text-orange-400 font-bold border border-orange-500/30">Culture Manifesto</span>
+                    </div>
+                    <button onclick="openWorkingStyleBenefitsModal()" class="text-xs font-bold text-orange-600 hover:text-orange-700 dark:text-orange-400 flex items-center gap-1 underline cursor-pointer">
+                      <span>Read Full Policy &rarr;</span>
+                    </button>
+                  </div>
+                  <p class="text-xs text-slate-600 dark:text-slate-300 leading-relaxed mb-3">
+                    We are an engineering-driven company built on high trust, Maker's time, and unconditional care for our builders and creators.
+                  </p>
+                  <div class="grid grid-cols-2 sm:grid-cols-3 gap-2 text-xs">
+                    <div class="p-2.5 rounded-lg bg-white/70 dark:bg-slate-900/70 border border-slate-200 dark:border-slate-800">
+                      <div class="font-bold text-slate-800 dark:text-slate-200 flex items-center gap-1"><span>🚀</span> <span>Remote &amp; Async</span></div>
+                      <div class="text-[11px] text-slate-500 dark:text-slate-400 mt-0.5">Deep work, zero pointless meetings</div>
+                    </div>
+                    <div class="p-2.5 rounded-lg bg-white/70 dark:bg-slate-900/70 border border-slate-200 dark:border-slate-800">
+                      <div class="font-bold text-slate-800 dark:text-slate-200 flex items-center gap-1"><span>💳</span> <span>On-Time Salary</span></div>
+                      <div class="text-[11px] text-slate-500 dark:text-slate-400 mt-0.5">Guaranteed 1st–4th monthly credit</div>
+                    </div>
+                    <div class="p-2.5 rounded-lg bg-white/70 dark:bg-slate-900/70 border border-slate-200 dark:border-slate-800">
+                      <div class="font-bold text-slate-800 dark:text-slate-200 flex items-center gap-1"><span>💻</span> <span>Apple M4 Pro</span></div>
+                      <div class="text-[11px] text-slate-500 dark:text-slate-400 mt-0.5">High-spec Mac &amp; home stipend</div>
+                    </div>
+                    <div class="p-2.5 rounded-lg bg-white/70 dark:bg-slate-900/70 border border-slate-200 dark:border-slate-800">
+                      <div class="font-bold text-slate-800 dark:text-slate-200 flex items-center gap-1"><span>🏛️</span> <span>Zero Tax Loss</span></div>
+                      <div class="text-[11px] text-slate-500 dark:text-slate-400 mt-0.5">CA-audited tax advisory &amp; Form 16</div>
+                    </div>
+                    <div class="p-2.5 rounded-lg bg-white/70 dark:bg-slate-900/70 border border-slate-200 dark:border-slate-800">
+                      <div class="font-bold text-slate-800 dark:text-slate-200 flex items-center gap-1"><span>🎯</span> <span>Forte Reviews</span></div>
+                      <div class="text-[11px] text-slate-500 dark:text-slate-400 mt-0.5">1:1 mentorship &amp; meritocracy</div>
+                    </div>
+                    <div class="p-2.5 rounded-lg bg-white/70 dark:bg-slate-900/70 border border-slate-200 dark:border-slate-800">
+                      <div class="font-bold text-slate-800 dark:text-slate-200 flex items-center gap-1"><span>💰</span> <span>Sunday Extra Pay</span></div>
+                      <div class="text-[11px] text-slate-500 dark:text-slate-400 mt-0.5">100% 1-day bonus for Sunday work</div>
+                    </div>
                   </div>
                 </div>
 
@@ -2365,6 +2422,253 @@ button, a.button {
         </div>
       `;
       openModalWithHTML("Aaruni Tech Statutory Registrations", html);
+    }
+
+    
+    function openWorkingStyleBenefitsModal() {
+      const html = `
+        <div style="font-family:-apple-system,BlinkMacSystemFont,'Inter',sans-serif;color:var(--at-text);line-height:1.6;font-size:13px;max-width:760px;margin:0 auto;">
+          <!-- HEADER -->
+          <div style="text-align:center;margin-bottom:20px;">
+            <div style="width:54px;height:54px;border-radius:16px;background:linear-gradient(135deg,#fff7ed,#fed7aa);border:1px solid #fdba74;display:inline-flex;align-items:center;justify-content:center;font-size:28px;margin-bottom:8px;box-shadow:0 2px 8px rgba(254,95,1,0.15);">
+              🌟
+            </div>
+            <h3 style="font-size:21px;font-weight:900;color:var(--at-text);margin:0 0 4px 0;">Working Style &amp; Employee Benefits</h3>
+            <p style="font-size:12px;color:var(--at-text-muted);margin:0;">The Aaruni Tech Engineering Culture Manifesto &bull; Autonomy, Craftsmanship &amp; Comprehensive Care</p>
+          </div>
+
+          <!-- MANIFESTO HERO -->
+          <div style="background:linear-gradient(135deg, rgba(254,95,1,0.08) 0%, rgba(2,132,199,0.08) 100%);border:1.5px solid rgba(254,95,1,0.3);border-radius:14px;padding:16px;margin-bottom:18px;">
+            <strong style="color:var(--dawn-orange,#fe5f01);font-size:14px;display:block;margin-bottom:6px;">
+              🚀 Built by Engineers &amp; Creators, For Engineers &amp; Creators
+            </strong>
+            <p style="color:var(--at-text-secondary);margin:0;line-height:1.6;font-size:12.5px;">
+              At <strong>Aaruni Tech Private Limited (aarunitech.com)</strong>, we build high-concurrency cloud infrastructure (Aaruni Cloud) and autonomous studio video pipelines (Syllovo Studio). We believe high-velocity innovation can only thrive in an environment of <strong>deep trust</strong>, <strong>maker autonomy</strong>, and <strong>unconditional compensation integrity</strong>.
+            </p>
+          </div>
+
+          <!-- 6 PILLARS GRID -->
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:18px;">
+            
+            <!-- Pillar 1 -->
+            <div style="background:var(--at-surface-subtle);border:1px solid var(--at-border);border-radius:12px;padding:14px;">
+              <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;">
+                <span style="font-size:20px;">🚀</span>
+                <strong style="color:var(--at-text);font-size:13px;">Remote-First &amp; Deep Work Autonomy</strong>
+              </div>
+              <div style="color:var(--at-text-secondary);font-size:11.8px;line-height:1.55;">
+                • <strong>Zero Pointless Meetings:</strong> No daily standups just to talk. Progress is tracked via code PRs, verified lab commits, and written async updates.<br/>
+                • <strong>4-Hour Maker Blocks:</strong> Dedicated daily unbroken focus time for deep architectural design and creative course production.<br/>
+                • <strong>Outcome-Driven:</strong> Complete schedule freedom. We measure working systems delivered, not hours chained to a desk.
+              </div>
+            </div>
+
+            <!-- Pillar 2 -->
+            <div style="background:var(--at-surface-subtle);border:1px solid var(--at-border);border-radius:12px;padding:14px;">
+              <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;">
+                <span style="font-size:20px;">💳</span>
+                <strong style="color:var(--at-text);font-size:13px;">Encrypted Monthly Salary Vault</strong>
+              </div>
+              <div style="color:var(--at-text-secondary);font-size:11.8px;line-height:1.55;">
+                • <strong>100% On-Time Record:</strong> Monthly compensation is disbursed strictly between the <strong>1st and 4th</strong> of every calendar month via Axis Bank corporate NEFT/IMPS.<br/>
+                • <strong>Zero Salary Delay:</strong> Even on bank holidays, payroll is processed in advance.<br/>
+                • <strong>AES-256 Payslips:</strong> 1-click self-service encrypted payslips and Form 16 available 24/7 in the portal.
+              </div>
+            </div>
+
+            <!-- Pillar 3 -->
+            <div style="background:var(--at-surface-subtle);border:1px solid var(--at-border);border-radius:12px;padding:14px;">
+              <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;">
+                <span style="font-size:20px;">💻</span>
+                <strong style="color:var(--at-text);font-size:13px;">Apple Silicon M4 Pro &amp; Workstations</strong>
+              </div>
+              <div style="color:var(--at-text-secondary);font-size:11.8px;line-height:1.55;">
+                • <strong>M4 Pro Hardware:</strong> Engineers and studio specialists receive Apple Silicon Mac Mini M4 Pro (24GB Unified RAM) or MacBook Pros.<br/>
+                • <strong>Dual Display &amp; RAID NVMe:</strong> Dual 4K display support, private 8TB RAID arrays, and dedicated Cloudflare sandbox environments.<br/>
+                • <strong>Ergonomic Allowance:</strong> Home office ergonomics and high-speed fiber internet reimbursement.
+              </div>
+            </div>
+
+            <!-- Pillar 4 -->
+            <div style="background:var(--at-surface-subtle);border:1px solid var(--at-border);border-radius:12px;padding:14px;">
+              <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;">
+                <span style="font-size:20px;">🏛️</span>
+                <strong style="color:var(--at-text);font-size:13px;">CA-Audited Zero Tax-Loss Policy</strong>
+              </div>
+              <div style="color:var(--at-text-secondary);font-size:11.8px;line-height:1.55;">
+                • <strong>Professional CA Support:</strong> Aaruni Tech retains certified Chartered Accountants to guide every team member on Section 80C, 80D, and HRA deductions.<br/>
+                • <strong>Maximum Take-Home Shield:</strong> Proactive tax planning to eliminate accidental tax leakage or statutory penalties.<br/>
+                • <strong>Instant Form 16:</strong> Digitally signed Part A &amp; Part B tax certificates issued directly through the portal.
+              </div>
+            </div>
+
+            <!-- Pillar 5 -->
+            <div style="background:var(--at-surface-subtle);border:1px solid var(--at-border);border-radius:12px;padding:14px;">
+              <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;">
+                <span style="font-size:20px;">💰</span>
+                <strong style="color:var(--at-text);font-size:13px;">Sunday 1-Day Extra Pay (Compensatory)</strong>
+              </div>
+              <div style="color:var(--at-text-secondary);font-size:11.8px;line-height:1.55;">
+                • <strong>Respect for Weekends:</strong> Weekends belong to personal rest and family.<br/>
+                • <strong>100% Daily Bonus:</strong> Whenever an urgent enterprise deployment, publisher deadline, or client critical task requires approved Sunday work, the employee receives a full <strong>1-day extra compensatory pay</strong> on top of base monthly CTC.<br/>
+                • <strong>Zero Deductions for Sunday Rest:</strong> Sundays are fully paid rest days across all standard cycles.
+              </div>
+            </div>
+
+            <!-- Pillar 6 -->
+            <div style="background:var(--at-surface-subtle);border:1px solid var(--at-border);border-radius:12px;padding:14px;">
+              <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;">
+                <span style="font-size:20px;">🎯</span>
+                <strong style="color:var(--at-text);font-size:13px;">Forte Meritocracy &amp; Learning Budget</strong>
+              </div>
+              <div style="color:var(--at-text-secondary);font-size:11.8px;line-height:1.55;">
+                • <strong>Direct 1:1 Mentorship:</strong> Bi-annual Forte reviews with Founder &amp; Principal Systems Architect Rupesh Tiwari.<br/>
+                • <strong>100% Sponsored Certifications:</strong> AWS, Azure, GCP, and Kubernetes certifications paid in full.<br/>
+                • <strong>Authoring &amp; Global Publishing:</strong> Opportunities to co-author top-tier software curriculum published on Pluralsight and Coursera.
+              </div>
+            </div>
+
+          </div>
+
+          <!-- ACTION BUTTONS -->
+          <div style="background:#fff7ed;border:1px solid #fed7aa;border-radius:12px;padding:14px;text-align:center;">
+            <div style="font-size:12px;font-weight:700;color:#9a3412;margin-bottom:6px;">
+              Have questions regarding Aaruni Tech benefits, tax advisory, or working style?
+            </div>
+            <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap;">
+              <a href="mailto:careers@aarunitech.com?subject=Working%20Style%20%26%20Benefits%20Inquiry%20%E2%80%94%20Aaruni%20Tech" style="padding:7px 16px;border-radius:8px;background:#fe5f01;color:#fff;text-decoration:none;font-weight:700;font-size:11.5px;">
+                ✉️ Contact HR: careers@aarunitech.com
+              </a>
+              <button onclick="closeDocModal(); setTab('forte');" class="brand-grad" style="padding:7px 16px;border-radius:8px;border:none;color:#fff;font-weight:700;font-size:11.5px;cursor:pointer;">
+                🎯 Book 1:1 Forte Review
+              </button>
+              <button onclick="closeDocModal()" style="padding:7px 16px;border-radius:8px;border:1px solid #cbd5e1;background:#fff;color:#334155;font-weight:700;font-size:11.5px;cursor:pointer;">
+                Close Guide
+              </button>
+            </div>
+          </div>
+        </div>
+      `;
+      openModalWithHTML("Aaruni Tech Working Style &amp; Employee Benefits", html);
+    }
+
+    function openSalaryAttendancePolicyModal() {
+      const html = `
+        <div style="font-family:-apple-system,BlinkMacSystemFont,'Inter',sans-serif;color:var(--at-text);line-height:1.6;font-size:13px;max-width:680px;margin:0 auto;">
+          <div style="text-align:center;margin-bottom:18px;">
+            <div style="width:48px;height:48px;border-radius:14px;background:#fff7ed;border:1px solid #fed7aa;display:inline-flex;align-items:center;justify-content:center;font-size:24px;margin-bottom:6px;">
+              📜
+            </div>
+            <h3 style="font-size:18px;font-weight:800;color:var(--at-text);margin:0 0 4px 0;">Official Salary &amp; Attendance Policy</h3>
+            <p style="font-size:11.5px;color:var(--at-text-muted);margin:0;">Aaruni Tech Private Limited &bull; Calendar-Day Electronic Payroll Policy</p>
+          </div>
+
+          <div style="background:var(--at-surface-subtle);border:1px solid var(--at-border);border-radius:12px;padding:14px;margin-bottom:14px;">
+            <strong style="color:var(--at-text);font-size:13px;display:block;margin-bottom:6px;">📅 Calendar Day Basis &amp; Timely Disbursement</strong>
+            <p style="color:var(--at-text-secondary);font-size:12px;margin:0 0 6px 0;">
+              All employee salaries are computed on a full calendar-month basis (30 or 31 days). Disbursed between the <strong>1st and 4th</strong> of each month directly to verified Axis Bank or personal salary accounts.
+            </p>
+            <div style="color:var(--at-text-secondary);font-size:11.5px;line-height:1.55;">
+              • <strong>Sundays:</strong> Paid weekly rest days. Approved work on Sunday entitles 1 full extra day compensatory pay.<br/>
+              • <strong>Daily Punch:</strong> Team members record Entry &amp; Exit in the mobile app or web portal to confirm presence and project timesheets.<br/>
+              • <strong>Leaves:</strong> 18 annual privilege leaves + official Telangana festival holidays.
+            </div>
+          </div>
+
+          <div style="text-align:center;">
+            <button onclick="closeDocModal()" class="brand-grad" style="padding:8px 22px;border-radius:8px;border:none;color:#fff;font-weight:700;font-size:12px;cursor:pointer;">
+              Understood &bull; Close
+            </button>
+          </div>
+        </div>
+      `;
+      openModalWithHTML("Aaruni Tech Salary &amp; Attendance Policy", html);
+    }
+
+    function openPrivacySecurityModal() {
+      const html = `
+        <div style="font-family:-apple-system,BlinkMacSystemFont,'Inter',sans-serif;color:var(--at-text);line-height:1.6;font-size:13px;max-width:640px;margin:0 auto;">
+          <div style="text-align:center;margin-bottom:18px;">
+            <div style="width:48px;height:48px;border-radius:14px;background:#f0fdf4;border:1px solid #bbf7d0;display:inline-flex;align-items:center;justify-content:center;font-size:24px;margin-bottom:6px;">
+              🔒
+            </div>
+            <h3 style="font-size:18px;font-weight:800;color:var(--at-text);margin:0 0 4px 0;">Zero-Trust Privacy &amp; Data Security</h3>
+            <p style="font-size:11.5px;color:var(--at-text-muted);margin:0;">Client &amp; Employee Data Vault Encryption Standards</p>
+          </div>
+          <div style="background:var(--at-surface-subtle);border:1px solid var(--at-border);border-radius:12px;padding:14px;margin-bottom:14px;font-size:12px;color:var(--at-text-secondary);line-height:1.6;">
+            • <strong>AES-256 Encryption:</strong> All payroll records, PAN details, bank credentials, and tax dossiers are encrypted at rest using AES-256-GCM standards.<br/>
+            • <strong>Zero Third-Party Tracking:</strong> The Aaruni Tech portal operates with zero external ad pixels, telemetry cookies, or data brokers.<br/>
+            • <strong>Isolated Tenancy:</strong> Child platforms (Aaruni Cloud and Syllovo Studio) operate on strictly isolated logical storage partitions.
+          </div>
+          <div style="text-align:center;">
+            <button onclick="closeDocModal()" class="brand-grad" style="padding:8px 22px;border-radius:8px;border:none;color:#fff;font-weight:700;font-size:12px;cursor:pointer;">
+              Close Security Dossier
+            </button>
+          </div>
+        </div>
+      `;
+      openModalWithHTML("Data Privacy &amp; Security", html);
+    }
+
+    function openCorporateContactModal() {
+      const html = `
+        <div style="font-family:-apple-system,BlinkMacSystemFont,'Inter',sans-serif;color:var(--at-text);line-height:1.6;font-size:13px;max-width:640px;margin:0 auto;">
+          <div style="text-align:center;margin-bottom:18px;">
+            <div style="width:48px;height:48px;border-radius:14px;background:#fff7ed;border:1px solid #fed7aa;display:inline-flex;align-items:center;justify-content:center;font-size:24px;margin-bottom:6px;">
+              📞
+            </div>
+            <h3 style="font-size:18px;font-weight:800;color:var(--at-text);margin:0 0 4px 0;">Corporate Contact &amp; Support</h3>
+            <p style="font-size:11.5px;color:var(--at-text-muted);margin:0;">Aaruni Tech Private Limited &bull; Hyderabad Tech Hub</p>
+          </div>
+          <div style="background:var(--at-surface-subtle);border:1px solid var(--at-border);border-radius:12px;padding:14px;margin-bottom:14px;font-size:12px;color:var(--at-text-secondary);line-height:1.6;">
+            <div style="margin-bottom:8px;">
+              <strong style="color:var(--at-text);">🏢 Registered Office:</strong><br/>
+              Beeramguda Tech Hub, Ramachandrapuram, Hyderabad, Telangana 502032, India.
+            </div>
+            <div style="margin-bottom:8px;">
+              <strong style="color:var(--at-text);">✉️ Corporate Desk:</strong> <a href="mailto:contact@aarunitech.com" style="color:#fe5f01;text-decoration:none;font-weight:700;">contact@aarunitech.com</a>
+            </div>
+            <div style="margin-bottom:8px;">
+              <strong style="color:var(--at-text);">🚀 Careers &amp; HR:</strong> <a href="mailto:careers@aarunitech.com" style="color:#fe5f01;text-decoration:none;font-weight:700;">careers@aarunitech.com</a>
+            </div>
+            <div>
+              <strong style="color:var(--at-text);">☁️ Enterprise &amp; Cloud:</strong> <a href="mailto:sales@aarunitech.com" style="color:#fe5f01;text-decoration:none;font-weight:700;">sales@aarunitech.com</a>
+            </div>
+          </div>
+          <div style="text-align:center;">
+            <button onclick="closeDocModal()" class="brand-grad" style="padding:8px 22px;border-radius:8px;border:none;color:#fff;font-weight:700;font-size:12px;cursor:pointer;">
+              Close Contact
+            </button>
+          </div>
+        </div>
+      `;
+      openModalWithHTML("Aaruni Tech Corporate Contact", html);
+    }
+
+    function openPolicyModal(type) {
+      switch (type) {
+        case 'BENEFITS':
+        case 'WORKING_STYLE_BENEFITS':
+          openWorkingStyleBenefitsModal();
+          break;
+        case 'HIERARCHY':
+          openAboutUsModal();
+          break;
+        case 'SALARY_ATTENDANCE':
+          openSalaryAttendancePolicyModal();
+          break;
+        case 'TERMS':
+          openRegistrationsModal();
+          break;
+        case 'PRIVACY':
+          openPrivacySecurityModal();
+          break;
+        case 'CONTACT':
+          openCorporateContactModal();
+          break;
+        default:
+          openWorkingStyleBenefitsModal();
+      }
     }
 
     function openForgotPasswordModal() {
@@ -3190,6 +3494,9 @@ button, a.button {
           </button>
           <button onclick="setTab('tax')" class="flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs font-semibold whitespace-nowrap transition-all ${activeTab === 'tax' ? 'at-tab-active' : 'at-tab-inactive'}">
             <span>📑</span> <span>Tax &amp; Form 16</span>
+          </button>
+          <button onclick="setTab('benefits')" class="flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs font-semibold whitespace-nowrap transition-all ${activeTab === 'benefits' ? 'at-tab-active' : 'at-tab-inactive'}">
+            <span>🌟</span> <span>Working Style &amp; Benefits</span>
           </button>
           <button onclick="setTab('hrdocs')" class="flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs font-semibold whitespace-nowrap transition-all ${activeTab === 'hrdocs' ? 'at-tab-active' : 'at-tab-inactive'}">
             <span>📁</span> <span>Documents</span>
@@ -4533,6 +4840,112 @@ button, a.button {
             <p class="text-[11px] text-slate-400 leading-relaxed">
               <strong>Official CA Filing Note:</strong> Aaruni Tech is GST-registered for software and digital operations. All employee salaries are disbursed via Axis Bank (A/c xxxx3409, IFSC UTIB0002057). Staff members drawing up to ₹7,00,000 per annum qualify for standard tax rebate under Section 87A of the Income Tax Act with zero TDS deduction.
             </p>
+          </div>
+        `;
+      }
+
+      // 11. TAB VIEW 7: WORKING STYLE & EMPLOYEE BENEFITS
+      if (activeTab === "benefits") {
+        return `
+          ${adminPreviewBar}
+          ${phoneToolHeader}
+          ${subNavBar}
+
+          <!-- MY PERSONAL BENEFITS & HARDWARE ALLOCATION STATUS -->
+          <div class="glass-card rounded-2xl p-5 mb-5 border border-slate-800" style="background: linear-gradient(135deg, rgba(254,95,1,0.06) 0%, rgba(2,132,199,0.06) 100%);">
+            <div class="flex items-center justify-between mb-4 flex-wrap gap-2">
+              <div>
+                <div class="text-xs font-bold text-orange-400 uppercase tracking-wider flex items-center gap-2">
+                  <span>🌟 My Active Benefit Ledger &amp; Workstation Status</span>
+                  <span class="bg-emerald-500/20 text-emerald-400 text-[10px] font-bold px-2 py-0.5 rounded border border-emerald-500/30">Active &bull; Fully Covered</span>
+                </div>
+                <h3 class="text-base font-extrabold text-white mt-1">Aaruni Tech Comprehensive Staff Provisions &mdash; ${emp.name}</h3>
+              </div>
+              <button onclick="openWorkingStyleBenefitsModal()" class="brand-grad text-white text-xs font-bold px-3.5 py-2 rounded-xl shadow cursor-pointer flex items-center gap-1.5">
+                <span>📜 Read Full Culture Manifesto</span>
+              </button>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 text-xs">
+              <div class="p-3.5 rounded-xl bg-slate-900/80 border border-slate-800">
+                <div class="text-slate-400 text-[11px]">Assigned Workstation Hardware:</div>
+                <div class="font-bold text-white text-sm mt-0.5">Apple Mac Mini M4 Pro</div>
+                <div class="text-[11px] text-orange-400 mt-1">24GB Unified RAM &bull; Dual 4K Displays</div>
+              </div>
+              <div class="p-3.5 rounded-xl bg-slate-900/80 border border-slate-800">
+                <div class="text-slate-400 text-[11px]">Monthly Salary Vault Security:</div>
+                <div class="font-bold text-emerald-400 text-sm mt-0.5">100% On-Time Record</div>
+                <div class="text-[11px] text-slate-400 mt-1">Axis Bank Direct NEFT (1st&ndash;4th Monthly)</div>
+              </div>
+              <div class="p-3.5 rounded-xl bg-slate-900/80 border border-slate-800">
+                <div class="text-slate-400 text-[11px]">CA Tax Audit &amp; Form 16:</div>
+                <div class="font-bold text-sky-400 text-sm mt-0.5">CA Protection Active</div>
+                <div class="text-[11px] text-slate-400 mt-1">Zero Tax Loss &bull; Form 16 Ready</div>
+              </div>
+              <div class="p-3.5 rounded-xl bg-slate-900/80 border border-slate-800">
+                <div class="text-slate-400 text-[11px]">Sunday Extra Pay Provision:</div>
+                <div class="font-bold text-amber-400 text-sm mt-0.5">1-Day Compensatory Pay</div>
+                <div class="text-[11px] text-slate-400 mt-1">100% daily CTC for approved emergency work</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 6 PILLARS DETAILED BREAKDOWN IN STAFF PORTAL -->
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-5 text-xs">
+            <div class="glass-card rounded-2xl p-4 border border-slate-800">
+              <div class="flex items-center gap-2 mb-2">
+                <span class="text-xl">🚀</span>
+                <strong class="text-sm font-bold text-white">Remote-First, Asynchronous Autonomy</strong>
+              </div>
+              <p class="text-slate-400 leading-relaxed m-0">
+                We measure value created, not chair time. Daily updates occur asynchronously via Git commits and portal timesheets. Enjoy protected 4-hour Maker blocks for deep programming and course production without interruptions.
+              </p>
+            </div>
+            <div class="glass-card rounded-2xl p-4 border border-slate-800">
+              <div class="flex items-center gap-2 mb-2">
+                <span class="text-xl">💳</span>
+                <strong class="text-sm font-bold text-white">Encrypted Monthly Salary Vault</strong>
+              </div>
+              <p class="text-slate-400 leading-relaxed m-0">
+                Salary is strictly disbursed between the 1st and 4th of every single month directly into your bank account. Self-service digital payslips with AES-256 cryptographic verification are generated instantly.
+              </p>
+            </div>
+            <div class="glass-card rounded-2xl p-4 border border-slate-800">
+              <div class="flex items-center gap-2 mb-2">
+                <span class="text-xl">💻</span>
+                <strong class="text-sm font-bold text-white">Apple Silicon M4 Pro Workstations</strong>
+              </div>
+              <p class="text-slate-400 leading-relaxed m-0">
+                Top-of-the-line Apple Silicon hardware, ultra-fast local NVMe scratch disks, and private cloud sandbox clusters. We never let sluggish hardware slow down creative and technical excellence.
+              </p>
+            </div>
+            <div class="glass-card rounded-2xl p-4 border border-slate-800">
+              <div class="flex items-center gap-2 mb-2">
+                <span class="text-xl">🏛️</span>
+                <strong class="text-sm font-bold text-white">CA-Audited Zero Tax-Loss Policy</strong>
+              </div>
+              <p class="text-slate-400 leading-relaxed m-0">
+                Our in-house Chartered Accountants optimize your Section 80C, 80D, and HRA allowances so you legally take home maximum compensation with zero regulatory worries.
+              </p>
+            </div>
+            <div class="glass-card rounded-2xl p-4 border border-slate-800">
+              <div class="flex items-center gap-2 mb-2">
+                <span class="text-xl">💰</span>
+                <strong class="text-sm font-bold text-white">Sunday 1-Day Extra Pay (Compensatory)</strong>
+              </div>
+              <p class="text-slate-400 leading-relaxed m-0">
+                Weekends are yours. If approved enterprise releases or publisher production deadlines necessitate Sunday work, you are credited an extra full day's salary directly.
+              </p>
+            </div>
+            <div class="glass-card rounded-2xl p-4 border border-slate-800">
+              <div class="flex items-center gap-2 mb-2">
+                <span class="text-xl">🎯</span>
+                <strong class="text-sm font-bold text-white">Forte Meritocracy &amp; Mentorship</strong>
+              </div>
+              <p class="text-slate-400 leading-relaxed m-0">
+                Bi-annual Forte reviews with Founder &amp; Principal Systems Architect Rupesh Tiwari. Full corporate sponsorship for cloud certifications (AWS, Azure, GCP) and global publishing pathways.
+              </p>
+            </div>
           </div>
         `;
       }
@@ -5969,7 +6382,7 @@ button, a.button {
     // ADMIN LEADS & INQUIRIES DASHBOARD (Aaruni Cloud / Syllovo / Aaruni Tech)
     async function openAdminLeadsModal(filterLabel = "all") {
       openModalWithHTML(
-        "📬 Cloud, Syllovo & Enterprise Leads (info@syllovo.com → rupesh@fullstackmaster.net)",
+        "📬 Enterprise Inquiries & Leads (contact@aarunitech.com → rupesh@fullstackmaster.net)",
         `<div style="padding:20px;text-align:center;color:#475569;font-size:13px;">Loading live inquiries from Cloudflare D1...</div>`
       );
       try {
@@ -5991,7 +6404,7 @@ button, a.button {
             <div style="background:#090D16;color:#fff;padding:14px 18px;border-radius:12px;margin-bottom:14px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;">
               <div>
                 <div style="font-size:11px;font-weight:800;color:#38bdf8;text-transform:uppercase;">Server-Side Cloudflare Email Worker + D1 Ledger</div>
-                <div style="font-size:14px;font-weight:800;margin-top:2px;">Public: <code>info@syllovo.com</code> &rarr; Inbox: <code>rupesh@fullstackmaster.net</code></div>
+                <div style="font-size:14px;font-weight:800;margin-top:2px;">Public: <code>contact@aarunitech.com</code> &rarr; Inbox: <code>rupesh@fullstackmaster.net</code></div>
               </div>
               <button onclick="sendTestInquiryFromAdmin('${filterLabel === 'all' ? 'aarunicloud' : filterLabel}')" style="background:#FE5F01;color:#fff;border:none;padding:8px 13px;border-radius:8px;font-size:11.5px;font-weight:800;cursor:pointer;">
                 ⚡ Send Live Test Email
@@ -6025,7 +6438,7 @@ button, a.button {
                   <tbody>
                     ${rows.map(r => {
                       const subj = encodeURIComponent(`Re: [${r.label || 'aarunicloud'}] [${r.id}] ${r.offering || 'Inquiry'}`);
-                      const replyHref = `mailto:${r.senderEmail || 'info@syllovo.com'}?subject=${subj}`;
+                      const replyHref = `mailto:${r.senderEmail || 'contact@aarunitech.com'}?subject=${subj}`;
                       const isSent = String(r.emailStatus || "").includes("sent");
                       return `
                         <tr style="border-bottom:1px solid #f1f5f9;">
@@ -6068,7 +6481,7 @@ button, a.button {
     }
 
     async function sendTestInquiryFromAdmin(label = "aarunicloud") {
-      showToast("📨 Sending Live Email...", `Dispatching [${label}] inquiry from info@syllovo.com to rupesh@fullstackmaster.net...`);
+      showToast("📨 Sending Live Email...", `Dispatching [${label}] inquiry from contact@aarunitech.com to rupesh@fullstackmaster.net...`);
       try {
         const ref = "TEST-" + Math.floor(100000 + Math.random() * 899999);
         const res = await fetch("/api/inquiries", {
@@ -9051,6 +9464,9 @@ function updateQrBaseUrl(val) {
         if (themeParam && ["light", "dark", "auto"].includes(themeParam.toLowerCase())) {
           state.themeMode = themeParam.toLowerCase();
           applyAaruniTheme();
+        }
+        if (params.get("tab") === "benefits") {
+          setTimeout(() => openWorkingStyleBenefitsModal(), 150);
         }
         if (params.get("reset") === "1" || params.get("forgot") === "1") {
           setTimeout(() => openForgotPasswordModal(), 100);
