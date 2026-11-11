@@ -8255,16 +8255,7 @@ function updateQrBaseUrl(val) {
       signOutPortal();
     }
 
-    function checkUrlAutoLogin() {
-      try {
-        const params = new URLSearchParams(window.location.search);
-        const empParam = params.get("emp") || params.get("login") || params.get("persona");
-        const simParam = params.get("sim") || params.get("mobile");
-        const tabParam = params.get("tab");
-        const themeParam = params.get("theme");
-        if (themeParam && ["light", "dark", "auto"].includes(themeParam.toLowerCase())) {
-          state.themeMode = themeParam.toLowerCase();
-      // ============================================================================
+    // ============================================================================
     // 1:1 APPOINTMENT BOOKING & FOUNDER CHAT MODALS
     // ============================================================================
     function dismissAppointment(aptId) {
@@ -8388,7 +8379,16 @@ function updateQrBaseUrl(val) {
       renderApp();
     }
 
-    applyAaruniTheme();
+    function checkUrlAutoLogin() {
+      try {
+        const params = new URLSearchParams(window.location.search);
+        const empParam = params.get("emp") || params.get("login") || params.get("persona");
+        const simParam = params.get("sim") || params.get("mobile");
+        const tabParam = params.get("tab");
+        const themeParam = params.get("theme");
+        if (themeParam && ["light", "dark", "auto"].includes(themeParam.toLowerCase())) {
+          state.themeMode = themeParam.toLowerCase();
+          applyAaruniTheme();
         }
         if (params.get("reset") === "1" || params.get("forgot") === "1") {
           setTimeout(() => openForgotPasswordModal(), 100);
