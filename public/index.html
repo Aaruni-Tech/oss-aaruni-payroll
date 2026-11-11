@@ -376,6 +376,22 @@ body {
   color: #064e3b !important;
 }
 
+
+/* Zero scrollbars & responsive button anti-clipping protection */
+.hide-scroll {
+  -ms-overflow-style: none !important;
+  scrollbar-width: none !important;
+}
+.hide-scroll::-webkit-scrollbar {
+  display: none !important;
+  width: 0 !important;
+  height: 0 !important;
+}
+
+button, a.button {
+  box-sizing: border-box !important;
+}
+
 /* 5. Aaruni Dawn Orange Accents */
 .text-orange-500,
 .text-orange-400,
@@ -2295,35 +2311,39 @@ body {
       }
       navBar.classList.remove("hidden");
 
+      // Hide bottom floating dock on desktop/laptop (>= 768px) so it never overlaps or cuts off buttons!
+      navBar.classList.add("md:hidden");
+
       if (state.persona === "ADMIN") {
-        navBar.classList.add("md:hidden"); // Clean Zoho desktop layout (sidebar handles desktop nav)
         const tabs = [
-          { id: "roster", label: "Employees" },
-          { id: "pulse", label: "Attendance" },
-          { id: "payroll", label: "Pay Runs" },
-          { id: "loans", label: "Loans" },
-          { id: "form16", label: "Form 16 & Tax" }
+          { id: "roster", label: "Employees", icon: "👥" },
+          { id: "pulse", label: "Attendance", icon: "⏱️" },
+          { id: "payroll", label: "Pay Runs", icon: "💸" },
+          { id: "loans", label: "Loans", icon: "💼" },
+          { id: "form16", label: "Tax", icon: "📑" }
         ];
-        nav.className = "max-w-xl mx-auto grid grid-cols-5 gap-1";
+        nav.className = "w-full flex items-center justify-around gap-1 px-1";
         nav.innerHTML = tabs.map(t => `
-          <button onclick="setTab('${t.id}')" class="flex items-center justify-center py-2 rounded-xl text-xs transition-all ${state.activeTab === t.id ? 'brand-grad font-bold' : 'text-slate-400 hover:text-white'}">
-            ${t.label}
+          <button onclick="setTab('${t.id}')" class="flex flex-col items-center justify-center py-1.5 px-2 rounded-xl text-[10px] min-w-0 flex-1 transition-all ${state.activeTab === t.id ? 'brand-grad text-white font-bold shadow' : 'text-slate-400 hover:text-white'}">
+            <span class="text-xs">${t.icon}</span>
+            <span class="truncate text-[9px] mt-0.5">${t.label}</span>
           </button>
         `).join("");
       } else {
         const tabs = [
-          { id: "phonetool", label: "Profile" },
-          { id: "timesheet", label: "Attendance" },
-          { id: "forte", label: "Forte & Goals" },
-          { id: "salary", label: "Salary" },
-          { id: "payslips", label: "Payslips" },
-          { id: "tax", label: "Tax" },
-          { id: "hrdocs", label: "Docs" }
+          { id: "phonetool", label: "Profile", icon: "📇" },
+          { id: "timesheet", label: "Attendance", icon: "⏱️" },
+          { id: "forte", label: "Forte", icon: "🎯" },
+          { id: "salary", label: "Salary", icon: "💰" },
+          { id: "payslips", label: "Payslips", icon: "📄" },
+          { id: "tax", label: "Tax", icon: "📑" },
+          { id: "hrdocs", label: "Docs", icon: "📁" }
         ];
-        nav.className = "max-w-xl mx-auto grid grid-cols-7 gap-1";
+        nav.className = "w-full flex items-center justify-around gap-0.5 px-0.5";
         nav.innerHTML = tabs.map(t => `
-          <button onclick="setTab('${t.id}')" class="flex items-center justify-center py-2 rounded-xl text-xs transition-all ${state.activeTab === t.id ? 'brand-grad font-bold' : 'text-slate-400 hover:text-white'}">
-            ${t.label}
+          <button onclick="setTab('${t.id}')" class="flex flex-col items-center justify-center py-1 px-1 rounded-xl text-[9px] min-w-0 flex-1 transition-all ${state.activeTab === t.id ? 'brand-grad text-white font-bold shadow' : 'text-slate-400 hover:text-white'}">
+            <span class="text-xs leading-none">${t.icon}</span>
+            <span class="truncate w-full text-center text-[9px] mt-0.5 leading-tight">${t.label}</span>
           </button>
         `).join("");
       }
@@ -2468,12 +2488,12 @@ body {
                   </div>
                 </div>
 
-                <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
-                  <button onclick="setTab('timesheet')" style="background:#16a34a;color:#ffffff;font-size:12px;font-weight:700;padding:8px 16px;border-radius:10px;border:none;cursor:pointer;display:inline-flex;align-items:center;gap:6px;box-shadow:0 1px 2px rgba(0,0,0,0.1);">
-                    📋 View Live Attendance Log &rarr;
+                <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;max-width:100%;">
+                  <button onclick="setTab('timesheet')" style="background:#16a34a;color:#ffffff;font-size:12px;font-weight:700;padding:8px 14px;border-radius:10px;border:none;cursor:pointer;display:inline-flex;align-items:center;gap:6px;box-shadow:0 1px 2px rgba(0,0,0,0.1);max-width:100%;box-sizing:border-box;">
+                    📋 View Attendance Log &rarr;
                   </button>
-                  <button onclick="openLiveTimesheetModal('${emp.id}')" style="background:#ffffff;color:#166534;border:1px solid #86efac;font-size:12px;font-weight:700;padding:7px 14px;border-radius:10px;cursor:pointer;display:inline-flex;align-items:center;gap:6px;">
-                    🔍 Live Timesheet Pop-up
+                  <button onclick="openLiveTimesheetModal('${emp.id}')" style="background:#ffffff;color:#166534;border:1px solid #86efac;font-size:12px;font-weight:700;padding:7px 12px;border-radius:10px;cursor:pointer;display:inline-flex;align-items:center;gap:6px;max-width:100%;box-sizing:border-box;">
+                    🔍 Timesheet Pop-up
                   </button>
                 </div>
               </div>
@@ -2558,31 +2578,31 @@ body {
             </div>
           </div>
           
-          <div class="flex items-center gap-2.5 flex-wrap">
-            <!-- Fast Staff Switcher Dropdown (No ugly horizontal scrollbar) -->
-            <div class="flex items-center gap-1 bg-slate-950 px-2 py-1 rounded-xl border border-slate-700">
-              <span class="text-[11px] font-bold text-slate-400">Switch Staff:</span>
+          <div class="flex items-center gap-2 flex-wrap w-full md:w-auto justify-between">
+            <!-- Fast Staff Switcher Dropdown -->
+            <div class="flex items-center gap-1 bg-slate-950 px-2 py-1 rounded-xl border border-slate-700 shrink-0">
+              <span class="text-[11px] font-bold text-slate-400">Staff:</span>
               <select onchange="switchPersona(this.value, true)" class="bg-transparent text-white text-xs font-bold focus:outline-none cursor-pointer">
                 ${state.employees.map(e => `
                   <option value="${e.id}" ${e.id === emp.id ? 'selected' : ''} class="bg-slate-900 text-white">
-                    ${e.name} (${e.zohoId || e.id})
+                    ${e.name.split(' ')[0]} (${e.id})
                   </option>
                 `).join("")}
               </select>
             </div>
 
             <!-- View Mode Switcher -->
-            <div class="inline-flex rounded-xl bg-slate-950 p-1 border border-slate-700 shadow-inner">
-              <button onclick="toggleMobileSimulator(false)" class="text-xs px-3 py-1 rounded-lg font-bold transition-all ${!state.mobileSimulatorMode ? 'brand-grad text-white shadow' : 'text-slate-400 hover:text-white cursor-pointer'}">
+            <div class="inline-flex rounded-xl bg-slate-950 p-1 border border-slate-700 shadow-inner shrink-0">
+              <button onclick="toggleMobileSimulator(false)" class="text-xs px-2.5 py-1 rounded-lg font-bold transition-all ${!state.mobileSimulatorMode ? 'brand-grad text-white shadow' : 'text-slate-400 hover:text-white cursor-pointer'}">
                 🖥️ Desktop
               </button>
-              <button onclick="toggleMobileSimulator(true)" class="text-xs px-3 py-1 rounded-lg font-bold transition-all ${state.mobileSimulatorMode ? 'brand-grad text-white shadow' : 'text-slate-400 hover:text-white cursor-pointer'}">
-                📱 Mobile (390px)
+              <button onclick="toggleMobileSimulator(true)" class="text-xs px-2.5 py-1 rounded-lg font-bold transition-all ${state.mobileSimulatorMode ? 'brand-grad text-white shadow' : 'text-slate-400 hover:text-white cursor-pointer'}">
+                📱 Mobile
               </button>
             </div>
 
-            <button onclick="switchPersona('ADMIN', false)" class="brand-grad text-white text-xs font-bold px-3.5 py-2 rounded-xl shadow cursor-pointer hover:opacity-90 inline-flex items-center gap-1.5">
-              <span>← Exit to Admin Console</span>
+            <button onclick="switchPersona('ADMIN', false)" class="brand-grad text-white text-xs font-bold px-3 py-1.5 rounded-xl shadow cursor-pointer hover:opacity-90 inline-flex items-center gap-1 shrink-0">
+              <span>← Exit Admin</span>
             </button>
           </div>
         </div>
@@ -2621,9 +2641,9 @@ body {
             </div>
           </div>
 
-          <div class="flex items-center gap-2 flex-wrap">
+          <div class="flex items-center gap-2 flex-wrap w-full md:w-auto mt-2 md:mt-0">
             <button onclick="previewIDCard('${emp.id}')" class="brand-grad text-white text-xs font-bold px-3.5 py-2 rounded-xl shadow cursor-pointer inline-flex items-center gap-1.5 hover:opacity-95" title="View Official Identity Badge for ${emp.name}">
-              <span>🪪 Official ID Badge (${emp.name})</span>
+              <span>🪪 Official ID Badge</span>
             </button>
             <button onclick="openInstallMobileAppModal()" class="bg-slate-800 border border-slate-700 hover:bg-slate-700 text-slate-200 text-xs font-semibold px-3 py-2 rounded-xl cursor-pointer inline-flex items-center gap-1.5">
               <span>📱 Mobile App</span>
@@ -2637,26 +2657,26 @@ body {
 
       // 4. A TO Z SUB-NAVIGATION MENU BAR (PHONETOOL / ATTENDANCE / SALARY / PAYSLIPS / TAX / DOCUMENTS)
       const subNavBar = isInsideSimulator ? "" : `
-        <div class="glass-card rounded-2xl p-1.5 mb-4 border border-slate-800 flex items-center justify-between gap-1 overflow-x-auto hide-scroll">
-          <button onclick="setTab('phonetool')" class="flex items-center gap-1.5 px-3.5 py-2 rounded-xl text-xs font-semibold whitespace-nowrap transition-all ${activeTab === 'phonetool' ? 'brand-grad text-white font-bold shadow' : 'text-slate-400 hover:text-white hover:bg-slate-800/60'}">
-            <span>📇</span> <span>PhoneTool Profile</span>
+        <div class="glass-card rounded-2xl p-2 mb-4 border border-slate-800 flex items-center gap-1.5 flex-wrap">
+          <button onclick="setTab('phonetool')" class="flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs font-semibold whitespace-nowrap transition-all ${activeTab === 'phonetool' ? 'brand-grad text-white font-bold shadow' : 'text-slate-400 hover:text-white hover:bg-slate-800/60'}">
+            <span>📇</span> <span>Profile</span>
           </button>
-          <button onclick="setTab('timesheet')" class="flex items-center gap-1.5 px-3.5 py-2 rounded-xl text-xs font-semibold whitespace-nowrap transition-all ${activeTab === 'timesheet' ? 'brand-grad text-white font-bold shadow' : 'text-slate-400 hover:text-white hover:bg-slate-800/60'}">
+          <button onclick="setTab('timesheet')" class="flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs font-semibold whitespace-nowrap transition-all ${activeTab === 'timesheet' ? 'brand-grad text-white font-bold shadow' : 'text-slate-400 hover:text-white hover:bg-slate-800/60'}">
             <span>⏱️</span> <span>Attendance &amp; Log</span>
           </button>
-          <button onclick="setTab('forte')" class="flex items-center gap-1.5 px-3.5 py-2 rounded-xl text-xs font-semibold whitespace-nowrap transition-all ${activeTab === 'forte' ? 'brand-grad text-white font-bold shadow' : 'text-slate-400 hover:text-white hover:bg-slate-800/60'}">
+          <button onclick="setTab('forte')" class="flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs font-semibold whitespace-nowrap transition-all ${activeTab === 'forte' ? 'brand-grad text-white font-bold shadow' : 'text-slate-400 hover:text-white hover:bg-slate-800/60'}">
             <span>🎯</span> <span>Performance &amp; Forte</span>
           </button>
-          <button onclick="setTab('salary')" class="flex items-center gap-1.5 px-3.5 py-2 rounded-xl text-xs font-semibold whitespace-nowrap transition-all ${activeTab === 'salary' ? 'brand-grad text-white font-bold shadow' : 'text-slate-400 hover:text-white hover:bg-slate-800/60'}">
+          <button onclick="setTab('salary')" class="flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs font-semibold whitespace-nowrap transition-all ${activeTab === 'salary' ? 'brand-grad text-white font-bold shadow' : 'text-slate-400 hover:text-white hover:bg-slate-800/60'}">
             <span>💰</span> <span>Salary &amp; Comp</span>
           </button>
-          <button onclick="setTab('payslips')" class="flex items-center gap-1.5 px-3.5 py-2 rounded-xl text-xs font-semibold whitespace-nowrap transition-all ${activeTab === 'payslips' ? 'brand-grad text-white font-bold shadow' : 'text-slate-400 hover:text-white hover:bg-slate-800/60'}">
+          <button onclick="setTab('payslips')" class="flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs font-semibold whitespace-nowrap transition-all ${activeTab === 'payslips' ? 'brand-grad text-white font-bold shadow' : 'text-slate-400 hover:text-white hover:bg-slate-800/60'}">
             <span>📄</span> <span>Payslips (${mySlips.length})</span>
           </button>
-          <button onclick="setTab('tax')" class="flex items-center gap-1.5 px-3.5 py-2 rounded-xl text-xs font-semibold whitespace-nowrap transition-all ${activeTab === 'tax' ? 'brand-grad text-white font-bold shadow' : 'text-slate-400 hover:text-white hover:bg-slate-800/60'}">
+          <button onclick="setTab('tax')" class="flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs font-semibold whitespace-nowrap transition-all ${activeTab === 'tax' ? 'brand-grad text-white font-bold shadow' : 'text-slate-400 hover:text-white hover:bg-slate-800/60'}">
             <span>📑</span> <span>Tax &amp; Form 16</span>
           </button>
-          <button onclick="setTab('hrdocs')" class="flex items-center gap-1.5 px-3.5 py-2 rounded-xl text-xs font-semibold whitespace-nowrap transition-all ${activeTab === 'hrdocs' ? 'brand-grad text-white font-bold shadow' : 'text-slate-400 hover:text-white hover:bg-slate-800/60'}">
+          <button onclick="setTab('hrdocs')" class="flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs font-semibold whitespace-nowrap transition-all ${activeTab === 'hrdocs' ? 'brand-grad text-white font-bold shadow' : 'text-slate-400 hover:text-white hover:bg-slate-800/60'}">
             <span>📁</span> <span>Documents</span>
           </button>
         </div>
