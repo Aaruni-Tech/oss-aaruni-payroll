@@ -3227,80 +3227,80 @@ body {
           ${subNavBar}
           ${inactivityAlertHtml}
 
-          <!-- PERFORMANCE FORTE EXECUTIVE SCORECARD -->
-          <div class="glass-card rounded-2xl p-5 mb-5 border border-slate-800 shadow-xl bg-gradient-to-r from-slate-900/90 via-slate-900/60 to-slate-950/90">
-            <div class="flex items-center justify-between gap-4 flex-wrap pb-4 border-b border-slate-800">
-              <div class="flex items-center gap-3">
-                <div class="w-12 h-12 rounded-2xl bg-orange-500/20 border border-orange-500/40 flex items-center justify-center text-2xl">
+          <!-- PERFORMANCE FORTE EXECUTIVE SCORECARD (ZOHO CRISP WHITE THEME) -->
+          <div style="background:#ffffff;border:1.5px solid #e2e8f0;border-radius:18px;padding:22px;margin-bottom:20px;box-shadow:0 1px 3px rgba(0,0,0,0.05);color:#0f172a;">
+            <div style="display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;padding-bottom:18px;border-bottom:1px solid #f1f5f9;">
+              <div style="display:flex;align-items:center;gap:14px;">
+                <div style="width:48px;height:48px;border-radius:14px;background:#ffedd5;border:1px solid #fed7aa;display:flex;align-items:center;justify-content:center;font-size:24px;flex-shrink:0;">
                   🎯
                 </div>
                 <div>
-                  <div class="flex items-center gap-2 flex-wrap">
-                    <h2 class="text-base font-extrabold text-white">Performance, Forte &amp; Career Growth</h2>
-                    <span class="text-[10px] font-black px-2.5 py-0.5 rounded-full bg-emerald-500/20 text-emerald-400 border border-emerald-500/40 uppercase tracking-wider">
+                  <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;">
+                    <h2 style="font-size:16px;font-weight:900;color:#0f172a;margin:0;">Performance, Forte &amp; Career Growth</h2>
+                    <span style="font-size:11px;font-weight:800;padding:2px 10px;border-radius:999px;background:#dcfce7;color:#166534;border:1px solid #86efac;text-transform:uppercase;letter-spacing:0.5px;">
                       ${forte.category}
                     </span>
                   </div>
-                  <p class="text-xs text-slate-400 mt-0.5">Official quarterly appraisal matrix, competencies, and direct founder engagement.</p>
+                  <p style="font-size:12px;color:#64748b;margin:4px 0 0 0;">Official quarterly appraisal matrix, competencies, and direct founder engagement.</p>
                 </div>
               </div>
 
               <!-- Top Action: 1-Click Founder Appointment & Chat -->
-              <div class="flex items-center gap-2.5 flex-wrap">
-                <button onclick="openBookAppointmentModal('${emp.id}')" class="brand-grad text-white text-xs font-bold px-4 py-2.5 rounded-xl shadow-lg cursor-pointer hover:opacity-95 transition-all inline-flex items-center gap-2">
+              <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;">
+                <button onclick="openBookAppointmentModal('${emp.id}')" style="background:linear-gradient(135deg, #FE5F01 0%, #EA580C 100%);color:#ffffff;font-size:12px;font-weight:800;padding:10px 18px;border-radius:12px;border:none;cursor:pointer;box-shadow:0 4px 12px rgba(254,95,1,0.25);display:inline-flex;align-items:center;gap:8px;">
                   <span>📅</span> <span>Book 1:1 Review with Rupesh</span>
                 </button>
-                <a href="https://wa.me/917842097003?text=${encodeURIComponent('Hi Rupesh, I would like to discuss my performance and growth goals for ' + emp.name + ' (' + emp.id + ').')}" target="_blank" rel="noopener noreferrer" class="bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold px-3.5 py-2.5 rounded-xl shadow cursor-pointer transition-all inline-flex items-center gap-1.5">
+                <a href="https://wa.me/917842097003?text=${encodeURIComponent('Hi Rupesh, I would like to discuss my performance and growth goals for ' + emp.name + ' (' + emp.id + ').')}" target="_blank" rel="noopener noreferrer" style="background:#25d366;color:#ffffff;font-size:12px;font-weight:800;padding:10px 16px;border-radius:12px;text-decoration:none;display:inline-flex;align-items:center;gap:6px;box-shadow:0 2px 6px rgba(37,211,102,0.3);">
                   <span>💬</span> <span>WhatsApp Chat</span>
                 </a>
               </div>
             </div>
 
             <!-- 4 Key Metrics -->
-            <div class="grid grid-cols-2 md:grid-cols-4 gap-3 mt-4">
-              <div class="bg-slate-950/60 p-3 rounded-xl border border-slate-800/80">
-                <div class="text-[11px] font-semibold text-slate-400">Overall Rating</div>
-                <div class="text-xl font-extrabold text-amber-400 mt-1 flex items-center gap-1">
+            <div style="display:grid;grid-template-columns:repeat(auto-fit, minmax(200px, 1fr));gap:12px;margin-top:16px;">
+              <div style="background:#f8fafc;padding:14px;border-radius:12px;border:1px solid #e2e8f0;">
+                <div style="font-size:11px;font-weight:700;color:#64748b;">OVERALL RATING</div>
+                <div style="font-size:20px;font-weight:900;color:#d97706;margin-top:4px;display:flex;align-items:center;gap:4px;">
                   <span>⭐</span> <span>${forte.rating}</span>
                 </div>
-                <div class="text-[10px] text-slate-500 mt-0.5">Top 5% Performer</div>
+                <div style="font-size:11px;color:#059669;font-weight:600;margin-top:2px;">Top 5% Performer</div>
               </div>
-              <div class="bg-slate-950/60 p-3 rounded-xl border border-slate-800/80">
-                <div class="text-[11px] font-semibold text-slate-400">Attendance Reliability</div>
-                <div class="text-xl font-extrabold text-emerald-400 mt-1">100%</div>
-                <div class="text-[10px] text-emerald-500/80 mt-0.5">0 Missing Workdays</div>
+              <div style="background:#f8fafc;padding:14px;border-radius:12px;border:1px solid #e2e8f0;">
+                <div style="font-size:11px;font-weight:700;color:#64748b;">ATTENDANCE RELIABILITY</div>
+                <div style="font-size:20px;font-weight:900;color:#16a34a;margin-top:4px;">100%</div>
+                <div style="font-size:11px;color:#15803d;font-weight:600;margin-top:2px;">0 Missing Workdays</div>
               </div>
-              <div class="bg-slate-950/60 p-3 rounded-xl border border-slate-800/80">
-                <div class="text-[11px] font-semibold text-slate-400">Sprint Execution</div>
-                <div class="text-xl font-extrabold text-sky-400 mt-1">98.5%</div>
-                <div class="text-[10px] text-sky-500/80 mt-0.5">High Fidelity Delivery</div>
+              <div style="background:#f8fafc;padding:14px;border-radius:12px;border:1px solid #e2e8f0;">
+                <div style="font-size:11px;font-weight:700;color:#64748b;">SPRINT EXECUTION</div>
+                <div style="font-size:20px;font-weight:900;color:#0284c7;margin-top:4px;">98.5%</div>
+                <div style="font-size:11px;color:#0369a1;font-weight:600;margin-top:2px;">High Fidelity Delivery</div>
               </div>
-              <div class="bg-slate-950/60 p-3 rounded-xl border border-slate-800/80">
-                <div class="text-[11px] font-semibold text-slate-400">Next Appraisal Cycle</div>
-                <div class="text-xl font-extrabold text-purple-400 mt-1">${forte.appraisalCycle}</div>
-                <div class="text-[10px] text-purple-400/80 mt-0.5">Annual Compensation Review</div>
+              <div style="background:#f8fafc;padding:14px;border-radius:12px;border:1px solid #e2e8f0;">
+                <div style="font-size:11px;font-weight:700;color:#64748b;">NEXT APPRAISAL CYCLE</div>
+                <div style="font-size:20px;font-weight:900;color:#7c3aed;margin-top:4px;">${forte.appraisalCycle}</div>
+                <div style="font-size:11px;color:#6d28d9;font-weight:600;margin-top:2px;">Annual Compensation Review</div>
               </div>
             </div>
           </div>
 
           <!-- 2-COLUMN GRID: STRENGTHS (FORTE) vs. AREAS TO IMPROVE -->
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-5 mb-5">
+          <div style="display:grid;grid-template-columns:repeat(auto-fit, minmax(320px, 1fr));gap:20px;margin-bottom:20px;">
             <!-- Left: Core Strengths (Forte) -->
-            <div class="glass-card rounded-2xl p-5 border border-emerald-500/30 bg-emerald-950/10">
-              <div class="flex items-center gap-2 mb-3">
-                <span class="text-xl">💪</span>
+            <div style="background:#ffffff;border:1.5px solid #86efac;border-radius:18px;padding:20px;box-shadow:0 1px 3px rgba(0,0,0,0.04);">
+              <div style="display:flex;align-items:center;gap:10px;margin-bottom:14px;">
+                <span style="font-size:22px;">💪</span>
                 <div>
-                  <h3 class="text-sm font-bold text-emerald-400 uppercase tracking-wider">Core Strengths &amp; Forte</h3>
-                  <p class="text-[11px] text-slate-400">Key competencies where you excel and deliver standout corporate value.</p>
+                  <h3 style="font-size:14px;font-weight:900;color:#166534;margin:0;text-transform:uppercase;letter-spacing:0.5px;">Core Strengths &amp; Forte</h3>
+                  <p style="font-size:11px;color:#64748b;margin:2px 0 0 0;">Key competencies where you excel and deliver standout corporate value.</p>
                 </div>
               </div>
-              <div class="space-y-3 mt-4">
+              <div style="display:flex;flex-direction:column;gap:12px;margin-top:14px;">
                 ${forte.strengths.map((s, idx) => `
-                  <div class="p-3 rounded-xl bg-slate-950/60 border border-emerald-500/20 flex items-start gap-3">
-                    <span class="text-base text-emerald-400 font-black shrink-0">0${idx+1}.</span>
+                  <div style="padding:14px;border-radius:12px;background:#f0fdf4;border:1px solid #bbf7d0;display:flex;align-items:flex-start;gap:12px;">
+                    <span style="font-size:14px;color:#16a34a;font-weight:900;flex-shrink:0;">0${idx+1}.</span>
                     <div>
-                      <div class="text-xs font-bold text-white">${s.title}</div>
-                      <div class="text-[11px] text-slate-300 mt-1 leading-relaxed">${s.desc}</div>
+                      <div style="font-size:13px;font-weight:800;color:#14532d;">${s.title}</div>
+                      <div style="font-size:12px;color:#166534;margin-top:4px;line-height:1.5;">${s.desc}</div>
                     </div>
                   </div>
                 `).join('')}
@@ -3308,21 +3308,21 @@ body {
             </div>
 
             <!-- Right: Areas to Improve & Growth Objectives -->
-            <div class="glass-card rounded-2xl p-5 border border-amber-500/30 bg-amber-950/10">
-              <div class="flex items-center gap-2 mb-3">
-                <span class="text-xl">🚀</span>
+            <div style="background:#ffffff;border:1.5px solid #fed7aa;border-radius:18px;padding:20px;box-shadow:0 1px 3px rgba(0,0,0,0.04);">
+              <div style="display:flex;align-items:center;gap:10px;margin-bottom:14px;">
+                <span style="font-size:22px;">🚀</span>
                 <div>
-                  <h3 class="text-sm font-bold text-amber-400 uppercase tracking-wider">Areas to Improve &amp; Focus</h3>
-                  <p class="text-[11px] text-slate-400">High-leverage growth areas to prepare you for the next role elevation.</p>
+                  <h3 style="font-size:14px;font-weight:900;color:#9a3412;margin:0;text-transform:uppercase;letter-spacing:0.5px;">Areas to Improve &amp; Focus</h3>
+                  <p style="font-size:11px;color:#64748b;margin:2px 0 0 0;">High-leverage growth areas to prepare you for the next role elevation.</p>
                 </div>
               </div>
-              <div class="space-y-3 mt-4">
+              <div style="display:flex;flex-direction:column;gap:12px;margin-top:14px;">
                 ${forte.improvements.map((im, idx) => `
-                  <div class="p-3 rounded-xl bg-slate-950/60 border border-amber-500/20 flex items-start gap-3">
-                    <span class="text-base text-amber-400 font-black shrink-0">🎯</span>
+                  <div style="padding:14px;border-radius:12px;background:#fff7ed;border:1px solid #fed7aa;display:flex;align-items:flex-start;gap:12px;">
+                    <span style="font-size:14px;color:#ea580c;font-weight:900;flex-shrink:0;">🎯</span>
                     <div>
-                      <div class="text-xs font-bold text-white">${im.title}</div>
-                      <div class="text-[11px] text-slate-300 mt-1 leading-relaxed">${im.desc}</div>
+                      <div style="font-size:13px;font-weight:800;color:#7c2d12;">${im.title}</div>
+                      <div style="font-size:12px;color:#9a3412;margin-top:4px;line-height:1.5;">${im.desc}</div>
                     </div>
                   </div>
                 `).join('')}
