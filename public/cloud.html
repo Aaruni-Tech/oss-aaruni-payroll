@@ -2786,28 +2786,31 @@ aaruni services
 aaruni compute nodes
 aaruni voice synthesize --text "Deploy via kubectl and PostgreSQL" --lufs -12
 aaruni assistant ask "Check ACS storage and launch ACC compute"`,
-      curl: `# 1. Live Gateway Status (copy & run in your terminal right now):
+      curl: `# 1. Public Edge Status (0 inbound ports exposed, air-gapped worker pool):
 curl -s https://api.aarunicloud.com/v1/status
 
-# 2. Live W3C PLS Voice Normalization & DSP Synthesis:
-curl -s -X POST https://api.aarunicloud.com/v1/voice/synthesize   -H "Authorization: Bearer agd_sandbox_public_demo"   -H "Content-Type: application/json"   -d '{"text":"Scale kubectl and PostgreSQL on Aaruni Cloud","lufs":-12}'`,
-      python: `# Install real zero-dependency Python SDK:
+# 2. Private Authenticated Storage & Compute (requires your AARUNI_API_KEY):
+curl -s https://api.aarunicloud.com/v1/guard/whoami \
+  -H "Authorization: Bearer $AARUNI_API_KEY"`,
+      python: `# Install zero-dependency Python SDK (GitHub: Aaruni-Tech/aaruni-cloud-sdk):
 # pip install https://aarunicloud.com/sdk/aaruni_cloud-1.0.0.tar.gz
 
 import aaruni_cloud as ac
 
-cloud = ac.Client(api_key="agd_sandbox_public_demo")
+# Reads AARUNI_API_KEY env var or ~/.aaruni/credentials.json (chmod 600)
+cloud = ac.Client()
 print(cloud.status())
 
-# Upload & stream from Aaruni Storage (ACS) with $0 egress:
-cloud.storage.upload(b"Hello Aaruni Cloud!", space="sandbox", key="hello.txt")
-print(cloud.storage.download("hello.txt", space="sandbox").decode())`,
-      node: `// Install real ESM/TypeScript SDK:
+# Private Zero-Trust Aaruni Storage (ACS) with $0 egress:
+cloud.storage.upload(b"Hello Aaruni Cloud!", space="production-media", key="hello.txt")
+print(cloud.storage.download("hello.txt", space="production-media").decode())`,
+      node: `// Install ESM/TypeScript SDK (GitHub: Aaruni-Tech/aaruni-cloud-sdk):
 // npm install https://aarunicloud.com/sdk/aaruni-sdk-1.0.0.tgz
 
 import { AaruniCloud } from "@aaruni/sdk";
 
-const cloud = new AaruniCloud({ apiKey: "agd_sandbox_public_demo" });
+// Reads AARUNI_API_KEY env var or ~/.aaruni/credentials.json (chmod 600)
+const cloud = new AaruniCloud();
 console.log(await cloud.status());
 
 // Execute grounded multi-intent Aaruni Assistant (AAI) request:
@@ -3102,7 +3105,7 @@ console.log("Verified Receipt:", plan.receiptId, plan.actions);`
       const fallbackReceipt = "AAI-RCPT-" + Math.floor(100000 + Math.random() * 899999);
       fetch("/v1/assistant/ask", {
         method: "POST",
-        headers: { "Content-Type": "application/json", "Authorization": "Bearer agd_sandbox_public_demo" },
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ prompt: query })
       })
         .then(function (r) { if (!r.ok) throw new Error("fallback"); return r.json(); })
