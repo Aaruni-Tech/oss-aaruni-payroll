@@ -168,21 +168,49 @@ html, body {
   box-shadow: 0 -4px 16px rgba(0, 0, 0, 0.05);
 }
 
-/* Scoped card typography in light mode */
-[data-theme="light"] .glass-card .text-white:not(.brand-grad *):not(.badge-white) {
+/* Global high-contrast typography in light mode */
+[data-theme="light"] .text-white:not(.brand-grad *):not(.badge-white):not(button.brand-grad):not(.bg-emerald-600 *):not(.bg-rose-600 *):not(.bg-rose-500 *):not(.bg-orange-500 *):not(.bg-blue-600 *) {
   color: #0f172a !important;
 }
 
-[data-theme="light"] .glass-card .text-slate-200 {
-  color: #1e293b !important;
+[data-theme="light"] h1, [data-theme="light"] h2, [data-theme="light"] h3, [data-theme="light"] h4 {
+  color: #0f172a !important;
 }
 
-[data-theme="light"] .glass-card .text-slate-300 {
+[data-theme="light"] .text-slate-400 {
+  color: #475569 !important;
+}
+
+[data-theme="light"] .text-slate-300 {
   color: #334155 !important;
 }
 
-[data-theme="light"] .glass-card .text-slate-400 {
-  color: #64748b !important;
+[data-theme="light"] .text-slate-200 {
+  color: #1e293b !important;
+}
+
+[data-theme="light"] .text-rose-300,
+[data-theme="light"] .text-rose-400 {
+  color: #991b1b !important;
+  font-weight: 700 !important;
+}
+
+[data-theme="light"] .text-amber-300,
+[data-theme="light"] .text-amber-400 {
+  color: #92400e !important;
+  font-weight: 700 !important;
+}
+
+[data-theme="light"] .text-emerald-300,
+[data-theme="light"] .text-emerald-400 {
+  color: #166534 !important;
+  font-weight: 700 !important;
+}
+
+[data-theme="light"] .text-sky-300,
+[data-theme="light"] .text-sky-400 {
+  color: #0369a1 !important;
+  font-weight: 700 !important;
 }
 
 [data-theme="light"] .glass-card .border-slate-800,
@@ -191,22 +219,35 @@ html, body {
 }
 
 /* Transform dark nested metric containers to crisp light surfaces */
-[data-theme="light"] .bg-slate-900,
-[data-theme="light"] .bg-slate-900\/80,
-[data-theme="light"] .bg-slate-900\/90,
-[data-theme="light"] .bg-slate-950,
-[data-theme="light"] .bg-slate-950\/80 {
+[data-theme="light"] [class*="bg-slate-900"],
+[data-theme="light"] [class*="bg-slate-950"] {
+  background-color: #ffffff !important;
+  border-color: #e2e8f0 !important;
+  color: #0f172a !important;
+}
+
+[data-theme="light"] [class*="bg-slate-800"] {
   background-color: #f8fafc !important;
   border-color: #e2e8f0 !important;
   color: #0f172a !important;
 }
 
-[data-theme="light"] .bg-slate-800,
-[data-theme="light"] .bg-slate-800\/60,
-[data-theme="light"] .bg-slate-800\/80 {
-  background-color: #f1f5f9 !important;
-  border-color: #cbd5e1 !important;
-  color: #0f172a !important;
+[data-theme="light"] .bg-amber-950\/40,
+[data-theme="light"] .bg-amber-950\/20 {
+  background-color: #fef3c7 !important;
+  border-color: #fcd34d !important;
+}
+
+[data-theme="light"] .bg-rose-950\/40,
+[data-theme="light"] .bg-rose-950\/20 {
+  background-color: #ffe4e6 !important;
+  border-color: #fda4af !important;
+}
+
+[data-theme="light"] .bg-emerald-950\/40,
+[data-theme="light"] .bg-emerald-950\/20 {
+  background-color: #dcfce7 !important;
+  border-color: #86efac !important;
 }
 
 /* Light mode overrides for form inputs */
@@ -1093,9 +1134,7 @@ button, a.button {
       taxDeductor: safeJsonParse(safeLocalGet("aaruni_deductor_v8"), DEFAULT_TAX_DEDUCTOR),
       taxRollup: safeJsonParse(safeLocalGet("aaruni_tax_v8"), LEGACY_2026_ROLLUP),
       advanceRequests: safeJsonParse(safeLocalGet("aaruni_adv_v12"), []),
-      leaveRequests: safeJsonParse(safeLocalGet("aaruni_leave_v12"), [
-        { id: "LV-01", empId: "AAR-0004", empName: "Chukka Nandini", leaveType: "Casual Leave", startDate: "2026-11-14", endDate: "2026-11-15", days: 2, reason: "Personal family event", status: "Approved", requestDate: "2026-11-06" }
-      ])
+      leaveRequests: (safeJsonParse(safeLocalGet("aaruni_leave_v15"), []) || []).filter(l => l.id !== "LV-01" && l.reason !== "Personal family event")
     };
 
     function saveState() {
@@ -1110,7 +1149,7 @@ button, a.button {
       safeLocalSet("aaruni_deductor_v8", JSON.stringify(state.taxDeductor));
       safeLocalSet("aaruni_tax_v8", JSON.stringify(state.taxRollup));
       safeLocalSet("aaruni_adv_v12", JSON.stringify(state.advanceRequests));
-      safeLocalSet("aaruni_leave_v12", JSON.stringify(state.leaveRequests));
+      safeLocalSet("aaruni_leave_v15", JSON.stringify(state.leaveRequests));
       safeLocalSet("aaruni_mask_v8", state.salariesMasked ? "1" : "0");
     }
 
@@ -2478,61 +2517,129 @@ button, a.button {
     // ============================================================================
     // 4. EMPLOYEE PORTAL VIEWS (MINIMALIST)
     // ============================================================================
-    function openApplyLeaveModal(empId) {
-      const emp = state.employees.find(e => e.id === empId) || state.employees[0];
+    function updateLeaveDurationText() {
+      const s = document.getElementById("leaveStartDate")?.value;
+      const e = document.getElementById("leaveEndDate")?.value;
+      const el = document.getElementById("leaveDurationDays");
+      if (!s || !e || !el) return;
+      const d1 = new Date(s);
+      const d2 = new Date(e);
+      const diff = Math.max(1, Math.round((d2 - d1) / (1000 * 60 * 60 * 24)) + 1);
+      el.textContent = `${diff} Working Day${diff > 1 ? 's' : ''}`;
+    }
+
+    function openApplyLeaveModal(empId, prefillDate) {
+      const emp = state.employees.find(e => e.id === empId) || state.employees[3];
+      const defaultDate = prefillDate || new Date().toISOString().slice(0, 10);
       const html = `
-        <div style="max-width:460px;margin:0 auto;font-family:'Inter',sans-serif;color:#0a0a0a;font-size:12px;">
-          <div style="padding:10px 12px;background:#f4f4f5;border-radius:8px;margin-bottom:12px;">
-            <div style="font-weight:700;">🏖️ Apply Leave / Compensatory Off — ${emp.name} (${emp.id})</div>
-            <div style="color:#52525b;font-size:11px;margin-top:2px;">Approving Manager: Rupesh Kumar Tiwari (Admin)</div>
-          </div>
-          <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px;">
-            <div>
-              <label style="font-weight:700;display:block;margin-bottom:4px;">Leave Type</label>
-              <select id="leaveTypeInput" style="width:100%;padding:8px;border:1px solid #d4d4d8;border-radius:8px;">
-                <option value="Casual Leave (Paid)">Casual Leave (Paid)</option>
-                <option value="Sick Leave (Paid)">Sick Leave (Paid)</option>
-                <option value="Sunday Comp-Off">Sunday Comp-Off</option>
-                <option value="Loss of Pay (LOP)">Loss of Pay (Unpaid)</option>
-              </select>
+        <div style="font-family:-apple-system,BlinkMacSystemFont,'Inter',sans-serif;max-width:480px;margin:0 auto;color:#0f172a;">
+          <div style="background:#ffffff;border:1.5px solid #fe5f01;border-radius:18px;padding:22px;box-shadow:0 10px 25px rgba(0,0,0,0.1);">
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;border-bottom:1px solid #f1f5f9;padding-bottom:12px;">
+              <div>
+                <div style="font-size:16px;font-weight:900;color:#0f172a;display:flex;align-items:center;gap:8px;">
+                  <span>🏖️ Apply for Leave / Absence</span>
+                </div>
+                <div style="font-size:12px;color:#64748b;margin-top:2px;">
+                  Employee: <strong>${emp.name}</strong> (${emp.id}) &bull; Reports to: <strong>Rupesh Tiwari</strong>
+                </div>
+              </div>
+              <span style="font-size:10px;font-weight:800;background:#fef3c7;color:#92400e;border:1px solid #fcd34d;padding:2px 8px;border-radius:999px;">
+                Queues as Pending
+              </span>
             </div>
-            <div>
-              <label style="font-weight:700;display:block;margin-bottom:4px;">Leave Date</label>
-              <input id="leaveDateInput" type="date" value="2026-11-10" style="width:100%;padding:8px;border:1px solid #d4d4d8;border-radius:8px;" />
+
+            <div style="display:flex;flex-direction:column;gap:12px;">
+              <div>
+                <label style="display:block;font-size:11px;font-weight:800;color:#334155;margin-bottom:4px;text-transform:uppercase;letter-spacing:0.5px;">Leave Type</label>
+                <select id="leaveTypeInput" style="width:100%;box-sizing:border-box;background:#ffffff;border:1.5px solid #cbd5e1;border-radius:10px;padding:10px 12px;font-size:13px;color:#0f172a;font-weight:600;">
+                  <option value="Casual Leave (CL)">Casual Leave (CL) — Paid</option>
+                  <option value="Sick / Medical Leave (SL)">Sick / Medical Leave (SL) — Paid</option>
+                  <option value="Sunday Comp-Off">Sunday Comp-Off — Paid</option>
+                  <option value="Privilege Leave (PL)">Privilege Leave (PL) — Paid</option>
+                  <option value="Loss of Pay (LOP)">Loss of Pay (LOP) — Unpaid</option>
+                </select>
+              </div>
+
+              <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+                <div>
+                  <label style="display:block;font-size:11px;font-weight:800;color:#334155;margin-bottom:4px;text-transform:uppercase;letter-spacing:0.5px;">Start Date</label>
+                  <input id="leaveStartDate" type="date" value="${defaultDate}" onchange="updateLeaveDurationText()" style="width:100%;box-sizing:border-box;background:#ffffff;border:1.5px solid #cbd5e1;border-radius:10px;padding:9px 12px;font-size:13px;color:#0f172a;font-weight:700;" />
+                </div>
+                <div>
+                  <label style="display:block;font-size:11px;font-weight:800;color:#334155;margin-bottom:4px;text-transform:uppercase;letter-spacing:0.5px;">End Date</label>
+                  <input id="leaveEndDate" type="date" value="${defaultDate}" onchange="updateLeaveDurationText()" style="width:100%;box-sizing:border-box;background:#ffffff;border:1.5px solid #cbd5e1;border-radius:10px;padding:9px 12px;font-size:13px;color:#0f172a;font-weight:700;" />
+                </div>
+              </div>
+
+              <div id="leaveDurationNotice" style="background:#f8fafc;border:1px solid #e2e8f0;padding:8px 12px;border-radius:10px;font-size:12px;color:#334155;display:flex;align-items:center;justify-content:space-between;">
+                <span>Total Duration:</span>
+                <strong id="leaveDurationDays" style="color:#0f172a;font-size:13px;">1 Working Day</strong>
+              </div>
+
+              <div>
+                <label style="display:block;font-size:11px;font-weight:800;color:#334155;margin-bottom:4px;text-transform:uppercase;letter-spacing:0.5px;">Reason for Leave</label>
+                <input id="leaveReasonInput" type="text" placeholder="e.g. Personal family event, medical rest, urgent home chore" style="width:100%;box-sizing:border-box;background:#ffffff;border:1.5px solid #cbd5e1;border-radius:10px;padding:10px 12px;font-size:13px;color:#0f172a;" />
+              </div>
+
+              <div style="background:#fff7ed;border:1px solid #fed7aa;padding:10px 12px;border-radius:10px;font-size:11px;color:#9a3412;line-height:1.4;">
+                ⚠️ <strong>Admin Approval Gate:</strong> This request will be submitted directly to Rupesh Tiwari (Founder &amp; MD) with <strong>Pending</strong> status. It will not be marked as approved until explicitly audited and authorized.
+              </div>
+
+              <div style="display:flex;gap:10px;margin-top:4px;">
+                <button onclick="closeDocModal()" style="flex:1;background:#f1f5f9;color:#334155;border:1px solid #cbd5e1;font-size:12px;font-weight:700;padding:10px;border-radius:10px;cursor:pointer;">
+                  Cancel
+                </button>
+                <button onclick="submitLeaveRequest('${emp.id}')" style="flex:2;background:linear-gradient(135deg, #fe5f01 0%, #ea580c 100%);color:#ffffff;border:none;font-size:12px;font-weight:800;padding:10px;border-radius:10px;cursor:pointer;box-shadow:0 2px 8px rgba(254,95,1,0.3);">
+                  🏖️ Submit for Approval
+                </button>
+              </div>
             </div>
-          </div>
-          <div style="margin-bottom:12px;">
-            <label style="font-weight:700;display:block;margin-bottom:4px;">Reason for Leave</label>
-            <input id="leaveReasonInput" type="text" placeholder="e.g. Personal / Medical / Family visit" style="width:100%;padding:8px;border:1px solid #d4d4d8;border-radius:8px;" />
-          </div>
-          <div style="display:flex;justify-content:flex-end;gap:8px;">
-            <button onclick="closeDocModal()" style="padding:8px 14px;border-radius:8px;border:1px solid #d4d4d8;background:#fff;font-weight:600;cursor:pointer;">Cancel</button>
-            <button onclick="submitLeaveApplication('${emp.id}')" style="padding:8px 16px;border-radius:8px;border:none;background:#0a0a0a;color:#fff;font-weight:700;cursor:pointer;">Submit Leave Request</button>
           </div>
         </div>
       `;
-      openModalWithHTML("Apply Leave / Comp-Off", html);
+      openModalWithHTML("Apply Leave / Absence", html);
     }
 
-    function submitLeaveApplication(empId) {
-      const emp = state.employees.find(e => e.id === empId);
-      const lType = document.getElementById("leaveTypeInput")?.value || "Casual Leave";
-      const lDate = document.getElementById("leaveDateInput")?.value || "2026-11-10";
-      const lReason = document.getElementById("leaveReasonInput")?.value || "Personal Leave";
-      state.messages.unshift({
-        id: "LEAVE-" + Date.now(),
-        empId: empId,
-        empName: emp ? emp.name : empId,
-        category: "Leave Request",
-        subject: `${lType} on ${lDate}`,
-        message: lReason,
-        date: new Date().toLocaleDateString("en-IN"),
-        status: "Submitted to Admin (Rupesh Tiwari)",
-        reply: "Pending approval"
-      });
+    function submitLeaveRequest(empId) {
+      const emp = state.employees.find(e => e.id === empId) || state.employees[3];
+      const type = document.getElementById("leaveTypeInput")?.value || "Casual Leave (CL)";
+      const start = document.getElementById("leaveStartDate")?.value;
+      const end = document.getElementById("leaveEndDate")?.value;
+      const reason = document.getElementById("leaveReasonInput")?.value.trim() || "Personal absence";
+      
+      if (!start || !end) {
+        alert("Please select both start and end dates.");
+        return;
+      }
+      if (end < start) {
+        alert("End date cannot be earlier than start date.");
+        return;
+      }
+
+      const d1 = new Date(start);
+      const d2 = new Date(end);
+      const diffDays = Math.max(1, Math.round((d2 - d1) / (1000 * 60 * 60 * 24)) + 1);
+      const todayStr = new Date().toISOString().slice(0, 10);
+
+      state.leaveRequests = state.leaveRequests || [];
+      const newLeave = {
+        id: "LV-" + Date.now().toString().slice(-6),
+        empId: emp.id,
+        empName: emp.name,
+        leaveType: type,
+        startDate: start,
+        endDate: end,
+        days: diffDays,
+        reason: reason,
+        status: "Pending",
+        appliedOn: todayStr,
+        requestDate: todayStr
+      };
+
+      state.leaveRequests.unshift(newLeave);
       saveState();
       closeDocModal();
-      showToast("Leave Request Submitted", `${lType} for ${lDate} sent to Admin.`);
+      showToast("🏖️ Leave Request Submitted", `${type} for ${start} to ${end} (${diffDays}d) submitted to Admin as Pending Approval.`);
       renderApp();
     }
 
@@ -3093,14 +3200,14 @@ button, a.button {
           <!-- Attendance Header & Actions -->
           <div class="flex items-center justify-between mb-4 flex-wrap gap-2">
             <div>
-              <h2 class="text-sm font-bold text-white flex items-center gap-2">
+              <h2 class="text-sm font-bold flex items-center gap-2" style="color:var(--at-text);">
                 <span>⏱️ Monthly Attendance &amp; Timesheet Audit (Nov 2026)</span>
                 ${missingCount > 0 ? `<span class="bg-rose-500/20 text-rose-300 text-[10px] font-bold px-2 py-0.5 rounded border border-rose-500/40">${missingCount} Missing</span>` : '<span class="bg-emerald-500/20 text-emerald-300 text-[10px] font-bold px-2 py-0.5 rounded border border-emerald-500/40">100% Compliant</span>'}
               </h2>
-              <div class="text-[11px] text-slate-400 mt-0.5">Verified daily logs for statutory payroll disbursement.</div>
+              <div class="text-[11px] mt-0.5" style="color:var(--at-text-muted);">Verified daily logs for statutory payroll disbursement.</div>
             </div>
             <div class="flex items-center gap-2">
-              <button onclick="openHolidayCalendarModal()" class="text-xs font-bold px-3.5 py-1.5 rounded-xl border border-amber-500/50 bg-amber-950/40 text-amber-300 hover:bg-amber-900/50 cursor-pointer inline-flex items-center gap-1.5 shadow">
+              <button onclick="openHolidayCalendarModal()" class="text-xs font-bold px-3.5 py-1.5 rounded-xl border border-slate-300 dark:border-amber-500/50 bg-white dark:bg-amber-950/40 text-slate-800 dark:text-amber-300 hover:bg-slate-50 dark:hover:bg-amber-900/50 cursor-pointer inline-flex items-center gap-1.5 shadow-sm">
                 <span>🌴 2026 Holiday Calendar</span>
               </button>
               <button onclick="openAddTimesheetModal('${emp.id}')" class="brand-grad text-white text-xs font-bold px-3.5 py-1.5 rounded-xl shadow cursor-pointer">
@@ -3238,10 +3345,10 @@ button, a.button {
                             </div>
                           ` : `
                             <div class="flex items-center gap-2">
-                              <span class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-rose-500/20 text-rose-400 border border-rose-500/30 whitespace-nowrap">
+                              <span class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-rose-500/20 text-rose-700 dark:text-rose-300 border border-rose-500/30 whitespace-nowrap">
                                 🔴 Missing Timesheet
                               </span>
-                              <span class="text-rose-300 font-semibold">No work log recorded</span>
+                              <span class="text-rose-700 dark:text-rose-300 font-bold">No work log recorded</span>
                             </div>
                           `))}
                         </td>
@@ -3275,26 +3382,41 @@ button, a.button {
           <div class="glass-card rounded-2xl p-4 border border-slate-800">
             <div class="flex items-center justify-between gap-2 mb-3 flex-wrap">
               <div>
-                <h3 class="text-sm font-bold text-white">Leave Applications &amp; Comp-Off Requests (${myLeaves.length})</h3>
-                <p class="text-xs text-slate-400">Track real-time approval status from Aaruni Tech administration.</p>
+                <h3 class="text-sm font-bold" style="color:var(--at-text);">Leave Applications &amp; Comp-Off Requests (${myLeaves.length})</h3>
+                <p class="text-xs" style="color:var(--at-text-muted);">All staff leave applications require administrative approval from Rupesh Tiwari.</p>
               </div>
-              <button onclick="openApplyLeaveModal('${emp.id}')" class="brand-grad text-white text-xs font-bold px-3 py-1.5 rounded-lg shadow cursor-pointer">
-                + Apply Leave
+              <button onclick="openApplyLeaveModal('${emp.id}')" class="brand-grad text-white text-xs font-bold px-3.5 py-1.5 rounded-xl shadow cursor-pointer inline-flex items-center gap-1.5">
+                <span>+</span> <span>Apply Leave</span>
               </button>
             </div>
             ${myLeaves.length === 0 ? `
-              <div class="text-xs text-slate-400 py-3 text-center">No leave applications on file.</div>
+              <div class="text-xs py-4 text-center rounded-xl border border-dashed border-slate-300 dark:border-slate-800" style="color:var(--at-text-muted);">
+                🏖️ No leave applications on record for this period.
+              </div>
             ` : `
-              <div class="space-y-2">
+              <div class="space-y-2.5">
                 ${myLeaves.map(l => `
-                  <div class="p-2.5 rounded-xl bg-slate-900/60 border border-slate-800 flex items-center justify-between text-xs">
-                    <div>
-                      <div class="font-bold text-white">${l.leaveType} (${l.days} Day${l.days > 1 ? 's' : ''})</div>
-                      <div class="text-[11px] text-slate-400">${l.startDate} to ${l.endDate} &bull; ${l.reason}</div>
+                  <div class="p-3.5 rounded-xl border flex items-center justify-between gap-3 flex-wrap" style="background:var(--at-surface-subtle);border-color:var(--at-border);color:var(--at-text);">
+                    <div class="min-w-0">
+                      <div class="font-bold flex items-center gap-2 flex-wrap" style="color:var(--at-text);">
+                        <span class="text-sm">${l.leaveType}</span>
+                        <span class="text-xs px-2 py-0.5 rounded font-mono font-bold bg-slate-200 dark:bg-slate-800 text-slate-700 dark:text-slate-300 border border-slate-300 dark:border-slate-700">${l.days} Working Day${l.days > 1 ? 's' : ''}</span>
+                      </div>
+                      <div class="text-xs mt-1.5 flex items-center gap-2 flex-wrap font-medium" style="color:var(--at-text-secondary);">
+                        <span class="inline-flex items-center gap-1 font-bold" style="color:var(--at-text);">
+                          📅 <span>${l.startDate}</span> &rarr; <span>${l.endDate}</span>
+                        </span>
+                        <span>&bull;</span>
+                        <span>Reason: <em>${l.reason}</em></span>
+                        ${l.appliedOn ? `<span>&bull;</span> <span>Applied On: ${l.appliedOn}</span>` : ''}
+                        ${l.approvedDate ? `<span>&bull;</span> <span class="text-emerald-700 dark:text-emerald-300 font-bold">Approved On: ${l.approvedDate}</span>` : ''}
+                      </div>
                     </div>
-                    <span class="text-[10px] font-bold px-2 py-0.5 rounded-full ${l.status === 'Approved' ? 'bg-emerald-500/20 text-emerald-400 border border-emerald-500/40' : (l.status === 'Pending' ? 'bg-amber-500/20 text-amber-300 border border-amber-500/40' : 'bg-rose-500/20 text-rose-400 border border-rose-500/40')}">
-                      ${l.status}
-                    </span>
+                    <div class="shrink-0">
+                      <span class="text-xs font-bold px-3 py-1 rounded-full ${l.status === 'Approved' ? 'bg-emerald-100 dark:bg-emerald-950/60 text-emerald-800 dark:text-emerald-300 border border-emerald-300 dark:border-emerald-700' : (l.status === 'Pending' ? 'bg-amber-100 dark:bg-amber-950/60 text-amber-800 dark:text-amber-300 border border-amber-300 dark:border-amber-700 animate-pulse' : 'bg-rose-100 dark:bg-rose-950/60 text-rose-800 dark:text-rose-300 border border-rose-300 dark:border-rose-700')}">
+                        ${l.status === 'Approved' ? '✅ Approved' : (l.status === 'Pending' ? '⏳ Pending Admin Approval' : '❌ Rejected')}
+                      </span>
+                    </div>
                   </div>
                 `).join("")}
               </div>
@@ -4934,6 +5056,118 @@ button, a.button {
       // =========================================================================
       if (state.activeTab === "loans") {
         tabContent = `
+          <!-- STAFF LEAVE & ABSENCE APPROVAL CONSOLE (ALWAYS VISIBLE WITH FULL AUDIT DATES) -->
+          <div class="glass-card rounded-2xl p-4 mb-4 border border-slate-800">
+            <div class="flex items-center justify-between mb-3 flex-wrap gap-2">
+              <div>
+                <div class="text-base font-bold text-white flex items-center gap-2">
+                  <span>🏖️ Staff Leave Applications &amp; Absence Approvals</span>
+                  <span class="text-[10px] font-bold px-2 py-0.5 rounded-full ${pendingLeaves.length > 0 ? 'bg-amber-500/20 text-amber-800 dark:text-amber-300 border border-amber-500/40 animate-pulse' : 'bg-emerald-500/20 text-emerald-800 dark:text-emerald-300 border border-emerald-500/40'}">
+                    ${pendingLeaves.length > 0 ? `${pendingLeaves.length} Pending Approval` : 'All Audited'}
+                  </span>
+                </div>
+                <div class="text-xs text-slate-400 mt-0.5">
+                  Review and authorize staff leave requests. Only approved leaves clear missing timesheet backlogs.
+                </div>
+              </div>
+              <button onclick="openApplyLeaveModal('AAR-0004')" class="brand-grad text-white text-xs font-bold px-3 py-1.5 rounded-lg shadow cursor-pointer">
+                + Record Staff Leave
+              </button>
+            </div>
+
+            <!-- Pending Leaves Queue -->
+            ${pendingLeaves.length > 0 ? `
+              <div class="mb-4">
+                <div class="text-xs font-bold uppercase tracking-wider text-amber-400 mb-2">
+                  ⏳ Action Required: Pending Leave Approvals (${pendingLeaves.length})
+                </div>
+                <div class="space-y-2.5">
+                  ${pendingLeaves.map(l => `
+                    <div class="p-3.5 rounded-xl border border-amber-500/50 bg-amber-500/10 flex items-center justify-between gap-3 flex-wrap">
+                      <div>
+                        <div class="font-bold text-sm flex items-center gap-2">
+                          <strong class="text-white">${l.empName}</strong>
+                          <span class="font-mono text-xs px-1.5 py-0.5 rounded bg-slate-900 text-orange-400 border border-slate-700">${l.empId}</span>
+                          <span class="text-xs font-bold text-sky-400">&bull; ${l.leaveType} (${l.days} Working Day${l.days > 1 ? 's' : ''})</span>
+                        </div>
+                        <div class="text-xs text-slate-300 mt-1 flex items-center gap-2 flex-wrap">
+                          <span>📅 <strong>Start Date:</strong> ${l.startDate}</span>
+                          <span>&rarr;</span>
+                          <span><strong>End Date:</strong> ${l.endDate}</span>
+                          <span>&bull;</span>
+                          <span><strong>Applied On:</strong> ${l.appliedOn || l.requestDate || 'Recent'}</span>
+                          <span>&bull;</span>
+                          <span>Reason: <em>${l.reason}</em></span>
+                        </div>
+                      </div>
+                      <div class="flex items-center gap-2 shrink-0">
+                        <button onclick="approveLeaveRequest('${l.id}')" class="bg-emerald-600 hover:bg-emerald-500 text-white font-bold px-3 py-1.5 rounded-lg text-xs shadow cursor-pointer inline-flex items-center gap-1">
+                          <span>✅</span> <span>Approve</span>
+                        </button>
+                        <button onclick="rejectLeaveRequest('${l.id}')" class="bg-rose-700 hover:bg-rose-600 text-white font-bold px-3 py-1.5 rounded-lg text-xs shadow cursor-pointer inline-flex items-center gap-1">
+                          <span>❌</span> <span>Reject</span>
+                        </button>
+                      </div>
+                    </div>
+                  `).join("")}
+                </div>
+              </div>
+            ` : `
+              <div class="p-3 rounded-xl bg-emerald-500/10 border border-emerald-500/30 text-xs text-emerald-800 dark:text-emerald-300 font-semibold mb-4 flex items-center gap-2">
+                <span>✅</span> <span>Zero pending leave requests. All staff leave applications are fully up to date.</span>
+              </div>
+            `}
+
+            <!-- Processed / Historical Leaves Table -->
+            <div class="mt-3">
+              <div class="text-xs font-bold uppercase tracking-wider text-slate-400 mb-2">
+                📋 Leave Audit History (All Processed Records)
+              </div>
+              <div class="overflow-x-auto">
+                <table class="w-full text-left border-collapse text-xs">
+                  <thead>
+                    <tr class="border-b border-slate-800 text-slate-400 uppercase tracking-wider text-[10px]">
+                      <th class="py-2.5 px-2">Leave ID</th>
+                      <th class="py-2.5 px-2">Staff Member</th>
+                      <th class="py-2.5 px-2">Type</th>
+                      <th class="py-2.5 px-2">Start Date</th>
+                      <th class="py-2.5 px-2">End Date</th>
+                      <th class="py-2.5 px-2">Days</th>
+                      <th class="py-2.5 px-2">Reason</th>
+                      <th class="py-2.5 px-2">Applied On</th>
+                      <th class="py-2.5 px-2 text-right">Status</th>
+                    </tr>
+                  </thead>
+                  <tbody class="divide-y divide-slate-800/60">
+                    ${(state.leaveRequests || []).length === 0 ? `
+                      <tr>
+                        <td colspan="9" class="py-4 text-center text-slate-400 text-xs">
+                          No leave applications logged yet.
+                        </td>
+                      </tr>
+                    ` : (state.leaveRequests || []).map(l => `
+                      <tr>
+                        <td class="py-2.5 px-2 font-mono font-bold text-orange-400">${l.id}</td>
+                        <td class="py-2.5 px-2 font-bold text-white">${l.empName}</td>
+                        <td class="py-2.5 px-2 font-semibold text-sky-400">${l.leaveType}</td>
+                        <td class="py-2.5 px-2 font-mono text-slate-300">${l.startDate}</td>
+                        <td class="py-2.5 px-2 font-mono text-slate-300">${l.endDate}</td>
+                        <td class="py-2.5 px-2 font-bold text-white">${l.days}d</td>
+                        <td class="py-2.5 px-2 text-slate-300 truncate max-w-xs">${l.reason}</td>
+                        <td class="py-2.5 px-2 font-mono text-slate-400">${l.appliedOn || l.requestDate || '—'}</td>
+                        <td class="py-2.5 px-2 text-right">
+                          <span class="text-[10px] font-bold px-2 py-0.5 rounded-full ${l.status === 'Approved' ? 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/30' : (l.status === 'Pending' ? 'bg-amber-500/20 text-amber-300 border border-amber-500/30' : 'bg-rose-500/20 text-rose-300 border border-rose-500/30')}">
+                            ${l.status}
+                          </span>
+                        </td>
+                      </tr>
+                    `).join("")}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+
           <div class="grid grid-cols-1 md:grid-cols-2 gap-3 mb-4">
             <div class="glass-card rounded-xl p-3 border-l-4 border-orange-500">
               <div class="text-xs text-slate-400">Pending Advance Recovery</div>
@@ -5418,25 +5652,7 @@ button, a.button {
     }
 
     function markDayAsLeave(empId, dateStr) {
-      const emp = state.employees.find(e => e.id === empId);
-      if (!state.leaveRequests) state.leaveRequests = [];
-      
-      const newLeave = {
-        id: "LV-" + Date.now().toString().slice(-6),
-        empId: empId,
-        leaveType: "Casual Leave",
-        startDate: dateStr,
-        endDate: dateStr,
-        days: 1,
-        reason: "Planned day off / Recorded absence",
-        status: "Approved",
-        appliedOn: "2026-11-11"
-      };
-
-      state.leaveRequests.unshift(newLeave);
-      saveState();
-      showToast("🏖️ Marked as Leave", `${emp.name}: ${dateStr} marked as Casual Leave (Approved).`);
-      renderApp();
+      openApplyLeaveModal(empId, dateStr);
     }
 
     function toggleCompOff(empId) {
@@ -7098,88 +7314,6 @@ button, a.button {
       saveState();
       closeDocModal();
       showToast("⚡ Advance Request Submitted", `Your advance request of ₹${amount.toLocaleString('en-IN')} has been sent to Admin for approval.`);
-      renderApp();
-    }
-
-    function openApplyLeaveModal(empId) {
-      const emp = state.employees.find(e => e.id === empId) || state.employees[3];
-      const today = new Date().toISOString().slice(0, 10);
-      const html = `
-        <div style="font-family:'Inter',sans-serif;color:#0f172a;max-width:480px;margin:0 auto;">
-          <div style="background:#090D16;color:#ffffff;border-radius:16px;padding:20px;border:1.5px solid #FE5F01;">
-            <div style="font-size:16px;font-weight:900;color:#ffffff;margin-bottom:4px;">🏖️ Apply for Leave</div>
-            <p style="font-size:12px;color:#94a3b8;margin-bottom:16px;">
-              Submit your leave application. Leave requests are reviewed against company calendar policies.
-            </p>
-
-            <div style="space-y:12px;">
-              <div style="margin-bottom:12px;">
-                <label style="display:block;font-size:11px;font-weight:700;color:#cbd5e1;margin-bottom:4px;">Leave Type</label>
-                <select id="leaveTypeInput" style="width:100%;box-sizing:border-box;background:#1e293b;border:1px solid #475569;border-radius:8px;padding:9px 12px;font-size:12px;color:#ffffff;">
-                  <option value="Casual Leave">Casual Leave (CL)</option>
-                  <option value="Sick Leave">Sick Leave (SL)</option>
-                  <option value="Paid Privilege Leave">Paid Privilege Leave (PL)</option>
-                  <option value="Compensatory Off">Compensatory Off (Comp-Off)</option>
-                </select>
-              </div>
-
-              <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px;">
-                <div>
-                  <label style="display:block;font-size:11px;font-weight:700;color:#cbd5e1;margin-bottom:4px;">Start Date</label>
-                  <input id="leaveStartDate" type="date" value="${today}" style="width:100%;box-sizing:border-box;background:#1e293b;border:1px solid #475569;border-radius:8px;padding:8px 10px;font-size:12px;color:#ffffff;" />
-                </div>
-                <div>
-                  <label style="display:block;font-size:11px;font-weight:700;color:#cbd5e1;margin-bottom:4px;">End Date</label>
-                  <input id="leaveEndDate" type="date" value="${today}" style="width:100%;box-sizing:border-box;background:#1e293b;border:1px solid #475569;border-radius:8px;padding:8px 10px;font-size:12px;color:#ffffff;" />
-                </div>
-              </div>
-
-              <div style="margin-bottom:16px;">
-                <label style="display:block;font-size:11px;font-weight:700;color:#cbd5e1;margin-bottom:4px;">Reason for Leave</label>
-                <input id="leaveReasonInput" type="text" placeholder="e.g. Family event, medical rest" value="Personal commitments" style="width:100%;box-sizing:border-box;background:#1e293b;border:1px solid #475569;border-radius:8px;padding:9px 12px;font-size:12px;color:#ffffff;" />
-              </div>
-
-              <div style="display:flex;gap:10px;">
-                <button onclick="closeDocModal()" style="flex:1;background:#334155;color:#ffffff;font-size:12px;font-weight:700;padding:10px;border-radius:8px;border:none;cursor:pointer;">Cancel</button>
-                <button onclick="submitLeaveRequest('${emp.id}')" style="flex:2;background:linear-gradient(135deg, #FE5F01 0%, #EA580C 100%);color:#ffffff;font-size:12px;font-weight:800;padding:10px;border-radius:8px;border:none;cursor:pointer;">
-                  🏖️ Submit Leave Request
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
-      `;
-      openModalWithHTML(`Apply for Leave — ${emp.name}`, html);
-    }
-
-    function submitLeaveRequest(empId) {
-      const emp = state.employees.find(e => e.id === empId);
-      const type = document.getElementById("leaveTypeInput").value;
-      const start = document.getElementById("leaveStartDate").value;
-      const end = document.getElementById("leaveEndDate").value;
-      const reason = document.getElementById("leaveReasonInput").value.trim() || "Leave Request";
-      
-      const d1 = new Date(start);
-      const d2 = new Date(end);
-      const diffDays = Math.max(1, Math.round((d2 - d1) / (1000 * 60 * 60 * 24)) + 1);
-
-      state.leaveRequests = state.leaveRequests || [];
-      const newLeave = {
-        id: "LV-" + Date.now().toString().slice(-4),
-        empId: emp.id,
-        empName: emp.name,
-        leaveType: type,
-        startDate: start,
-        endDate: end,
-        days: diffDays,
-        reason: reason,
-        status: "Pending",
-        requestDate: new Date().toISOString().slice(0, 10)
-      };
-      state.leaveRequests.unshift(newLeave);
-      saveState();
-      closeDocModal();
-      showToast("🏖️ Leave Request Submitted", `Submitted ${diffDays} day(s) ${type} from ${start} to ${end}.`);
       renderApp();
     }
 
