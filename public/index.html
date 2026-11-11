@@ -660,7 +660,7 @@ body {
         ifsc: "UBIN0826669",
         accountType: "Savings",
         paymentMode: "Manual Bank Transfer",
-        upiId: "8143088771@ybl",
+        upiId: "",
         idCardFile: "AAR-0004_Chukka_Nandini_ID_Card.png"
       },
       {
@@ -692,7 +692,7 @@ body {
         ifsc: "SBIN0010689",
         accountType: "Savings",
         paymentMode: "Manual Bank Transfer",
-        upiId: "9014627501@ybl",
+        upiId: "",
         idCardFile: "AAR-0005_Janhavi_Varma_ID_Card.png"
       },
       {
@@ -724,7 +724,7 @@ body {
         ifsc: "CNRB0000033",
         accountType: "Savings",
         paymentMode: "Manual Bank Transfer",
-        upiId: "9502770375@ybl",
+        upiId: "",
         idCardFile: "AAR-0006_Koppula_Ramya_ID_Card.png"
       },
       {
@@ -782,7 +782,7 @@ body {
         ifsc: "Pending",
         accountType: "Savings",
         paymentMode: "Manual Bank Transfer",
-        upiId: "9052088836@ybl",
+        upiId: "",
         idCardFile: "AAR-0008_Shaik_Ali_Moulali_ID_Card.jpg"
       }
     ];
@@ -2389,7 +2389,7 @@ body {
         .filter(l => l.empId === emp.id && l.status !== "Paid" && l.status !== "Settled / Paid")
         .reduce((acc, l) => acc + Number(l.remainingBalance || l.monthlyDeduction || 0), 0);
       const projectedFullMonthNet = Math.max(0, (emp.monthlyCtc || 0) - pendingLoans);
-      const portalUrl = (state.baseAppUrl || window.location.origin || "https://my.aaruni.in").replace(/\/+$/, "");
+      const portalUrl = (state.baseAppUrl || window.location.origin || "https://my.aarunitech.com").replace(/\/+$/, "");
 
       const annualCtc = Number(emp.annualCtc || (emp.monthlyCtc * 12) || 120000);
       const ytd = computeCumulativeYTD(emp.id, "2026-11") || {
@@ -3806,9 +3806,9 @@ body {
               <button onclick="downloadAxisBankCSV()" class="bg-slate-800 hover:bg-slate-700 text-white border border-slate-700 font-semibold px-3 py-1.5 rounded-lg cursor-pointer">
                 Export Bank CSV
               </button>
-              <button onclick="finalizeAndPublishAllPayslips()" class="bg-emerald-600 hover:bg-emerald-500 text-white font-bold px-3 py-1.5 rounded-lg shadow cursor-pointer">
-                ✅ Publish &amp; Notify Staff
-              </button>
+              <span class="inline-flex items-center gap-1.5 text-xs font-semibold px-3 py-1.5 rounded-lg select-none" style="background:var(--at-surface-subtle);border:1px solid var(--at-border);color:var(--at-text-secondary);">
+                <span>🔒 Publish Guardrail: Pay via Pay Runs tab</span>
+              </span>
             </div>
           </div>
         </div>
@@ -5364,7 +5364,64 @@ body {
       renderApp();
     }
 
-    function finalizeAndPublishAllPayslips() {
+    function revertNovemberPayrollToDraft() {
+      if (!confirm("Are you sure you want to retract November 2026 payslips? They will be removed from staff view and reverted back to Draft status.")) return;
+      state.payslips = (state.payslips || []).filter(p => !p.id.startsWith("PS-2026-11"));
+      saveState();
+      showToast("↩️ Payslips Retracted", "November 2026 payslips have been reverted to Draft status.");
+      renderApp();
+    }
+
+    function openPublishConfirmationModal() {
+      const activeStaffList = state.employees.filter(e => e.status === "Active" && e.monthlyCtc > 0);
+      const paidCount = activeStaffList.filter(e => state.novDisbursements && state.novDisbursements[e.id]?.paid).length;
+      
+      if (paidCount < activeStaffList.length) {
+        showToast("Publish Locked", `Cannot publish: only ${paidCount} of ${activeStaffList.length} staff are marked as paid. Disburse all salaries first.`);
+        return;
+      }
+
+      const html = `
+        <div style="font-family:'Inter',sans-serif;color:var(--at-text);max-width:500px;margin:0 auto;text-align:center;">
+          <div style="width:64px;height:64px;border-radius:20px;background:#ecfdf5;border:1.5px solid #a7f3d0;display:inline-flex;align-items:center;justify-content:center;font-size:32px;margin-bottom:12px;">
+            📢
+          </div>
+          <h3 style="font-size:18px;font-weight:900;color:var(--at-text);margin:0 0 6px 0;">Publish November 2026 Payslips?</h3>
+          <p style="font-size:12.5px;color:var(--at-text-secondary);margin:0 0 16px 0;line-height:1.5;">
+            All <strong>${paidCount} active employees</strong> have been confirmed and marked as paid.<br/>
+            Publishing will generate official encrypted payslips and make them visible on the employee self-service portal.
+          </p>
+
+          <div style="background:var(--at-surface-subtle);border:1px solid var(--at-border);border-radius:12px;padding:12px;margin-bottom:16px;text-align:left;font-size:12px;">
+            <div style="font-weight:800;color:#059669;margin-bottom:6px;">✅ Confirmed Disbursals:</div>
+            ${activeStaffList.map(e => `
+              <div style="display:flex;justify-content:space-between;padding:3px 0;border-bottom:1px solid rgba(0,0,0,0.05);">
+                <span>${e.name} (${e.id})</span>
+                <strong style="color:var(--at-text);">₹${(e.monthlyCtc || 0).toLocaleString('en-IN')} (Paid)</strong>
+              </div>
+            `).join("")}
+          </div>
+
+          <div style="display:flex;gap:10px;justify-content:center;">
+            <button onclick="closeDocModal()" style="padding:10px 20px;border-radius:10px;border:1px solid var(--at-border);background:var(--at-surface);color:var(--at-text);font-weight:700;font-size:12px;cursor:pointer;">
+              Cancel
+            </button>
+            <button onclick="closeDocModal(); finalizeAndPublishAllPayslips(true);" class="brand-grad" style="padding:10px 24px;border-radius:10px;border:none;color:#ffffff;font-weight:800;font-size:12px;cursor:pointer;box-shadow:0 4px 14px rgba(254,95,1,0.35);">
+              ✅ Yes, Publish &amp; Notify Staff
+            </button>
+          </div>
+        </div>
+      `;
+      openModalWithHTML("📢 Publish November 2026 Payslips", html);
+    }
+
+    function finalizeAndPublishAllPayslips(force = false) {
+      const activeStaffList = state.employees.filter(e => e.status === "Active" && e.monthlyCtc > 0);
+      const paidCount = activeStaffList.filter(e => state.novDisbursements && state.novDisbursements[e.id]?.paid).length;
+      if (!force && paidCount < activeStaffList.length) {
+        showToast("Publish Locked", `Cannot publish: only ${paidCount} of ${activeStaffList.length} staff are marked as paid. Disburse all salaries first.`);
+        return;
+      }
       const tracked = state.employees.filter(e => e.status === "Active" && e.trackTimesheet);
       tracked.forEach(emp => {
         const r = computeEmployeePayroll(emp, "2026-11");
@@ -5761,7 +5818,7 @@ body {
         netYtd: Number(ps.netPay || 0),
         monthsCount: 1
       };
-      const portalUrl = (state.baseAppUrl || window.location.origin || "https://my.aaruni.in").replace(/\/+$/, "");
+      const portalUrl = (state.baseAppUrl || window.location.origin || "https://my.aarunitech.com").replace(/\/+$/, "");
       const verifyQr = generateQRCodeSVG(portalUrl + "/?verify=payslip&id=" + ps.id + "&emp=" + emp.id, 90);
 
       return `
@@ -6125,17 +6182,14 @@ body {
     function openAdminUPIPaymentModal(empId, defaultAmount, defaultNote) {
       const emp = state.employees.find(e => e.id === empId);
       if (!emp) return showToast("Error", "Employee not found");
-      const upiId = emp.upiId || (emp.mobile ? `${emp.mobile}@ybl` : 'aaruni.tech@okaxis');
       const amount = Number(defaultAmount || emp.monthlyCtc || 10000);
       const note = defaultNote || `AaruniTech_Salary_${emp.id}_Nov2026`;
-      
-      const upiUri = `upi://pay?pa=${encodeURIComponent(upiId)}&pn=${encodeURIComponent(emp.name)}&am=${amount}&cu=INR&tn=${encodeURIComponent(note)}`;
-      const qrSvg = generateQRCodeSVG(upiUri, 180);
       
       const photoPath = `photos/${emp.id}.jpeg`;
       const photoHtml = `<img src="${photoPath}" onerror="this.onerror=null; this.src='aaruni_square_logo.png'" alt="${emp.name}" style="width:52px;height:52px;border-radius:12px;object-fit:cover;border:2px solid #FE5F01;background:#090D16;" />`;
       
       const hasAuthenticQr = !!emp.upiQrImage;
+      const disb = (state.novDisbursements && state.novDisbursements[emp.id]) || { paid: false, utr: "" };
 
       const html = `
         <div style="font-family:'Inter',sans-serif;color:#0f172a;max-width:540px;margin:0 auto;">
@@ -6148,8 +6202,8 @@ body {
                   <div style="font-size:12px;color:#94a3b8;">${emp.role} • <span style="font-family:monospace;color:#FE5F01;font-weight:700;">${emp.id}</span></div>
                 </div>
               </div>
-              <span style="background:${hasAuthenticQr ? 'rgba(16,185,129,0.2)' : 'rgba(254,95,1,0.2)'};color:${hasAuthenticQr ? '#34d399' : '#FE5F01'};font-size:11px;font-weight:800;padding:4px 8px;border-radius:6px;border:1px solid ${hasAuthenticQr ? 'rgba(16,185,129,0.4)' : 'rgba(254,95,1,0.4)'};">
-                ${hasAuthenticQr ? '🟢 Authentic QR Verified' : '⚡ Dynamic UPI Link'}
+              <span style="background:${hasAuthenticQr ? 'rgba(16,185,129,0.2)' : 'rgba(245,158,11,0.2)'};color:${hasAuthenticQr ? '#34d399' : '#fbbf24'};font-size:11px;font-weight:800;padding:4px 8px;border-radius:6px;border:1px solid ${hasAuthenticQr ? 'rgba(16,185,129,0.4)' : 'rgba(245,158,11,0.4)'};">
+                ${hasAuthenticQr ? '🟢 Authentic QR Uploaded' : '⚠️ QR Upload Pending'}
               </span>
             </div>
 
@@ -6157,54 +6211,56 @@ body {
             <div style="background:rgba(15,23,42,0.8);border:1px solid #334155;border-radius:12px;padding:14px;text-align:center;margin-bottom:14px;">
               <div style="font-size:11px;font-weight:700;color:#94a3b8;text-transform:uppercase;letter-spacing:0.05em;">Payable Net Amount</div>
               <div style="font-size:32px;font-weight:900;color:#FE5F01;margin:4px 0;">₹${amount.toLocaleString('en-IN')}.00</div>
-              <div style="font-size:12px;color:#cbd5e1;">Purpose: <strong>${note}</strong></div>
+              <div style="font-size:12px;color:#cbd5e1;">Purpose: <strong>${note}</strong> &bull; Status: <strong style="color:${disb.paid ? '#34d399' : '#fbbf24'}">${disb.paid ? 'PAID ✅' : 'PENDING'}</strong></div>
             </div>
 
             <!-- SCANNABLE QR CODE CONTAINER -->
-            <div style="text-align:center;background:#ffffff;padding:16px;border-radius:14px;margin-bottom:14px;box-sizing:border-box;">
-              ${hasAuthenticQr ? `
+            ${hasAuthenticQr ? `
+              <div style="text-align:center;background:#ffffff;padding:16px;border-radius:14px;margin-bottom:14px;box-sizing:border-box;">
                 <div style="font-size:12px;font-weight:800;color:#059669;margin-bottom:8px;display:flex;align-items:center;justify-content:center;gap:6px;">
                   <span>✅ Official PhonePe / Google Pay QR (Uploaded by ${emp.name})</span>
                 </div>
-                <img src="${emp.upiQrImage}" alt="${emp.name} UPI QR" style="max-width:210px;max-height:210px;border-radius:10px;border:2px solid #FE5F01;margin:0 auto;display:block;box-shadow:0 4px 16px rgba(0,0,0,0.15);" />
+                <img src="${emp.upiQrImage}" alt="${emp.name} UPI QR" style="max-width:210px;max-height:210px;border-radius:10px;border:2px solid #10b981;margin:0 auto;display:block;box-shadow:0 4px 16px rgba(0,0,0,0.15);" />
                 <div style="font-size:12px;color:#475569;margin-top:8px;font-weight:600;">
                   📷 Scan with PhonePe / Google Pay / Axis Bank Mobile App
                 </div>
-              ` : `
-                <div style="background:#fff7ed;border:1px solid #fed7aa;color:#9a3412;padding:8px 10px;border-radius:8px;font-size:11px;font-weight:600;margin-bottom:10px;text-align:left;">
-                  ⚠️ Dynamic UPI strings can be rejected by some bank apps. For 100% success, scan employee's uploaded QR, upload it below, or use 1-Click Axis Bank IMPS.
+                <div style="margin-top:10px;border-top:1px dashed #cbd5e1;padding-top:10px;text-align:center;">
+                  <label style="font-size:11px;font-weight:700;color:#0369a1;display:inline-block;cursor:pointer;">
+                    Replace / Update QR Screenshot:
+                  </label>
+                  <input type="file" accept="image/*" onchange="handleStaffUPIQRUpload(event, '${emp.id}'); setTimeout(() => openAdminUPIPaymentModal('${emp.id}', ${amount}, '${note}'), 500);" style="font-size:11px;color:#64748b;margin-top:4px;display:block;margin-left:auto;margin-right:auto;" />
                 </div>
-                <div style="display:inline-block;padding:6px;background:#ffffff;border-radius:8px;">
-                  ${qrSvg}
-                </div>
-                <div style="font-size:12px;color:#475569;margin-top:6px;font-weight:600;">
-                  📷 Scan with PhonePe, Google Pay, Paytm, or BHIM
-                </div>
-              `}
-
-              <div style="margin-top:8px;display:flex;align-items:center;justify-content:center;gap:6px;flex-wrap:wrap;">
-                <div style="font-family:monospace;font-size:12px;color:#0f172a;background:#f1f5f9;padding:6px 12px;border-radius:6px;">
-                  UPI ID: <strong>${upiId}</strong>
-                </div>
-                <button onclick="copyToClipboard('${upiId}', 'UPI ID')" style="background:#FF6B35;color:#ffffff;border:none;padding:6px 12px;border-radius:6px;font-size:11px;font-weight:700;cursor:pointer;">
-                  📋 Copy UPI ID
-                </button>
               </div>
+            ` : `
+              <div style="background:#fff7ed;border:2px dashed #f97316;border-radius:14px;padding:18px;text-align:center;margin-bottom:14px;color:#0f172a;">
+                <div style="font-size:32px;margin-bottom:6px;">⚠️</div>
+                <div style="font-size:14px;font-weight:900;color:#9a3412;margin-bottom:4px;">
+                  No Authentic UPI QR Uploaded Yet by ${emp.name}
+                </div>
+                <p style="font-size:11.5px;color:#7c2d12;margin:0 0 12px 0;line-height:1.5;">
+                  Fake/dummy QR codes are disabled so you don't face failed bank transactions. ${emp.name} can upload their PhonePe or Google Pay QR code in their Employee Portal, or you can attach it directly below if they sent it to you on WhatsApp.
+                </p>
 
-              <!-- Upload / Override QR by Admin -->
-              <div style="margin-top:10px;border-top:1px dashed #cbd5e1;padding-top:10px;text-align:center;">
-                <label style="font-size:11px;font-weight:700;color:#0369a1;display:inline-block;cursor:pointer;">
-                  📷 ${hasAuthenticQr ? 'Replace / Upload Updated QR Screenshot:' : 'Upload ' + emp.name + '\'s Real QR Screenshot (Admin Override):'}
-                </label>
-                <input type="file" accept="image/*" onchange="handleStaffUPIQRUpload(event, '${emp.id}'); setTimeout(() => openAdminUPIPaymentModal('${emp.id}', ${amount}, '${note}'), 500);" style="font-size:11px;color:#64748b;margin-top:4px;display:block;margin-left:auto;margin-right:auto;" />
+                <div style="background:#ffffff;border:1px solid #fdba74;border-radius:10px;padding:10px 14px;margin-bottom:10px;display:inline-block;text-align:left;">
+                  <label style="font-size:11px;font-weight:800;color:#ea580c;display:block;margin-bottom:4px;cursor:pointer;">
+                    📷 Rupesh / Admin: Upload ${emp.name}'s QR Screenshot:
+                  </label>
+                  <input type="file" accept="image/*" onchange="handleStaffUPIQRUpload(event, '${emp.id}'); setTimeout(() => openAdminUPIPaymentModal('${emp.id}', ${amount}, '${note}'), 500);" style="font-size:11px;color:#64748b;" />
+                </div>
+
+                <div>
+                  <a href="https://wa.me/91${emp.mobile}?text=${encodeURIComponent('Hi ' + emp.name + ', please open Google Pay or PhonePe, take a screenshot of your Profile QR code, and upload it to your portal at https://my.aarunitech.com or send it to me here so I can disburse your salary via UPI.')}" target="_blank" style="background:#25d366;color:#ffffff;text-decoration:none;padding:8px 16px;border-radius:8px;font-size:11px;font-weight:800;display:inline-flex;align-items:center;gap:6px;">
+                    <span>💬 Ask ${emp.name.split(' ')[0]} on WhatsApp to Share QR</span>
+                  </a>
+                </div>
               </div>
-            </div>
+            `}
 
             <!-- BENEFICIARY BANK PARTICULARS WITH 1-CLICK COPY BUTTONS -->
             <div style="background:rgba(15,23,42,0.7);border:1px solid #334155;border-radius:12px;padding:12px 14px;font-size:12px;margin-bottom:14px;">
               <div style="font-size:11px;font-weight:800;color:#38bdf8;text-transform:uppercase;letter-spacing:0.05em;margin-bottom:8px;display:flex;justify-content:space-between;align-items:center;">
-                <span>🏦 Direct Axis Bank IMPS / NEFT Particulars</span>
-                <span style="color:#94a3b8;font-size:10px;font-weight:600;">100% Reliable Payout</span>
+                <span>🏦 Direct Bank Transfer Particulars (100% Reliable Payout)</span>
+                <span style="color:#94a3b8;font-size:10px;font-weight:600;">IMPS / NEFT</span>
               </div>
               
               <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;padding:4px 0;border-bottom:1px solid rgba(255,255,255,0.06);">
@@ -6239,7 +6295,7 @@ body {
               <div style="display:flex;justify-content:space-between;align-items:center;padding:4px 0;">
                 <span style="color:#94a3b8;">Exact Net Amount:</span>
                 <div style="display:flex;align-items:center;gap:6px;">
-                  <strong style="color:#4ade80;font-size:14px;font-weight:900;">₹${amount}</strong>
+                  <strong style="color:#4ade80;font-size:14px;font-weight:900;">₹${amount.toLocaleString('en-IN')}.00</strong>
                   <button onclick="copyToClipboard('${amount}', 'Amount')" style="background:#15803d;color:#ffffff;border:none;padding:2px 6px;border-radius:4px;font-size:10px;font-weight:700;cursor:pointer;">📋 Copy Amount</button>
                 </div>
               </div>
@@ -6247,12 +6303,21 @@ body {
 
             <!-- ACTIONS -->
             <div style="display:flex;gap:10px;">
-              <a href="${upiUri}" style="flex:1;text-align:center;background:#1e293b;border:1px solid #475569;color:#ffffff;font-size:12px;font-weight:800;padding:10px;border-radius:10px;text-decoration:none;">
-                📲 Launch UPI App
-              </a>
-              <button onclick="confirmUPIPaymentCompleted('${emp.id}', ${amount}, '${note}')" style="flex:1.5;background:linear-gradient(135deg, #FE5F01 0%, #EA580C 100%);color:#ffffff;font-size:12px;font-weight:800;padding:10px;border-radius:10px;border:none;cursor:pointer;box-shadow:0 4px 14px rgba(254,95,1,0.4);">
-                ✅ Mark as Paid via UPI
-              </button>
+              ${disb.paid ? `
+                <button onclick="unmarkEmployeeAsPaid('${emp.id}'); setTimeout(() => openAdminUPIPaymentModal('${emp.id}', ${amount}, '${note}'), 300);" style="flex:1;background:#334155;color:#f87171;font-size:12px;font-weight:800;padding:10px;border-radius:10px;border:none;cursor:pointer;">
+                  ↩️ Revert to Unpaid
+                </button>
+                <button onclick="closeDocModal();" class="brand-grad" style="flex:1;color:#ffffff;font-size:12px;font-weight:800;padding:10px;border-radius:10px;border:none;cursor:pointer;">
+                  Done (Paid Ref: ${disb.utr})
+                </button>
+              ` : `
+                <button onclick="closeDocModal();" style="flex:1;background:#1e293b;border:1px solid #475569;color:#ffffff;font-size:12px;font-weight:800;padding:10px;border-radius:10px;cursor:pointer;">
+                  Close
+                </button>
+                <button onclick="confirmUPIPaymentCompleted('${emp.id}', ${amount}, '${note}')" style="flex:1.5;background:linear-gradient(135deg, #FE5F01 0%, #EA580C 100%);color:#ffffff;font-size:12px;font-weight:800;padding:10px;border-radius:10px;border:none;cursor:pointer;box-shadow:0 4px 14px rgba(254,95,1,0.4);">
+                  ✅ Mark as Paid
+                </button>
+              `}
             </div>
           </div>
         </div>
@@ -7141,7 +7206,7 @@ body {
     }
 
     function getStaffLoginUrl(empId) {
-      const base = (state.baseAppUrl || "https://my.aaruni.in").replace(/\/+$/, "");
+      const base = (state.baseAppUrl || "https://my.aarunitech.com").replace(/\/+$/, "");
       if (empId === "APK") return `${base}/downloads/aaruni-payroll.apk`;
       if (!empId || empId === "MAIN") return base;
       if (empId === "ADMIN") return `${base}/?emp=ADMIN`;
@@ -7395,7 +7460,7 @@ body {
       openModalWithHTML("📲 Aaruni Tech Mobile QR & PWA Hub", html);
     }
 function updateQrBaseUrl(val) {
-      state.baseAppUrl = (val || "https://my.aaruni.in").trim();
+      state.baseAppUrl = (val || "https://my.aarunitech.com").trim();
       openMobileQRHubModal(state.selectedQrTarget);
     }
 
