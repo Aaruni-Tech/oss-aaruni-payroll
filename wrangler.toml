@@ -1,3 +1,8 @@
 name = "aaruni-payroll"
 compatibility_date = "2026-11-01"
 pages_build_output_dir = "public"
+
+[[d1_databases]]
+binding = "DB"
+database_name = "aaruni_payroll_db"
+database_id = "d02799e0-e790-466f-a8f9-0740370a18c3"
