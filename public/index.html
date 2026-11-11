@@ -2283,6 +2283,7 @@ body {
       navBar.classList.remove("hidden");
 
       if (state.persona === "ADMIN") {
+        navBar.classList.add("md:hidden"); // Clean Zoho desktop layout (sidebar handles desktop nav)
         const tabs = [
           { id: "roster", label: "Employees" },
           { id: "pulse", label: "Attendance" },
