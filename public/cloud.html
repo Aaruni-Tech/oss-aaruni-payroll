@@ -1837,7 +1837,10 @@
           <a href="#ecosystem" class="subnav-item">Plugins &amp; Ecosystem</a>
           <a href="#tco-section" class="subnav-item">Pricing &amp; Sizing</a>
         </div>
-        <a href="https://aarunitech.com" target="_blank" rel="noopener" class="subnav-item mono" style="color:#38bdf8;">Parent: aarunitech.com &nearr;</a>
+        <div style="display:flex;align-items:center;gap:8px;">
+          <button type="button" class="subnav-item" onclick="openCloudMobileModal()" style="color:#fb923c; border:1px solid rgba(251,146,60,0.35); border-radius:6px; padding:2px 8px; font-size:12px;">📱 Mobile App &amp; Console</button>
+          <a href="https://aarunitech.com" target="_blank" rel="noopener" class="subnav-item mono" style="color:#38bdf8;">Parent: aarunitech.com &nearr;</a>
+        </div>
       </div>
     </nav>
 
@@ -3149,6 +3152,47 @@ console.log("Deployed:", cluster.endpoint);`
     function openLegalModal(key) {
       const doc = LEGAL_CONTENT[key] || LEGAL_CONTENT.TRADEMARKS;
       showModal(doc.title, doc.html + '<div style="text-align:right;margin-top:18px;"><button type="button" class="btn-dawn" onclick="closeCloudModal()">Close</button></div>');
+    }
+
+    function openCloudMobileModal() {
+      showModal(
+        "📱 Aaruni Ecosystem Mobile Access",
+        '<div style="text-align:center;max-width:440px;margin:0 auto;">' +
+          '<div style="display:flex;justify-content:center;gap:10px;margin-bottom:16px;">' +
+            '<button type="button" class="btn-tile-secondary" id="c-qr-cloud-btn" style="min-height:36px;padding:4px 12px;font-size:12px;background:rgba(56,189,248,0.15);color:#38bdf8;border-color:#38bdf8;" onclick="switchCloudQrTab(\'cloud\')">☁️ Cloud Console</button>' +
+            '<button type="button" class="btn-tile-secondary" id="c-qr-app-btn" style="min-height:36px;padding:4px 12px;font-size:12px;" onclick="switchCloudQrTab(\'app\')">🤖 Aaruni Tech App (APK)</button>' +
+          '</div>' +
+          '<div style="background:#ffffff;padding:14px;border-radius:14px;display:inline-block;box-shadow:0 8px 24px rgba(0,0,0,0.4);border:1px solid #cbd5e1;margin-bottom:14px;">' +
+            '<img id="cloudQrImg" src="assets/qr_aarunicloud_mobile.png" alt="Scan QR for mobile" style="width:180px;height:180px;display:block;" />' +
+          '</div>' +
+          '<div id="cloudQrDesc" style="font-size:12.5px;color:var(--ac-text-muted);margin-bottom:16px;line-height:1.5;">' +
+            'Scan with your phone to open the <strong>Aaruni Cloud Console &amp; Neural Voice Workbench</strong> on mobile.' +
+          '</div>' +
+          '<div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap;">' +
+            '<a href="https://my.aarunitech.com/downloads/aaruni-payroll.apk" download="AaruniTech-v2.4.0.apk" class="btn-dawn" style="min-height:38px;text-decoration:none;font-size:12px;padding:0 16px;display:inline-flex;align-items:center;">📥 Download Android APK</a>' +
+            '<a href="https://aarunitech.com" target="_blank" class="btn-tile-secondary" style="min-height:38px;text-decoration:none;font-size:12px;padding:0 16px;display:inline-flex;align-items:center;">Aaruni Tech Home ↗</a>' +
+          '</div>' +
+        '</div>'
+      );
+    }
+
+    function switchCloudQrTab(type) {
+      const img = document.getElementById("cloudQrImg");
+      const desc = document.getElementById("cloudQrDesc");
+      const bCloud = document.getElementById("c-qr-cloud-btn");
+      const bApp = document.getElementById("c-qr-app-btn");
+      if (!img || !desc) return;
+      if (type === 'app') {
+        img.src = "assets/qr_aarunitech_app_apk.png";
+        desc.innerHTML = "Scan with Android to download the official <strong>Aaruni Tech App</strong> (.apk) for Timesheet, Attendance &amp; Payroll.";
+        if (bApp) { bApp.style.background = "rgba(254,95,1,0.15)"; bApp.style.color = "#fe5f01"; bApp.style.borderColor = "#fe5f01"; }
+        if (bCloud) { bCloud.style.background = ""; bCloud.style.color = ""; bCloud.style.borderColor = ""; }
+      } else {
+        img.src = "assets/qr_aarunicloud_mobile.png";
+        desc.innerHTML = "Scan with your phone to open the <strong>Aaruni Cloud Console &amp; Neural Voice Workbench</strong> on mobile.";
+        if (bCloud) { bCloud.style.background = "rgba(56,189,248,0.15)"; bCloud.style.color = "#38bdf8"; bCloud.style.borderColor = "#38bdf8"; }
+        if (bApp) { bApp.style.background = ""; bApp.style.color = ""; bApp.style.borderColor = ""; }
+      }
     }
 
     function openConsoleSignInModal() {
