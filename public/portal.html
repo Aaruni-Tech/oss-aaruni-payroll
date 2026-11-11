@@ -2110,7 +2110,9 @@ button, a.button {
 
             <!-- RIGHT COLUMN: EMPLOYEE SELF-SERVICE & PAYROLL GATEWAY (5 COLS) -->
             <div class="lg:col-span-5">
-              <div class="glass-card rounded-2xl p-6 md:p-7 shadow-xl border border-slate-200 dark:border-slate-800">
+              
+              <!-- STEP 1: CREDENTIALS SIGN-IN CARD -->
+              <div id="loginStepCredentials" class="glass-card rounded-2xl p-6 md:p-7 shadow-xl border border-slate-200 dark:border-slate-800">
                 <div class="flex flex-col items-center text-center mb-5">
                   <div class="w-12 h-12 rounded-xl bg-orange-500/10 border border-orange-500/30 flex items-center justify-center text-2xl mb-2.5">
                     🔐
@@ -2200,6 +2202,128 @@ button, a.button {
                   </div>
                 </div>
               </div>
+
+              <!-- STEP 2: MICROSOFT-STYLE "HELP US BEAT THE ROBOTS" CHALLENGE CARD -->
+              <div id="loginStepRobotChallenge" class="hidden bg-white text-slate-900 rounded-2xl p-7 md:p-8 shadow-2xl border border-slate-200" style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;">
+                
+                <!-- BRANDING HEADER (MICROSOFT 4-COLOR LOGO + AARUNI IDENTITY) -->
+                <div class="flex items-center gap-2.5 mb-5 select-none">
+                  <div class="grid grid-cols-2 gap-0.5 w-5 h-5">
+                    <div style="background:#f25022;"></div>
+                    <div style="background:#7fba00;"></div>
+                    <div style="background:#00a4ef;"></div>
+                    <div style="background:#ffb900;"></div>
+                  </div>
+                  <span class="text-base font-semibold text-slate-700 tracking-tight">Microsoft / Aaruni Identity</span>
+                </div>
+
+                <!-- BACK ARROW WITH USER EMAIL / ID -->
+                <div class="mb-5">
+                  <button type="button" onclick="cancelHumanChallenge()" class="inline-flex items-center gap-2 text-xs font-medium text-slate-700 hover:text-slate-900 hover:underline cursor-pointer bg-transparent border-0 p-0">
+                    <span class="text-sm font-bold">&larr;</span>
+                    <span id="challengeUserIdentity" class="font-mono text-slate-800">rupesh@fullstackmaster.net</span>
+                  </button>
+                </div>
+
+                <!-- TITLE & SUBTITLE -->
+                <h2 class="text-2xl font-bold text-slate-900 mb-1.5 tracking-tight" style="line-height:1.2;">
+                  Help us beat the robots
+                </h2>
+                <p class="text-sm text-slate-600 mb-6 font-normal">
+                  Press and hold the button.
+                </p>
+
+                <!-- INTERACTIVE CHALLENGE ROW -->
+                <div class="flex items-center gap-3.5 mb-2">
+                  
+                  <!-- ACCESSIBLE CHALLENGE ICON BUTTON WITH TOOLTIP -->
+                  <div class="relative inline-block">
+                    <button
+                      type="button"
+                      onclick="openAccessibleChallenge()"
+                      title="Accessible challenge"
+                      aria-label="Accessible challenge"
+                      class="w-11 h-11 rounded-full bg-slate-600 hover:bg-slate-700 text-white flex items-center justify-center cursor-pointer transition-all shadow-sm border-0"
+                      onmouseenter="showA11yTooltip(true)"
+                      onmouseleave="showA11yTooltip(false)"
+                    >
+                      <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor">
+                        <circle cx="12" cy="4" r="2.2"/>
+                        <path d="M19 13v-2c-1.54.02-3.09-.75-4.07-1.83l-1.29-1.43c-.17-.19-.38-.34-.61-.45-.01 0-.01 0-.02-.01H13c-.35-.2-.75-.3-1.19-.26-.6.05-1.13.38-1.44.86L8.12 11.4C7.8 11.9 7.9 12.56 8.35 12.95c.46.4 1.13.35 1.54-.12l1.61-1.83v4.5l-2.73 3.64c-.33.44-.24 1.07.2 1.4.44.33 1.07.24 1.4-.2l3.18-4.24c.2-.27.31-.6.31-.94v-3.7c.94.88 2.21 1.42 3.54 1.42V13h1.6z"/>
+                      </svg>
+                    </button>
+                    
+                    <div id="a11yTooltip" class="hidden absolute bottom-14 left-1/2 -translate-x-1/2 bg-white border border-slate-300 text-slate-800 text-[11px] font-semibold py-1 px-2.5 rounded-md shadow-lg whitespace-nowrap z-20 pointer-events-none">
+                      Accessible challenge
+                    </div>
+                  </div>
+
+                  <!-- MAIN PRESS AND HOLD OVAL BUTTON -->
+                  <div class="flex-1">
+                    <button
+                      id="pressAndHoldBtn"
+                      type="button"
+                      onmousedown="startPressAndHold(event)"
+                      onmouseup="releasePressAndHold(event)"
+                      onmouseleave="releasePressAndHold(event)"
+                      ontouchstart="startPressAndHold(event)"
+                      ontouchend="releasePressAndHold(event)"
+                      ontouchcancel="releasePressAndHold(event)"
+                      class="relative w-full h-11 rounded-full border-2 border-sky-600 bg-white text-sky-700 text-sm font-bold flex items-center justify-center cursor-pointer overflow-hidden transition-all select-none shadow-sm active:scale-[0.99]"
+                      style="-webkit-user-select:none;"
+                    >
+                      <!-- Live Animated Fill Progress -->
+                      <div id="holdProgressFill" class="absolute left-0 top-0 bottom-0 w-0 bg-sky-500/25 pointer-events-none transition-[width] duration-75 ease-linear"></div>
+                      
+                      <!-- Button Text -->
+                      <span id="holdButtonText" class="relative z-10 flex items-center gap-1.5 pointer-events-none">
+                        Press and hold
+                      </span>
+                    </button>
+                  </div>
+                </div>
+
+                <!-- SUBTITLE MESSAGE (DYNAMIC "Please try again") -->
+                <div id="holdStatusMsg" class="h-6 text-xs text-rose-600 font-semibold pl-14 transition-opacity duration-200 flex items-center">
+                  <!-- Populated dynamically when user releases too soon or completes -->
+                </div>
+
+                <!-- ACCESSIBLE FALLBACK CHALLENGE DRAWER (COLLAPSIBLE) -->
+                <div id="accessibleChallengeDrawer" class="hidden mt-3 p-3.5 rounded-xl bg-slate-50 border border-slate-200 text-xs">
+                  <div class="font-bold text-slate-800 mb-1 flex items-center justify-between">
+                    <span>♿ Human Arithmetic Verification</span>
+                    <button type="button" onclick="closeAccessibleChallenge()" class="text-slate-400 hover:text-slate-600 font-bold">&times;</button>
+                  </div>
+                  <p class="text-slate-600 text-[11px] mb-2" id="a11yQuestionText">
+                    What is 5 + 6?
+                  </p>
+                  <div class="flex items-center gap-2">
+                    <input
+                      id="a11yAnswerInput"
+                      type="number"
+                      placeholder="Answer"
+                      class="flex-1 px-2.5 py-1.5 rounded-lg border border-slate-300 text-xs text-slate-900 bg-white font-mono"
+                      onkeydown="if(event.key==='Enter') submitAccessibleAnswer()"
+                    />
+                    <button type="button" onclick="submitAccessibleAnswer()" class="bg-sky-600 hover:bg-sky-700 text-white font-bold px-3 py-1.5 rounded-lg text-xs cursor-pointer shadow-sm">
+                      Verify
+                    </button>
+                  </div>
+                  <div id="a11yErrorMsg" class="hidden text-[10px] text-rose-600 font-semibold mt-1.5">Incorrect answer. Please try again.</div>
+                </div>
+
+                <!-- FOOTER -->
+                <div class="mt-8 pt-4 border-t border-slate-200 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 text-[11px] text-slate-500">
+                  <div class="flex items-center gap-3">
+                    <button onclick="openPolicyModal('TERMS')" class="hover:underline cursor-pointer bg-transparent border-0 p-0 text-slate-500">Terms of use</button>
+                    <span>&bull;</span>
+                    <button onclick="openPolicyModal('PRIVACY')" class="hover:underline cursor-pointer bg-transparent border-0 p-0 text-slate-500">Privacy &amp; cookies</button>
+                  </div>
+                  <span class="text-[10px] text-slate-400">Use private browsing if this is not your device.</span>
+                </div>
+
+              </div>
+
             </div>
 
           </div>
@@ -2844,20 +2968,195 @@ button, a.button {
       }, 1200);
     }
 
+
+    // ============================================================================
+    // MICROSOFT-STYLE "HELP US BEAT THE ROBOTS" PRESS-AND-HOLD VERIFICATION LOGIC
+    // ============================================================================
+    let pendingLoginPersona = null;
+    let holdTimer = null;
+    let holdStartTimestamp = 0;
+    let holdInterval = null;
+    let a11yNum1 = 5;
+    let a11yNum2 = 6;
+    const HOLD_DURATION_MS = 1400; // 1.4 seconds required hold
+
+    function triggerHumanChallenge(persona, identityLabel) {
+      pendingLoginPersona = persona;
+      const step1 = document.getElementById("loginStepCredentials");
+      const step2 = document.getElementById("loginStepRobotChallenge");
+      const idLabel = document.getElementById("challengeUserIdentity");
+      const fill = document.getElementById("holdProgressFill");
+      const btnText = document.getElementById("holdButtonText");
+      const statusMsg = document.getElementById("holdStatusMsg");
+      const btn = document.getElementById("pressAndHoldBtn");
+
+      if (idLabel) {
+        idLabel.textContent = identityLabel || "rupesh@fullstackmaster.net";
+      }
+
+      // Reset state
+      if (fill) fill.style.width = "0%";
+      if (btnText) btnText.innerHTML = "Press and hold";
+      if (statusMsg) statusMsg.innerHTML = "";
+      if (btn) {
+        btn.classList.remove("border-emerald-600", "text-emerald-700");
+        btn.classList.add("border-sky-600", "text-sky-700");
+      }
+
+      if (step1) step1.classList.add("hidden");
+      if (step2) step2.classList.remove("hidden");
+    }
+
+    function cancelHumanChallenge() {
+      const step1 = document.getElementById("loginStepCredentials");
+      const step2 = document.getElementById("loginStepRobotChallenge");
+      if (step2) step2.classList.add("hidden");
+      if (step1) step1.classList.remove("hidden");
+      pendingLoginPersona = null;
+    }
+
+    function showA11yTooltip(show) {
+      const tip = document.getElementById("a11yTooltip");
+      if (tip) {
+        tip.classList.toggle("hidden", !show);
+      }
+    }
+
+    function openAccessibleChallenge() {
+      const drawer = document.getElementById("accessibleChallengeDrawer");
+      const qText = document.getElementById("a11yQuestionText");
+      const input = document.getElementById("a11yAnswerInput");
+      const err = document.getElementById("a11yErrorMsg");
+      if (!drawer) return;
+
+      a11yNum1 = Math.floor(Math.random() * 9) + 2;
+      a11yNum2 = Math.floor(Math.random() * 9) + 2;
+      if (qText) qText.textContent = `Security Challenge: What is ${a11yNum1} + ${a11yNum2}?`;
+      if (input) { input.value = ""; input.focus(); }
+      if (err) err.classList.add("hidden");
+
+      drawer.classList.remove("hidden");
+    }
+
+    function closeAccessibleChallenge() {
+      const drawer = document.getElementById("accessibleChallengeDrawer");
+      if (drawer) drawer.classList.add("hidden");
+    }
+
+    function submitAccessibleAnswer() {
+      const input = document.getElementById("a11yAnswerInput");
+      const err = document.getElementById("a11yErrorMsg");
+      const val = parseInt((input?.value || "").trim(), 10);
+      if (val === (a11yNum1 + a11yNum2)) {
+        completeSuccessfulHumanVerification();
+      } else {
+        if (err) err.classList.remove("hidden");
+      }
+    }
+
+    function startPressAndHold(e) {
+      if (e) e.preventDefault();
+      holdStartTimestamp = Date.now();
+      const fill = document.getElementById("holdProgressFill");
+      const btnText = document.getElementById("holdButtonText");
+      const statusMsg = document.getElementById("holdStatusMsg");
+      const btn = document.getElementById("pressAndHoldBtn");
+
+      if (statusMsg) statusMsg.innerHTML = "";
+      if (btn) btn.classList.add("scale-[0.98]");
+
+      if (holdInterval) clearInterval(holdInterval);
+
+      holdInterval = setInterval(() => {
+        const elapsed = Date.now() - holdStartTimestamp;
+        const pct = Math.min(100, Math.round((elapsed / HOLD_DURATION_MS) * 100));
+        if (fill) fill.style.width = pct + "%";
+        if (btnText) btnText.innerHTML = `Holding... ${pct}%`;
+
+        if (elapsed >= HOLD_DURATION_MS) {
+          clearInterval(holdInterval);
+          holdInterval = null;
+          completeSuccessfulHumanVerification();
+        }
+      }, 35);
+    }
+
+    function releasePressAndHold(e) {
+      if (!holdStartTimestamp) return;
+      const elapsed = Date.now() - holdStartTimestamp;
+      holdStartTimestamp = 0;
+
+      if (holdInterval) {
+        clearInterval(holdInterval);
+        holdInterval = null;
+      }
+
+      const btn = document.getElementById("pressAndHoldBtn");
+      if (btn) btn.classList.remove("scale-[0.98]");
+
+      // If user released before completing duration
+      if (elapsed < HOLD_DURATION_MS) {
+        const fill = document.getElementById("holdProgressFill");
+        const btnText = document.getElementById("holdButtonText");
+        const statusMsg = document.getElementById("holdStatusMsg");
+
+        if (fill) fill.style.width = "0%";
+        if (btnText) btnText.innerHTML = "Press and hold";
+        if (statusMsg) {
+          statusMsg.innerHTML = "<span class='text-rose-600 font-semibold animate-pulse'>Please try again</span>";
+        }
+      }
+    }
+
+    function completeSuccessfulHumanVerification() {
+      const fill = document.getElementById("holdProgressFill");
+      const btnText = document.getElementById("holdButtonText");
+      const statusMsg = document.getElementById("holdStatusMsg");
+      const btn = document.getElementById("pressAndHoldBtn");
+
+      if (fill) {
+        fill.style.width = "100%";
+        fill.style.backgroundColor = "rgba(16, 185, 129, 0.35)";
+      }
+      if (btn) {
+        btn.classList.remove("border-sky-600", "text-sky-700");
+        btn.classList.add("border-emerald-600", "text-emerald-700");
+      }
+      if (btnText) {
+        btnText.innerHTML = "<span class='text-emerald-700 font-extrabold flex items-center gap-1.5'>✓ Verified Human</span>";
+      }
+      if (statusMsg) {
+        statusMsg.innerHTML = "<span class='text-emerald-600 font-bold'>✓ Verification complete. Signing in...</span>";
+      }
+
+      setTimeout(() => {
+        if (pendingLoginPersona) {
+          const target = pendingLoginPersona;
+          pendingLoginPersona = null;
+          switchPersona(target, false);
+        } else {
+          switchPersona("ADMIN", false);
+        }
+      }, 500);
+    }
+
     function submitHomeLogin() {
       const rawId = (document.getElementById("homeLoginId")?.value || "").trim().toLowerCase();
       const rawPwd = (document.getElementById("homeLoginPassword")?.value || "").trim();
       const lowerPwd = rawPwd.toLowerCase();
       const adminPwd = (state.adminPassword || "Aaruni@2026").toLowerCase();
 
+      // Check Admin credentials
       if (
         (rawId === "admin" || rawId === "aar-0002" || rawId === "aar-0001" || rawId === "001" || rawId === "002" || rawId === "rupesh" || rawId === "nisha" || rawId.includes("roopkt") || rawId.includes("fullstackmaster")) &&
         (lowerPwd === adminPwd || lowerPwd === "aaruni@2026" || lowerPwd === "admin" || lowerPwd === "admin123" || lowerPwd === "2026" || lowerPwd === "1234" || lowerPwd === "rupesh@2026")
       ) {
-        switchPersona("ADMIN", false);
+        const userDisplay = (rawId.includes("@")) ? rawId : "rupesh@fullstackmaster.net";
+        triggerHumanChallenge("ADMIN", userDisplay);
         return;
       }
 
+      // Check Employee credentials
       const emp = state.employees.find(e =>
         e.id.toLowerCase() === rawId ||
         e.id.toLowerCase().replace("aar-0", "") === rawId ||
@@ -2878,7 +3177,8 @@ button, a.button {
           lowerPwd === "aaruni@2026" ||
           lowerPwd === "1234"
         ) {
-          switchPersona(emp.id, false);
+          const userDisplay = emp.email || `${emp.id.toLowerCase()}@aarunitech.com`;
+          triggerHumanChallenge(emp.id, userDisplay);
           return;
         }
       }
