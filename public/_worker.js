@@ -14,7 +14,7 @@ export default {
       url.searchParams.get("site") === "cloud";
 
     if (isCloudHost && (url.pathname === "/" || url.pathname === "/index.html")) {
-      const cloudUrl = new URL("/cloud.html", request.url);
+      const cloudUrl = new URL("/cloud", request.url);
       return env.ASSETS.fetch(new Request(cloudUrl.toString(), request));
     }
 
