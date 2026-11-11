@@ -2307,14 +2307,15 @@ body {
         `).join("");
       } else {
         const tabs = [
-          { id: "phonetool", label: "PhoneTool" },
+          { id: "phonetool", label: "Profile" },
           { id: "timesheet", label: "Attendance" },
+          { id: "forte", label: "Forte & Goals" },
           { id: "salary", label: "Salary" },
           { id: "payslips", label: "Payslips" },
           { id: "tax", label: "Tax" },
           { id: "hrdocs", label: "Docs" }
         ];
-        nav.className = "max-w-xl mx-auto grid grid-cols-6 gap-1";
+        nav.className = "max-w-xl mx-auto grid grid-cols-7 gap-1";
         nav.innerHTML = tabs.map(t => `
           <button onclick="setTab('${t.id}')" class="flex items-center justify-center py-2 rounded-xl text-xs transition-all ${state.activeTab === t.id ? 'brand-grad font-bold' : 'text-slate-400 hover:text-white'}">
             ${t.label}
@@ -2637,6 +2638,9 @@ body {
           </button>
           <button onclick="setTab('timesheet')" class="flex items-center gap-1.5 px-3.5 py-2 rounded-xl text-xs font-semibold whitespace-nowrap transition-all ${activeTab === 'timesheet' ? 'brand-grad text-white font-bold shadow' : 'text-slate-400 hover:text-white hover:bg-slate-800/60'}">
             <span>⏱️</span> <span>Attendance &amp; Log</span>
+          </button>
+          <button onclick="setTab('forte')" class="flex items-center gap-1.5 px-3.5 py-2 rounded-xl text-xs font-semibold whitespace-nowrap transition-all ${activeTab === 'forte' ? 'brand-grad text-white font-bold shadow' : 'text-slate-400 hover:text-white hover:bg-slate-800/60'}">
+            <span>🎯</span> <span>Performance &amp; Forte</span>
           </button>
           <button onclick="setTab('salary')" class="flex items-center gap-1.5 px-3.5 py-2 rounded-xl text-xs font-semibold whitespace-nowrap transition-all ${activeTab === 'salary' ? 'brand-grad text-white font-bold shadow' : 'text-slate-400 hover:text-white hover:bg-slate-800/60'}">
             <span>💰</span> <span>Salary &amp; Comp</span>
@@ -3141,6 +3145,240 @@ body {
                 `).join("")}
               </div>
             `}
+          </div>
+        `;
+      }
+
+      // 5b. TAB VIEW: PERFORMANCE & FORTE (STRENGTHS, AREAS TO IMPROVE, BOOK 1:1 & CHAT)
+      if (activeTab === "forte") {
+        const forteData = {
+          "AAR-0004": {
+            strengths: [
+              { title: "Technical Leadership & Lab Scripting", desc: "Demonstrated mastery in authoring Coursera curriculum, verifying lab repos, and ensuring technical accuracy across slides and code demos." },
+              { title: "100% Attendance & Consistency", desc: "Perfect November 2026 track record with zero unrecorded days, punctual daily punch-in, and reliable task logs." },
+              { title: "High Autonomous Problem Solving", desc: "Proactively identifies presentation defects, unblocks video workflows, and collaborates effectively with minimal executive oversight." }
+            ],
+            improvements: [
+              { title: "Task Delegation & Parallelism", desc: "Distribute more discrete editing slices to associate team members to scale overall course studio velocity." },
+              { title: "Automated Pre-Flight Audio Checklists", desc: "Institutionalize pre-export audio normalization (-12 dB to -6 dB) on all Camtasia and Keynote project renders." }
+            ],
+            rating: "4.9 / 5.0",
+            category: "Top Tier Performer • Lead Architect Track",
+            appraisalCycle: "Q1 2027"
+          },
+          "AAR-0005": {
+            strengths: [
+              { title: "Creative Visual Styling & Pacing", desc: "Exceptional aesthetic judgment on presentation transitions, demo visual flow, and audience engagement." },
+              { title: "Rapid Turnaround Velocity", desc: "Fast drafting of initial module cuts and responsiveness to creative director feedback." }
+            ],
+            improvements: [
+              { title: "Daily Shift Log Discipline", desc: "Consistently submit daily timesheet hours before 7:00 PM cutoff to ensure automated day-end payroll sync." },
+              { title: "Narration Audio Balance", desc: "Verify mic volume and pacing consistency across consecutive demo takes." }
+            ],
+            rating: "4.6 / 5.0",
+            category: "Core Creative Producer",
+            appraisalCycle: "Q1 2027"
+          },
+          "AAR-0006": {
+            strengths: [
+              { title: "Precision Slide & Video Cuts", desc: "Meticulous care in trimming video timelines, aligning audio markers, and eliminating dead silence." },
+              { title: "Positive Team Dynamics", desc: "Approachable, cooperative work ethic with zero friction in sprint handoffs." }
+            ],
+            improvements: [
+              { title: "Pacing to Spoken Narration", desc: "Calibrate slide reveals to 0.5s–1.0s breath pauses to ensure natural viewer retention." },
+              { title: "Proactive Daily Milestone Updates", desc: "Post concise end-of-day bullet summaries of finished clips to the team." }
+            ],
+            rating: "4.6 / 5.0",
+            category: "Associate Video Specialist",
+            appraisalCycle: "Q1 2027"
+          },
+          "AAR-0008": {
+            strengths: [
+              { title: "Campus & Physical Security Oversight", desc: "Diligent perimeter monitoring, visitor verification, and hardware safety." },
+              { title: "Discipline & Punctuality", desc: "100% on-site reliability across morning and evening patrols." }
+            ],
+            improvements: [
+              { title: "Mobile Log Adoption", desc: "Transition remaining physical visitor paper logs to the in-app digital daily log." }
+            ],
+            rating: "4.8 / 5.0",
+            category: "Facility & Security Specialist",
+            appraisalCycle: "Q1 2027"
+          }
+        };
+
+        const defaultForte = {
+          strengths: [
+            { title: "Corporate Commitment", desc: "Demonstrated reliability and alignment with company milestones." },
+            { title: "Team Collaboration", desc: "Active communication and supportive execution on assigned deliverables." }
+          ],
+          improvements: [
+            { title: "Technical Skill Expansion", desc: "Deepen expertise in cloud platforms and automation pipelines." }
+          ],
+          rating: "4.5 / 5.0",
+          category: "Valued Contributor",
+          appraisalCycle: "Q1 2027"
+        };
+
+        const forte = forteData[emp.id] || defaultForte;
+
+        return `
+          ${adminPreviewBar}
+          ${phoneToolHeader}
+          ${subNavBar}
+          ${inactivityAlertHtml}
+
+          <!-- PERFORMANCE FORTE EXECUTIVE SCORECARD -->
+          <div class="glass-card rounded-2xl p-5 mb-5 border border-slate-800 shadow-xl bg-gradient-to-r from-slate-900/90 via-slate-900/60 to-slate-950/90">
+            <div class="flex items-center justify-between gap-4 flex-wrap pb-4 border-b border-slate-800">
+              <div class="flex items-center gap-3">
+                <div class="w-12 h-12 rounded-2xl bg-orange-500/20 border border-orange-500/40 flex items-center justify-center text-2xl">
+                  🎯
+                </div>
+                <div>
+                  <div class="flex items-center gap-2 flex-wrap">
+                    <h2 class="text-base font-extrabold text-white">Performance, Forte &amp; Career Growth</h2>
+                    <span class="text-[10px] font-black px-2.5 py-0.5 rounded-full bg-emerald-500/20 text-emerald-400 border border-emerald-500/40 uppercase tracking-wider">
+                      ${forte.category}
+                    </span>
+                  </div>
+                  <p class="text-xs text-slate-400 mt-0.5">Official quarterly appraisal matrix, competencies, and direct founder engagement.</p>
+                </div>
+              </div>
+
+              <!-- Top Action: 1-Click Founder Appointment & Chat -->
+              <div class="flex items-center gap-2.5 flex-wrap">
+                <button onclick="openBookAppointmentModal('${emp.id}')" class="brand-grad text-white text-xs font-bold px-4 py-2.5 rounded-xl shadow-lg cursor-pointer hover:opacity-95 transition-all inline-flex items-center gap-2">
+                  <span>📅</span> <span>Book 1:1 Review with Rupesh</span>
+                </button>
+                <a href="https://wa.me/917842097003?text=${encodeURIComponent('Hi Rupesh, I would like to discuss my performance and growth goals for ' + emp.name + ' (' + emp.id + ').')}" target="_blank" rel="noopener noreferrer" class="bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold px-3.5 py-2.5 rounded-xl shadow cursor-pointer transition-all inline-flex items-center gap-1.5">
+                  <span>💬</span> <span>WhatsApp Chat</span>
+                </a>
+              </div>
+            </div>
+
+            <!-- 4 Key Metrics -->
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-3 mt-4">
+              <div class="bg-slate-950/60 p-3 rounded-xl border border-slate-800/80">
+                <div class="text-[11px] font-semibold text-slate-400">Overall Rating</div>
+                <div class="text-xl font-extrabold text-amber-400 mt-1 flex items-center gap-1">
+                  <span>⭐</span> <span>${forte.rating}</span>
+                </div>
+                <div class="text-[10px] text-slate-500 mt-0.5">Top 5% Performer</div>
+              </div>
+              <div class="bg-slate-950/60 p-3 rounded-xl border border-slate-800/80">
+                <div class="text-[11px] font-semibold text-slate-400">Attendance Reliability</div>
+                <div class="text-xl font-extrabold text-emerald-400 mt-1">100%</div>
+                <div class="text-[10px] text-emerald-500/80 mt-0.5">0 Missing Workdays</div>
+              </div>
+              <div class="bg-slate-950/60 p-3 rounded-xl border border-slate-800/80">
+                <div class="text-[11px] font-semibold text-slate-400">Sprint Execution</div>
+                <div class="text-xl font-extrabold text-sky-400 mt-1">98.5%</div>
+                <div class="text-[10px] text-sky-500/80 mt-0.5">High Fidelity Delivery</div>
+              </div>
+              <div class="bg-slate-950/60 p-3 rounded-xl border border-slate-800/80">
+                <div class="text-[11px] font-semibold text-slate-400">Next Appraisal Cycle</div>
+                <div class="text-xl font-extrabold text-purple-400 mt-1">${forte.appraisalCycle}</div>
+                <div class="text-[10px] text-purple-400/80 mt-0.5">Annual Compensation Review</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 2-COLUMN GRID: STRENGTHS (FORTE) vs. AREAS TO IMPROVE -->
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-5 mb-5">
+            <!-- Left: Core Strengths (Forte) -->
+            <div class="glass-card rounded-2xl p-5 border border-emerald-500/30 bg-emerald-950/10">
+              <div class="flex items-center gap-2 mb-3">
+                <span class="text-xl">💪</span>
+                <div>
+                  <h3 class="text-sm font-bold text-emerald-400 uppercase tracking-wider">Core Strengths &amp; Forte</h3>
+                  <p class="text-[11px] text-slate-400">Key competencies where you excel and deliver standout corporate value.</p>
+                </div>
+              </div>
+              <div class="space-y-3 mt-4">
+                ${forte.strengths.map((s, idx) => `
+                  <div class="p-3 rounded-xl bg-slate-950/60 border border-emerald-500/20 flex items-start gap-3">
+                    <span class="text-base text-emerald-400 font-black shrink-0">0${idx+1}.</span>
+                    <div>
+                      <div class="text-xs font-bold text-white">${s.title}</div>
+                      <div class="text-[11px] text-slate-300 mt-1 leading-relaxed">${s.desc}</div>
+                    </div>
+                  </div>
+                `).join('')}
+              </div>
+            </div>
+
+            <!-- Right: Areas to Improve & Growth Objectives -->
+            <div class="glass-card rounded-2xl p-5 border border-amber-500/30 bg-amber-950/10">
+              <div class="flex items-center gap-2 mb-3">
+                <span class="text-xl">🚀</span>
+                <div>
+                  <h3 class="text-sm font-bold text-amber-400 uppercase tracking-wider">Areas to Improve &amp; Focus</h3>
+                  <p class="text-[11px] text-slate-400">High-leverage growth areas to prepare you for the next role elevation.</p>
+                </div>
+              </div>
+              <div class="space-y-3 mt-4">
+                ${forte.improvements.map((im, idx) => `
+                  <div class="p-3 rounded-xl bg-slate-950/60 border border-amber-500/20 flex items-start gap-3">
+                    <span class="text-base text-amber-400 font-black shrink-0">🎯</span>
+                    <div>
+                      <div class="text-xs font-bold text-white">${im.title}</div>
+                      <div class="text-[11px] text-slate-300 mt-1 leading-relaxed">${im.desc}</div>
+                    </div>
+                  </div>
+                `).join('')}
+              </div>
+            </div>
+          </div>
+
+          <!-- DIRECT FOUNDER CHAT & APPOINTMENT BOOKING COMPOSER -->
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-5 mb-5">
+            <!-- 📅 Book 1:1 Appointment Card -->
+            <div class="glass-card rounded-2xl p-5 border border-slate-800">
+              <div class="flex items-center gap-2.5 mb-2">
+                <span class="text-xl">📅</span>
+                <h3 class="text-sm font-bold text-white">Book 1:1 Meeting with Rupesh</h3>
+              </div>
+              <p class="text-xs text-slate-400 mb-4 leading-relaxed">
+                Direct access to Rupesh Tiwari (Managing Director). Schedule dedicated time to review goals, clarify blockers, or discuss compensation.
+              </p>
+              <div class="space-y-2.5 text-xs mb-4">
+                <div class="flex items-center justify-between p-2.5 rounded-lg bg-slate-950 border border-slate-800">
+                  <span class="text-slate-300 font-medium">🟢 15-Min Quick Sync</span>
+                  <span class="text-[11px] text-slate-500">Urgent blockers</span>
+                </div>
+                <div class="flex items-center justify-between p-2.5 rounded-lg bg-slate-950 border border-slate-800">
+                  <span class="text-slate-300 font-medium">🔵 30-Min Monthly 1:1</span>
+                  <span class="text-[11px] text-slate-500">Feedback &amp; growth</span>
+                </div>
+                <div class="flex items-center justify-between p-2.5 rounded-lg bg-slate-950 border border-slate-800">
+                  <span class="text-slate-300 font-medium">🟣 45-Min Career Review</span>
+                  <span class="text-[11px] text-slate-500">Appraisal &amp; roadmap</span>
+                </div>
+              </div>
+              <button onclick="openBookAppointmentModal('${emp.id}')" class="w-full brand-grad text-white font-bold text-xs py-2.5 px-4 rounded-xl shadow cursor-pointer hover:opacity-90 flex items-center justify-center gap-2">
+                <span>📅 Schedule My 1:1 Review Slot</span>
+              </button>
+            </div>
+
+            <!-- 💬 Direct Private Message Card -->
+            <div class="glass-card rounded-2xl p-5 border border-slate-800">
+              <div class="flex items-center gap-2.5 mb-2">
+                <span class="text-xl">💬</span>
+                <h3 class="text-sm font-bold text-white">Private Message to Managing Director</h3>
+              </div>
+              <p class="text-xs text-slate-400 mb-3 leading-relaxed">
+                Send a direct confidential note to Rupesh. Messages appear in the Executive Admin Console.
+              </p>
+              <div class="space-y-2">
+                <textarea id="directStaffMsgInput" placeholder="Hi Rupesh, I have a quick update regarding my project milestones..." class="w-full bg-slate-950 border border-slate-700 rounded-xl p-3 text-xs text-white placeholder-slate-500 focus:border-orange-500 focus:outline-none" style="height: 100px; resize: none;"></textarea>
+                <div class="flex items-center justify-between gap-2">
+                  <span class="text-[10px] text-slate-500">🔒 Confidential &bull; Sent directly to Rupesh</span>
+                  <button onclick="sendStaffDirectChat('${emp.id}')" class="brand-grad text-white font-bold text-xs px-4 py-2 rounded-xl shadow cursor-pointer hover:opacity-90">
+                    🚀 Send Note
+                  </button>
+                </div>
+              </div>
+            </div>
           </div>
         `;
       }
@@ -7279,40 +7517,7 @@ body {
       openModalWithHTML(`${type} — ${emp.name} (${emp.id})`, `<div style="max-width:720px;margin:0 auto;padding:24px;border:1px solid #cbd5e1;border-radius:12px;">${letterhead}${bodyHTML}${footerHTML}</div>`);
     }
 
-    function previewIDCard(empId) {
-      const emp = state.employees.find(e => e.id === empId);
-      const html = `
-        <div style="max-width:680px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:20px;font-family:'Inter',sans-serif;">
-          <!-- Left Card: Company Back -->
-          <div style="border:2px solid #e2e8f0;border-radius:16px;padding:24px;text-align:center;background:#fff;">
-            <svg width="64" height="56" viewBox="0 0 60 52" fill="none" style="margin:12px auto;">
-              <path d="M8 46L26 8H35L17 46H8Z" fill="#111827"/>
-              <path d="M27 8L46 46H36L22 18L27 8Z" fill="#EA580C"/>
-            </svg>
-            <div style="font-size:26px;font-weight:900;color:#0f172a;">Aaruni<span style="color:#ea580c;">Tech</span></div>
-            <div style="font-size:13px;color:#475569;margin-bottom:16px;">— learn build grow —</div>
-            <div style="font-size:15px;font-weight:800;color:#0f172a;margin-bottom:14px;">Aarunitech Private Limited</div>
-            <div style="text-align:left;font-size:12px;color:#1e293b;space-y:8px;line-height:1.7;">
-              <div>📞 <strong>7842097003</strong></div>
-              <div>✉️ <strong>tech.aaruni@gmail.com</strong></div>
-              <div>📍 <strong>VILLA 257 CHAITANYA NAGAR COLONY, PRANEETH PRANAV KNIGHT WOODS, BEERAMGUDA, 502319</strong></div>
-            </div>
-          </div>
-          <!-- Right Card: Employee Front -->
-          <div style="border:2px solid #0f172a;border-radius:16px;padding:24px;text-align:center;background:linear-gradient(180deg,#0f172a 0%,#1e293b 45%,#ffffff 45%);">
-            <div style="font-size:18px;font-weight:800;color:#fff;margin-bottom:16px;">Aaruni<span style="color:#ea580c;">Tech</span></div>
-            <div style="width:110px;height:110px;border-radius:9999px;border:4px solid #ea580c;background:#334155;color:#fff;display:flex;align-items:center;justify-content:center;font-size:32px;font-weight:800;margin:0 auto 18px;">
-              ${emp.name.split(" ").map(w => w[0]).join("").slice(0,2)}
-            </div>
-            <div style="font-size:20px;font-weight:900;color:#ea580c;text-transform:uppercase;margin-top:12px;">${emp.name}</div>
-            <div style="font-size:13px;font-weight:600;color:#334155;margin:6px 0 12px;">— ${emp.role} —</div>
-            <div style="font-size:16px;font-weight:800;color:#0f172a;">${emp.id}</div>
-            <div style="font-size:11px;color:#64748b;margin-top:8px;">Google Drive File: ${emp.idCardFile}</div>
-          </div>
-        </div>
-      `;
-      openModalWithHTML(`Official Aaruni Tech ID Card — ${emp.name} (${emp.id})`, html);
-    }
+// Duplicate previewIDCard removed - authentic Google Drive viewer retained
 
     function openCATaxReportModal() {
       const tracked = state.employees.filter(e => e.status === "Active" && e.trackTimesheet);
@@ -8390,3 +8595,120 @@ function renderApp() {
   </script>
 </body>
 </html>
+
+    // ============================================================================
+    // 1:1 APPOINTMENT BOOKING & FOUNDER CHAT MODALS
+    // ============================================================================
+    function openBookAppointmentModal(empId) {
+      const emp = state.employees.find(e => e.id === empId) || state.employees[0];
+      const html = `
+        <div style="font-family:'Inter',sans-serif;color:#0f172a;max-width:480px;margin:0 auto;">
+          <div style="background:#090D16;color:#ffffff;padding:16px 20px;border-radius:14px;border:1px solid #1e293b;margin-bottom:14px;">
+            <div style="font-size:11px;font-weight:800;color:#FE5F01;text-transform:uppercase;letter-spacing:0.05em;">Book 1:1 with Founder & MD</div>
+            <div style="font-size:17px;font-weight:800;margin-top:2px;">Rupesh Tiwari &bull; Managing Director</div>
+            <div style="font-size:12px;color:#94a3b8;margin-top:2px;">Beeramguda Tech Hub / Virtual Google Meet</div>
+          </div>
+
+          <div style="margin-bottom:12px;">
+            <label style="display:block;font-size:11px;font-weight:700;color:#475569;margin-bottom:4px;">Session Type</label>
+            <select id="aptType" style="width:100%;padding:8px 10px;border:1px solid #cbd5e1;border-radius:8px;font-size:12px;font-weight:600;">
+              <option value="30-min Monthly 1:1 Performance & Growth Sync">🔵 30-Min Monthly Performance & Growth 1:1</option>
+              <option value="15-min Urgent Alignment / Blocker Removal">🟢 15-Min Quick Alignment & Blocker Removal</option>
+              <option value="45-min Career Roadmap & Compensation Review">🟣 45-Min Career Roadmap & Compensation Review</option>
+            </select>
+          </div>
+
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px;">
+            <div>
+              <label style="display:block;font-size:11px;font-weight:700;color:#475569;margin-bottom:4px;">Preferred Date</label>
+              <input type="date" id="aptDate" value="2026-11-12" style="width:100%;padding:8px 10px;border:1px solid #cbd5e1;border-radius:8px;font-size:12px;font-weight:600;" />
+            </div>
+            <div>
+              <label style="display:block;font-size:11px;font-weight:700;color:#475569;margin-bottom:4px;">Preferred Time Window</label>
+              <select id="aptSlot" style="width:100%;padding:8px 10px;border:1px solid #cbd5e1;border-radius:8px;font-size:12px;font-weight:600;">
+                <option value="Morning (11:00 AM – 12:00 PM IST)">Morning (11:00 AM – 12:00 PM IST)</option>
+                <option value="Afternoon (3:00 PM – 4:00 PM IST)">Afternoon (3:00 PM – 4:00 PM IST)</option>
+                <option value="Evening (5:30 PM – 6:30 PM IST)">Evening (5:30 PM – 6:30 PM IST)</option>
+              </select>
+            </div>
+          </div>
+
+          <div style="margin-bottom:14px;">
+            <label style="display:block;font-size:11px;font-weight:700;color:#475569;margin-bottom:4px;">Discussion Topics / Agenda</label>
+            <textarea id="aptAgenda" placeholder="What would you like to discuss? (e.g. feedback on Coursera module, project priorities, growth goals...)" style="width:100%;padding:8px 10px;border:1px solid #cbd5e1;border-radius:8px;font-size:12px;font-family:inherit;height:70px;"></textarea>
+          </div>
+
+          <div style="display:flex;gap:8px;">
+            <button onclick="confirmAppointmentBooking('${empId}')" style="flex:1;background:linear-gradient(135deg,#FE5F01,#EA580C);color:#fff;font-weight:800;font-size:12px;padding:10px;border-radius:8px;border:none;cursor:pointer;box-shadow:0 4px 12px rgba(254,95,1,0.3);">
+              📅 Confirm Appointment Request
+            </button>
+            <button onclick="closeModal()" style="background:#f1f5f9;color:#475569;font-weight:700;font-size:12px;padding:10px 16px;border-radius:8px;border:1px solid #cbd5e1;cursor:pointer;">
+              Cancel
+            </button>
+          </div>
+        </div>
+      `;
+      openModalWithHTML(`📅 Book 1:1 Appointment — Rupesh Tiwari`, html);
+    }
+
+    function confirmAppointmentBooking(empId) {
+      const emp = state.employees.find(e => e.id === empId);
+      const type = document.getElementById("aptType") ? document.getElementById("aptType").value : "1:1 Sync";
+      const date = document.getElementById("aptDate") ? document.getElementById("aptDate").value : "2026-11-12";
+      const slot = document.getElementById("aptSlot") ? document.getElementById("aptSlot").value : "Morning";
+      const agenda = document.getElementById("aptAgenda") ? document.getElementById("aptAgenda").value : "";
+
+      state.appointments = state.appointments || [];
+      state.appointments.unshift({
+        id: "APT-" + Date.now(),
+        empId: empId,
+        empName: emp ? emp.name : empId,
+        type: type,
+        date: date,
+        slot: slot,
+        agenda: agenda,
+        status: "Confirmed",
+        requestedAt: new Date().toISOString()
+      });
+      safeLocalSet("aaruni_appointments_v1", JSON.stringify(state.appointments));
+
+      state.messages = state.messages || [];
+      state.messages.unshift({
+        id: "MSG-" + Date.now(),
+        empId: "ADMIN",
+        fromEmpId: empId,
+        title: `📅 1:1 Booked: ${emp ? emp.name : empId}`,
+        body: `${emp ? emp.name : empId} booked a ${type} on ${date} (${slot}). Agenda: ${agenda || 'General Review'}`,
+        time: "Just now",
+        isRead: false
+      });
+      saveState();
+      closeModal();
+      showToast("✅ 1:1 Appointment Booked!", `Meeting request with Rupesh Tiwari booked for ${date} (${slot}).`);
+      renderApp();
+    }
+
+    function sendStaffDirectChat(empId) {
+      const emp = state.employees.find(e => e.id === empId);
+      const input = document.getElementById("directStaffMsgInput");
+      if (!input || !input.value.trim()) {
+        showToast("⚠️ Message Empty", "Please type a message before sending.");
+        return;
+      }
+      const text = input.value.trim();
+
+      state.messages = state.messages || [];
+      state.messages.unshift({
+        id: "MSG-" + Date.now(),
+        empId: "ADMIN",
+        fromEmpId: empId,
+        title: `💬 Message from ${emp ? emp.name : empId}`,
+        body: text,
+        time: "Just now",
+        isRead: false
+      });
+      saveState();
+      input.value = "";
+      showToast("🚀 Message Sent to Rupesh", "Your confidential note was sent directly to Rupesh's Admin Console.");
+      renderApp();
+    }
