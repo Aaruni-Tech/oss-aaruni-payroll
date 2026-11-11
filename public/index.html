@@ -1208,8 +1208,34 @@
 
     @media (max-width: 768px) {
       .corp-container {
-        padding-left: 16px;
-        padding-right: 16px;
+        padding-left: 12px;
+        padding-right: 12px;
+      }
+      .corp-nav {
+        gap: 6px;
+        height: 64px;
+      }
+      .corp-brand-title {
+        font-size: 1.1rem;
+      }
+      .corp-brand-logo {
+        width: 32px;
+        height: 32px;
+      }
+      .corp-brand-badge {
+        display: none !important;
+      }
+      .corp-nav-actions {
+        gap: 6px;
+      }
+      .corp-nav-actions .btn-portal {
+        padding: 6px 9px !important;
+        font-size: 0.74rem !important;
+        white-space: nowrap !important;
+      }
+      .btn-icon {
+        width: 34px !important;
+        height: 34px !important;
       }
       .corp-nav-actions .nav-action-desktop {
         display: none !important;
@@ -1319,6 +1345,12 @@
 </head>
 <body>
 
+  <!-- TOP ANNOUNCEMENT / DIRECT STAFF LOGIN STRIP -->
+  <div class="top-announcement-bar" style="background: linear-gradient(90deg, #ea580c, #fe5f01); color: #ffffff; padding: 6px 12px; font-size: 0.78rem; font-weight: 700; text-align: center; display: flex; align-items: center; justify-content: center; gap: 8px; z-index: 101; position: relative;">
+    <span>👥 Aaruni Staff: Access live attendance, timesheets &amp; payslips at</span>
+    <a href="https://my.aarunitech.com" style="color: #ffffff; text-decoration: underline; background: rgba(0,0,0,0.25); padding: 2px 8px; border-radius: 6px; font-weight: 800; white-space: nowrap;">my.aarunitech.com ↗</a>
+  </div>
+
   <!-- =========================================================================
        GLOBAL CORPORATE NAVIGATION BAR
        ========================================================================= -->
@@ -1353,10 +1385,10 @@
             <span>Aaruni Cloud</span>
           </a>
 
-          <!-- Employee Portal Direct Button -->
-          <a href="https://my.aarunitech.com" target="_blank" rel="noopener noreferrer" class="btn btn-portal nav-action-desktop" title="Aaruni Employee Secure Workspace">
+          <!-- Employee Portal Direct Button (Visible on Mobile & Desktop) -->
+          <a href="https://my.aarunitech.com" target="_blank" rel="noopener noreferrer" class="btn btn-portal" style="font-size: 0.8rem; padding: 7px 11px; font-weight: 700; border-color: rgba(254,95,1,0.5); display: inline-flex; align-items: center; gap: 5px;" title="Aaruni Employee Secure Workspace">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
-            <span>my.aarunitech</span>
+            <span>Employee Login</span>
           </a>
 
           <!-- Theme Toggle Button -->
@@ -1385,9 +1417,9 @@
         <li><a href="#contact" class="mobile-drawer-link" onclick="toggleMobileMenu()">Contact Enterprise</a></li>
       </ul>
       <div style="display:flex; flex-direction:column; gap:12px;">
+        <a href="https://my.aarunitech.com" target="_blank" class="btn btn-portal w-full" style="background: linear-gradient(135deg, #fe5f01, #ea580c); color: #fff; font-weight: 800; justify-content: center; padding: 12px; font-size: 0.95rem; box-shadow: 0 4px 12px rgba(254,95,1,0.3);">🔐 Employee Login (my.aarunitech.com) ↗</a>
         <a href="https://aarunicloud.com" target="_blank" class="btn btn-blue w-full">Launch Aaruni Cloud Console ↗</a>
         <a href="https://syllovo-creator-hub.pages.dev" target="_blank" class="btn btn-dawn w-full">Open Syllovo Studio ↗</a>
-        <a href="https://my.aarunitech.com" target="_blank" class="btn btn-portal w-full">Employee Login (my.aarunitech.com) ↗</a>
       </div>
     </div>
   </header>

@@ -1,8 +1,8 @@
 {
   "packageId": "com.aarunitech.payroll",
   "host": "my.aarunitech.com",
-  "name": "Aaruni Tech Payroll & Attendance",
-  "launcherName": "Aaruni Payroll",
+  "name": "Aaruni Tech",
+  "launcherName": "Aaruni Tech",
   "display": "standalone",
   "themeColor": "#0F172A",
   "navigationColor": "#0F172A",

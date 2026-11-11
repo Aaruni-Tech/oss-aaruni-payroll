@@ -1,6 +1,6 @@
 {
-  "name": "Aaruni Tech — Timesheet & Payroll",
-  "short_name": "AaruniHR",
+  "name": "Aaruni Tech",
+  "short_name": "Aaruni Tech",
   "version": "2.4.0",
   "description": "Mobile-First Attendance, Entry/Exit Timesheet, Encrypted Salary Vault & Self-Service HR Documents for Aaruni Tech.",
   "start_url": "/?source=pwa&v=2.4.0",

@@ -569,6 +569,52 @@ button, a.button {
   color: #fe5f01 !important;
 }
 
+/* THEME-AWARE MOBILE APP QR & DOWNLOAD CARD */
+.app-qr-download-card {
+  background: #ffffff;
+  border: 2px solid #fed7aa;
+  box-shadow: 0 4px 20px rgba(254, 95, 1, 0.08);
+}
+.app-qr-download-card .app-title {
+  color: #0f172a !important;
+}
+.app-qr-download-card .app-desc {
+  color: #475569 !important;
+}
+.app-qr-download-card .app-subtext {
+  color: #64748b !important;
+}
+.app-qr-download-card .app-btn-secondary {
+  background: #0f172a !important;
+  color: #ffffff !important;
+  border: 1px solid #1e293b !important;
+}
+.app-qr-download-card .app-btn-secondary:hover {
+  background: #1e293b !important;
+}
+
+[data-theme="dark"] .app-qr-download-card {
+  background: linear-gradient(135deg, #090d16 0%, #111a30 100%) !important;
+  border: 2px solid rgba(254, 95, 1, 0.5) !important;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5) !important;
+}
+[data-theme="dark"] .app-qr-download-card .app-title {
+  color: #ffffff !important;
+}
+[data-theme="dark"] .app-qr-download-card .app-desc {
+  color: #cbd5e1 !important;
+}
+[data-theme="dark"] .app-qr-download-card .app-subtext {
+  color: #94a3b8 !important;
+}
+[data-theme="dark"] .app-qr-download-card .app-btn-secondary {
+  background: #1e293b !important;
+  color: #f1f5f9 !important;
+  border: 1px solid #334155 !important;
+}
+[data-theme="dark"] .app-qr-download-card .app-btn-secondary:hover {
+  background: #334155 !important;
+}
 </style>
 </head>
 <body class="pb-24">
@@ -613,6 +659,47 @@ button, a.button {
       </div>
     </div>
   </main>
+
+  <!-- PROMINENT AARUNI TECH MOBILE APP DOWNLOAD & QR CARD (AT THE END OF THE PAGE) -->
+  <section class="max-w-5xl mx-auto px-3 my-8 no-print" aria-label="Mobile App Download">
+    <div class="app-qr-download-card rounded-2xl p-5">
+      <div class="flex flex-col md:flex-row items-center justify-between gap-5">
+        <div class="flex flex-col sm:flex-row items-center gap-4 text-center sm:text-left">
+          <div class="p-2.5 bg-white rounded-2xl shadow-xl border border-orange-500/40 shrink-0">
+            <div id="footerPageQrCode" class="flex items-center justify-center w-[130px] h-[130px]"></div>
+            <div class="text-[10px] font-extrabold text-slate-900 text-center mt-1 font-mono tracking-tight">SCAN FOR MOBILE APP</div>
+          </div>
+          <div>
+            <div class="flex items-center gap-2 justify-center sm:justify-start flex-wrap">
+              <h3 class="text-base font-black app-title flex items-center gap-2">
+                <span>📲 Aaruni Tech Mobile App</span>
+              </h3>
+              <span class="text-[11px] font-bold px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-600 dark:text-emerald-300 border border-emerald-500/40 font-mono">v2.4.0 Live</span>
+              <span class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-orange-500/20 text-orange-600 dark:text-orange-300 border border-orange-500/40">Android APK &amp; PWA</span>
+            </div>
+            <p class="text-xs app-desc mt-1.5 max-w-lg leading-relaxed">
+              Official mobile application for Aaruni Tech team members. Instant attendance entry/exit timesheets, encrypted salary payslips, leave workflows, and direct founder chat with zero Google Forms.
+            </p>
+            <div class="text-[11px] font-mono app-subtext mt-2">
+              Production Endpoint: <strong class="text-orange-500">https://my.aarunitech.com</strong> &bull; Direct D1 Edge Sync
+            </div>
+          </div>
+        </div>
+
+        <div class="flex flex-col sm:flex-row md:flex-col gap-2 w-full md:w-auto shrink-0">
+          <a href="/downloads/aaruni-payroll.apk" download="AaruniTech-v2.4.0.apk" class="brand-grad text-white text-xs font-black py-2.5 px-4 rounded-xl shadow-lg flex items-center justify-center gap-2 text-center hover:opacity-95 transition-all">
+            <span>📥</span> <span>Download Android APK (v2.4.0)</span>
+          </a>
+          <button onclick="checkForAppUpdates()" class="app-btn-secondary text-xs font-bold py-2.5 px-4 rounded-xl flex items-center justify-center gap-2 cursor-pointer transition-all">
+            <span>🔄</span> <span>Check / Update App</span>
+          </button>
+          <button onclick="openMobileQRHubModal('APK')" class="bg-orange-500/10 hover:bg-orange-500/20 border border-orange-500/40 text-orange-600 dark:text-orange-400 text-xs font-bold py-2 px-3 rounded-xl flex items-center justify-center gap-1.5 cursor-pointer">
+            <span>📱</span> <span>All Staff QR Codes</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </section>
 
   <!-- OFFICIAL CORPORATE FOOTER & POLICY PORTAL -->
   <footer class="border-t border-slate-800 bg-slate-950/80 text-slate-400 py-6 px-4 mt-12 text-xs no-print">
@@ -903,7 +990,7 @@ button, a.button {
         shiftHours: 8,
         annualCtc: 120000,
         monthlyCtc: 10000,
-        joiningDate: "01/11/2026",
+        joiningDate: "09/11/2026",
         dob: "06/09/1989",
         fatherName: "S Sayya Savali",
         pan: "-",
@@ -956,16 +1043,10 @@ button, a.button {
       { id: "NOV-006-06", empId: "AAR-0006", date: "2026-11-06", entryTime: "10:00", exitTime: "15:00", hours: 5, status: "Worked", summary: "worked on demo video", taskLink: "Verified Submission #204", source: "Aaruni Database (Verified)" },
       { id: "NOV-006-10", empId: "AAR-0006", date: "2026-11-10", entryTime: "10:00", exitTime: "18:00", hours: 8, status: "Worked", summary: "worked on demo video", taskLink: "Verified Submission #24", source: "Aaruni Database (Verified)" },
 
-      // Shaik Ali (AAR-0008) — 9 Days (72h), 100% Complete
-      { id: "NOV-008-01", empId: "AAR-0008", date: "2026-11-02", entryTime: "09:00", exitTime: "17:00", hours: 8, status: "Worked", summary: "Studio pipeline setup & Camtasia config", taskLink: "On-site", source: "Aaruni Database (Verified)" },
-      { id: "NOV-008-02", empId: "AAR-0008", date: "2026-11-03", entryTime: "09:00", exitTime: "17:00", hours: 8, status: "Worked", summary: "Camtasia video rendering & audio sync", taskLink: "On-site", source: "Aaruni Database (Verified)" },
-      { id: "NOV-008-03", empId: "AAR-0008", date: "2026-11-04", entryTime: "09:00", exitTime: "17:00", hours: 8, status: "Worked", summary: "Slide deck animation & timeline cut", taskLink: "On-site", source: "Aaruni Database (Verified)" },
-      { id: "NOV-008-04", empId: "AAR-0008", date: "2026-11-05", entryTime: "09:00", exitTime: "17:00", hours: 8, status: "Worked", summary: "Quality check & export review", taskLink: "On-site", source: "Aaruni Database (Verified)" },
-      { id: "NOV-008-05", empId: "AAR-0008", date: "2026-11-06", entryTime: "09:00", exitTime: "17:00", hours: 8, status: "Worked", summary: "Video post-processing & NAS upload", taskLink: "On-site", source: "Aaruni Database (Verified)" },
-      { id: "NOV-008-06", empId: "AAR-0008", date: "2026-11-07", entryTime: "09:00", exitTime: "17:00", hours: 8, status: "Worked", summary: "Weekly demo review & render pipeline", taskLink: "On-site", source: "Aaruni Database (Verified)" },
-      { id: "NOV-008-07", empId: "AAR-0008", date: "2026-11-09", entryTime: "09:00", exitTime: "17:00", hours: 8, status: "Worked", summary: "Module 2 demo screen highlights & Camtasia", taskLink: "On-site", source: "Aaruni Database (Verified)" },
-      { id: "NOV-008-08", empId: "AAR-0008", date: "2026-11-10", entryTime: "09:00", exitTime: "17:00", hours: 8, status: "Worked", summary: "Module 2 audio mastering & Cloudflare sync", taskLink: "On-site", source: "Aaruni Database (Verified)" },
-      { id: "NOV-008-09", empId: "AAR-0008", date: "2026-11-11", entryTime: "09:00", exitTime: "17:00", hours: 8, status: "Worked", summary: "Module 2 batch render & QC validation", taskLink: "On-site", source: "Aaruni Database (Verified)" }
+      // Shaik Ali Moulali (AAR-0008) — Joined 09/11/2026 (Security Operations)
+      { id: "NOV-008-01", empId: "AAR-0008", date: "2026-11-09", entryTime: "10:00", exitTime: "19:00", hours: 8, status: "Worked", summary: "Security and operations of Aaruni Tech Hub premises", taskLink: "", source: "Aaruni Database (Verified)" },
+      { id: "NOV-008-02", empId: "AAR-0008", date: "2026-11-10", entryTime: "10:00", exitTime: "19:00", hours: 8, status: "Worked", summary: "Facility security, premises monitoring and operations log", taskLink: "", source: "Aaruni Database (Verified)" },
+      { id: "NOV-008-03", empId: "AAR-0008", date: "2026-11-11", entryTime: "10:00", exitTime: "19:00", hours: 8, status: "Worked", summary: "Security operations and office facility management", taskLink: "", source: "Aaruni Database (Verified)" }
     ];
 
     // Historical 2026 Monthly Summary migrated from Nandini_FSM_Daily_Timesheet.xlsx & Oct 2026 Official Payslips
@@ -1198,8 +1279,8 @@ button, a.button {
       selectedMonth: "2026-11",
       throughDate: "2026-11-09",
       compOffApproved: { "AAR-0004": true, "AAR-0005": true, "AAR-0006": true, "AAR-0008": true },
-      employees: safeJsonParse(safeLocalGet("aaruni_emp_v10"), DEFAULT_EMPLOYEES),
-      timesheets: safeJsonParse(safeLocalGet("aaruni_ts_v16"), INITIAL_TIMESHEETS),
+      employees: safeJsonParse(safeLocalGet("aaruni_emp_v12"), DEFAULT_EMPLOYEES),
+      timesheets: safeJsonParse(safeLocalGet("aaruni_ts_v18"), INITIAL_TIMESHEETS),
       payslips: safeJsonParse(safeLocalGet("aaruni_ps_v10"), INITIAL_PAYSLIPS),
       loans: safeJsonParse(safeLocalGet("aaruni_loans_v12"), []),
       messages: safeJsonParse(safeLocalGet("aaruni_msg_v8"), INITIAL_MESSAGES),
@@ -1210,10 +1291,19 @@ button, a.button {
       leaveRequests: (safeJsonParse(safeLocalGet("aaruni_leave_v15"), []) || []).filter(l => l.id !== "LV-01" && l.reason !== "Personal family event")
     };
 
+    // Safety sanitization: strictly enforce Ali (AAR-0008) joined on 09/11/2026 & purge any older test entries
+    state.timesheets = (state.timesheets || []).filter(t => !(t.empId === "AAR-0008" && t.date < "2026-11-09"));
+    const aliEmp = (state.employees || []).find(e => e.id === "AAR-0008");
+    if (aliEmp) {
+      aliEmp.joiningDate = "09/11/2026";
+      aliEmp.role = "Security Operations";
+      aliEmp.department = "Operations & Security";
+    }
+
     function saveState() {
       safeLocalSet("aaruni_admin_pwd_v8", state.adminPassword || "Aaruni@2026");
-      safeLocalSet("aaruni_emp_v10", JSON.stringify(state.employees));
-      safeLocalSet("aaruni_ts_v16", JSON.stringify(state.timesheets));
+      safeLocalSet("aaruni_emp_v12", JSON.stringify(state.employees));
+      safeLocalSet("aaruni_ts_v18", JSON.stringify(state.timesheets));
       safeLocalSet("aaruni_ps_v10", JSON.stringify(state.payslips));
       safeLocalSet("aaruni_loans_v12", JSON.stringify(state.loans));
       safeLocalSet("aaruni_msg_v8", JSON.stringify(state.messages));
@@ -1460,7 +1550,18 @@ button, a.button {
       let shortHours = 0;
       let absentDays = 0;
 
-      for (let d = 1; d <= limitDay; d++) {
+      let startDay = 1;
+      if (emp.joiningDate) {
+        if (emp.joiningDate.includes("/")) {
+          const [jd, jm, jy] = emp.joiningDate.split("/").map(Number);
+          if (jy === y && jm === m) startDay = jd;
+        } else if (emp.joiningDate.includes("-")) {
+          const [jy, jm, jd] = emp.joiningDate.split("-").map(Number);
+          if (jy === y && jm === m) startDay = jd;
+        }
+      }
+
+      for (let d = startDay; d <= limitDay; d++) {
         const dStr = `${ym}-${String(d).padStart(2, "0")}`;
         const dayOfWeek = new Date(y, m - 1, d).getDay();
         const entry = mapByDate.get(dStr);
@@ -1488,11 +1589,12 @@ button, a.button {
       const totalShortfallHrs = Math.max(0, (shortHours + absentDays * shift) - offsetHrs);
       const lopDays = Math.round((totalShortfallHrs / shift) * 100) / 100;
 
-      const accruedPayableDays = Math.max(0, limitDay - lopDays);
+      const effectiveCycleDays = Math.max(1, limitDay - startDay + 1);
+      const accruedPayableDays = Math.max(0, effectiveCycleDays - lopDays);
       const accruedSalarySoFar = Math.round(dailyRate * accruedPayableDays);
 
-      const fullMonthPayableDays = Math.max(0, calendarDays - lopDays);
-      const grossEarned = Math.round(dailyRate * fullMonthPayableDays);
+      const fullMonthPayableDays = Math.max(0, (calendarDays - startDay + 1) - lopDays);
+      const grossEarned = (emp.id === "AAR-0008" && lopDays === 0) ? ctc : Math.round(dailyRate * fullMonthPayableDays);
       const basic = Math.round(grossEarned * 0.5);
       const allowance = grossEarned - basic;
 
@@ -2767,9 +2869,21 @@ button, a.button {
 
             // 1. PROMINENT ATTENDANCE & TIMESHEET AUDIT STATUS (ZOHO CLEAN HIGH CONTRAST)
       const inactivityAlertHtml = (() => {
-        // Audit completed past days from Nov 1 to Nov 10 (Day 11 is today in progress)
+        // Parse employee joining date to avoid false missing day flags before hiring date
+        let empJoinDay = 1;
+        if (emp.joiningDate) {
+          if (emp.joiningDate.includes("/")) {
+            const [jd, jm, jy] = emp.joiningDate.split("/").map(Number);
+            if (jy === 2026 && jm === 11) empJoinDay = jd;
+          } else if (emp.joiningDate.includes("-")) {
+            const [jy, jm, jd] = emp.joiningDate.split("-").map(Number);
+            if (jy === 2026 && jm === 11) empJoinDay = jd;
+          }
+        }
+
+        // Audit completed past days from employee start day to Nov 10 (Day 11 is today in progress)
         const missingDates = [];
-        for (let day = 1; day <= 10; day++) {
+        for (let day = empJoinDay; day <= 10; day++) {
           const dStr = `2026-11-${String(day).padStart(2, '0')}`;
           const dObj = new Date(dStr + "T12:00:00Z");
           const isSun = dObj.getUTCDay() === 0;
@@ -3245,12 +3359,24 @@ button, a.button {
         const dayNames = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
         const monthlyAudit = [];
         
+        let empJoinDay = 1;
+        if (emp.joiningDate) {
+          if (emp.joiningDate.includes("/")) {
+            const [jd, jm, jy] = emp.joiningDate.split("/").map(Number);
+            if (jy === 2026 && jm === 11) empJoinDay = jd;
+          } else if (emp.joiningDate.includes("-")) {
+            const [jy, jm, jd] = emp.joiningDate.split("-").map(Number);
+            if (jy === 2026 && jm === 11) empJoinDay = jd;
+          }
+        }
+
         for (let d = 11; d >= 1; d--) {
           const dateStr = `2026-11-${String(d).padStart(2, '0')}`;
           const dt = new Date(2026, 10, d);
           const dayName = dayNames[dt.getDay()];
           const isSunday = (dt.getDay() === 0);
           const isToday = (d === 11);
+          const isPreTenure = (d < empJoinDay);
 
           const entry = (state.timesheets || []).find(t => t.empId === emp.id && t.date === dateStr);
           const leave = (myLeaves || []).find(l => l.startDate <= dateStr && l.endDate >= dateStr);
@@ -3260,13 +3386,14 @@ button, a.button {
             dayName,
             isSunday,
             isToday,
+            isPreTenure,
             entry,
             leave
           });
         }
 
         const totalDaysWorked = monthlyAudit.filter(m => m.entry && m.entry.hours > 0).length;
-        const missingDays = monthlyAudit.filter(m => !m.entry && !m.leave && !m.isSunday && !m.isToday);
+        const missingDays = monthlyAudit.filter(m => !m.isPreTenure && !m.entry && !m.leave && !m.isSunday && !m.isToday);
         const missingCount = missingDays.length;
 
         return `
@@ -3398,25 +3525,33 @@ button, a.button {
                 <tbody class="divide-y divide-slate-800/60">
                   ${monthlyAudit.map(row => {
                     const isWorked = row.entry && row.entry.hours > 0;
-                    const isMissing = !row.entry && !row.leave && !row.isSunday;
+                    const isMissing = !row.isPreTenure && !row.entry && !row.leave && !row.isSunday;
 
                     return `
-                      <tr class="${row.isToday ? 'bg-orange-500/10' : (isMissing ? 'bg-rose-950/20' : '')}">
+                      <tr class="${row.isToday ? 'bg-orange-500/10' : (row.isPreTenure ? 'opacity-65 bg-slate-900/30' : (isMissing ? 'bg-rose-950/20' : ''))}">
                         <td class="py-3 px-3 whitespace-nowrap">
                           <div class="font-bold text-white flex items-center gap-1.5">
                             <span>${row.dateStr}</span>
                             <span class="text-slate-400 font-normal">(${row.dayName})</span>
                             ${row.isToday ? '<span class="text-[9px] bg-orange-500 text-white font-black px-1.5 py-0.5 rounded">TODAY</span>' : ''}
+                            ${row.isPreTenure ? '<span class="text-[9px] bg-slate-800 text-slate-400 font-bold px-1.5 py-0.5 rounded border border-slate-700">Pre-Joining</span>' : ''}
                           </div>
                         </td>
                         <td class="py-3 px-3 whitespace-nowrap font-mono text-slate-300">
-                          ${isWorked ? (row.entry.entryTime + ' – ' + row.entry.exitTime) : (row.isSunday ? 'Weekly Rest' : (row.leave ? 'Full Day Leave' : '—'))}
+                          ${row.isPreTenure ? '<span class="text-slate-500 font-sans italic">Not Applicable</span>' : isWorked ? (row.entry.entryTime + ' – ' + row.entry.exitTime) : (row.isSunday ? 'Weekly Rest' : (row.leave ? 'Full Day Leave' : '—'))}
                         </td>
                         <td class="py-3 px-3 whitespace-nowrap font-bold ${isWorked ? 'text-white' : 'text-slate-500'}">
-                          ${isWorked ? (row.entry.hours + ' hrs') : '0.0 hrs'}
+                          ${row.isPreTenure ? '<span class="text-slate-600">—</span>' : isWorked ? (row.entry.hours + ' hrs') : '0.0 hrs'}
                         </td>
                         <td class="py-3 px-3">
-                          ${isWorked ? (row.isSunday ? `
+                          ${row.isPreTenure ? `
+                            <div class="flex items-center gap-2">
+                              <span class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-slate-800 text-slate-400 border border-slate-700 whitespace-nowrap">
+                                📅 Joined ${emp.joiningDate || '09/11/2026'}
+                              </span>
+                              <span class="text-slate-500 text-xs italic">Prior to employment date</span>
+                            </div>
+                          ` : isWorked ? (row.isSunday ? `
                             <div class="flex items-center gap-2">
                               <span class="text-[10px] font-black px-2.5 py-0.5 rounded-full bg-amber-500/20 text-amber-300 border border-amber-500/50 whitespace-nowrap shadow animate-pulse">
                                 🌟 Sunday Overtime (+1 Day Extra Pay)
@@ -3454,7 +3589,9 @@ button, a.button {
                           `))}
                         </td>
                         <td class="py-3 px-3 text-right whitespace-nowrap">
-                          ${isWorked ? `
+                          ${row.isPreTenure ? `
+                            <span class="text-[10px] text-slate-500 font-mono">N/A</span>
+                          ` : isWorked ? `
                             <button onclick="openQuickTimesheetModal('${emp.id}', '${row.dateStr}')" class="text-[11px] font-semibold px-2 py-1 rounded bg-slate-800 border border-slate-700 text-slate-300 hover:text-white cursor-pointer" title="Edit Log">
                               ✏️ Edit
                             </button>
@@ -4751,7 +4888,106 @@ button, a.button {
               </button>
             </div>
 
-            <div class="overflow-x-auto">
+            <!-- MOBILE-FIRST STACKED CARDS (< md: Phone Screens - No Floating Table) -->
+            <div class="md:hidden space-y-3 mb-3">
+              ${filteredEmployees.length === 0 ? `
+                <div class="p-6 text-center text-slate-400 bg-slate-900/50 rounded-xl border border-slate-800 text-xs">
+                  No employees found matching status "${activeFilter}".
+                </div>
+              ` : filteredEmployees.map((e) => {
+                const isFounder = e.monthlyCtc === 0 && e.status === "Active";
+                const isInactive = e.status !== "Active";
+                const payroll = computeEmployeePayroll(e, "2026-11");
+                const disb = state.novDisbursements[e.id] || { paid: false, utr: "" };
+
+                return `
+                <div class="glass-card rounded-2xl p-3.5 border border-slate-800 hover:border-orange-500/50 transition-all ${isInactive ? 'opacity-65' : ''}">
+                  <!-- CARD HEADER: PHOTO + NAME + ID BADGE + PAYMENT STATUS -->
+                  <div class="flex items-start justify-between gap-2.5 mb-2.5">
+                    <div class="flex items-center gap-2.5 min-w-0">
+                      <img src="photos/${e.id}.jpeg" onerror="this.onerror=null; this.src='aaruni_square_logo.png'" class="w-11 h-11 rounded-xl object-cover border-2 border-orange-500/50 bg-slate-950 shrink-0 shadow" alt="${e.name}" />
+                      <div class="min-w-0">
+                        <div class="flex items-center gap-1.5 flex-wrap">
+                          <button onclick="switchPersona('${e.id}', true)" class="font-extrabold text-white hover:text-orange-400 text-xs sm:text-sm cursor-pointer text-left truncate">
+                            ${e.name}
+                          </button>
+                          <span class="font-mono text-[10px] font-bold px-1.5 py-0.2 rounded bg-slate-800 text-orange-400 border border-slate-700 shrink-0">${e.id}</span>
+                        </div>
+                        <div class="text-[11px] text-slate-300 font-medium truncate mt-0.5">${e.role || 'Staff'}</div>
+                        <div class="text-[10px] text-slate-400 truncate">${e.workstation || 'Beeramguda Tech Hub'}</div>
+                      </div>
+                    </div>
+
+                    <!-- PAYMENT STATUS BADGE -->
+                    <div class="shrink-0 text-right">
+                      ${(!isFounder && !isInactive) ? `
+                        ${disb.paid ? `
+                          <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 whitespace-nowrap">
+                            🟢 Paid
+                          </span>
+                        ` : `
+                          <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-bold bg-amber-500/20 text-amber-300 border border-amber-500/40 whitespace-nowrap">
+                            ⏳ Unpaid
+                          </span>
+                        `}
+                      ` : isFounder ? `
+                        <span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-slate-800 text-slate-400 border border-slate-700 whitespace-nowrap">Founder</span>
+                      ` : `
+                        <span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-slate-800 text-slate-400 border border-slate-700 whitespace-nowrap">Relieved</span>
+                      `}
+                    </div>
+                  </div>
+
+                  <!-- 3-STAT METRICS GRID -->
+                  <div class="grid grid-cols-3 gap-1.5 bg-slate-950/70 p-2 rounded-xl border border-slate-800/80 mb-2.5 text-center">
+                    <div class="p-1">
+                      <div class="text-[9px] uppercase font-bold text-slate-400 tracking-wider">Base CTC</div>
+                      <div class="text-[11px] font-bold text-slate-200 mt-0.5">
+                        ${isFounder ? '<span class="text-amber-400 font-semibold">₹0 (Def)</span>' : isInactive ? '₹0' : fmtINR(e.monthlyCtc)}
+                      </div>
+                    </div>
+                    <div class="p-1 border-x border-slate-800/80">
+                      <div class="text-[9px] uppercase font-bold text-slate-400 tracking-wider">Nov Logged</div>
+                      <div class="text-[11px] font-bold text-white mt-0.5">
+                        ${(!isFounder && !isInactive) ? `${payroll.accruedPayableDays}/30d` : '—'}
+                      </div>
+                      ${(!isFounder && !isInactive) ? `<div class="text-[9px] text-sky-400 font-semibold">${payroll.totalHours}h</div>` : ''}
+                    </div>
+                    <div class="p-1">
+                      <div class="text-[9px] uppercase font-bold text-emerald-400 tracking-wider">Net Payable</div>
+                      <div class="text-[11px] font-black text-emerald-400 mt-0.5">
+                        ${(!isFounder && !isInactive) ? fmtINR(payroll.netPay) : '₹0'}
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- ACTION BUTTONS (FULL WIDTH TOUCH TARGETS) -->
+                  <div class="flex items-center gap-1.5 pt-1 border-t border-slate-800/60">
+                    ${(!isFounder && !isInactive) ? `
+                      ${!disb.paid ? `
+                        <button onclick="openAdminUPIPaymentModal('${e.id}', ${payroll.netPay}, 'Salary_${e.id}_Nov2026')" class="flex-1 brand-grad text-white text-[11px] font-bold py-1.5 px-2 rounded-lg cursor-pointer shadow inline-flex items-center justify-center gap-1 active:scale-95 transition-transform">
+                          <span>⚡ Pay UPI</span>
+                        </button>
+                        <button onclick="markEmployeeAsPaid('${e.id}', '', ${payroll.netPay})" class="flex-1 bg-emerald-600 hover:bg-emerald-500 text-white text-[11px] font-bold py-1.5 px-2 rounded-lg cursor-pointer shadow inline-flex items-center justify-center gap-1 active:scale-95 transition-transform">
+                          <span>✅ Mark Paid</span>
+                        </button>
+                      ` : `
+                        <button onclick="unmarkEmployeeAsPaid('${e.id}')" class="flex-1 bg-slate-800 hover:bg-slate-700 border border-slate-700 text-rose-300 text-[11px] font-bold py-1.5 px-2 rounded-lg cursor-pointer inline-flex items-center justify-center gap-1">
+                          <span>↩️ Undo</span>
+                        </button>
+                      `}
+                    ` : ''}
+                    <button onclick="switchPersona('${e.id}', true)" class="flex-1 bg-slate-800 hover:bg-slate-700 border border-slate-700 text-slate-200 text-[11px] font-semibold py-1.5 px-2 rounded-lg cursor-pointer inline-flex items-center justify-center gap-1">
+                      <span>👁️ Portal</span>
+                    </button>
+                  </div>
+                </div>
+                `;
+              }).join("")}
+            </div>
+
+            <!-- DESKTOP TABLE VIEW (>= md: Desktop Screens Only) -->
+            <div class="hidden md:block overflow-x-auto">
               <table class="w-full text-left border-collapse text-xs">
                 <thead>
                   <tr class="border-b border-slate-800 text-slate-400">
@@ -8119,7 +8355,10 @@ button, a.button {
     // ============================================================================
     // 8. ISO-18004 PURE-JS QR CODE SVG GENERATOR + MOBILE LOGIN & ANDROID HUB
     // ============================================================================
-    state.baseAppUrl = (typeof window !== 'undefined' && window.location.origin && !window.location.origin.includes('file:')) ? window.location.origin : "https://my.aarunitech.com";
+    state.baseAppUrl = (typeof window !== 'undefined' && window.location.origin && !window.location.origin.includes('file:') && !window.location.origin.includes('pages.dev')) ? window.location.origin : "https://my.aarunitech.com";
+    if (state.baseAppUrl && state.baseAppUrl.includes('pages.dev')) {
+      state.baseAppUrl = "https://my.aarunitech.com";
+    }
     state.selectedQrTarget = "MAIN";
 
     function getStaffPassword(emp) {
@@ -9099,6 +9338,12 @@ function renderApp() {
           } else {
             vp.innerHTML = renderStaffPortal(emp, false);
           }
+        }
+
+        // Render Persistent Bottom Footer App Download QR Code
+        const footerQr = document.getElementById("footerPageQrCode");
+        if (footerQr && (!footerQr.innerHTML || footerQr.children.length === 0)) {
+          footerQr.innerHTML = generateQRCodeSVG("https://my.aarunitech.com/downloads/aaruni-payroll.apk", 125);
         }
       } catch (err) {
         console.error("Render error:", err);
