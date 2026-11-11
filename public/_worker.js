@@ -206,6 +206,60 @@ export default {
       }
     }
 
+    // 3. Enterprise & Cloud Inquiries API (/api/inquiries)
+    // Logs labeled inquiries (aarunicloud, syllovo, aarunitech, aarunitech-careers)
+    // addressed to info@syllovo.com -> forwarded to rupesh@fullstackmaster.net
+    if (url.pathname === "/api/inquiries") {
+      if (request.method === "POST") {
+        try {
+          const body = await request.json();
+          const ref = (body && body.ref) || ("INQ-" + Math.floor(100000 + Math.random() * 899999));
+          const label = (body && body.label) || (host.includes("aarunicloud") ? "aarunicloud" : "aarunitech");
+          const org = (body && (body.org || body.company || body.name)) || "Enterprise Visitor";
+          const senderEmail = (body && body.email) || "";
+          const offering = (body && (body.services || body.offering)) || "General Inquiry";
+          const message = (body && body.message) || "";
+
+          try {
+            await executeD1Query(env, `
+              CREATE TABLE IF NOT EXISTS inquiries (
+                id TEXT PRIMARY KEY,
+                label TEXT,
+                public_to TEXT,
+                forwarded_to TEXT,
+                org_name TEXT,
+                sender_email TEXT,
+                offering TEXT,
+                message TEXT,
+                created_at TEXT
+              )
+            `);
+            await executeD1Query(
+              env,
+              `INSERT INTO inquiries (id, label, public_to, forwarded_to, org_name, sender_email, offering, message, created_at)
+               VALUES (?, ?, 'info@syllovo.com', 'rupesh@fullstackmaster.net', ?, ?, ?, ?, datetime('now'))`,
+              [ref, label, org, senderEmail, offering, message]
+            );
+          } catch (dbErr) {
+            console.warn("D1 inquiry log warning:", dbErr);
+          }
+
+          return new Response(JSON.stringify({
+            success: true,
+            ref: ref,
+            label: label,
+            publicRecipient: "info@syllovo.com",
+            routedInbox: "rupesh@fullstackmaster.net"
+          }), { headers: CORS_HEADERS });
+        } catch (err) {
+          return new Response(JSON.stringify({ success: false, error: err.message || String(err) }), {
+            status: 400,
+            headers: CORS_HEADERS
+          });
+        }
+      }
+    }
+
     // =========================================================================
     // DOMAIN & HOST ROUTING
     // =========================================================================

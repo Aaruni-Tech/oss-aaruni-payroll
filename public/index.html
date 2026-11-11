@@ -2069,8 +2069,8 @@
           <span style="font-size:0.88rem; color:var(--text-secondary);">
             🌟 Benefits: Flexible global remote, continuous learning budget, high-spec Mac hardware, and equity grants.
           </span>
-          <a href="mailto:careers@aarunitech.com" style="color:var(--dawn-orange); font-size:0.88rem; font-weight:700; text-decoration:none;">
-            Email resume to careers@aarunitech.com →
+          <a href="mailto:info@syllovo.com?subject=%5Baarunitech-careers%5D%20Job%20Application%20%E2%80%94%20Aaruni%20Tech" style="color:var(--dawn-orange); font-size:0.88rem; font-weight:700; text-decoration:none;">
+            Email resume to info@syllovo.com →
           </a>
         </div>
       </div>
@@ -2098,8 +2098,8 @@
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
               </div>
               <div>
-                <div style="font-weight:700; font-size:0.95rem;">General Inquiries &amp; Enterprise Sales</div>
-                <div style="font-size:0.88rem; color:var(--text-muted);"><a href="mailto:contact@aarunitech.com" style="color:var(--dawn-orange); text-decoration:none;">contact@aarunitech.com</a></div>
+                <div style="font-weight:700; font-size:0.95rem;">General Inquiries &amp; Syllovo Enterprise</div>
+                <div style="font-size:0.88rem; color:var(--text-muted);"><a href="mailto:info@syllovo.com?subject=%5Bsyllovo%5D%20Enterprise%20%26%20Syllovo%20Studio%20Inquiry" style="color:var(--dawn-orange); text-decoration:none;">info@syllovo.com</a> <span style="font-size:0.78rem;">(tagged <code>[syllovo]</code> / <code>[aarunitech]</code>)</span></div>
               </div>
             </li>
 
@@ -2108,8 +2108,8 @@
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17.5 19H9a7 7 0 1 1 6.71-9h1.79a4.5 4.5 0 1 1 0 9Z"/></svg>
               </div>
               <div>
-                <div style="font-weight:700; font-size:0.95rem;">Cloud Solutions &amp; API Access</div>
-                <div style="font-size:0.88rem; color:var(--text-muted);"><a href="mailto:sales@aarunicloud.com" style="color:var(--dawn-orange); text-decoration:none;">sales@aarunicloud.com</a></div>
+                <div style="font-weight:700; font-size:0.95rem;">Aaruni Cloud Solutions &amp; API Access</div>
+                <div style="font-size:0.88rem; color:var(--text-muted);"><a href="mailto:info@syllovo.com?subject=%5Baarunicloud%5D%20Aaruni%20Cloud%20Solutions%20%26%20API%20Inquiry" style="color:var(--dawn-orange); text-decoration:none;">info@syllovo.com</a> <span style="font-size:0.78rem;">(tagged <code>[aarunicloud]</code>)</span></div>
               </div>
             </li>
 
@@ -2380,25 +2380,68 @@
       }
     }
 
-    // Contact Form Submission
+    // Contact Form Submission (Routes via info@syllovo.com -> rupesh@fullstackmaster.net with brand label)
     function handleContactSubmit(e) {
       e.preventDefault();
       var btn = document.getElementById("contactSubmitBtn");
       var status = document.getElementById("contactStatusMsg");
-      var name = document.getElementById("contactName").value;
-      var email = document.getElementById("contactEmail").value;
+      var name = document.getElementById("contactName").value.trim();
+      var email = document.getElementById("contactEmail").value.trim();
+      var company = document.getElementById("contactCompany").value.trim();
       var offering = document.getElementById("contactOffering").value;
+      var msgText = document.getElementById("contactMessage").value.trim();
+
+      var lowerOff = offering.toLowerCase();
+      var label = "aarunitech";
+      if (lowerOff.indexOf("aaruni cloud") !== -1 || lowerOff.indexOf("compute") !== -1) {
+        label = "aarunicloud";
+      } else if (lowerOff.indexOf("syllovo") !== -1) {
+        label = "syllovo";
+      } else if (lowerOff.indexOf("career") !== -1) {
+        label = "aarunitech-careers";
+      }
+
+      var ref = "INQ-" + Math.floor(100000 + Math.random() * 899999);
+      var subj = encodeURIComponent("[" + label + "] [" + ref + "] " + offering + " — " + company);
+      var body = encodeURIComponent(
+        "Label: " + label + "\n" +
+        "Reference: " + ref + "\n" +
+        "Name: " + name + "\n" +
+        "Work Email: " + email + "\n" +
+        "Company: " + company + "\n" +
+        "Offering: " + offering + "\n\n" +
+        "Details:\n" + msgText + "\n"
+      );
+      var mailtoUrl = "mailto:info@syllovo.com?subject=" + subj + "&body=" + body;
 
       btn.disabled = true;
       btn.innerHTML = "<span>Transmitting Enterprise Request...</span>";
+
+      fetch("/api/inquiries", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          ref: ref,
+          label: label,
+          name: name,
+          company: company,
+          email: email,
+          offering: offering,
+          message: msgText
+        })
+      }).catch(function() {});
 
       setTimeout(function() {
         btn.disabled = false;
         btn.innerHTML = "<span>Submit Enterprise Request</span>";
         status.style.display = "block";
-        status.innerHTML = "<div style='color:var(--accent-emerald); font-weight:700; background:rgba(16, 185, 129, 0.1); padding:12px; border-radius:8px;'>✓ Thank you " + name + "! Your inquiry regarding " + offering + " has been received. A senior engineer will respond to " + email + " within 24 hours.</div>";
+        status.innerHTML =
+          "<div style='color:var(--accent-emerald); font-weight:700; background:rgba(16, 185, 129, 0.1); padding:12px; border-radius:8px;'>" +
+            "✓ Thank you " + name + "! Inquiry <code>" + ref + "</code> logged under label <code>[" + label + "]</code>. " +
+            "<a href='" + mailtoUrl + "' style='color:var(--dawn-orange); text-decoration:underline; margin-left:6px;'>Send via info@syllovo.com &rarr;</a>" +
+          "</div>";
         document.getElementById("enterpriseContactForm").reset();
-      }, 900);
+      }, 400);
     }
 
     // Articles Content Dictionary
