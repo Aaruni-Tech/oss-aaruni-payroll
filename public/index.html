@@ -2870,7 +2870,7 @@ body {
         }
 
         const totalDaysWorked = monthlyAudit.filter(m => m.entry && m.entry.hours > 0).length;
-        const missingDays = monthlyAudit.filter(m => !m.entry && !m.leave && !m.isSunday);
+        const missingDays = monthlyAudit.filter(m => !m.entry && !m.leave && !m.isSunday && !m.isToday);
         const missingCount = missingDays.length;
 
         return `
