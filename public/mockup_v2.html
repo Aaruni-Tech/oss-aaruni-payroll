@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Aaruni Tech — High-End Minimalist Studio Design (V2 Mockup)</title>
+  <script src="https://www.gstatic.com/antigravity/web/dev/tailwindcss.min.js"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background-color: #f8fafc;
+      color: #0f172a;
+      -webkit-font-smoothing: antialiased;
+    }
+    .font-mono {
+      font-family: 'JetBrains Mono', monospace;
+    }
+    .card-subtle {
+      background: #ffffff;
+      border: 1px solid #e2e8f0;
+      box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.02), 0 1px 2px -1px rgba(0, 0, 0, 0.02);
+      transition: all 0.2s ease;
+    }
+    .card-subtle:hover {
+      border-color: #cbd5e1;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.04), 0 2px 4px -2px rgba(0, 0, 0, 0.02);
+    }
+    .pill-tab-active {
+      background: #0f172a;
+      color: #ffffff;
+      font-weight: 600;
+    }
+    .pill-tab-inactive {
+      background: transparent;
+      color: #64748b;
+      font-weight: 500;
+    }
+    .pill-tab-inactive:hover {
+      background: #f1f5f9;
+      color: #0f172a;
+    }
+    .btn-primary {
+      background: #0f172a;
+      color: #ffffff;
+      font-weight: 600;
+      transition: all 0.15s ease;
+    }
+    .btn-primary:hover {
+      background: #1e293b;
+      transform: translateY(-0.5px);
+    }
+    .btn-orange {
+      background: #fe5f01;
+      color: #ffffff;
+      font-weight: 600;
+      box-shadow: 0 2px 8px rgba(254, 95, 1, 0.2);
+      transition: all 0.15s ease;
+    }
+    .btn-orange:hover {
+      background: #ea5500;
+      box-shadow: 0 4px 12px rgba(254, 95, 1, 0.3);
+    }
+    .btn-subtle {
+      background: #ffffff;
+      border: 1px solid #e2e8f0;
+      color: #334155;
+      font-weight: 600;
+      transition: all 0.15s ease;
+    }
+    .btn-subtle:hover {
+      background: #f8fafc;
+      border-color: #cbd5e1;
+      color: #0f172a;
+    }
+  </style>
+</head>
+<body class="min-h-screen">
+
+  <!-- TOP APP BAR (LINEAR/STRIPE STYLE CLEAN BAR) -->
+  <header class="bg-white border-b border-slate-200/80 sticky top-0 z-40">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 h-14 flex items-center justify-between">
+      <!-- Left: Brand & Hub -->
+      <div class="flex items-center gap-3">
+        <img src="aaruni_square_logo.png" alt="Aaruni Logo" class="w-8 h-8 rounded-lg border border-slate-200" />
+        <div class="flex items-center gap-2">
+          <span class="font-bold text-sm tracking-tight text-slate-900">Aaruni Tech</span>
+          <span class="text-slate-300">/</span>
+          <span class="text-xs font-semibold text-slate-500">Employee Portal</span>
+        </div>
+      </div>
+
+      <!-- Right: Live IST Clock, Cloud Indicator, Profile Pill -->
+      <div class="flex items-center gap-3">
+        <!-- Date indicator -->
+        <div class="hidden md:flex items-center gap-1.5 text-xs text-slate-500 font-medium">
+          <span>📅</span>
+          <span>Thursday, 12 Nov 2026</span>
+        </div>
+
+        <div class="h-4 w-px bg-slate-200 hidden md:block"></div>
+
+        <!-- Cloud Status -->
+        <div class="hidden sm:inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-semibold bg-emerald-50 text-emerald-800 border border-emerald-200">
+          <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
+          <span>Cloud Edge &bull; D1 SQL</span>
+        </div>
+
+        <!-- Notification Bell -->
+        <button class="relative w-8 h-8 rounded-lg bg-slate-50 hover:bg-slate-100 border border-slate-200 flex items-center justify-center text-slate-600 transition-colors">
+          <span class="text-xs">🔔</span>
+          <span class="absolute top-1.5 right-1.5 w-2 h-2 rounded-full bg-orange-500"></span>
+        </button>
+
+        <!-- Profile Chip -->
+        <div class="flex items-center gap-2 pl-1 pr-2.5 py-1 rounded-lg bg-slate-50 border border-slate-200">
+          <img src="photos/004.jpeg" class="w-6 h-6 rounded-md object-cover border border-slate-300" />
+          <span class="text-xs font-bold text-slate-800 hidden sm:inline">Nandini C.</span>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- MAIN WRAPPER -->
+  <main class="max-w-6xl mx-auto px-4 sm:px-6 py-6 space-y-6">
+
+    <!-- 1. GREETING & CONTEXT HEADER -->
+    <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+      <div>
+        <h1 class="text-2xl font-extrabold text-slate-900 tracking-tight">Good evening, Nandini</h1>
+        <p class="text-xs text-slate-500 mt-0.5">Technical Team Lead &bull; Hyderabad Hub (AAR-0004) &bull; Standard Shift: 10:00 AM – 7:00 PM IST</p>
+      </div>
+
+      <!-- Quick Actions -->
+      <div class="flex items-center gap-2">
+        <button class="btn-subtle px-3 py-1.5 rounded-lg text-xs flex items-center gap-1.5">
+          <span>🪪</span> <span>ID Badge</span>
+        </button>
+        <button class="btn-subtle px-3 py-1.5 rounded-lg text-xs flex items-center gap-1.5">
+          <span>📱</span> <span>Mobile App</span>
+        </button>
+        <button class="btn-subtle px-3 py-1.5 rounded-lg text-xs flex items-center gap-1.5">
+          <span>🔑</span> <span>Security</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- 2. STREAMLINED TAB NAVIGATION BAR -->
+    <div class="flex items-center gap-1 border-b border-slate-200 pb-2 overflow-x-auto scrollbar-none text-xs">
+      <button class="px-3.5 py-1.5 rounded-lg pill-tab-active flex items-center gap-1.5 shrink-0">
+        <span>Overview</span>
+      </button>
+      <button class="px-3.5 py-1.5 rounded-lg pill-tab-inactive flex items-center gap-1.5 shrink-0">
+        <span>Attendance &amp; History</span>
+        <span class="text-[10px] px-1.5 py-0.2 rounded-full bg-slate-100 text-slate-600 font-mono font-semibold">12d</span>
+      </button>
+      <button class="px-3.5 py-1.5 rounded-lg pill-tab-inactive flex items-center gap-1.5 shrink-0">
+        <span>Salary &amp; Comp</span>
+      </button>
+      <button class="px-3.5 py-1.5 rounded-lg pill-tab-inactive flex items-center gap-1.5 shrink-0">
+        <span>Payslips</span>
+        <span class="text-[10px] px-1.5 py-0.2 rounded-full bg-slate-100 text-slate-600 font-mono font-semibold">1</span>
+      </button>
+      <button class="px-3.5 py-1.5 rounded-lg pill-tab-inactive flex items-center gap-1.5 shrink-0">
+        <span>Tax &amp; Form 16</span>
+      </button>
+      <button class="px-3.5 py-1.5 rounded-lg pill-tab-inactive flex items-center gap-1.5 shrink-0">
+        <span>Documents</span>
+      </button>
+    </div>
+
+    <!-- ========================================================================= -->
+    <!-- ⭐ CORE ITEM 1: HERO TIMESHEET STATUS CARD (CLEAN, FOCUSED, HIGH-CLASS)   -->
+    <!-- ========================================================================= -->
+
+    <!-- STATE A: WHEN TIMESHEET IS LOGGED (CLEAN EMERALD ACCENT, ZERO HARSH BORDERS) -->
+    <div class="card-subtle rounded-2xl p-5 border-l-4 border-l-emerald-500">
+      <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+        <div class="flex items-start gap-3.5">
+          <div class="w-10 h-10 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center text-lg font-bold shrink-0 border border-emerald-100">
+            ✓
+          </div>
+          <div>
+            <div class="flex items-center gap-2 flex-wrap">
+              <span class="text-sm font-bold text-slate-900">Today's Timesheet Completed</span>
+              <span class="text-[11px] font-semibold px-2 py-0.5 rounded-md bg-emerald-50 text-emerald-700 border border-emerald-200">
+                8.0 Hours Logged
+              </span>
+              <span class="text-xs text-slate-400 font-mono">10:00 AM – 06:00 PM</span>
+            </div>
+            <div class="text-xs text-slate-600 mt-1 flex items-center gap-2">
+              <span class="font-medium text-slate-800">Deliverables:</span>
+              <span class="italic text-slate-600">"worked on the slides and m2-01 and 02 videos"</span>
+              <span class="text-slate-300">&bull;</span>
+              <span class="text-slate-400 text-[11px]">Synced to Cloudflare D1</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- 1-Click Action to Edit Today's Shift (Opens Popup) -->
+        <div class="flex items-center gap-2 self-start md:self-center shrink-0">
+          <button onclick="openPunchModal('AAR-0004', true)" class="btn-subtle px-3.5 py-2 rounded-xl text-xs flex items-center gap-1.5 cursor-pointer">
+            <span>✏️</span> <span>Edit Today's Shift</span>
+          </button>
+          <button class="p-2 rounded-xl btn-subtle text-xs" title="Refresh from database">
+            🔄
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- STATE B: PREVIEW OF HOW IT LOOKS WHEN TIMESHEET IS DUE (E.G. RAMYA / ALI) -->
+    <div class="card-subtle rounded-2xl p-5 border-l-4 border-l-orange-500 bg-gradient-to-r from-orange-50/40 via-white to-white">
+      <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+        <div class="flex items-start gap-3.5">
+          <div class="w-10 h-10 rounded-xl bg-orange-50 text-orange-600 flex items-center justify-center text-lg font-bold shrink-0 border border-orange-200">
+            ⏰
+          </div>
+          <div>
+            <div class="flex items-center gap-2 flex-wrap">
+              <span class="text-sm font-bold text-slate-900">Today's Timesheet is Due</span>
+              <span class="text-[11px] font-semibold px-2 py-0.5 rounded-md bg-orange-100 text-orange-800 border border-orange-200">
+                Action Required
+              </span>
+              <span class="text-xs text-slate-400 font-mono">Thursday, 12 Nov 2026</span>
+            </div>
+            <p class="text-xs text-slate-500 mt-1">
+              You haven't logged your work hours for today yet. Shift target: 8.0 hrs (Standard shift 10:00 AM – 7:00 PM IST).
+            </p>
+          </div>
+        </div>
+
+        <!-- 1-Click Primary Action to Punch In (Opens Popup) -->
+        <div class="flex items-center gap-2 self-start md:self-center shrink-0">
+          <button onclick="openPunchModal('AAR-0004', false)" class="btn-orange px-4 py-2 rounded-xl text-xs flex items-center gap-1.5 cursor-pointer">
+            <span>⏱️</span> <span>Log Today's Shift</span>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- 3. GLANCE METRICS ROW (3 CLEAN METRIC TILES) -->
+    <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+      <div class="card-subtle rounded-2xl p-4">
+        <div class="text-[11px] font-semibold uppercase tracking-wider text-slate-400">November Attendance</div>
+        <div class="text-xl font-extrabold text-slate-900 mt-1">12 / 12 Days</div>
+        <div class="text-xs text-emerald-600 font-medium mt-0.5 flex items-center gap-1">
+          <span>●</span> <span>100% Up to date &bull; 88 hrs logged</span>
+        </div>
+      </div>
+
+      <div class="card-subtle rounded-2xl p-4">
+        <div class="text-[11px] font-semibold uppercase tracking-wider text-slate-400">Accrued In-Hand Salary</div>
+        <div class="text-xl font-extrabold text-slate-900 mt-1">₹5,000 <span class="text-xs font-normal text-slate-400">/ ₹12,500</span></div>
+        <div class="text-xs text-slate-500 font-medium mt-0.5">
+          Day 12 of 30 &bull; 40.0% of payroll cycle
+        </div>
+      </div>
+
+      <div class="card-subtle rounded-2xl p-4">
+        <div class="text-[11px] font-semibold uppercase tracking-wider text-slate-400">Overtime &amp; Comp-Off</div>
+        <div class="text-xl font-extrabold text-slate-900 mt-1">8.0 hrs <span class="text-xs font-normal text-slate-400">OT</span></div>
+        <div class="text-xs text-sky-600 font-medium mt-0.5">
+          1 Sunday worked (01 Nov) &bull; +1 day credit
+        </div>
+      </div>
+    </div>
+
+    <!-- ========================================================================= -->
+    <!-- ⭐ CORE ITEM 3: RECENT WORK ACTIVITY (LAST 1-2 DAYS ONLY) + LINK TO FULL  -->
+    <!-- ========================================================================= -->
+    <div class="card-subtle rounded-2xl p-5">
+      <div class="flex items-center justify-between pb-3 border-b border-slate-100 flex-wrap gap-2">
+        <div>
+          <h2 class="text-sm font-bold text-slate-900">Recent Work Activity</h2>
+          <p class="text-xs text-slate-500 mt-0.5">Showing your verified shifts for the last 2 working days.</p>
+        </div>
+        <button class="text-xs font-semibold text-slate-600 hover:text-slate-900 flex items-center gap-1 transition-colors">
+          <span>View all 12 days in Attendance tab</span>
+          <span>&rarr;</span>
+        </button>
+      </div>
+
+      <!-- Clean 2-Row List -->
+      <div class="divide-y divide-slate-100">
+        <!-- Entry 1: Today (Nov 12) -->
+        <div class="py-3 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+          <div class="flex items-center gap-3">
+            <div class="w-8 h-8 rounded-lg bg-slate-100 text-slate-800 font-bold text-xs flex items-center justify-center shrink-0">
+              12
+            </div>
+            <div>
+              <div class="flex items-center gap-2">
+                <span class="text-xs font-bold text-slate-900">Today &bull; Thursday, 12 Nov 2026</span>
+                <span class="text-[11px] font-mono text-slate-400">10:00 – 18:00</span>
+                <span class="text-[10px] font-semibold px-1.5 py-0.2 rounded bg-slate-100 text-slate-700">8.0h</span>
+              </div>
+              <p class="text-xs text-slate-600 mt-0.5">worked on the slides and m2-01 and 02 videos</p>
+            </div>
+          </div>
+          <div class="flex items-center gap-2 self-end sm:self-center">
+            <span class="text-[11px] font-medium text-emerald-600 flex items-center gap-1">
+              <span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span> Verified
+            </span>
+          </div>
+        </div>
+
+        <!-- Entry 2: Yesterday (Nov 11) -->
+        <div class="py-3 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+          <div class="flex items-center gap-3">
+            <div class="w-8 h-8 rounded-lg bg-slate-100 text-slate-800 font-bold text-xs flex items-center justify-center shrink-0">
+              11
+            </div>
+            <div>
+              <div class="flex items-center gap-2">
+                <span class="text-xs font-bold text-slate-900">Yesterday &bull; Wednesday, 11 Nov 2026</span>
+                <span class="text-[11px] font-mono text-slate-400">10:00 – 18:00</span>
+                <span class="text-[10px] font-semibold px-1.5 py-0.2 rounded bg-slate-100 text-slate-700">8.0h</span>
+              </div>
+              <p class="text-xs text-slate-600 mt-0.5">worked on m2-01 and 02 findings</p>
+            </div>
+          </div>
+          <div class="flex items-center gap-2 self-end sm:self-center">
+            <span class="text-[11px] font-medium text-emerald-600 flex items-center gap-1">
+              <span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span> Verified
+            </span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Footer CTA to open full attendance -->
+      <div class="mt-3 pt-3 border-t border-slate-100 flex items-center justify-between">
+        <span class="text-xs text-slate-400">Full monthly ledger contains complete daily punches, leave audit, and Sunday overtime.</span>
+        <button class="btn-subtle px-3 py-1.5 rounded-lg text-xs font-semibold">
+          Open Attendance Log &rarr;
+        </button>
+      </div>
+    </div>
+
+    <!-- 4. STREAMLINED PROFILE DOSSIER (MINIMALIST 2-COLUMN) -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
+      <div class="card-subtle rounded-2xl p-4">
+        <div class="text-[11px] font-bold uppercase tracking-wider text-slate-400 mb-2">Role &amp; Organization</div>
+        <div class="space-y-2">
+          <div class="flex justify-between py-1 border-b border-slate-50">
+            <span class="text-slate-500">Position</span>
+            <span class="font-semibold text-slate-800">Technical Team Lead</span>
+          </div>
+          <div class="flex justify-between py-1 border-b border-slate-50">
+            <span class="text-slate-500">Department</span>
+            <span class="font-semibold text-slate-800">Engineering &amp; Technology</span>
+          </div>
+          <div class="flex justify-between py-1">
+            <span class="text-slate-500">Reports To</span>
+            <span class="font-semibold text-slate-800">Rupesh Tiwari (Founder &amp; MD)</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="card-subtle rounded-2xl p-4">
+        <div class="text-[11px] font-bold uppercase tracking-wider text-slate-400 mb-2">Contact &amp; Workstation</div>
+        <div class="space-y-2">
+          <div class="flex justify-between py-1 border-b border-slate-50">
+            <span class="text-slate-500">Workstation</span>
+            <span class="font-semibold text-slate-800">Hyderabad Tech Hub</span>
+          </div>
+          <div class="flex justify-between py-1 border-b border-slate-50">
+            <span class="text-slate-500">Official Email</span>
+            <span class="font-semibold text-slate-800">nandini.chukka.fsm@gmail.com</span>
+          </div>
+          <div class="flex justify-between py-1">
+            <span class="text-slate-500">Shift</span>
+            <span class="font-semibold text-slate-800">8h Shift (10:00 AM – 7:00 PM IST)</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- ========================================================================= -->
+  <!-- ⭐ CORE ITEM 2: EASY 1-CLICK POPUP MODAL (LINEAR/APPLE DIALOG)            -->
+  <!-- ========================================================================= -->
+  <div id="punchModal" class="hidden fixed inset-0 z-50 bg-slate-900/40 backdrop-blur-sm flex items-center justify-center p-4">
+    <div class="bg-white rounded-2xl border border-slate-200 shadow-2xl max-w-md w-full p-5 space-y-4">
+      <div class="flex items-center justify-between pb-3 border-b border-slate-100">
+        <div>
+          <h3 class="font-bold text-sm text-slate-900" id="modalTitle">Daily Timesheet Entry</h3>
+          <p class="text-xs text-slate-400 mt-0.5">Thursday, 12 Nov 2026 &bull; Asia/Kolkata</p>
+        </div>
+        <button onclick="closePunchModal()" class="w-7 h-7 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-500 text-xs font-bold flex items-center justify-center transition-colors">
+          ✕
+        </button>
+      </div>
+
+      <div class="space-y-3.5">
+        <!-- Field 1: Date Selection (Editable for backfills) -->
+        <div>
+          <label class="block text-xs font-bold text-slate-700 mb-1">Timesheet Date</label>
+          <input type="date" value="2026-11-12" max="2026-11-12" class="w-full px-3 py-2 border border-slate-200 rounded-xl text-xs font-mono font-semibold bg-slate-50 focus:bg-white focus:outline-none focus:border-slate-900 transition-colors" />
+        </div>
+
+        <!-- Field 2: Shift Presets & Timing -->
+        <div>
+          <div class="flex items-center justify-between mb-1">
+            <label class="text-xs font-bold text-slate-700">Shift Hours</label>
+            <div class="flex items-center gap-1">
+              <button class="px-2 py-0.5 rounded text-[11px] font-semibold bg-slate-900 text-white">8h (Full Day)</button>
+              <button class="px-2 py-0.5 rounded text-[11px] font-semibold bg-slate-100 text-slate-600 hover:bg-slate-200">4h (Half Day)</button>
+            </div>
+          </div>
+          <div class="grid grid-cols-2 gap-2">
+            <div>
+              <span class="text-[10px] text-slate-400 block mb-0.5">Check-In</span>
+              <input type="time" value="10:00" class="w-full px-3 py-1.5 border border-slate-200 rounded-xl text-xs font-mono bg-slate-50" />
+            </div>
+            <div>
+              <span class="text-[10px] text-slate-400 block mb-0.5">Check-Out</span>
+              <input type="time" value="18:00" class="w-full px-3 py-1.5 border border-slate-200 rounded-xl text-xs font-mono bg-slate-50" />
+            </div>
+          </div>
+        </div>
+
+        <!-- Field 3: Deliverables Textarea -->
+        <div>
+          <label class="block text-xs font-bold text-slate-700 mb-1">Work Tasks / Deliverables</label>
+          <textarea rows="3" class="w-full px-3 py-2 border border-slate-200 rounded-xl text-xs focus:bg-white focus:outline-none focus:border-slate-900 transition-colors" placeholder="What did you work on today?">worked on the slides and m2-01 and 02 videos</textarea>
+        </div>
+      </div>
+
+      <!-- Modal Footer -->
+      <div class="pt-3 border-t border-slate-100 flex items-center justify-end gap-2">
+        <button onclick="closePunchModal()" class="px-3.5 py-2 rounded-xl text-xs font-semibold text-slate-600 hover:bg-slate-100">
+          Cancel
+        </button>
+        <button onclick="closePunchModal(); alert('Shift saved to Cloudflare D1!');" class="btn-primary px-4 py-2 rounded-xl text-xs font-semibold">
+          Save Timesheet
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function openPunchModal(empId, isEdit) {
+      document.getElementById('modalTitle').innerText = isEdit ? "Edit Today's Timesheet" : "Log Today's Timesheet";
+      document.getElementById('punchModal').classList.remove('hidden');
+    }
+    function closePunchModal() {
+      document.getElementById('punchModal').classList.add('hidden');
+    }
+  </script>
+</body>
+</html>

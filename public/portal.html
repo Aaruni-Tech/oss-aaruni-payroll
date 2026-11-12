@@ -2174,6 +2174,98 @@ button, a.button {
       return Math.round((mins / 60) * 100) / 100;
     }
 
+    // AMAZON PHONETOOL TENURE & SERVICE LENGTH CALCULATOR
+    function parseDateFlexible(dStr) {
+      if (!dStr || typeof dStr !== "string") return null;
+      dStr = dStr.trim();
+      if (dStr.includes("/")) {
+        const parts = dStr.split("/").map(Number);
+        if (parts.length === 3) return new Date(parts[2], parts[1] - 1, parts[0]);
+      } else if (dStr.includes("-")) {
+        const parts = dStr.split("-").map(Number);
+        if (parts.length === 3) return new Date(parts[0], parts[1] - 1, parts[2]);
+      }
+      const parsed = new Date(dStr);
+      return isNaN(parsed.getTime()) ? null : parsed;
+    }
+
+    function computeEmployeeTenure(joiningDateStr, targetDateStr = null) {
+      const startDate = parseDateFlexible(joiningDateStr);
+      if (!startDate) {
+        return {
+          years: 0,
+          months: 0,
+          days: 0,
+          totalDays: 0,
+          formatted: "N/A",
+          badgeText: "N/A",
+          fullText: "N/A",
+          dojFormatted: joiningDateStr || "N/A"
+        };
+      }
+
+      const endDate = targetDateStr ? parseDateFlexible(targetDateStr) : parseDateFlexible(getTodayDateStr());
+      const MONTH_NAMES = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+      const dojFormatted = `${String(startDate.getDate()).padStart(2, "0")} ${MONTH_NAMES[startDate.getMonth()]} ${startDate.getFullYear()}`;
+
+      if (!endDate || endDate < startDate) {
+        return {
+          years: 0,
+          months: 0,
+          days: 0,
+          totalDays: 0,
+          formatted: "Joining Soon",
+          badgeText: "Joining Soon",
+          fullText: "Joining Soon",
+          dojFormatted
+        };
+      }
+
+      const utc1 = Date.UTC(startDate.getFullYear(), startDate.getMonth(), startDate.getDate());
+      const utc2 = Date.UTC(endDate.getFullYear(), endDate.getMonth(), endDate.getDate());
+      const totalDays = Math.max(0, Math.floor((utc2 - utc1) / (1000 * 60 * 60 * 24)));
+
+      let y1 = startDate.getFullYear(), m1 = startDate.getMonth(), d1 = startDate.getDate();
+      let y2 = endDate.getFullYear(), m2 = endDate.getMonth(), d2 = endDate.getDate();
+      let years = y2 - y1, months = m2 - m1, days = d2 - d1;
+
+      if (days < 0) {
+        months -= 1;
+        const prevMonthDays = new Date(y2, m2, 0).getDate();
+        days += prevMonthDays;
+      }
+      if (months < 0) {
+        years -= 1;
+        months += 12;
+      }
+
+      let formatted = "";
+      if (years > 0) {
+        formatted += `${years} yr${years > 1 ? "s" : ""}`;
+        if (months > 0) formatted += `, ${months} mo${months > 1 ? "s" : ""}`;
+        if (days > 0) formatted += `, ${days}d`;
+      } else if (months > 0) {
+        formatted += `${months} mo${months > 1 ? "s" : ""}`;
+        if (days > 0) formatted += `, ${days} day${days > 1 ? "s" : ""}`;
+      } else {
+        formatted = `${days} day${days === 1 ? "" : "s"}`;
+      }
+
+      const badgeText = `${formatted} (${totalDays}d total)`;
+      const fullText = `${formatted} (${totalDays} day${totalDays === 1 ? "" : "s"} in company)`;
+
+      return {
+        years,
+        months,
+        days,
+        totalDays,
+        formatted,
+        badgeText,
+        fullText,
+        dojFormatted
+      };
+    }
+
     function computeEmployeePayroll(emp, ym = ((typeof state !== "undefined" && state && state.selectedMonth) || getTodayDateStr().slice(0, 7))) {
       const [y, m] = ym.split("-").map(Number);
       const calendarDays = new Date(y, m, 0).getDate();
@@ -4327,9 +4419,10 @@ button, a.button {
       ` : '';
 
       // 3. AMAZON PHONETOOL-STYLE PROFILE HEADER (CLEAN IDENTITY — ZERO SALARY BLASTED)
+      const tenureInfo = computeEmployeeTenure(emp.joiningDate);
       const phoneToolHeader = `
-        <div class="glass-card rounded-2xl p-3 sm:p-4 mb-4 border-l-4 border-orange-500 flex flex-col md:flex-row md:items-center md:justify-between gap-3 sm:gap-4">
-          <div class="flex items-start sm:items-center gap-3 sm:gap-4 min-w-0">
+        <div id="phoneToolHeaderCard" class="glass-card rounded-2xl p-4 sm:p-5 mb-4 border-l-4 border-orange-500 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+          <div class="flex items-start sm:items-center gap-3.5 sm:gap-4 min-w-0">
             <div class="relative shrink-0">
               <img 
                 src="${photoFile}" 
@@ -4343,23 +4436,33 @@ button, a.button {
               <div class="flex items-center gap-1.5 sm:gap-2 flex-wrap">
                 <h1 class="text-base sm:text-lg font-black text-white truncate max-w-full">${emp.name}</h1>
                 <span class="bg-orange-500/20 text-orange-400 font-mono font-black px-2 py-0.5 rounded-md border border-orange-500/40 text-[11px] sm:text-xs">${emp.id}</span>
-                <span class="bg-slate-800 text-slate-300 text-[10px] sm:text-[11px] font-semibold px-2 py-0.5 rounded border border-slate-700">${emp.zohoId || emp.id}</span>
+                ${emp.zohoId && emp.zohoId !== emp.id ? `<span class="bg-slate-800 text-slate-300 text-[10px] sm:text-[11px] font-semibold px-2 py-0.5 rounded border border-slate-700">${emp.zohoId}</span>` : ''}
                 <span class="bg-emerald-500/20 text-emerald-400 text-[10px] font-bold px-2 py-0.5 rounded-full border border-emerald-500/30">Active Staff</span>
               </div>
               <div class="text-xs text-slate-300 mt-1 flex items-center gap-1.5 flex-wrap">
                 <span class="font-semibold text-white">${emp.designationSub || emp.role}</span>
                 <span>&bull;</span>
                 <span class="text-slate-400">${emp.department || "Engineering & Technology"}</span>
-                <span class="hidden sm:inline">&bull;</span>
-                <span class="text-slate-400 hidden sm:inline">Reports to: <strong>Rupesh Tiwari</strong> (Founder &amp; MD)</span>
+                <span>&bull;</span>
+                <span class="text-slate-300">Reports to: <strong class="text-white">Rupesh Tiwari</strong> (Founder &amp; MD)</span>
               </div>
-              <div class="text-[11px] text-slate-400 mt-0.5 break-words">
-                📍 Beeramguda, Hyderabad &bull; ⏱️ 8h Shift &bull; 📅 Joined ${emp.joiningDate}
+              <div class="text-[11px] text-slate-400 mt-1.5 flex items-center gap-2 flex-wrap">
+                <span class="inline-flex items-center gap-1 text-slate-300">
+                  <span>📅 Joined:</span> <strong class="text-slate-200">${tenureInfo.dojFormatted}</strong>
+                </span>
+                <span>&bull;</span>
+                <span class="inline-flex items-center gap-1 text-emerald-400 font-semibold bg-emerald-500/10 px-2 py-0.5 rounded border border-emerald-500/20" title="${tenureInfo.totalDays} total days in company">
+                  <span>⏱️ Tenure:</span> <strong>${tenureInfo.formatted}</strong> <span class="text-emerald-400/80 font-normal">(${tenureInfo.totalDays}d in company)</span>
+                </span>
+                <span class="hidden sm:inline">&bull;</span>
+                <span class="text-slate-400 hidden sm:inline">📍 Beeramguda Tech Hub</span>
+                <span class="hidden sm:inline">&bull;</span>
+                <span class="text-slate-400 hidden sm:inline">⏱️ 8h Shift</span>
               </div>
             </div>
           </div>
 
-          <div class="flex items-center gap-2 flex-wrap w-full md:w-auto mt-1 md:mt-0 pt-2 md:pt-0 border-t md:border-t-0 border-slate-800/60">
+          <div class="flex items-center gap-2 flex-wrap w-full md:w-auto mt-1 md:mt-0 pt-2 md:pt-0 border-t md:border-t-0 border-slate-800/60 shrink-0">
             <button onclick="previewIDCard('${emp.id}')" class="brand-grad text-white text-xs font-bold px-3 py-2 rounded-xl shadow cursor-pointer inline-flex items-center gap-1.5 hover:opacity-95" title="View Official Identity Badge for ${emp.name}">
               <span>🪪 Official ID Badge</span>
             </button>
@@ -6002,11 +6105,24 @@ button, a.button {
 
       const activeStaffCount = state.employees.filter(e => e.status === "Active" && e.monthlyCtc > 0).length;
 
+      // Dynamic Monthly Runway & Accrual Metrics for Dashboard (100% Live from Timesheet Logs)
+      const currentMonthYm = ((typeof state !== "undefined" && state && state.selectedMonth) || getTodayDateStr().slice(0, 7));
+      const [runwayYr, runwayMo] = currentMonthYm.split("-").map(Number);
+      const daysInRunwayMonth = new Date(runwayYr, runwayMo, 0).getDate();
+      const todayRunwayDay = getTodayDayOfMonth();
+      const runwayElapsedPct = Math.round((todayRunwayDay / daysInRunwayMonth) * 1000) / 10;
+      const activeStaffForRunway = state.employees.filter(e => e.status === "Active" && e.monthlyCtc > 0);
+      const dynamicActivePayrolls = activeStaffForRunway.map(emp => computeEmployeePayroll(emp, currentMonthYm));
+      const dynamicTotalAccrued = dynamicActivePayrolls.reduce((sum, r) => sum + r.accruedSalarySoFar, 0);
+      const dynamicTotalNetLiability = dynamicActivePayrolls.reduce((sum, r) => sum + r.netPay, 0);
+      const MONTH_NAMES_FULL = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+      const runwayMonthName = MONTH_NAMES_FULL[runwayMo - 1] || "November";
+
       // 1. TOP TAB NAVIGATION BAR FOR ADMIN (SLEEK & IMMEDIATE DESKTOP + MOBILE ACCESS)
       const adminTabs = [
         { id: "dashboard", label: "⏱️ Dashboard", count: "" },
         { id: "roster", label: "👥 Employees", count: `${activeStaffCount} Active` },
-        { id: "payroll", label: "📅 Pay Runs", count: '₹43,000' },
+        { id: "payroll", label: "📅 Pay Runs", count: fmtINR(dynamicTotalNetLiability) },
         { id: "pulse", label: "🕒 Attendance Pulse", count: missingToday.length > 0 ? `${missingToday.length} Missing` : 'All Logged' },
         { id: "loans", label: "📋 Approvals & Loans", count: (pendingAdvances.length + pendingLeaves.length) > 0 ? `${pendingAdvances.length + pendingLeaves.length} Pending` : '' },
         { id: "appointments", label: "📅 1:1 Appointments", count: (state.appointments && state.appointments.length > 0) ? `${state.appointments.length} Booked` : "" },
@@ -6054,18 +6170,18 @@ button, a.button {
               <div class="text-[10px] text-slate-400 mt-0.5">Nandini (₹7.5k), Janhavi (₹8.1k), Ramya (₹7.0k), Ali (₹10k)</div>
             </div>
 
-            <!-- 2. This Month Accrued So Far -->
+            <!-- 2. This Month Accrued So Far (LIVE DYNAMIC CALCULATION) -->
             <div class="p-3.5 rounded-xl bg-slate-950/80 border border-slate-800">
-              <div class="text-[11px] font-bold text-slate-400 uppercase tracking-wider">⏱️ Accrued to Date (Nov 2026 &bull; Day 11/30)</div>
-              <div class="text-2xl font-black text-sky-400 mt-1">₹12,900</div>
-              <div class="text-[11px] text-sky-300 font-semibold mt-1">36.7% of Monthly Payroll Cycle Elapsed</div>
-              <div class="text-[10px] text-slate-400 mt-0.5">Calculated from verified employee entry/exit punch logs</div>
+              <div class="text-[11px] font-bold text-slate-400 uppercase tracking-wider">⏱️ Accrued to Date (${runwayMonthName} ${runwayYr} &bull; Day ${todayRunwayDay}/${daysInRunwayMonth})</div>
+              <div class="text-2xl font-black text-sky-400 mt-1">${fmtINR(dynamicTotalAccrued)}</div>
+              <div class="text-[11px] text-sky-300 font-semibold mt-1">${runwayElapsedPct}% of Monthly Payroll Cycle Elapsed</div>
+              <div class="text-[10px] text-slate-400 mt-0.5">Calculated live from verified employee entry/exit punch logs</div>
             </div>
 
             <!-- 3. Required Bank Balance by Month-End -->
             <div class="p-3.5 rounded-xl bg-slate-950/80 border border-orange-500/50">
-              <div class="text-[11px] font-bold text-orange-400 uppercase tracking-wider">🏦 Required Bank Balance (By 30 Nov)</div>
-              <div class="text-2xl font-black text-orange-400 mt-1">₹43,000</div>
+              <div class="text-[11px] font-bold text-orange-400 uppercase tracking-wider">🏦 Required Bank Balance (By ${daysInRunwayMonth} ${runwayMonthName.slice(0,3)})</div>
+              <div class="text-2xl font-black text-orange-400 mt-1">${fmtINR(dynamicTotalNetLiability)}</div>
               <div class="text-[11px] text-amber-300 font-semibold mt-1">Total Net Monthly Liability to Pay Staff</div>
               <div class="text-[10px] text-slate-400 mt-0.5">Maintain ₹45,000 in Axis Bank (A/C: xxxx3409)</div>
             </div>
@@ -6170,6 +6286,94 @@ button, a.button {
         ` : ''}
       `;
 
+      // 4. AMAZON PHONETOOL TEAM DIRECTORY & SERVICE TENURE (CLEAN, SPACIOUS, UN-CROWDED)
+      const activePhoneToolStaff = state.employees.filter(e => e.status === "Active" && e.monthlyCtc > 0);
+      const adminPhoneToolRosterCard = `
+        <div class="glass-card rounded-2xl p-4 sm:p-5 mb-4 border border-slate-800 shadow-md">
+          <div class="flex items-center justify-between border-b border-slate-800 pb-3 mb-4 flex-wrap gap-2">
+            <div>
+              <div class="text-xs font-black uppercase tracking-wider text-orange-400 flex items-center gap-2">
+                <span>🏢 Aaruni Tech Team Directory &amp; Service Tenure</span>
+                <span class="bg-orange-500/10 text-orange-400 text-[10px] font-bold px-2 py-0.5 rounded border border-orange-500/30">Amazon PhoneTool Hierarchy</span>
+              </div>
+              <p class="text-xs text-slate-400 mt-0.5">
+                Active team members, reporting structure, and verified length of service in company
+              </p>
+            </div>
+            <div class="flex items-center gap-2">
+              <button onclick="setTab('roster')" class="bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 text-xs font-semibold px-3 py-1.5 rounded-lg cursor-pointer inline-flex items-center gap-1.5">
+                <span>👥 Full Directory (${state.employees.length} Staff) &rarr;</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- GRID OF CLEAN, UN-CROWDED PHONETOOL EMPLOYEE CARDS -->
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-3.5">
+            ${activePhoneToolStaff.map(emp => {
+              const tInfo = computeEmployeeTenure(emp.joiningDate);
+              const payroll = computeEmployeePayroll(emp, currentMonthYm);
+              const photo = getEmployeePhoto(emp.id);
+
+              return `
+                <div class="p-3.5 rounded-xl bg-slate-950/70 border border-slate-800 hover:border-orange-500/40 transition-all flex flex-col justify-between gap-3">
+                  <div class="flex items-start gap-3 min-w-0">
+                    <img 
+                      src="${photo}" 
+                      onerror="this.onerror=null; this.src='aaruni_square_logo.png'" 
+                      alt="${emp.name}" 
+                      class="w-12 h-12 rounded-xl object-cover border border-orange-500/50 bg-slate-900 shrink-0" 
+                    />
+                    <div class="min-w-0 flex-1">
+                      <div class="flex items-center gap-1.5 flex-wrap">
+                        <button onclick="switchPersona('${emp.id}', true)" class="font-bold text-white hover:text-orange-400 text-sm cursor-pointer text-left truncate">
+                          ${emp.name}
+                        </button>
+                        <span class="font-mono text-[10px] font-bold px-1.5 py-0.2 rounded bg-orange-500/15 text-orange-400 border border-orange-500/30 shrink-0">${emp.id}</span>
+                        <span class="text-[10px] font-bold px-1.5 py-0.2 rounded bg-emerald-500/15 text-emerald-400 border border-emerald-500/30 shrink-0">Active</span>
+                      </div>
+                      <div class="text-xs text-slate-300 font-medium truncate mt-0.5">${emp.designationSub || emp.role}</div>
+                      <div class="text-[11px] text-slate-400 truncate mt-0.5">
+                        <span class="text-slate-400">Reports to:</span> <strong class="text-slate-200">Rupesh Tiwari</strong> (Founder &amp; MD)
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- PHONETOOL TENURE & CALENDAR DATA -->
+                  <div class="bg-slate-900/80 rounded-lg p-2.5 border border-slate-800/80 text-[11px] grid grid-cols-2 gap-2">
+                    <div>
+                      <div class="text-[9px] uppercase font-bold text-slate-500 tracking-wider">Date of Joining</div>
+                      <div class="text-slate-200 font-semibold mt-0.5 flex items-center gap-1">
+                        <span>📅</span> <span>${tInfo.dojFormatted}</span>
+                      </div>
+                    </div>
+                    <div>
+                      <div class="text-[9px] uppercase font-bold text-slate-500 tracking-wider">Length of Service</div>
+                      <div class="text-emerald-400 font-bold mt-0.5 flex items-center gap-1" title="${tInfo.totalDays} days in company">
+                        <span>⏱️</span> <span>${tInfo.formatted}</span>
+                      </div>
+                      <div class="text-[9px] text-slate-400 font-medium mt-0.5">${tInfo.totalDays} days in company</div>
+                    </div>
+                  </div>
+
+                  <!-- FOOTER STATS & QUICK LINK -->
+                  <div class="flex items-center justify-between pt-1 border-t border-slate-800/60 text-xs">
+                    <div class="text-[11px] text-slate-400">
+                      <span>Nov Logged:</span> <strong class="text-white">${payroll.accruedPayableDays}/30d</strong> <span class="text-sky-400">(${payroll.totalHours}h)</span>
+                      &bull; <span class="text-slate-400">Accrued:</span> <strong class="text-sky-300 font-mono">${fmtINR(payroll.accruedSalarySoFar)}</strong>
+                    </div>
+                    <div class="flex items-center gap-1.5 shrink-0">
+                      <button onclick="switchPersona('${emp.id}', true)" class="text-[11px] font-semibold text-orange-400 hover:text-orange-300 px-2 py-1 rounded bg-orange-500/10 hover:bg-orange-500/20 border border-orange-500/30 cursor-pointer">
+                        View Portal &rarr;
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              `;
+            }).join("")}
+          </div>
+        </div>
+      `;
+
       let tabContent = "";
 
       // =========================================================================
@@ -6179,6 +6383,7 @@ button, a.button {
         tabContent = `
           ${adminRunwayCard}
           ${adminNextPayrollCard}
+          ${adminPhoneToolRosterCard}
         `;
       }
 
@@ -6371,6 +6576,7 @@ button, a.button {
                 const isInactive = e.status !== "Active";
                 const payroll = computeEmployeePayroll(e, "2026-11");
                 const disb = state.novDisbursements[e.id] || { paid: false, utr: "" };
+                const eTenure = computeEmployeeTenure(e.joiningDate);
 
                 return `
                 <div class="glass-card rounded-2xl p-3.5 border border-slate-800 hover:border-orange-500/50 transition-all ${isInactive ? 'opacity-65' : ''}">
@@ -6385,8 +6591,9 @@ button, a.button {
                           </button>
                           <span class="font-mono text-[10px] font-bold px-1.5 py-0.2 rounded bg-slate-800 text-orange-400 border border-slate-700 shrink-0">${e.id}</span>
                         </div>
-                        <div class="text-[11px] text-slate-300 font-medium truncate mt-0.5">${e.role || 'Staff'}</div>
-                        <div class="text-[10px] text-slate-400 truncate">${e.workstation || 'Beeramguda Tech Hub'}</div>
+                        <div class="text-[11px] text-slate-300 font-medium truncate mt-0.5">${e.designationSub || e.role || 'Staff'}</div>
+                        <div class="text-[10px] text-slate-400 truncate mt-0.5">📅 Joined ${eTenure.dojFormatted} &bull; <span class="text-emerald-400 font-bold">⏱️ ${eTenure.formatted} (${eTenure.totalDays}d)</span></div>
+                        <div class="text-[10px] text-slate-400 truncate">Reports to: Rupesh Tiwari (Founder &amp; MD) &bull; ${e.workstation || 'Beeramguda'}</div>
                       </div>
                     </div>
 
@@ -6500,6 +6707,7 @@ button, a.button {
                     const isInactive = e.status !== "Active";
                     const payroll = computeEmployeePayroll(e, "2026-11");
                     const disb = state.novDisbursements[e.id] || { paid: false, utr: "" };
+                    const eTenure = computeEmployeeTenure(e.joiningDate);
 
                     return `
                     <tr class="${isInactive ? 'opacity-60' : ''}">
@@ -6517,8 +6725,13 @@ button, a.button {
                         </div>
                       </td>
                       <td class="py-3 px-2 text-slate-300">
-                        <div>${e.role}</div>
-                        <div class="text-[10px] text-slate-400">${e.workstation || 'Beeramguda Tech Hub'}</div>
+                        <div class="font-bold text-white">${e.designationSub || e.role}</div>
+                        <div class="text-[11px] text-slate-400 mt-0.5">
+                          📅 Joined ${eTenure.dojFormatted} &bull; <span class="text-emerald-400 font-bold" title="${eTenure.totalDays} days in company">⏱️ ${eTenure.formatted}</span>
+                        </div>
+                        <div class="text-[10px] text-slate-500 mt-0.5">
+                          Reports to: <span class="text-slate-300">Rupesh Tiwari</span> &bull; ${e.workstation || 'Beeramguda Tech Hub'}
+                        </div>
                       </td>
                       <td class="py-3 px-2 text-right font-semibold text-slate-300">
                         ${isFounder ? '<span class="text-amber-400 font-bold">Deferred (₹0)</span>' : isInactive ? '<span class="text-slate-500">Relieved (₹0)</span>' : fmtINR(e.monthlyCtc)}
