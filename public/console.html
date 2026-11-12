@@ -371,6 +371,9 @@
 
   <div class="console-shell">
     <nav class="console-sidebar" role="tablist" aria-label="Console Navigation">
+      <div class="sidebar-heading">Cloud Platform</div>
+      <button type="button" class="nav-tab" role="tab" data-tab="projects" aria-selected="false" onclick="switchTab('projects')">🏢 Orgs &amp; Projects</button>
+      <button type="button" class="nav-tab" role="tab" data-tab="builder" aria-selected="false" onclick="switchTab('builder')">✨ Cloud Builder (AI)</button>
       <div class="sidebar-heading">Cloud Voice (SaaS)</div>
       <button type="button" class="nav-tab" role="tab" data-tab="clone" aria-selected="true" onclick="switchTab('clone')">🎙️ Clone My Voice</button>
       <button type="button" class="nav-tab" role="tab" data-tab="speak" aria-selected="false" onclick="switchTab('speak')">🔊 Speech Playground</button>
@@ -599,6 +602,72 @@ print(res["normalizedText"])</pre>
           </div>
 
           <div id="billing-status" class="status-banner hidden"></div>
+        </div>
+      </section>
+
+      <!-- PANEL: ORGANIZATIONS & PROJECTS (CUSTOMER #0 ANCHOR + TENANT WORKSPACES) -->
+      <section id="panel-projects" class="tab-panel hidden">
+        <div class="card">
+          <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;">
+            <div>
+              <h2 class="card-title">🏢 Organizations, Projects &amp; Deployments</h2>
+              <p class="card-sub" style="margin-bottom:0;">GCP-style <code class="mono">Organization → Project → Environment</code> isolation with Hard Spend Cap Shield and pluggable Backend Drivers (<code class="mono">aaruni-edge</code> | <code class="mono">aws</code> | <code class="mono">gcp</code>).</p>
+            </div>
+            <button type="button" class="btn btn-sm" onclick="loadOrgsAndProjects()">↻ Refresh Projects</button>
+          </div>
+
+          <div id="customer-zero-banner" style="margin-top:16px;padding:14px;border-radius:10px;background:var(--bg-elevated);border:1px solid var(--border);">
+            <div style="font-size:12px;font-weight:700;color:var(--accent);">⚓ LIVE ANCHOR TENANT (CUSTOMER #0)</div>
+            <div id="customer-zero-summary" style="font-size:13px;margin-top:4px;color:var(--text-secondary);">Loading <code class="mono">org_syllovo / prj_syllovo_prod</code> public manifest...</div>
+          </div>
+
+          <h3 style="font-size:15px;margin:18px 0 10px;">Your Isolated Projects</h3>
+          <div id="projects-list-box" style="font-size:13px;color:var(--text-secondary);">Sign in or start an instant trial above to view and create isolated projects.</div>
+
+          <div style="margin-top:18px;padding-top:16px;border-top:1px solid var(--border);">
+            <h3 style="font-size:15px;margin:0 0 10px;">+ Create New Isolated Project</h3>
+            <div class="grid-3">
+              <div>
+                <label class="field-label" for="new-proj-name">Project Name</label>
+                <input type="text" id="new-proj-name" placeholder="e.g. gifts-storefront-prod" />
+              </div>
+              <div>
+                <label class="field-label" for="new-proj-env">Environment</label>
+                <select id="new-proj-env">
+                  <option value="prod">Production (prod)</option>
+                  <option value="staging">Staging (staging)</option>
+                  <option value="dev">Development (dev)</option>
+                </select>
+              </div>
+              <div>
+                <label class="field-label" for="new-proj-cap">Hard Monthly Spend Cap (₹ INR)</label>
+                <input type="text" id="new-proj-cap" value="0" placeholder="0 = Free Tier Strictly Capped" />
+              </div>
+            </div>
+            <button type="button" class="btn btn-primary" style="margin-top:12px;" onclick="createConsoleProject()">Provision Isolated Project →</button>
+            <div id="proj-action-status" class="status-banner hidden"></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- PANEL: CLOUD BUILDER (AI PROJECT ARCHITECT + DECLARATIVE PIPELINE) -->
+      <section id="panel-builder" class="tab-panel hidden">
+        <div class="card">
+          <h2 class="card-title">✨ Cloud Builder — AI Stack Architect &amp; <code class="mono">acloud.yaml</code> Generator</h2>
+          <p class="card-sub">Describe the SaaS app, course studio, or RAG chatbot you want to launch. Cloud Builder generates a 100% duty-free OSS stack manifest (<code class="mono">Apache-2.0</code> / <code class="mono">MIT</code>) ready for <code class="mono">acloud deploy</code>.</p>
+
+          <label class="field-label" for="builder-prompt-input">Application &amp; Infrastructure Prompt</label>
+          <textarea id="builder-prompt-input" placeholder="e.g. Deploy an AI Course Studio like Syllovo with $0-egress Cloud Storage, Cloud Voice (-9.4 LUFS + ElevenLabs BYOK), and RAG Chatbot.">Deploy an AI Course &amp; Media Studio with $0-egress Cloud Storage, Cloud Voice (-9.4 dB LUFS + ElevenLabs BYOK), and PostgreSQL pgvector RAG.</textarea>
+
+          <div style="display:flex;gap:10px;margin-top:12px;flex-wrap:wrap;">
+            <button type="button" class="btn btn-primary" onclick="generateBuilderPlan()">✨ Generate <code class="mono">acloud.yaml</code> Blueprint</button>
+          </div>
+
+          <div id="builder-output-wrap" class="hidden" style="margin-top:16px;">
+            <label class="field-label">Generated Declarative Spec (<code class="mono">acloud.yaml</code>)</label>
+            <pre id="builder-yaml-pre" class="code-pre mono"></pre>
+            <div id="builder-cli-hint" class="status-banner mono"></div>
+          </div>
         </div>
       </section>
     </main>
@@ -1066,13 +1135,87 @@ print(res["normalizedText"])</pre>
         .replace(/"/g, "&quot;");
     }
 
+    async function loadCustomerZeroManifest() {
+      const el = document.getElementById("customer-zero-summary");
+      if (!el) return;
+      try {
+        const r = await fetch("/v1/projects/prj_syllovo_prod/public-manifest");
+        if (!r.ok) return;
+        const j = await r.json();
+        if (j && j.project) {
+          const p = j.project;
+          const depTxt = p.latestDeployment ? ` • Latest Deploy: ${p.latestDeployment.versionTag} (${p.latestDeployment.status})` : "";
+          el.textContent = `${p.orgName} ▸ ${p.projectId} • Driver: ${p.backendDriver} • Buckets: ${p.buckets.length} ($0/GB egress) • Voice: ${p.voicePolicy.targetLufs} LUFS${depTxt}`;
+        }
+      } catch (_) {}
+    }
+
+    async function loadOrgsAndProjects() {
+      const box = document.getElementById("projects-list-box");
+      if (!box || !activeApiKey) return;
+      try {
+        const res = await apiFetch("/v1/projects");
+        const list = res.projects || [];
+        if (list.length === 0) {
+          box.textContent = "No projects provisioned yet.";
+          return;
+        }
+        box.innerHTML = list.map((p) => (
+          `<div class="voice-item">
+            <div>
+              <strong>${escapeHtml(p.displayName)}</strong> <span class="region-pill mono">${escapeHtml(p.projectId)}</span>
+              <div style="font-size:12px;color:var(--text-muted);margin-top:3px;">Org: ${escapeHtml(p.orgName)} • Env: ${escapeHtml(p.environment.toUpperCase())} • Driver: <code class="mono">${escapeHtml(p.backendDriver)}</code> • Cap: ₹${Number(p.spendCapInr || 0)}</div>
+            </div>
+            <span class="region-pill mono">${escapeHtml(p.status)}</span>
+          </div>`
+        )).join("");
+      } catch (err) {
+        box.textContent = "Could not load projects: " + err.message;
+      }
+    }
+
+    async function createConsoleProject() {
+      try {
+        if (!activeApiKey) await startInstantTrial();
+        const displayName = document.getElementById("new-proj-name").value.trim();
+        const environment = document.getElementById("new-proj-env").value;
+        const spendCapInr = Number(document.getElementById("new-proj-cap").value || 0);
+        const res = await apiFetch("/v1/projects", {
+          method: "POST",
+          body: { displayName, environment, spendCapInr }
+        });
+        showBanner("proj-action-status", `✔ Provisioned isolated project ${res.projectId} (${res.backendDriver})`);
+        document.getElementById("new-proj-name").value = "";
+        await loadOrgsAndProjects();
+      } catch (err) {
+        showBanner("proj-action-status", "✖ " + err.message, true);
+      }
+    }
+
+    async function generateBuilderPlan() {
+      try {
+        if (!activeApiKey) await startInstantTrial();
+        const prompt = document.getElementById("builder-prompt-input").value.trim();
+        const res = await apiFetch("/v1/builder/plan", {
+          method: "POST",
+          body: { prompt, projectId: "prj_syllovo_prod" }
+        });
+        document.getElementById("builder-output-wrap").classList.remove("hidden");
+        document.getElementById("builder-yaml-pre").textContent = res.acloudYaml;
+        document.getElementById("builder-cli-hint").textContent = "Deploy command: " + res.deployCommand;
+      } catch (err) {
+        showBanner("builder-cli-hint", "✖ " + err.message, true);
+      }
+    }
+
     (function initConsole() {
-      const savedTheme = localStorage.getItem("acloud_theme") || "dark";
+      const savedTheme = localStorage.getItem("acloud_theme") || localStorage.getItem("acloud_console_theme") || "dark";
       document.documentElement.setAttribute("data-theme", savedTheme);
       document.getElementById("theme-btn").textContent = savedTheme === "light" ? "☾ Dark" : "☀ Light";
       detectPlsTerms();
       fetchConsentChallenge();
-      refreshAccountState().catch(() => signOutConsole());
+      loadCustomerZeroManifest();
+      refreshAccountState().then(() => loadOrgsAndProjects()).catch(() => signOutConsole());
     })();
   </script>
 </body>

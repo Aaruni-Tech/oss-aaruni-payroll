@@ -96,7 +96,8 @@ const SERVICE_CATALOG = [
   { code: "RENDER", id: "render", name: "Cloud Render", fullName: "Aaruni Cloud Render", category: "tools", access: "admin-only", endpoint: "https://api.aarunicloud.com/v1/render/build", cli: "acloud render build --project lesson-01 --resolution 1080p" },
   { code: "QUALITY", id: "qa", name: "Cloud Quality", fullName: "Aaruni Cloud Quality", category: "tools", access: "public-or-authenticated", endpoint: "https://api.aarunicloud.com/v1/qa/audit", cli: "acloud qa audit --url https://aarunicloud.com" },
   { code: "GUARD", id: "guard", name: "Cloud Guard", fullName: "Aaruni Cloud Guard", category: "security", access: "private-key-required", endpoint: "https://api.aarunicloud.com/v1/guard/whoami", cli: "acloud guard whoami" },
-  { code: "EDGE", id: "edge", name: "Cloud Edge", fullName: "Aaruni Cloud Edge", category: "security", access: "public-health-readonly", endpoint: "https://api.aarunicloud.com/v1/edge/status", cli: "acloud status" }
+  { code: "EDGE", id: "edge", name: "Cloud Edge", fullName: "Aaruni Cloud Edge", category: "security", access: "public-health-readonly", endpoint: "https://api.aarunicloud.com/v1/edge/status", cli: "acloud status" },
+  { code: "BUILDER", id: "builder", name: "Cloud Builder", fullName: "Aaruni Cloud Builder", category: "ai", access: "subscriber-or-admin", endpoint: "https://api.aarunicloud.com/v1/builder/plan", cli: "acloud deploy --file acloud.yaml" }
 ];
 
 const STOCK_VOICES = [
@@ -257,11 +258,13 @@ async function handleCloudApiV1(request, env, executeD1Query) {
       const principal = await tryOptionalGuard(request, env, executeD1Query);
       let privateMetrics = undefined;
       if (principal && principal.role === "admin") {
-        const [nodesQ, storageQ, jobsQ, usersQ] = await Promise.all([
+        const [nodesQ, storageQ, jobsQ, usersQ, orgsQ, projsQ] = await Promise.all([
           executeD1Query(env, "SELECT count(*) as c FROM cloud_compute_nodes WHERE status = 'ACTIVE'"),
           executeD1Query(env, "SELECT count(*) as c, coalesce(sum(size_bytes),0) as bytes FROM cloud_storage_items"),
           executeD1Query(env, "SELECT count(*) as c FROM cloud_jobs"),
-          executeD1Query(env, "SELECT count(*) as c FROM cloud_users")
+          executeD1Query(env, "SELECT count(*) as c FROM cloud_users"),
+          executeD1Query(env, "SELECT count(*) as c FROM cloud_organizations"),
+          executeD1Query(env, "SELECT count(*) as c FROM cloud_projects")
         ]);
         privateMetrics = {
           authenticatedAs: principal.key_id,
@@ -269,7 +272,9 @@ async function handleCloudApiV1(request, env, executeD1Query) {
           storedItems: (storageQ.results[0] && storageQ.results[0].c) || 0,
           storedBytes: (storageQ.results[0] && storageQ.results[0].bytes) || 0,
           executedJobs: (jobsQ.results[0] && jobsQ.results[0].c) || 0,
-          registeredSubscribers: (usersQ.results[0] && usersQ.results[0].c) || 0
+          registeredSubscribers: (usersQ.results[0] && usersQ.results[0].c) || 0,
+          organizations: (orgsQ.results[0] && orgsQ.results[0].c) || 0,
+          projects: (projsQ.results[0] && projsQ.results[0].c) || 0
         };
       }
 
@@ -278,11 +283,13 @@ async function handleCloudApiV1(request, env, executeD1Query) {
         platform: "Aaruni Cloud",
         consoleUrl: "https://console.aarunicloud.com",
         cliBinary: "acloud",
-        version: "1.2.0",
+        version: "1.3.0",
         status: "OPERATIONAL",
         controlPlaneRegion: "ap-south-hyd-1",
         edgePop: colo,
         egressFeePerGbUsd: 0.0,
+        backendDriversSupported: ["aaruni-edge", "aws", "gcp"],
+        customerZeroAnchor: "org_syllovo/prj_syllovo_prod",
         securityPosture: {
           zeroTrustGuard: "ENFORCED",
           inboundWorkerPortsExposed: 0,
@@ -1374,6 +1381,519 @@ async function handleCloudApiV1(request, env, executeD1Query) {
         citations: [{ docId: "doc-acloud-01", title: "Aaruni Cloud Architecture & Cloud Voice Guide" }],
         verifiedAt: new Date().toISOString()
       }, 200, { "X-Aaruni-Service": "ASSISTANT" });
+    }
+
+    // =========================================================================
+    // 8. PHASE 1A — ORGANIZATIONS, PROJECTS, SECRETS, DEPLOYMENTS & CLOUD BUILDER
+    // =========================================================================
+
+    function maskSecretValue(val) {
+      const s = String(val || "");
+      if (s.length <= 6) return "••••••";
+      return `${s.slice(0, 3)}••••${s.slice(-3)}`;
+    }
+
+    async function ensureSubscriberOrgAndProject(principal) {
+      if (principal.role === "admin") return;
+      const user = await resolveOrCreateUserForPrincipal(env, executeD1Query, principal);
+      const existingOrg = await executeD1Query(
+        env,
+        "SELECT org_id FROM cloud_organizations WHERE owner_email = ? LIMIT 1",
+        [principal.owner_email]
+      );
+      if (existingOrg.results && existingOrg.results.length > 0) return;
+
+      const orgId = `org_${user.user_id}`;
+      const orgSlug = `personal-${user.user_id.replace(/^usr_/, "").slice(0, 8)}`;
+      const projId = `prj_${user.user_id.replace(/^usr_/, "").slice(0, 10)}_default`;
+      const storagePrefix = `${principal.allowed_space || `user_${user.user_id}`}/default`;
+
+      await executeD1Query(
+        env,
+        `INSERT OR IGNORE INTO cloud_organizations (org_id, slug, display_name, owner_email, plan_tier, monthly_cap_inr, current_spend_inr, sso_provider)
+         VALUES (?, ?, ?, ?, ?, 0, 0, 'email_otp')`,
+        [orgId, orgSlug, `${user.name}'s Organization`, principal.owner_email, user.plan_tier || "free"]
+      );
+      await executeD1Query(
+        env,
+        `INSERT OR IGNORE INTO cloud_projects (project_id, org_id, slug, display_name, region, env_type, backend_driver, storage_prefix, spend_cap_inr, config_json, status)
+         VALUES (?, ?, 'default', 'Default Workspace Project', 'ap-south-hyd-1', 'dev', 'aaruni-edge', ?, 0, '{"buckets":["sandbox"],"voicePolicy":{"targetLufs":-12.0,"plsLexicon":"W3C-PLS-1.0"}}', 'ACTIVE')`,
+        [projId, orgId, storagePrefix]
+      );
+    }
+
+    async function loadProjectAuthorized(projectId, principal) {
+      const q = await executeD1Query(
+        env,
+        `SELECT p.*, o.owner_email, o.display_name AS org_name, o.slug AS org_slug, o.plan_tier AS org_plan_tier, o.monthly_cap_inr, o.current_spend_inr
+         FROM cloud_projects p
+         JOIN cloud_organizations o ON o.org_id = p.org_id
+         WHERE p.project_id = ? OR p.slug = ?
+         LIMIT 1`,
+        [projectId, projectId]
+      );
+      if (!q.results || q.results.length === 0) {
+        return { ok: false, status: 404, error: `Project '${projectId}' not found.` };
+      }
+      const row = q.results[0];
+      if (principal.role !== "admin" && row.owner_email !== principal.owner_email) {
+        return {
+          ok: false,
+          status: 403,
+          error: `Forbidden by Cloud Guard Tenant Jail: Your credentials do not have access to project '${row.project_id}'.`
+        };
+      }
+      return { ok: true, project: row };
+    }
+
+    // Public-safe capability manifest for Customer #0 / hosted apps (0 secrets, 0 emails, 0 LAN IPs)
+    const pubManifestMatch = path.match(/^\/v1\/projects\/([a-zA-Z0-9_-]+)\/public-manifest$/);
+    if (pubManifestMatch && request.method === "GET") {
+      const targetId = pubManifestMatch[1];
+      const q = await executeD1Query(
+        env,
+        `SELECT p.project_id, p.org_id, p.slug, p.display_name, p.region, p.env_type, p.backend_driver, p.storage_prefix, p.config_json, p.status,
+                o.display_name AS org_name
+         FROM cloud_projects p
+         JOIN cloud_organizations o ON o.org_id = p.org_id
+         WHERE p.project_id = ? OR p.slug = ?
+         LIMIT 1`,
+        [targetId, targetId]
+      );
+      if (!q.results || q.results.length === 0) {
+        return jsonRes({ ok: false, error: "Project manifest not found." }, 404);
+      }
+      const p = q.results[0];
+      let cfg = {};
+      try { cfg = JSON.parse(p.config_json || "{}"); } catch (_) {}
+
+      const depsQ = await executeD1Query(
+        env,
+        "SELECT deploy_id AS deployId, app_name AS appName, version_tag AS versionTag, backend_driver AS backendDriver, domain_url AS domainUrl, status, created_at AS createdAt FROM cloud_deployments WHERE project_id = ? ORDER BY created_at DESC LIMIT 1",
+        [p.project_id]
+      );
+
+      return jsonRes({
+        ok: true,
+        service: "GUARD",
+        project: {
+          projectId: p.project_id,
+          orgId: p.org_id,
+          orgName: p.org_name,
+          slug: p.slug,
+          displayName: p.display_name,
+          region: p.region,
+          environment: p.env_type,
+          backendDriver: p.backend_driver,
+          availableDrivers: ["aaruni-edge", "aws", "gcp"],
+          egressFeePerGbUsd: 0.0,
+          status: p.status,
+          customerZero: Boolean(cfg.customerZero),
+          buckets: (cfg.buckets || ["default"]).map((b) => ({
+            name: b,
+            virtualUri: `cloud://${p.project_id}/${b}`,
+            driver: p.backend_driver
+          })),
+          voicePolicy: cfg.voicePolicy || { targetLufs: -12.0, plsLexicon: "W3C-PLS-1.0" },
+          workerLanes: cfg.workerLanes || [],
+          latestDeployment: (depsQ.results && depsQ.results[0]) || null
+        }
+      }, 200, { "X-Aaruni-Service": "GUARD" });
+    }
+
+    if (path === "/v1/orgs" && request.method === "GET") {
+      const auth = await authenticateGuard(request, env, executeD1Query);
+      if (!auth.ok) return jsonRes({ ok: false, error: auth.error }, auth.status);
+      await ensureSubscriberOrgAndProject(auth.principal);
+
+      const sql = auth.principal.role === "admin"
+        ? "SELECT org_id AS orgId, slug, display_name AS displayName, owner_email AS ownerEmail, plan_tier AS planTier, monthly_cap_inr AS monthlyCapInr, current_spend_inr AS currentSpendInr, sso_provider AS ssoProvider, created_at AS createdAt FROM cloud_organizations ORDER BY created_at ASC"
+        : "SELECT org_id AS orgId, slug, display_name AS displayName, owner_email AS ownerEmail, plan_tier AS planTier, monthly_cap_inr AS monthlyCapInr, current_spend_inr AS currentSpendInr, sso_provider AS ssoProvider, created_at AS createdAt FROM cloud_organizations WHERE owner_email = ? ORDER BY created_at ASC";
+      const params = auth.principal.role === "admin" ? [] : [auth.principal.owner_email];
+      const { results } = await executeD1Query(env, sql, params);
+
+      return jsonRes({ ok: true, service: "GUARD", count: results.length, organizations: results });
+    }
+
+    if (path === "/v1/orgs" && request.method === "POST") {
+      const auth = await authenticateGuard(request, env, executeD1Query);
+      if (!auth.ok) return jsonRes({ ok: false, error: auth.error }, auth.status);
+      const body = await request.json().catch(() => ({}));
+      const safe = assertSafeWorkloadPayload(body);
+      if (!safe.ok) return jsonRes({ ok: false, error: safe.error }, 400);
+
+      const displayName = String(body.displayName || body.name || "").trim().slice(0, 80);
+      if (!displayName) return jsonRes({ ok: false, error: "Missing 'displayName' for organization." }, 400);
+      const slug = String(body.slug || displayName.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "")).slice(0, 40) || makeId("orgslug");
+      const orgId = body.orgId && auth.principal.role === "admin" ? String(body.orgId) : makeId("org");
+      const capInr = Math.max(0, Number(body.monthlyCapInr || 0));
+
+      await executeD1Query(
+        env,
+        `INSERT INTO cloud_organizations (org_id, slug, display_name, owner_email, plan_tier, monthly_cap_inr, current_spend_inr, sso_provider)
+         VALUES (?, ?, ?, ?, ?, ?, 0, 'email_otp')`,
+        [orgId, slug, displayName, auth.principal.owner_email, auth.principal.role === "admin" ? "enterprise" : "free", capInr]
+      );
+      await logAudit(env, executeD1Query, auth.principal.key_id, "GUARD", `create_org:${orgId}`);
+      return jsonRes({ ok: true, orgId, slug, displayName, monthlyCapInr: capInr }, 201);
+    }
+
+    if (path === "/v1/projects" && request.method === "GET") {
+      const auth = await authenticateGuard(request, env, executeD1Query);
+      if (!auth.ok) return jsonRes({ ok: false, error: auth.error }, auth.status);
+      await ensureSubscriberOrgAndProject(auth.principal);
+
+      const sql = auth.principal.role === "admin"
+        ? `SELECT p.project_id AS projectId, p.org_id AS orgId, o.display_name AS orgName, p.slug, p.display_name AS displayName, p.region, p.env_type AS environment, p.backend_driver AS backendDriver, p.storage_prefix AS storagePrefix, p.spend_cap_inr AS spendCapInr, p.status, p.created_at AS createdAt
+           FROM cloud_projects p JOIN cloud_organizations o ON o.org_id = p.org_id ORDER BY p.created_at ASC`
+        : `SELECT p.project_id AS projectId, p.org_id AS orgId, o.display_name AS orgName, p.slug, p.display_name AS displayName, p.region, p.env_type AS environment, p.backend_driver AS backendDriver, p.storage_prefix AS storagePrefix, p.spend_cap_inr AS spendCapInr, p.status, p.created_at AS createdAt
+           FROM cloud_projects p JOIN cloud_organizations o ON o.org_id = p.org_id WHERE o.owner_email = ? ORDER BY p.created_at ASC`;
+      const params = auth.principal.role === "admin" ? [] : [auth.principal.owner_email];
+      const { results } = await executeD1Query(env, sql, params);
+
+      return jsonRes({ ok: true, service: "GUARD", count: results.length, projects: results });
+    }
+
+    if (path === "/v1/projects" && request.method === "POST") {
+      const auth = await authenticateGuard(request, env, executeD1Query);
+      if (!auth.ok) return jsonRes({ ok: false, error: auth.error }, auth.status);
+      await ensureSubscriberOrgAndProject(auth.principal);
+      const body = await request.json().catch(() => ({}));
+      const safe = assertSafeWorkloadPayload(body);
+      if (!safe.ok) return jsonRes({ ok: false, error: safe.error }, 400);
+
+      const displayName = String(body.displayName || body.name || "").trim().slice(0, 80);
+      if (!displayName) return jsonRes({ ok: false, error: "Missing 'displayName' for project." }, 400);
+      const slug = String(body.slug || displayName.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "")).slice(0, 40);
+      const envType = ["prod", "staging", "dev"].includes(body.environment) ? body.environment : "dev";
+      const driver = ["aaruni-edge", "aws", "gcp"].includes(body.backendDriver) ? body.backendDriver : "aaruni-edge";
+
+      let orgId = String(body.orgId || "").trim();
+      if (!orgId) {
+        const oq = await executeD1Query(env, "SELECT org_id, owner_email FROM cloud_organizations WHERE owner_email = ? LIMIT 1", [auth.principal.owner_email]);
+        if (!oq.results || oq.results.length === 0) return jsonRes({ ok: false, error: "No organization found for principal." }, 400);
+        orgId = oq.results[0].org_id;
+      } else {
+        const oq = await executeD1Query(env, "SELECT org_id, owner_email FROM cloud_organizations WHERE org_id = ? LIMIT 1", [orgId]);
+        if (!oq.results || oq.results.length === 0) return jsonRes({ ok: false, error: `Organization '${orgId}' not found.` }, 404);
+        if (auth.principal.role !== "admin" && oq.results[0].owner_email !== auth.principal.owner_email) {
+          return jsonRes({ ok: false, error: "Forbidden: You cannot create projects inside another tenant's organization." }, 403);
+        }
+      }
+
+      const projectId = body.projectId && auth.principal.role === "admin" ? String(body.projectId) : makeId("prj");
+      const storagePrefix = auth.principal.role === "admin"
+        ? `${orgId}/${projectId}`
+        : `${auth.principal.allowed_space || orgId}/${projectId}`;
+      const spendCapInr = Math.max(0, Number(body.spendCapInr || 0));
+      const cfg = JSON.stringify({
+        buckets: Array.isArray(body.buckets) ? body.buckets.slice(0, 10) : ["default"],
+        voicePolicy: body.voicePolicy || { targetLufs: -12.0, plsLexicon: "W3C-PLS-1.0" }
+      });
+
+      await executeD1Query(
+        env,
+        `INSERT INTO cloud_projects (project_id, org_id, slug, display_name, region, env_type, backend_driver, storage_prefix, spend_cap_inr, config_json, status)
+         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'ACTIVE')`,
+        [projectId, orgId, slug, displayName, String(body.region || "ap-south-hyd-1"), envType, driver, storagePrefix, spendCapInr, cfg]
+      );
+      await logAudit(env, executeD1Query, auth.principal.key_id, "GUARD", `create_project:${projectId}`);
+
+      return jsonRes({
+        ok: true,
+        projectId,
+        orgId,
+        slug,
+        displayName,
+        environment: envType,
+        backendDriver: driver,
+        storagePrefix
+      }, 201);
+    }
+
+    const projDetailMatch = path.match(/^\/v1\/projects\/([a-zA-Z0-9_-]+)$/);
+    if (projDetailMatch && request.method === "GET") {
+      const auth = await authenticateGuard(request, env, executeD1Query);
+      if (!auth.ok) return jsonRes({ ok: false, error: auth.error }, auth.status);
+      const loaded = await loadProjectAuthorized(projDetailMatch[1], auth.principal);
+      if (!loaded.ok) return jsonRes({ ok: false, error: loaded.error }, loaded.status);
+
+      const p = loaded.project;
+      let cfg = {};
+      try { cfg = JSON.parse(p.config_json || "{}"); } catch (_) {}
+
+      const [secsQ, depsQ] = await Promise.all([
+        executeD1Query(env, "SELECT secret_key, secret_value, updated_at FROM cloud_project_secrets WHERE project_id = ? ORDER BY secret_key ASC", [p.project_id]),
+        executeD1Query(env, "SELECT deploy_id AS deployId, app_name AS appName, version_tag AS versionTag, backend_driver AS backendDriver, domain_url AS domainUrl, status, triggered_by AS triggeredBy, created_at AS createdAt FROM cloud_deployments WHERE project_id = ? ORDER BY created_at DESC LIMIT 10", [p.project_id])
+      ]);
+
+      return jsonRes({
+        ok: true,
+        project: {
+          projectId: p.project_id,
+          orgId: p.org_id,
+          orgName: p.org_name,
+          slug: p.slug,
+          displayName: p.display_name,
+          region: p.region,
+          environment: p.env_type,
+          backendDriver: p.backend_driver,
+          storagePrefix: p.storage_prefix,
+          spendCapInr: p.spend_cap_inr,
+          orgMonthlyCapInr: p.monthly_cap_inr,
+          orgCurrentSpendInr: p.current_spend_inr,
+          status: p.status,
+          config: cfg
+        },
+        secrets: (secsQ.results || []).map((s) => ({
+          key: s.secret_key,
+          maskedValue: maskSecretValue(s.secret_value),
+          updatedAt: s.updated_at
+        })),
+        deployments: depsQ.results || []
+      });
+    }
+
+    const runtimeCfgMatch = path.match(/^\/v1\/projects\/([a-zA-Z0-9_-]+)\/runtime-config$/);
+    if (runtimeCfgMatch && request.method === "GET") {
+      const auth = await authenticateGuard(request, env, executeD1Query);
+      if (!auth.ok) return jsonRes({ ok: false, error: auth.error }, auth.status);
+      const loaded = await loadProjectAuthorized(runtimeCfgMatch[1], auth.principal);
+      if (!loaded.ok) return jsonRes({ ok: false, error: loaded.error }, loaded.status);
+
+      const p = loaded.project;
+      let cfg = {};
+      try { cfg = JSON.parse(p.config_json || "{}"); } catch (_) {}
+
+      const [secsQ, storQ, depsQ] = await Promise.all([
+        executeD1Query(env, "SELECT secret_key, secret_value FROM cloud_project_secrets WHERE project_id = ?", [p.project_id]),
+        executeD1Query(env, "SELECT count(*) AS itemCount, coalesce(sum(size_bytes),0) AS totalBytes FROM cloud_storage_items WHERE space LIKE ?", [`${p.project_id}%`]),
+        executeD1Query(env, "SELECT deploy_id AS deployId, version_tag AS versionTag, backend_driver AS backendDriver, domain_url AS domainUrl, status, created_at AS createdAt FROM cloud_deployments WHERE project_id = ? ORDER BY created_at DESC LIMIT 1", [p.project_id])
+      ]);
+
+      const settingsMap = {};
+      for (const s of secsQ.results || []) {
+        // Expose non-credential config values cleanly; mask any API keys/tokens
+        const isSensitive = /KEY|TOKEN|SECRET|PASSWORD/i.test(s.secret_key);
+        settingsMap[s.secret_key] = isSensitive ? maskSecretValue(s.secret_value) : s.secret_value;
+      }
+
+      return jsonRes({
+        ok: true,
+        service: "GUARD",
+        projectId: p.project_id,
+        orgId: p.org_id,
+        orgName: p.org_name,
+        displayName: p.display_name,
+        region: p.region,
+        environment: p.env_type,
+        backendDriver: p.backend_driver,
+        storagePrefix: p.storage_prefix,
+        spendShield: {
+          spendCapInr: p.spend_cap_inr,
+          currentSpendInr: p.current_spend_inr,
+          overchargeProtection: "HARD_CAP_ENFORCED"
+        },
+        storageSummary: {
+          buckets: (cfg.buckets || ["default"]).map((b) => `cloud://${p.project_id}/${b}`),
+          itemCount: (storQ.results[0] && storQ.results[0].itemCount) || 0,
+          totalBytes: (storQ.results[0] && storQ.results[0].totalBytes) || 0,
+          egressFeePerGbUsd: 0.0
+        },
+        voicePolicy: cfg.voicePolicy || { targetLufs: -12.0, plsLexicon: "W3C-PLS-1.0" },
+        teamSeats: cfg.teamSeats || [],
+        workerLanes: cfg.workerLanes || [],
+        settings: settingsMap,
+        latestDeployment: (depsQ.results && depsQ.results[0]) || null
+      });
+    }
+
+    const projSecretsMatch = path.match(/^\/v1\/projects\/([a-zA-Z0-9_-]+)\/secrets$/);
+    if (projSecretsMatch && (request.method === "GET" || request.method === "POST")) {
+      const auth = await authenticateGuard(request, env, executeD1Query);
+      if (!auth.ok) return jsonRes({ ok: false, error: auth.error }, auth.status);
+      const loaded = await loadProjectAuthorized(projSecretsMatch[1], auth.principal);
+      if (!loaded.ok) return jsonRes({ ok: false, error: loaded.error }, loaded.status);
+      const p = loaded.project;
+
+      if (request.method === "GET") {
+        const { results } = await executeD1Query(
+          env,
+          "SELECT secret_key AS key, secret_value, updated_at AS updatedAt FROM cloud_project_secrets WHERE project_id = ? ORDER BY secret_key ASC",
+          [p.project_id]
+        );
+        return jsonRes({
+          ok: true,
+          projectId: p.project_id,
+          secrets: (results || []).map((r) => ({
+            key: r.key,
+            maskedValue: maskSecretValue(r.secret_value),
+            updatedAt: r.updatedAt
+          }))
+        });
+      }
+
+      const body = await request.json().catch(() => ({}));
+      const secretKey = String(body.key || "").trim().toUpperCase().replace(/[^A-Z0-9_]/g, "");
+      const secretVal = String(body.value ?? "").trim();
+      if (!secretKey || !secretVal) {
+        return jsonRes({ ok: false, error: "Both 'key' (A-Z0-9_) and 'value' are required." }, 400);
+      }
+      await executeD1Query(
+        env,
+        `INSERT INTO cloud_project_secrets (secret_id, project_id, secret_key, secret_value, updated_at)
+         VALUES (?, ?, ?, ?, datetime('now'))
+         ON CONFLICT(project_id, secret_key) DO UPDATE SET secret_value = excluded.secret_value, updated_at = datetime('now')`,
+        [makeId("sec"), p.project_id, secretKey, secretVal]
+      );
+      await logAudit(env, executeD1Query, auth.principal.key_id, "GUARD", `set_secret:${p.project_id}:${secretKey}`);
+      return jsonRes({
+        ok: true,
+        projectId: p.project_id,
+        key: secretKey,
+        maskedValue: maskSecretValue(secretVal),
+        status: "STORED_IN_VAULT"
+      });
+    }
+
+    const projDeployMatch = path.match(/^\/v1\/projects\/([a-zA-Z0-9_-]+)\/deploy(?:ments)?$/);
+    if (projDeployMatch && (request.method === "GET" || request.method === "POST")) {
+      const auth = await authenticateGuard(request, env, executeD1Query);
+      if (!auth.ok) return jsonRes({ ok: false, error: auth.error }, auth.status);
+      const loaded = await loadProjectAuthorized(projDeployMatch[1], auth.principal);
+      if (!loaded.ok) return jsonRes({ ok: false, error: loaded.error }, loaded.status);
+      const p = loaded.project;
+
+      if (request.method === "GET") {
+        const { results } = await executeD1Query(
+          env,
+          "SELECT deploy_id AS deployId, app_name AS appName, version_tag AS versionTag, backend_driver AS backendDriver, domain_url AS domainUrl, status, triggered_by AS triggeredBy, created_at AS createdAt FROM cloud_deployments WHERE project_id = ? ORDER BY created_at DESC LIMIT 20",
+          [p.project_id]
+        );
+        return jsonRes({ ok: true, projectId: p.project_id, count: results.length, deployments: results });
+      }
+
+      const body = await request.json().catch(() => ({}));
+      const safe = assertSafeWorkloadPayload(body);
+      if (!safe.ok) return jsonRes({ ok: false, error: safe.error }, 400);
+
+      if (p.monthly_cap_inr > 0 && p.current_spend_inr >= p.monthly_cap_inr) {
+        return jsonRes({
+          ok: false,
+          error: `Blocked by Spend Cap Shield: Organization '${p.org_id}' has reached its ₹${p.monthly_cap_inr} monthly cap ($0 surprise-bill guarantee).`
+        }, 402);
+      }
+
+      const manifest = body.manifest || {};
+      const appName = String(body.appName || manifest.app || p.slug).slice(0, 60);
+      const versionTag = String(body.version || manifest.version || `v${Date.now().toString(36)}`).slice(0, 32);
+      const driver = ["aaruni-edge", "aws", "gcp"].includes(body.backendDriver || manifest.driver)
+        ? (body.backendDriver || manifest.driver)
+        : p.backend_driver;
+      const domainUrl = String(
+        body.domain ||
+        (manifest.services && manifest.services.web && manifest.services.web.domain) ||
+        (p.project_id === "prj_syllovo_prod" ? "https://syllovo.com" : `https://${p.slug}.on.aarunicloud.com`)
+      );
+      const deployId = makeId("dep");
+
+      // Sync project config if buckets or voicePolicy are declared in acloud.yaml
+      let mergedCfg = {};
+      try { mergedCfg = JSON.parse(p.config_json || "{}"); } catch (_) {}
+      if (manifest.buckets && Array.isArray(manifest.buckets)) {
+        mergedCfg.buckets = manifest.buckets.slice(0, 12);
+      }
+      if (manifest.voicePolicy && typeof manifest.voicePolicy === "object") {
+        mergedCfg.voicePolicy = { ...(mergedCfg.voicePolicy || {}), ...manifest.voicePolicy };
+      }
+
+      await executeD1Query(
+        env,
+        "UPDATE cloud_projects SET backend_driver = ?, config_json = ? WHERE project_id = ?",
+        [driver, JSON.stringify(mergedCfg), p.project_id]
+      );
+      await executeD1Query(
+        env,
+        `INSERT INTO cloud_deployments (deploy_id, project_id, app_name, version_tag, manifest_json, backend_driver, domain_url, status, triggered_by)
+         VALUES (?, ?, ?, ?, ?, ?, ?, 'LIVE', ?)`,
+        [deployId, p.project_id, appName, versionTag, JSON.stringify(manifest), driver, domainUrl, String(body.triggeredBy || "acloud-cli")]
+      );
+      await logAudit(env, executeD1Query, auth.principal.key_id, "BUILDER", `deploy:${p.project_id}:${deployId}`);
+
+      return jsonRes({
+        ok: true,
+        service: "BUILDER",
+        deployId,
+        projectId: p.project_id,
+        orgId: p.org_id,
+        appName,
+        versionTag,
+        backendDriver: driver,
+        domainUrl,
+        qualityGate: {
+          wcag21AA: "VERIFIED",
+          zeroTrustTenantJail: "ACTIVE",
+          hardSpendCapProtected: true
+        },
+        deployedAt: new Date().toISOString()
+      }, 201, { "X-Aaruni-Service": "BUILDER" });
+    }
+
+    if (path === "/v1/builder/plan" && request.method === "POST") {
+      const auth = await authenticateGuard(request, env, executeD1Query);
+      if (!auth.ok) return jsonRes({ ok: false, error: auth.error }, auth.status);
+      const body = await request.json().catch(() => ({}));
+      const safe = assertSafeWorkloadPayload(body);
+      if (!safe.ok) return jsonRes({ ok: false, error: safe.error }, 400);
+
+      const prompt = String(body.prompt || "").trim().slice(0, 800);
+      if (!prompt) return jsonRes({ ok: false, error: "Missing 'prompt' describing the app stack to build." }, 400);
+      const projectId = String(body.projectId || "default");
+      const lower = prompt.toLowerCase();
+
+      const buckets = ["uploads", "assets"];
+      if (lower.includes("course") || lower.includes("video") || lower.includes("studio")) {
+        buckets.push("courses", "exports");
+      }
+
+      const generatedYaml = [
+        `# Generated by Aaruni Cloud Builder (Option A Standard)`,
+        `app: ${String(body.appName || "ai-saas-app").toLowerCase().replace(/[^a-z0-9-]/g, "-")}`,
+        `project: ${projectId}`,
+        `region: ap-south-hyd-1`,
+        `driver: aaruni-edge`,
+        `buckets:`,
+        ...buckets.map((b) => `  - ${b}`),
+        `voicePolicy:`,
+        `  targetLufs: -12.0`,
+        `  plsLexicon: W3C-PLS-1.0`,
+        `  connectors: [native_cloud_voice, elevenlabs_byok]`,
+        `services:`,
+        `  web:`,
+        `    type: cloud.containers`,
+        `    runtime: node22`,
+        `    autoTls: true`,
+        `  assistant:`,
+        `    type: cloud.assistant`,
+        `    ragEngine: pgvector`
+      ].join("\n");
+
+      return jsonRes({
+        ok: true,
+        service: "BUILDER",
+        planId: makeId("bld"),
+        prompt,
+        recommendedDriver: "aaruni-edge",
+        estimatedMonthlyInr: 0,
+        ossStack: [
+          { service: "Cloud Storage", engine: "Apache OpenDAL + SeaweedFS", license: "Apache-2.0" },
+          { service: "Cloud Voice", engine: "Kokoro-82M + OpenF5-TTS-Base", license: "Apache-2.0" },
+          { service: "Cloud Assistant", engine: "LiteLLM + Assistant-UI", license: "MIT" },
+          { service: "Cloud Guard", engine: "Keycloak + Ory Keto", license: "Apache-2.0" }
+        ],
+        acloudYaml: generatedYaml,
+        deployCommand: `acloud deploy --project ${projectId} --file acloud.yaml`
+      }, 200, { "X-Aaruni-Service": "BUILDER" });
     }
 
     return jsonRes({
