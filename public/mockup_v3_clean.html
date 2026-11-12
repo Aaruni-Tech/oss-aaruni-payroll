@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MyAaruni — Simple &amp; Clean Mockup (V3.2)</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif; background: #f8fafc; color: #0f172a; }
+    .card { background: #ffffff; border: 1px solid #e2e8f0; border-radius: 16px; box-shadow: 0 1px 3px rgba(15, 23, 42, 0.04); }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col">
+
+  <!-- STICKY TOP NAVIGATION BAR (1-LINE ON DESKTOP & MOBILE) -->
+  <header class="sticky top-0 z-50 bg-white/95 backdrop-blur border-b border-slate-200 px-3 sm:px-6 py-2.5">
+    <div class="max-w-5xl mx-auto flex items-center justify-between gap-2 flex-wrap">
+      <button class="inline-flex items-center gap-1.5 text-xs font-semibold text-slate-700 hover:text-slate-900 bg-slate-100 hover:bg-slate-200 px-3 py-2 rounded-xl transition cursor-pointer whitespace-nowrap">
+        <span>←</span>
+        <span>All Staff</span>
+      </button>
+
+      <div class="inline-flex items-center bg-slate-100 rounded-xl p-1 border border-slate-200">
+        <button class="px-2.5 py-1.5 text-xs font-semibold text-slate-600 hover:text-slate-900 hover:bg-white rounded-lg transition cursor-pointer whitespace-nowrap">
+          ◀ <span class="hidden sm:inline">Prev</span>
+        </button>
+        <select class="bg-white text-slate-900 text-xs font-semibold px-2 sm:px-3 py-1.5 rounded-lg border border-slate-200 mx-1 focus:outline-none max-w-[175px] sm:max-w-none">
+          <option>Chukka Nandini (AAR-0004)</option>
+          <option>Janhavi Varma (AAR-0005)</option>
+          <option>Koppula Ramya (AAR-0006)</option>
+          <option selected>Shaik Ali Moulali (AAR-0008)</option>
+        </select>
+        <button class="px-2.5 py-1.5 text-xs font-semibold text-slate-600 hover:text-slate-900 hover:bg-white rounded-lg transition cursor-pointer whitespace-nowrap">
+          <span class="hidden sm:inline">Next</span> ▶
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main class="max-w-5xl w-full mx-auto px-4 sm:px-6 py-6 sm:py-8 space-y-8">
+
+    <!-- 1. EMPLOYEE VIEW: CLEAN ALIGNMENT, ZERO BULLET WRAPPING -->
+    <div class="space-y-4">
+      <div class="text-xs font-semibold uppercase tracking-wider text-slate-400">1. Employee View (Aligned &amp; Uncrowded)</div>
+
+      <section class="card p-5 sm:p-6 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+        <div class="flex items-start sm:items-center gap-4">
+          <img
+            src="photos/AAR-0008_v2.jpeg?v=20261111_v5"
+            alt="Shaik Ali Moulali"
+            class="w-16 h-16 sm:w-20 sm:h-20 rounded-2xl object-cover border border-slate-200 shadow-sm shrink-0 bg-slate-100"
+          />
+          <div class="space-y-1.5 min-w-0">
+            <div class="flex items-center gap-2 flex-wrap">
+              <h1 class="text-lg sm:text-xl font-bold text-slate-900">Shaik Ali Moulali</h1>
+              <span class="text-[11px] font-mono font-semibold text-slate-500 bg-slate-100 px-2 py-0.5 rounded-md whitespace-nowrap">AAR-0008</span>
+            </div>
+            <p class="text-xs sm:text-sm text-slate-700 font-medium">IT &amp; Workplace Operations Lead</p>
+            <div class="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-3 text-xs text-slate-500">
+              <span>Reports to <strong class="text-slate-700 font-medium">Rupesh Tiwari</strong></span>
+              <span class="hidden sm:inline text-slate-300">|</span>
+              <span>Joined <strong class="text-slate-700 font-medium">09 Nov 2026</strong></span>
+              <span class="hidden sm:inline text-slate-300">|</span>
+              <span class="text-emerald-700 font-semibold">Tenure: 4 days in company</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="flex items-center gap-2.5 shrink-0 pt-2 sm:pt-0 border-t sm:border-t-0 border-slate-100">
+          <button class="bg-slate-900 hover:bg-slate-800 text-white text-xs font-semibold px-4 py-2 rounded-xl cursor-pointer">ID Card</button>
+          <button class="bg-white hover:bg-slate-50 text-slate-700 border border-slate-200 text-xs font-semibold px-4 py-2 rounded-xl cursor-pointer">Password</button>
+        </div>
+      </section>
+
+      <!-- 4-TAB BAR: 2x2 GRID ON MOBILE (ZERO CUTOFF), 1 ROW ON DESKTOP -->
+      <nav class="grid grid-cols-2 sm:flex sm:items-center gap-2 text-xs font-semibold">
+        <button class="bg-slate-900 text-white px-4 py-2.5 rounded-xl text-center cursor-pointer">Home &amp; Time</button>
+        <button class="bg-white text-slate-600 border border-slate-200 hover:bg-slate-50 px-4 py-2.5 rounded-xl text-center cursor-pointer">Attendance</button>
+        <button class="bg-white text-slate-600 border border-slate-200 hover:bg-slate-50 px-4 py-2.5 rounded-xl text-center cursor-pointer">Salary &amp; Slips</button>
+        <button class="bg-white text-slate-600 border border-slate-200 hover:bg-slate-50 px-4 py-2.5 rounded-xl text-center cursor-pointer">Leave &amp; Loan</button>
+      </nav>
+
+      <!-- 3 SIMPLE CARDS -->
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-5">
+        <div class="card p-5 sm:p-6 flex flex-col justify-between gap-4">
+          <div>
+            <span class="inline-block text-[11px] font-semibold text-amber-700 bg-amber-50 px-2.5 py-1 rounded-full">Today &bull; Thu, 12 Nov</span>
+            <h2 class="text-lg font-bold text-slate-900 mt-3">Timesheet Due</h2>
+            <p class="text-xs text-slate-500 mt-1">10:00 AM – 7:00 PM (8h shift)</p>
+          </div>
+          <button class="w-full bg-orange-600 hover:bg-orange-700 text-white text-sm font-semibold py-3 rounded-xl cursor-pointer shadow-sm">
+            + Enter Today's Time
+          </button>
+        </div>
+
+        <div class="card p-5 sm:p-6 flex flex-col justify-between gap-4">
+          <div>
+            <span class="text-xs font-medium text-slate-500">November Earnings</span>
+            <div class="text-2xl font-bold text-slate-900 mt-2">₹2,500 <span class="text-xs font-normal text-slate-500">earned so far</span></div>
+            <p class="text-xs text-slate-500 mt-1">Monthly Salary: <strong class="text-slate-800">₹25,000</strong> (₹833 / day)</p>
+          </div>
+          <div class="text-xs font-semibold text-emerald-700 bg-emerald-50 px-3 py-2 rounded-xl">
+            3 Payable Days Logged (24 hrs)
+          </div>
+        </div>
+
+        <div class="card p-5 sm:p-6 flex flex-col justify-between gap-4">
+          <div>
+            <div class="flex items-center justify-between">
+              <span class="text-xs font-medium text-slate-500">Recent Work</span>
+              <a href="#" class="text-xs font-semibold text-slate-900 hover:underline">Full log →</a>
+            </div>
+            <div class="mt-3 space-y-2.5 text-xs">
+              <div class="flex items-center justify-between py-1.5 border-b border-slate-100">
+                <span class="font-medium text-slate-700">11 Nov</span>
+                <span class="text-slate-500">10:00 – 19:00</span>
+                <span class="font-semibold text-emerald-700">8h ✓</span>
+              </div>
+              <div class="flex items-center justify-between py-1.5">
+                <span class="font-medium text-slate-700">10 Nov</span>
+                <span class="text-slate-500">10:00 – 19:00</span>
+                <span class="font-semibold text-emerald-700">8h ✓</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 2. ADMIN DASHBOARD: TEAM DIRECTORY WITH ACTUAL ID PHOTOS (ZERO TRUNCATION) -->
+    <div class="space-y-4 pt-4 border-t border-slate-200">
+      <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-1">
+        <div class="text-xs font-semibold uppercase tracking-wider text-slate-400">2. Admin Dashboard — Team Directory</div>
+        <div class="text-xs text-slate-500">
+          Accrued: <strong class="text-slate-900">₹14,258</strong> &bull; Monthly Total: <strong class="text-slate-900">₹58,000</strong>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <!-- Nandini -->
+        <div class="card p-4 sm:p-5 flex items-center justify-between gap-3 hover:border-slate-300 transition">
+          <div class="flex items-center gap-3.5 min-w-0">
+            <img src="photos/AAR-0004.jpeg?v=20261111_v5" alt="Chukka Nandini" class="w-14 h-14 sm:w-16 sm:h-16 rounded-2xl object-cover border border-slate-200 shrink-0 bg-slate-100" />
+            <div class="min-w-0 space-y-0.5">
+              <div class="flex items-center gap-2 flex-wrap">
+                <h3 class="font-bold text-slate-900 text-sm">Chukka Nandini</h3>
+                <span class="text-[11px] font-mono text-slate-500 bg-slate-100 px-1.5 py-0.5 rounded whitespace-nowrap">AAR-0004</span>
+              </div>
+              <p class="text-xs text-slate-600">Technical Team Lead &bull; ₹12,500/mo</p>
+              <p class="text-[11px] text-slate-400">Joined 28 Dec 2025 (10m 15d)</p>
+            </div>
+          </div>
+          <button class="text-xs font-semibold text-slate-700 bg-slate-100 hover:bg-slate-200 px-3 py-2 rounded-xl shrink-0 cursor-pointer whitespace-nowrap">View →</button>
+        </div>
+
+        <!-- Janhavi -->
+        <div class="card p-4 sm:p-5 flex items-center justify-between gap-3 hover:border-slate-300 transition">
+          <div class="flex items-center gap-3.5 min-w-0">
+            <img src="photos/AAR-0005.jpeg?v=20261111_v5" alt="Janhavi Varma" class="w-14 h-14 sm:w-16 sm:h-16 rounded-2xl object-cover border border-slate-200 shrink-0 bg-slate-100" />
+            <div class="min-w-0 space-y-0.5">
+              <div class="flex items-center gap-2 flex-wrap">
+                <h3 class="font-bold text-slate-900 text-sm">Janhavi Varma</h3>
+                <span class="text-[11px] font-mono text-slate-500 bg-slate-100 px-1.5 py-0.5 rounded whitespace-nowrap">AAR-0005</span>
+              </div>
+              <p class="text-xs text-slate-600">Technical Associate &bull; ₹12,000/mo</p>
+              <p class="text-[11px] text-slate-400">Joined 21 Apr 2026 (6m 22d)</p>
+            </div>
+          </div>
+          <button class="text-xs font-semibold text-slate-700 bg-slate-100 hover:bg-slate-200 px-3 py-2 rounded-xl shrink-0 cursor-pointer whitespace-nowrap">View →</button>
+        </div>
+
+        <!-- Ramya -->
+        <div class="card p-4 sm:p-5 flex items-center justify-between gap-3 hover:border-slate-300 transition">
+          <div class="flex items-center gap-3.5 min-w-0">
+            <img src="photos/AAR-0006.jpeg?v=20261111_v5" alt="Koppula Ramya" class="w-14 h-14 sm:w-16 sm:h-16 rounded-2xl object-cover border border-slate-200 shrink-0 bg-slate-100" />
+            <div class="min-w-0 space-y-0.5">
+              <div class="flex items-center gap-2 flex-wrap">
+                <h3 class="font-bold text-slate-900 text-sm">Koppula Ramya</h3>
+                <span class="text-[11px] font-mono text-slate-500 bg-slate-100 px-1.5 py-0.5 rounded whitespace-nowrap">AAR-0006</span>
+              </div>
+              <p class="text-xs text-slate-600">Technical Associate &bull; ₹8,500/mo</p>
+              <p class="text-[11px] text-slate-400">Joined 03 Aug 2026 (3m 9d)</p>
+            </div>
+          </div>
+          <button class="text-xs font-semibold text-slate-700 bg-slate-100 hover:bg-slate-200 px-3 py-2 rounded-xl shrink-0 cursor-pointer whitespace-nowrap">View →</button>
+        </div>
+
+        <!-- Ali -->
+        <div class="card p-4 sm:p-5 flex items-center justify-between gap-3 hover:border-slate-300 transition">
+          <div class="flex items-center gap-3.5 min-w-0">
+            <img src="photos/AAR-0008_v2.jpeg?v=20261111_v5" alt="Shaik Ali Moulali" class="w-14 h-14 sm:w-16 sm:h-16 rounded-2xl object-cover border border-slate-200 shrink-0 bg-slate-100" />
+            <div class="min-w-0 space-y-0.5">
+              <div class="flex items-center gap-2 flex-wrap">
+                <h3 class="font-bold text-slate-900 text-sm">Shaik Ali Moulali</h3>
+                <span class="text-[11px] font-mono text-slate-500 bg-slate-100 px-1.5 py-0.5 rounded whitespace-nowrap">AAR-0008</span>
+              </div>
+              <p class="text-xs text-slate-600">IT &amp; Workplace Ops &bull; ₹25,000/mo</p>
+              <p class="text-[11px] text-slate-400">Joined 09 Nov 2026 (4 days)</p>
+            </div>
+          </div>
+          <button class="text-xs font-semibold text-slate-700 bg-slate-100 hover:bg-slate-200 px-3 py-2 rounded-xl shrink-0 cursor-pointer whitespace-nowrap">View →</button>
+        </div>
+      </div>
+    </div>
+
+  </main>
+</body>
+</html>
