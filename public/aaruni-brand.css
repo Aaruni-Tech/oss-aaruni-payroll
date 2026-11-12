@@ -9,6 +9,7 @@
   --at-surface-subtle: #131d31;
   --at-surface-muted: #1e293b;
   --at-surface-hover: #293548;
+  --at-surface-glass: rgba(15, 23, 42, 0.90);
   --at-text: #f8fafc;
   --at-text-secondary: #cbd5e1;
   --at-text-muted: #94a3b8;
@@ -17,9 +18,22 @@
   --at-primary: #fe5f01;
   --at-primary-hover: #ea580c;
   --at-primary-fg: #ffffff;
+  --at-blue: #0284c7;
+  --at-blue-hover: #0369a1;
+  --at-blue-text: #38bdf8;
+  --at-blue-soft: rgba(2, 132, 199, 0.16);
+  --at-emerald: #10b981;
+  --at-emerald-text: #34d399;
+  --at-emerald-soft: rgba(16, 185, 129, 0.15);
+  --at-violet: #8b5cf6;
+  --at-violet-text: #c084fc;
+  --at-violet-soft: rgba(139, 92, 246, 0.15);
+  --at-orange-text: #fb923c;
+  --at-orange-soft: rgba(254, 95, 1, 0.15);
   --at-badge-bg: rgba(254, 95, 1, 0.15);
   --at-badge-fg: #ff8533;
   --at-shadow: 0 4px 16px rgba(0, 0, 0, 0.5), 0 0 20px rgba(254, 95, 1, 0.12);
+  --at-card-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.55);
   color-scheme: dark;
 }
 
@@ -29,17 +43,31 @@
   --at-surface-subtle: #f1f5f9;
   --at-surface-muted: #e2e8f0;
   --at-surface-hover: #cbd5e1;
+  --at-surface-glass: rgba(255, 255, 255, 0.94);
   --at-text: #0f172a;
   --at-text-secondary: #334155;
-  --at-text-muted: #64748b;
+  --at-text-muted: #475569;
   --at-border: #e2e8f0;
   --at-border-strong: #fe5f01;
   --at-primary: #fe5f01;
   --at-primary-hover: #ea580c;
   --at-primary-fg: #ffffff;
+  --at-blue: #0284c7;
+  --at-blue-hover: #0369a1;
+  --at-blue-text: #0369a1;
+  --at-blue-soft: #e0f2fe;
+  --at-emerald: #059669;
+  --at-emerald-text: #047857;
+  --at-emerald-soft: #ecfdf5;
+  --at-violet: #7c3aed;
+  --at-violet-text: #6d28d9;
+  --at-violet-soft: #f5f3ff;
+  --at-orange-text: #c2410c;
+  --at-orange-soft: #fff7ed;
   --at-badge-bg: #fff7ed;
   --at-badge-fg: #c2410c;
   --at-shadow: 0 1px 3px rgba(15, 23, 42, 0.06), 0 4px 14px rgba(254, 95, 1, 0.08);
+  --at-card-shadow: 0 4px 20px rgba(15, 23, 42, 0.06), 0 1px 3px rgba(15, 23, 42, 0.04);
   color-scheme: light;
 }
 
@@ -728,3 +756,74 @@ body {
   color: #fbbf24 !important;
   border-color: #78350f !important;
 }
+
+/* ========================================================================= */
+/* SHARED CROSS-PROPERTY AARUNI SUITE PRIMITIVES                             */
+/* Used across aarunicloud.com, console.aarunicloud.com, aarunitech.com,     */
+/* and my.aarunitech.com                                                     */
+/* ========================================================================= */
+.at-btn-dawn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  border-radius: 10px;
+  border: 1px solid #ea580c;
+  background: linear-gradient(135deg, #fe5f01 0%, #ea580c 100%);
+  color: #ffffff !important;
+  font-weight: 800;
+  cursor: pointer;
+  box-shadow: 0 4px 14px rgba(254, 95, 1, 0.28);
+  transition: all 0.15s ease;
+}
+
+.at-btn-dawn:hover {
+  background: linear-gradient(135deg, #fb923c 0%, #fe5f01 100%);
+  box-shadow: 0 6px 20px rgba(254, 95, 1, 0.42);
+  transform: translateY(-1px);
+}
+
+.at-btn-cobalt {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  border-radius: 10px;
+  border: 1px solid #0284c7;
+  background: linear-gradient(135deg, #0284c7 0%, #0369a1 100%);
+  color: #ffffff !important;
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: 0 4px 14px rgba(2, 132, 199, 0.22);
+  transition: all 0.15s ease;
+}
+
+.at-btn-cobalt:hover {
+  background: linear-gradient(135deg, #0369a1 0%, #075985 100%);
+  transform: translateY(-1px);
+}
+
+.at-pill-blue {
+  background-color: var(--at-blue-soft);
+  color: var(--at-blue-text);
+  border: 1px solid rgba(2, 132, 199, 0.28);
+}
+
+.at-pill-emerald {
+  background-color: var(--at-emerald-soft);
+  color: var(--at-emerald-text);
+  border: 1px solid rgba(16, 185, 129, 0.28);
+}
+
+.at-pill-violet {
+  background-color: var(--at-violet-soft);
+  color: var(--at-violet-text);
+  border: 1px solid rgba(124, 58, 237, 0.28);
+}
+
+.at-pill-orange {
+  background-color: var(--at-orange-soft);
+  color: var(--at-orange-text);
+  border: 1px solid rgba(254, 95, 1, 0.28);
+}
+

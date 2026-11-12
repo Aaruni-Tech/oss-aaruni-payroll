@@ -1,26 +1,41 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="dark">
+<html lang="en" data-theme="light">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Aaruni Cloud Console — Cloud Voice Cloning, API Keys &amp; acloud CLI</title>
   <meta name="description" content="Aaruni Cloud Console (console.aarunicloud.com): Subscribe, clone your own voice securely with live consent verification, and synthesize studio technical audio via Cloud Voice and the acloud CLI." />
+  <meta name="theme-color" content="#ffffff" />
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%230284c7'/%3E%3Ctext x='16' y='21' font-family='monospace' font-size='14' font-weight='bold' fill='white' text-anchor='middle'%3EAC%3C/text%3E%3C/svg%3E" />
+  <link rel="stylesheet" href="/aaruni-brand.css" />
+  <script>
+    (function () {
+      try {
+        var saved = localStorage.getItem("acloud_theme_v2");
+        if (saved === "light" || saved === "dark") {
+          document.documentElement.setAttribute("data-theme", saved);
+        } else {
+          document.documentElement.setAttribute("data-theme", "light");
+        }
+      } catch (e) {}
+    })();
+  </script>
   <style>
-    :root {
-      --bg-app: #070b14;
-      --bg-surface: #0f172a;
-      --bg-elevated: #162038;
+    :root,
+    html[data-theme="dark"] {
+      --bg-app: var(--at-bg, #070b14);
+      --bg-surface: var(--at-surface, #0f172a);
+      --bg-elevated: var(--at-surface-subtle, #162038);
       --bg-input: #090f1d;
-      --border: #1e293b;
+      --border: var(--at-border, #1e293b);
       --border-strong: #334155;
-      --text-primary: #f8fafc;
-      --text-secondary: #cbd5e1;
-      --text-muted: #94a3b8;
-      --accent: #38bdf8;
-      --accent-strong: #0284c7;
+      --text-primary: var(--at-text, #f8fafc);
+      --text-secondary: var(--at-text-secondary, #cbd5e1);
+      --text-muted: var(--at-text-muted, #94a3b8);
+      --accent: var(--at-blue-text, #38bdf8);
+      --accent-strong: var(--at-blue, #0284c7);
       --accent-text: #04101d;
-      --success: #34d399;
+      --success: var(--at-emerald-text, #34d399);
       --warning: #fbbf24;
       --danger: #f87171;
       --badge-bg: rgba(56, 189, 248, 0.14);
@@ -29,22 +44,22 @@
     }
 
     html[data-theme="light"] {
-      --bg-app: #f1f5f9;
-      --bg-surface: #ffffff;
-      --bg-elevated: #f8fafc;
+      --bg-app: var(--at-bg, #f8fafc);
+      --bg-surface: var(--at-surface, #ffffff);
+      --bg-elevated: var(--at-surface-subtle, #f1f5f9);
       --bg-input: #ffffff;
       --border: #cbd5e1;
       --border-strong: #94a3b8;
-      --text-primary: #0f172a;
-      --text-secondary: #334155;
-      --text-muted: #475569;
-      --accent: #0369a1;
-      --accent-strong: #075985;
+      --text-primary: var(--at-text, #0f172a);
+      --text-secondary: var(--at-text-secondary, #334155);
+      --text-muted: var(--at-text-muted, #475569);
+      --accent: var(--at-blue-text, #0369a1);
+      --accent-strong: var(--at-blue-hover, #075985);
       --accent-text: #ffffff;
-      --success: #047857;
+      --success: var(--at-emerald-text, #047857);
       --warning: #b45309;
       --danger: #b91c1c;
-      --badge-bg: #e0f2fe;
+      --badge-bg: var(--at-blue-soft, #e0f2fe);
       --badge-fg: #0c4a6e;
       --code-bg: #0f172a;
     }
@@ -365,7 +380,7 @@
     <div class="topbar-actions">
       <span id="account-pill" class="region-pill mono">Guest (Not Signed In)</span>
       <a id="storefront-back-link" href="/" class="btn btn-sm">← Cloud Storefront</a>
-      <button type="button" id="theme-btn" class="btn btn-sm" onclick="toggleTheme()">☀ Light</button>
+      <button type="button" id="theme-btn" class="btn btn-sm" onclick="toggleTheme()">☾ Dark</button>
     </div>
   </header>
 
@@ -411,7 +426,7 @@
               <div>
                 <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
                   <h2 class="card-title" style="margin:0;">Syllovo Studio — Deployed Production App</h2>
-                  <span class="region-pill mono" style="background:rgba(52,211,153,0.18);color:var(--success);">● PRODUCTION LIVE</span>
+                  <span class="region-pill mono" style="background:var(--at-emerald-soft);color:var(--success);">● PRODUCTION LIVE</span>
                 </div>
                 <div style="font-size:12.5px;color:var(--text-secondary);margin-top:3px;">
                   Tenant: <code class="mono">org_syllovo / prj_syllovo_prod</code> &bull; Domain: <a href="https://syllovo.com" target="_blank" rel="noopener" style="color:var(--accent);text-decoration:underline;">https://syllovo.com ↗</a> &bull; Editor: <a href="https://syllovo-studio.pages.dev" target="_blank" rel="noopener" style="color:var(--accent);text-decoration:underline;">syllovo-studio.pages.dev ↗</a>
@@ -431,7 +446,7 @@
             <div style="background:var(--bg-elevated);border:1px solid rgba(52,211,153,0.45);border-radius:10px;padding:14px;">
               <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;">
                 <strong style="font-size:14px;">🎙️ Cloud Voice (ATC-AVGS v4)</strong>
-                <span class="region-pill mono" style="background:rgba(52,211,153,0.18);color:var(--success);">RUNNING</span>
+                <span class="region-pill mono" style="background:var(--at-emerald-soft);color:var(--success);">RUNNING</span>
               </div>
               <div style="font-size:12px;color:var(--text-secondary);line-height:1.5;">
                 Model: <code class="mono">Qwen3-TTS-1.7B-Rupesh-v4-Ultra</code> (<code class="mono">Apache-2.0</code>)<br/>
@@ -512,7 +527,7 @@
                 <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
                   <strong>atc-avgs-v4-syllovo-prod</strong>
                   <span class="region-pill mono">svc_avgs_v4_hyd1</span>
-                  <span class="region-pill mono" style="background:rgba(52,211,153,0.18);color:var(--success);">● RUNNING</span>
+                  <span class="region-pill mono" style="background:var(--at-emerald-soft);color:var(--success);">● RUNNING</span>
                   <span id="local-daemon-badge" class="region-pill mono">Checking Local :8765 Bridge...</span>
                 </div>
                 <div style="font-size:12px;color:var(--text-secondary);margin-top:4px;">
@@ -981,7 +996,7 @@ print(res["normalizedText"])</pre>
       const html = document.documentElement;
       const next = html.getAttribute("data-theme") === "light" ? "dark" : "light";
       html.setAttribute("data-theme", next);
-      localStorage.setItem("acloud_theme", next);
+      localStorage.setItem("acloud_theme_v2", next);
       document.getElementById("theme-btn").textContent = next === "light" ? "☾ Dark" : "☀ Light";
     }
 
@@ -1956,7 +1971,7 @@ print(res["normalizedText"])</pre>
             <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
               <strong>${escapeHtml(svcName)}</strong>
               <span class="region-pill mono">${escapeHtml(svcId)}</span>
-              <span class="region-pill mono" style="background:rgba(52,211,153,0.18);color:var(--success);">● RUNNING (NEW)</span>
+              <span class="region-pill mono" style="background:var(--at-emerald-soft);color:var(--success);">● RUNNING (NEW)</span>
             </div>
             <div style="font-size:12px;color:var(--text-secondary);margin-top:4px;">
               Model: <code class="mono">qwen3-tts-12hz-1.7b-rupesh-v4-ultra-bf16</code> &bull; Node: <code class="mono">${escapeHtml(nodeLabel)}</code> &bull; Bound App: <strong>Syllovo Studio</strong>
@@ -2023,7 +2038,7 @@ print(res["normalizedText"])</pre>
           const j = await r.json();
           localDaemonOnline = true;
           if (badge) {
-            badge.style.background = "rgba(52,211,153,0.18)";
+            badge.style.background = "var(--at-emerald-soft)";
             badge.style.color = "var(--success)";
             badge.textContent = "● Local :8765 GPU Online (" + (j.version || "v4-Ultra") + ")";
           }
@@ -2039,7 +2054,7 @@ print(res["normalizedText"])</pre>
     }
 
     (function initConsole() {
-      const savedTheme = localStorage.getItem("acloud_theme") || localStorage.getItem("acloud_console_theme") || "dark";
+      const savedTheme = localStorage.getItem("acloud_theme_v2") || "light";
       document.documentElement.setAttribute("data-theme", savedTheme);
       document.getElementById("theme-btn").textContent = savedTheme === "light" ? "☾ Dark" : "☀ Light";
       const sfLink = document.getElementById("storefront-back-link");

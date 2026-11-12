@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="dark">
+<html lang="en" data-theme="light">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0" />
@@ -11,7 +11,7 @@
   <meta property="og:url" content="https://aarunitech.com/" />
   <meta property="og:image" content="/aaruni_tech_banner.png" />
   <meta name="twitter:card" content="summary_large_image" />
-  <meta name="theme-color" content="#070c16" />
+  <meta name="theme-color" content="#ffffff" />
 
   <link rel="icon" type="image/png" sizes="32x32" href="aaruni_square_logo.png" />
   <link rel="apple-touch-icon" sizes="180x180" href="aaruni_square_logo.png" />
@@ -19,15 +19,16 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/aaruni-brand.css" />
 
   <script>
     (function () {
-      // 1. Theme initialization
+      // 1. Theme initialization (Crisp Executive White Default across all Aaruni properties)
       try {
-        var saved = localStorage.getItem("aaruni_corp_theme");
+        var saved = localStorage.getItem("aaruni_corp_theme_v2");
         if (saved === "dark" || saved === "light") {
           document.documentElement.setAttribute("data-theme", saved);
-        } else if (window.matchMedia && window.matchMedia("(prefers-color-scheme: light)").matches) {
+        } else {
           document.documentElement.setAttribute("data-theme", "light");
         }
       } catch (e) {}
@@ -50,25 +51,25 @@
        ========================================================================= */
     :root,
     [data-theme="dark"] {
-      --bg-base: #070c16;
-      --bg-alt: #0d1527;
-      --bg-surface: #111a30;
+      --bg-base: var(--at-bg, #070c16);
+      --bg-alt: var(--at-surface-subtle, #0d1527);
+      --bg-surface: var(--at-surface, #111a30);
       --bg-surface-elevated: #16223e;
       --bg-glass: rgba(17, 26, 48, 0.85);
       --border-subtle: #1e2c4d;
       --border-medium: #2a3c68;
       --border-accent: rgba(254, 95, 1, 0.4);
-      --text-main: #f8fafc;
-      --text-secondary: #cbd5e1;
-      --text-muted: #94a3b8;
-      --primary-blue: #0284c7;
-      --primary-blue-hover: #0369a1;
-      --primary-blue-soft: rgba(2, 132, 199, 0.15);
-      --dawn-orange: #fe5f01;
+      --text-main: var(--at-text, #f8fafc);
+      --text-secondary: var(--at-text-secondary, #cbd5e1);
+      --text-muted: var(--at-text-muted, #94a3b8);
+      --primary-blue: var(--at-blue-text, #38bdf8);
+      --primary-blue-hover: #0284c7;
+      --primary-blue-soft: rgba(2, 132, 199, 0.16);
+      --dawn-orange: var(--at-orange-text, #fb923c);
       --dawn-orange-hover: #ea580c;
-      --dawn-orange-soft: rgba(254, 95, 1, 0.15);
-      --accent-emerald: #10b981;
-      --accent-purple: #8b5cf6;
+      --dawn-orange-soft: var(--at-orange-soft, rgba(254, 95, 1, 0.15));
+      --accent-emerald: var(--at-emerald-text, #34d399);
+      --accent-purple: var(--at-violet-text, #c084fc);
       --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.4);
       --shadow-md: 0 8px 30px rgba(0, 0, 0, 0.5);
       --shadow-lg: 0 20px 50px rgba(0, 0, 0, 0.7);
@@ -77,25 +78,25 @@
     }
 
     [data-theme="light"] {
-      --bg-base: #f8fafc;
-      --bg-alt: #f1f5f9;
-      --bg-surface: #ffffff;
+      --bg-base: var(--at-bg, #f8fafc);
+      --bg-alt: var(--at-surface-subtle, #f1f5f9);
+      --bg-surface: var(--at-surface, #ffffff);
       --bg-surface-elevated: #f8fafc;
-      --bg-glass: rgba(255, 255, 255, 0.9);
+      --bg-glass: rgba(255, 255, 255, 0.94);
       --border-subtle: #e2e8f0;
       --border-medium: #cbd5e1;
-      --border-accent: rgba(254, 95, 1, 0.45);
-      --text-main: #0f172a;
-      --text-secondary: #334155;
-      --text-muted: #64748b;
-      --primary-blue: #0284c7;
-      --primary-blue-hover: #0369a1;
+      --border-accent: rgba(194, 65, 12, 0.45);
+      --text-main: var(--at-text, #0f172a);
+      --text-secondary: var(--at-text-secondary, #334155);
+      --text-muted: var(--at-text-muted, #475569);
+      --primary-blue: #0369a1;
+      --primary-blue-hover: #075985;
       --primary-blue-soft: #e0f2fe;
-      --dawn-orange: #fe5f01;
-      --dawn-orange-hover: #ea580c;
-      --dawn-orange-soft: #fff7ed;
-      --accent-emerald: #059669;
-      --accent-purple: #7c3aed;
+      --dawn-orange: var(--at-orange-text, #c2410c);
+      --dawn-orange-hover: #9a3412;
+      --dawn-orange-soft: var(--at-orange-soft, #fff7ed);
+      --accent-emerald: var(--at-emerald-text, #047857);
+      --accent-purple: var(--at-violet-text, #6d28d9);
       --shadow-sm: 0 1px 3px rgba(15, 23, 42, 0.08);
       --shadow-md: 0 10px 30px rgba(15, 23, 42, 0.08);
       --shadow-lg: 0 20px 45px rgba(15, 23, 42, 0.12);
@@ -267,25 +268,27 @@
     }
 
     .btn-dawn {
-      background: var(--dawn-orange);
+      background: linear-gradient(135deg, #c2410c, #9a3412);
       color: #ffffff;
+      border-color: #c2410c;
       box-shadow: 0 2px 10px rgba(254, 95, 1, 0.3);
     }
 
     .btn-dawn:hover {
-      background: var(--dawn-orange-hover);
+      background: linear-gradient(135deg, #ea580c, #c2410c);
       box-shadow: 0 4px 16px rgba(254, 95, 1, 0.45);
       transform: translateY(-1px);
     }
 
     .btn-blue {
-      background: var(--primary-blue);
+      background: linear-gradient(135deg, #0284c7, #0369a1);
       color: #ffffff;
+      border-color: #0284c7;
       box-shadow: 0 2px 10px rgba(2, 132, 199, 0.3);
     }
 
     .btn-blue:hover {
-      background: var(--primary-blue-hover);
+      background: linear-gradient(135deg, #0369a1, #075985);
       box-shadow: 0 4px 16px rgba(2, 132, 199, 0.45);
       transform: translateY(-1px);
     }
@@ -620,9 +623,9 @@
 
     .nav-tab-btn.active,
     .nav-tab-btn:hover {
-      background: var(--dawn-orange);
+      background: linear-gradient(135deg, #c2410c, #9a3412);
       color: #ffffff;
-      border-color: var(--dawn-orange);
+      border-color: #c2410c;
       box-shadow: 0 4px 14px rgba(254, 95, 1, 0.3);
     }
 
@@ -1432,7 +1435,7 @@
         <li><a href="#contact" class="mobile-drawer-link" onclick="toggleMobileMenu()">Contact Enterprise</a></li>
       </ul>
       <div style="display:flex; flex-direction:column; gap:12px;">
-        <a href="https://my.aarunitech.com" target="_blank" class="btn btn-portal w-full" style="background: linear-gradient(135deg, #fe5f01, #ea580c); color: #fff; font-weight: 800; justify-content: center; padding: 12px; font-size: 0.95rem; box-shadow: 0 4px 12px rgba(254,95,1,0.3);">🔐 Employee Login (my.aarunitech.com) ↗</a>
+        <a href="https://my.aarunitech.com" target="_blank" class="btn btn-portal w-full" style="background: linear-gradient(135deg, #c2410c, #9a3412); color: #fff; font-weight: 800; justify-content: center; padding: 12px; font-size: 0.95rem; box-shadow: 0 4px 12px rgba(254,95,1,0.3);">🔐 Employee Login (my.aarunitech.com) ↗</a>
         <a href="javascript:void(0)" onclick="toggleMobileMenu(); openMobileAppModal();" class="btn btn-outline w-full" style="border-color:var(--dawn-orange); color:var(--dawn-orange); justify-content: center; font-weight: 700;">📱 Scan / Install Mobile App</a>
         <a href="/downloads/aaruni-payroll.apk" download="AaruniTech-v2.4.0.apk" class="btn btn-outline w-full" style="justify-content: center;">📥 Download Android APK (124 KB)</a>
         <a href="https://aarunicloud.com" target="_blank" class="btn btn-blue w-full">Launch Aaruni Cloud Console ↗</a>
@@ -1699,16 +1702,16 @@
           </p>
           <div style="display:flex; flex-direction:column; gap:12px; margin-bottom:24px;">
             <div style="display:flex; align-items:center; gap:10px;">
-              <span style="width:24px; height:24px; border-radius:50%; background:var(--primary-blue); color:#fff; display:flex; align-items:center; justify-content:center; font-size:0.75rem; font-weight:bold;">1</span>
+              <span style="width:24px; height:24px; border-radius:50%; background:#0369a1; color:#fff; display:flex; align-items:center; justify-content:center; font-size:0.75rem; font-weight:bold;">1</span>
               <span style="font-size:0.92rem;">Visit <strong>aarunicloud.com</strong> and launch the live cloud console.</span>
             </div>
             <div style="display:flex; align-items:center; gap:10px;">
-              <span style="width:24px; height:24px; border-radius:50%; background:var(--primary-blue); color:#fff; display:flex; align-items:center; justify-content:center; font-size:0.75rem; font-weight:bold;">2</span>
-              <span style="font-size:0.92rem;">Select service: <strong>ACE</strong> Compute, <strong>AOV</strong> Object Vault, or <strong>AVS</strong> Voice AI.</span>
+              <span style="width:24px; height:24px; border-radius:50%; background:#0369a1; color:#fff; display:flex; align-items:center; justify-content:center; font-size:0.75rem; font-weight:bold;">2</span>
+              <span style="font-size:0.92rem;">Select service: <strong>Cloud Compute</strong>, <strong>Cloud Storage</strong>, or <strong>Cloud Voice</strong>.</span>
             </div>
             <div style="display:flex; align-items:center; gap:10px;">
-              <span style="width:24px; height:24px; border-radius:50%; background:var(--primary-blue); color:#fff; display:flex; align-items:center; justify-content:center; font-size:0.75rem; font-weight:bold;">3</span>
-              <span style="font-size:0.92rem;">Deploy via CLI, REST API, or edge worker integration with guaranteed 99.99% uptime.</span>
+              <span style="width:24px; height:24px; border-radius:50%; background:#0369a1; color:#fff; display:flex; align-items:center; justify-content:center; font-size:0.75rem; font-weight:bold;">3</span>
+              <span style="font-size:0.92rem;">Deploy via <code>acloud</code> CLI, REST API, or SDK with guaranteed 99.99% uptime.</span>
             </div>
           </div>
           <div style="display:flex; gap:14px; flex-wrap:wrap;">
@@ -1717,13 +1720,13 @@
           </div>
         </div>
         <div style="background:var(--bg-base); border:1px solid var(--border-subtle); border-radius:14px; padding:24px; font-family:'JetBrains Mono', monospace; font-size:0.82rem; color:var(--text-secondary);">
-          <div style="color:var(--dawn-orange); margin-bottom:10px; font-weight:bold;"># Connect via Aaruni Cloud CLI</div>
-          <div style="color:#10b981;">$ curl -fsSL https://aarunicloud.com/install.sh | bash</div>
-          <div style="margin-top:8px;">$ aaruni login --token $AARUNI_CLOUD_TOKEN</div>
-          <div style="color:var(--text-muted); margin-top:4px;">&gt; Authenticated as Enterprise: org_aaruni_global</div>
-          <div style="margin-top:12px;">$ aaruni compute deploy --cluster ace-prod-sg --scale 4</div>
-          <div style="color:var(--text-muted); margin-top:4px;">&gt; Deployed 4 ACE microVMs in 1.4s (Zero Egress Active)</div>
-          <div style="margin-top:12px;">$ aaruni voice synthesize --text "Welcome to Aaruni Tech" --out stream.mp3</div>
+          <div style="color:var(--dawn-orange); margin-bottom:10px; font-weight:bold;"># Connect via acloud CLI (@aarunicloud/sdk)</div>
+          <div style="color:var(--accent-emerald);">$ npm install -g https://aarunicloud.com/sdk/aarunicloud-sdk-1.0.0.tgz</div>
+          <div style="margin-top:8px;">$ acloud status</div>
+          <div style="color:var(--text-muted); margin-top:4px;">&gt; Authenticated as Enterprise: org_aaruni_global (ap-south-hyd-1)</div>
+          <div style="margin-top:12px;">$ acloud compute nodes</div>
+          <div style="color:var(--text-muted); margin-top:4px;">&gt; 2 Unified-Memory Cloud Compute nodes online (Zero Egress Active)</div>
+          <div style="margin-top:12px;">$ acloud voice speak --text "Welcome to Aaruni Cloud" --lufs -12</div>
           <div style="color:var(--dawn-orange); margin-top:4px;">&gt; Synthesized 24-bit 48kHz audio with W3C PLS lexicon</div>
         </div>
       </div>
@@ -2630,17 +2633,17 @@
   <script>
     // Theme Engine (Syncs with localStorage and system preferences)
     function initTheme() {
-      var currentTheme = document.documentElement.getAttribute("data-theme") || "dark";
+      var currentTheme = document.documentElement.getAttribute("data-theme") || "light";
       updateThemeUI(currentTheme);
     }
 
     function toggleTheme() {
       var html = document.documentElement;
-      var current = html.getAttribute("data-theme") || "dark";
+      var current = html.getAttribute("data-theme") || "light";
       var next = current === "dark" ? "light" : "dark";
       html.setAttribute("data-theme", next);
       try {
-        localStorage.setItem("aaruni_corp_theme", next);
+        localStorage.setItem("aaruni_corp_theme_v2", next);
       } catch (e) {}
       updateThemeUI(next);
     }
