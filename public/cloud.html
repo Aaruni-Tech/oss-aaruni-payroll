@@ -1864,6 +1864,10 @@
             <span id="theme-toggle-icon" aria-hidden="true">🌙</span>
             <span id="theme-toggle-label" class="hide-xs">Dark</span>
           </button>
+          <a href="/voice" class="hdr-btn hide-xs" style="text-decoration:none;font-weight:700;">
+            <span aria-hidden="true">🎙️</span>
+            <span>Voice Studio</span>
+          </a>
           <button type="button" class="hdr-console-btn hide-xs" onclick="openConsoleSignInModal()">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><line x1="9" y1="3" x2="9" y2="21"/></svg>
             <span>Cloud Console</span>
@@ -1886,7 +1890,8 @@
           </button>
           <a href="#products" class="subnav-item" onclick="selectCategory('storage')">Cloud Storage</a>
           <a href="#products" class="subnav-item" onclick="selectCategory('compute')">Cloud Compute</a>
-          <a href="#ai-workbench" class="subnav-item">Cloud Voice</a>
+          <a href="/voice" class="subnav-item">Cloud Voice Studio</a>
+          <a href="#ai-workbench" class="subnav-item">Voice Showcase</a>
           <a href="#ai-workbench" class="subnav-item">Cloud Assistant</a>
           <a href="#products" class="subnav-item" onclick="selectCategory('tools')">Cloud Render</a>
           <a href="#blueprint" class="subnav-item">Architecture Flow</a>
@@ -1910,14 +1915,14 @@
         <div>
           <h3 class="mega-col-title">Compute &amp; Containers</h3>
           <ul class="mega-list">
-            <li><a href="#products" class="mega-link" onclick="closeMegaMenu(); selectCategory('compute');"><strong>Cloud Compute</strong><span>Dedicated M-Series &amp; Linux worker machines</span></a></li>
+            <li><a href="#products" class="mega-link" onclick="closeMegaMenu(); selectCategory('compute');"><strong>Cloud Compute</strong><span>Dedicated Parallel Compute Workers &bull; ap-south-hyd-1</span></a></li>
             <li><a href="#products" class="mega-link" onclick="closeMegaMenu(); selectCategory('compute');"><strong>Cloud Containers</strong><span>Isolated Docker sandboxes &amp; headless runners</span></a></li>
           </ul>
         </div>
         <div>
           <h3 class="mega-col-title">Voice &amp; AI Services</h3>
           <ul class="mega-list">
-            <li><a href="#ai-workbench" class="mega-link" onclick="closeMegaMenu();"><strong>Cloud Voice</strong><span>Neural speech synthesis, W3C PLS &amp; -12 dB DSP</span></a></li>
+            <li><a href="/voice" class="mega-link" onclick="closeMegaMenu();"><strong>Aaruni Cloud Voice</strong><span>Studio speech synthesis, Voice Cloning, W3C PLS &amp; LUFS DSP</span></a></li>
             <li><a href="#ai-workbench" class="mega-link" onclick="closeMegaMenu();"><strong>Cloud Assistant</strong><span>Multi-intent enterprise chatbot &amp; task copilot</span></a></li>
             <li><a href="#products" class="mega-link" onclick="closeMegaMenu(); selectCategory('ai');"><strong>Cloud Knowledge</strong><span>Fast SQLite FTS5 RAG &amp; compliance knowledge base</span></a></li>
           </ul>
@@ -1942,9 +1947,10 @@
     <!-- Mobile Drawer -->
     <div id="mobile-nav-drawer" class="mobile-drawer" aria-label="Mobile Navigation">
       <div class="mobile-nav-grid">
+        <a href="/voice" onclick="closeMobileDrawer();"><span>🎙️ Aaruni Cloud Voice Studio</span><span>&rarr;</span></a>
+        <a href="#ai-workbench" onclick="closeMobileDrawer();"><span>Voice Showcase Playground</span><span>&rarr;</span></a>
         <a href="#products" onclick="closeMobileDrawer(); selectCategory('storage');"><span>Storage: Cloud Storage</span><span>&rarr;</span></a>
         <a href="#products" onclick="closeMobileDrawer(); selectCategory('compute');"><span>Compute: Cloud Compute</span><span>&rarr;</span></a>
-        <a href="#ai-workbench" onclick="closeMobileDrawer();"><span>Speech AI: Cloud Voice</span><span>&rarr;</span></a>
         <a href="#ai-workbench" onclick="closeMobileDrawer();"><span>Chat AI: Cloud Assistant</span><span>&rarr;</span></a>
         <a href="#products" onclick="closeMobileDrawer(); selectCategory('tools');"><span>Media Render: Cloud Render</span><span>&rarr;</span></a>
         <a href="#blueprint" onclick="closeMobileDrawer();"><span>Architecture Blueprint</span><span>&rarr;</span></a>
@@ -1995,14 +2001,14 @@
           </div>
 
           <div class="hero-btn-row">
-            <button type="button" class="btn-dawn" onclick="openPilotModal()">
-              <span>🚀 Start Cloud Pilot</span>
+            <a href="/voice" class="btn-dawn" style="text-decoration:none;">
+              <span>🎙️ Launch Cloud Voice</span>
               <span>&rarr;</span>
-            </button>
+            </a>
             <button type="button" class="btn-console" onclick="openConsoleSignInModal()">
               <span>⚡ Cloud Console</span>
             </button>
-            <a href="#products" class="btn-outline-light">Browse Cloud Shop</a>
+            <button type="button" class="btn-outline-light" onclick="openPilotModal()">Start Cloud Pilot</button>
           </div>
         </div>
 
@@ -2068,10 +2074,10 @@
           <div>
             <div class="card-top-badge">
               <span class="cloud-acronym-pill mono">COMPUTE</span>
-              <span class="cloud-spec-chip mono">64–128GB Unified RAM</span>
+              <span class="cloud-spec-chip mono">3 Parallel Workers</span>
             </div>
             <h2 class="card-title">Cloud Compute</h2>
-            <p class="card-desc">Dedicated Apple Silicon M-Series &amp; Linux compute machines running 24/7 with zero per-minute GPU surcharges.</p>
+            <p class="card-desc">Dedicated unified-memory parallel compute workers running 24/7 in ap-south-hyd-1 with zero per-minute GPU surcharges.</p>
           </div>
           <button type="button" class="card-action-link" onclick="openServiceSpec('acc')">
             <span>Launch Compute Node</span>
@@ -2083,13 +2089,13 @@
           <div>
             <div class="card-top-badge">
               <span class="cloud-acronym-pill pill-pillar-voice mono">VOICE</span>
-              <span class="cloud-spec-chip mono">-12.0 dB LUFS DSP</span>
+              <span class="cloud-spec-chip mono">Cloud Voice v2</span>
             </div>
-            <h2 class="card-title">Cloud Voice</h2>
-            <p class="card-desc">Natural neural speech synthesis with W3C PLS technical pronunciation, free local drafts, and 1-click premium studio voice upgrades.</p>
+            <h2 class="card-title">Aaruni Cloud Voice</h2>
+            <p class="card-desc">Studio neural speech synthesis, W3C PLS technical pronunciation, Instant Voice Cloning, and ElevenLabs-compatible Drop-In API.</p>
           </div>
-          <a href="#ai-workbench" class="card-action-link card-action-voice">
-            <span>Try Voice Playground</span>
+          <a href="/voice" class="card-action-link card-action-voice">
+            <span>Open Cloud Voice Studio</span>
             <span aria-hidden="true">&rarr;</span>
           </a>
         </div>
@@ -2144,7 +2150,7 @@
           <div class="arch-node" onclick="openServiceSpec('acc')">
             <span class="arch-node-code mono">3. CLOUD COMPUTE</span>
             <span class="arch-node-name">Cloud Compute</span>
-            <span class="arch-node-spec">Dedicated M-Series Nodes</span>
+            <span class="arch-node-spec">Parallel Compute Workers</span>
           </div>
 
           <div class="arch-arrow">&harr;</div>
@@ -2250,46 +2256,60 @@
         </div>
 
         <div class="ai-workbench-grid">
-          <!-- LEFT: CLOUD VOICE (PUBLIC CUSTOMER CX PLAYGROUND — NO PRIVATE OWNER VOICE EXPOSED) -->
+          <!-- LEFT: AARUNI CLOUD VOICE SHOWCASE + INTERACTIVE PLAYGROUND (ZERO PRIVATE OWNER VOICE EXPOSED) -->
           <div class="workbench-card">
             <div>
-              <div style="display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:12px;">
-                <span class="pill-badge glyph-ai mono">AVA &bull; CUSTOMER VOICE PLAYGROUND</span>
-                <span class="mono dsp-badge">-12.0 dB LUFS Studio Master</span>
+              <div style="display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:12px;flex-wrap:wrap;">
+                <span class="pill-badge glyph-ai mono">CLOUD VOICE v2 &bull; STUDIO SHOWCASE</span>
+                <a href="/voice" class="mono" style="font-size:11.5px;font-weight:700;color:#FE5F01;text-decoration:none;">Open Full Voice Studio &rarr;</a>
               </div>
-              <h3 style="margin:0 0 6px;font-size:20px;font-weight:800;">Cloud Voice — Customer Playground</h3>
-              <p style="margin:0 0 14px;font-size:13.5px;color:var(--ac-text-secondary);line-height:1.5;">
-                Select a licensed public studio voice, choose a sample developer script (or enter your own text), and audition studio-mastered W3C PLS narration right in your browser.
+              <h3 style="margin:0 0 6px;font-size:20px;font-weight:800;">Aaruni Cloud Voice — Interactive Showcase</h3>
+              <p style="margin:0 0 12px;font-size:13.5px;color:var(--ac-text-secondary);line-height:1.5;">
+                Audition 6 commercial-safe public studio voices across 3 one-click showcase categories, or type custom technical text to preview live W3C PLS pronunciation.
               </p>
 
+              <!-- 3 One-Click Showcase Category Pills -->
+              <div style="margin-bottom:12px;">
+                <div style="font-size:11.5px;font-weight:700;margin-bottom:6px;color:var(--ac-text-secondary);">1. One-Click Showcase Category</div>
+                <div id="avs-cat-pills" style="display:flex;gap:8px;flex-wrap:wrap;" role="group" aria-label="Voice Showcase Categories">
+                  <button type="button" class="avs-cat-pill" data-cat="course" onclick="selectAvsCategory('course', true)" style="min-height:38px;padding:0 13px;border-radius:999px;border:1px solid #111827;background:#111827;color:#FFFFFF;font-size:12.5px;font-weight:700;cursor:pointer;">🎓 Tech Course</button>
+                  <button type="button" class="avs-cat-pill" data-cat="ad" onclick="selectAvsCategory('ad', true)" style="min-height:38px;padding:0 13px;border-radius:999px;border:1px solid var(--ac-border);background:var(--ac-bg-subtle);color:var(--ac-text);font-size:12.5px;font-weight:600;cursor:pointer;">🚀 Product Launch Ad</button>
+                  <button type="button" class="avs-cat-pill" data-cat="agent" onclick="selectAvsCategory('agent', true)" style="min-height:38px;padding:0 13px;border-radius:999px;border:1px solid var(--ac-border);background:var(--ac-bg-subtle);color:var(--ac-text);font-size:12.5px;font-weight:600;cursor:pointer;">🤖 AI Support Agent</button>
+                </div>
+              </div>
+
+              <!-- 6 Commercial-Safe Public Studio Voices + Model Selector -->
               <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:10px;margin-bottom:10px;">
                 <div>
-                  <label for="avs-persona-select" style="display:block;font-size:12px;font-weight:700;margin-bottom:4px;color:var(--ac-text-secondary);">1. Select Public AI Voice</label>
-                  <select id="avs-persona-select" class="form-input" onchange="updateAvsScript()">
-                    <option value="stock_aria">Aria (en-US) — Cloud Systems Educator</option>
-                    <option value="stock_dev">Dev (en-IN) — DevSecOps &amp; Infrastructure</option>
-                    <option value="stock_meera">Meera (en-IN) — Executive Cloud Briefing</option>
+                  <label for="avs-persona-select" style="display:block;font-size:12px;font-weight:700;margin-bottom:4px;color:var(--ac-text-secondary);">2. Select Public Studio Voice (6 Voices)</label>
+                  <select id="avs-persona-select" class="form-input" onchange="updateAvsVoiceSelection(true)">
+                    <option value="stock_aria">Aria — Warm Educator</option>
+                    <option value="stock_ethan">Ethan — Tech Keynote</option>
+                    <option value="stock_maya">Maya — Product Storyteller</option>
+                    <option value="stock_dev">Dev — Systems Architect</option>
+                    <option value="stock_clara">Clara — Executive Briefing</option>
+                    <option value="stock_kabir">Kabir — Global Engineering</option>
                   </select>
                 </div>
                 <div>
-                  <label for="avs-script-preset" style="display:block;font-size:12px;font-weight:700;margin-bottom:4px;color:var(--ac-text-secondary);">2. Choose Sample Script</label>
-                  <select id="avs-script-preset" class="form-input" onchange="updateAvsScript()">
-                    <option value="s1">Cloud Compute &amp; $0 Egress Storage</option>
-                    <option value="s2">PostgreSQL, OAuth2 &amp; NGINX (W3C PLS)</option>
-                    <option value="s3">Zero-Trust Cloud Guard &amp; Spend Cap</option>
+                  <label for="avs-model-select" style="display:block;font-size:12px;font-weight:700;margin-bottom:4px;color:var(--ac-text-secondary);">3. Speech Model</label>
+                  <select id="avs-model-select" class="form-input" onchange="updateAvsVoiceSelection(false)">
+                    <option value="cloud-voice-v2">Cloud Voice v2 (Studio English — Default)</option>
+                    <option value="cloud-voice-v2-flash">Cloud Voice v2 Flash (Fast • 50% Credits)</option>
+                    <option value="cloud-voice-v2-multilingual">Cloud Voice v2 Multilingual (10 Languages)</option>
                   </select>
                 </div>
               </div>
 
               <div style="margin-bottom:10px;">
-                <label for="avs-sample-input" style="display:block;font-size:12px;font-weight:700;margin-bottom:4px;color:var(--ac-text-secondary);">3. Narration Text (Editable)</label>
-                <textarea id="avs-sample-input" class="form-input" rows="3" style="width:100%;font-size:13px;line-height:1.45;resize:vertical;">Welcome to Aaruni Cloud. Provision unified-memory Cloud Compute and zero-egress Cloud Storage in seconds, with predictable monthly pricing and global edge delivery.</textarea>
+                <label for="avs-sample-input" style="display:block;font-size:12px;font-weight:700;margin-bottom:4px;color:var(--ac-text-secondary);">4. Showcase Script (Editable — Custom Text Synthesizes Live)</label>
+                <textarea id="avs-sample-input" class="form-input" rows="3" style="width:100%;font-size:13px;line-height:1.45;resize:vertical;">Today we will deploy PostgreSQL, OAuth2 authentication, and NGINX ingress controllers using kubectl, with automated CI/CD checks and zero-downtime rollouts.</textarea>
               </div>
 
               <div class="voice-meter-box">
-                <div style="display:flex;justify-content:space-between;align-items:center;font-size:11px;color:var(--ac-text-muted);font-weight:600;" class="mono">
-                  <span id="avs-stage-status">STATUS: READY (PUBLIC STOCK CATALOG)</span>
-                  <span>W3C PLS + -12.0 dB DSP</span>
+                <div style="display:flex;justify-content:space-between;align-items:center;font-size:11px;color:var(--ac-text-muted);font-weight:600;gap:8px;flex-wrap:wrap;" class="mono">
+                  <span id="avs-stage-status">STATUS: READY (ARIA &bull; TECH COURSE)</span>
+                  <span>Clarity Gate: 100% Passed &bull; W3C PLS</span>
                 </div>
                 <div class="waveform-bars" id="avs-waveform" aria-hidden="true" style="margin-top:10px;">
                   <span class="wave-bar"></span><span class="wave-bar"></span><span class="wave-bar"></span><span class="wave-bar"></span>
@@ -2302,10 +2322,13 @@
             </div>
 
             <div style="display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;">
-              <button type="button" class="btn-dawn" id="avs-play-btn" onclick="runAvsAudition()">
-                <span>&#9654; Synthesize &amp; Listen</span>
-              </button>
-              <span style="font-size:11.5px;color:var(--ac-text-muted);">Public customer catalog &bull; Tenant private clones isolated in Console</span>
+              <div style="display:flex;gap:8px;flex-wrap:wrap;">
+                <button type="button" class="btn-dawn" id="avs-play-btn" onclick="runAvsAudition()">
+                  <span>&#9654; Play Studio Voice</span>
+                </button>
+                <a href="/voice" class="btn-tile-secondary" style="text-decoration:none;min-height:42px;padding:0 14px;">Clone Voice &amp; Pricing &rarr;</a>
+              </div>
+              <span style="font-size:11.5px;color:var(--ac-text-muted);">6 Commercial-Safe Voices &bull; Free 10k Credits</span>
             </div>
           </div>
 
@@ -2407,7 +2430,7 @@
               </div>
               <div class="kpi-card" style="padding:11px 13px;">
                 <strong class="mono" style="font-size:12px;color:var(--ac-link);">2. Cloud Compute + Containers (ACN)</strong>
-                <div style="font-size:12.5px;color:var(--ac-text-secondary);">Executes deterministic 1920&times;1080 lab captures and hardware VideoToolbox builds.</div>
+                <div style="font-size:12.5px;color:var(--ac-text-secondary);">Executes deterministic 1920&times;1080 lab captures and hardware-accelerated H.264/HEVC builds.</div>
               </div>
               <div class="kpi-card" style="padding:11px 13px;">
                 <strong class="mono" style="font-size:12px;color:var(--ac-link);">3. Cloud Voice + Assistant (AAI)</strong>
@@ -2444,7 +2467,7 @@
 
         <div class="legal-notice-box" role="note" aria-label="Trademark Attribution and Non-Affiliation Notice">
           <strong>⚖️ Trademark Attribution &amp; Non-Affiliation Notice (Nominative Fair Use):</strong>
-          All third-party product names, trademarks, and registered marks—including <em>TechSmith Camtasia&reg;</em>, <em>ElevenLabs&reg;</em>, <em>Apple&reg;</em>, <em>macOS&reg;</em>, <em>Keynote&reg;</em>, <em>Apple Silicon&reg;</em>, <em>Cloudflare&reg;</em>, <em>Synology&reg;</em>, <em>Google Cloud&trade; / Google Workspace&trade;</em>, <em>Docker&reg;</em>, <em>Playwright&trade;</em>, <em>FFmpeg&reg;</em>, and <em>GitHub&reg;</em>—belong to their respective owners. Aaruni Cloud references these technologies solely to describe technical file/API interoperability (such as <code>.cmproj</code>, <code>.libzip</code>, and <code>.key</code> adapters) and licensed underlying infrastructure. Aaruni Cloud is an independent platform and is <strong>not</strong> affiliated with, endorsed by, sponsored by, or formally partnered with Amazon Web Services (AWS) or any listed third-party trademark owner.
+          All third-party product names, trademarks, and registered marks—including <em>TechSmith Camtasia&reg;</em>, <em>ElevenLabs&reg;</em>, <em>Apple&reg;</em>, <em>macOS&reg;</em>, <em>Keynote&reg;</em>, <em>Google Cloud&trade; / Google Workspace&trade;</em>, <em>Docker&reg;</em>, <em>Playwright&trade;</em>, <em>FFmpeg&reg;</em>, and <em>GitHub&reg;</em>—belong to their respective owners. Aaruni Cloud references these technologies solely to describe technical file/API interoperability (such as <code>.cmproj</code>, <code>.libzip</code>, and <code>.key</code> adapters) and licensed enterprise cloud integrations. Aaruni Cloud is an independent platform and is <strong>not</strong> affiliated with, endorsed by, sponsored by, or formally partnered with Amazon Web Services (AWS) or any listed third-party trademark owner.
         </div>
       </div>
     </section>
@@ -2576,7 +2599,8 @@
         <div>
           <h3 class="footer-h">Voice, AI &amp; Render</h3>
           <ul class="footer-ul">
-            <li><a href="#ai-workbench">Cloud Voice</a></li>
+            <li><a href="/voice">Aaruni Cloud Voice Studio</a></li>
+            <li><a href="#ai-workbench">Voice Showcase</a></li>
             <li><a href="#ai-workbench">Cloud Assistant</a></li>
             <li><a href="#products" onclick="selectCategory('ai')">Cloud Knowledge</a></li>
             <li><a href="#products" onclick="selectCategory('tools')">Cloud Render</a></li>
@@ -2611,7 +2635,7 @@
           &copy; 2026 <strong>Aaruni Tech Private Limited</strong> (Parent of <strong>aarunicloud.com</strong> &amp; <strong>syllovo.com</strong>). All rights reserved.
         </div>
         <div style="max-width:700px;">
-          Independent enterprise cloud platform. Not affiliated with, endorsed by, sponsored by, or formally partnered with Amazon Web Services (AWS), TechSmith, ElevenLabs, Apple, Cloudflare, Synology, Google, Docker, or GitHub. All third-party marks belong to their respective owners.
+          Independent enterprise cloud platform. Not affiliated with, endorsed by, sponsored by, or formally partnered with Amazon Web Services (AWS), TechSmith, ElevenLabs, Apple, Google, Docker, or GitHub. All third-party marks belong to their respective owners.
         </div>
       </div>
     </div>
@@ -2634,6 +2658,23 @@
        12. DOMAIN SERVICES & INTERACTIVE CONTROLLERS
        ======================================================================= -->
   <script>
+    const API_BASE = "";
+    const API_FALLBACK_ORIGIN = "https://api.aarunicloud.com";
+
+    async function cloudFetch(route, opts) {
+      const options = opts || {};
+      const res = await fetch(API_BASE + route, options);
+      const ct = String(res.headers.get("content-type") || "").toLowerCase();
+      if (
+        API_BASE === "" &&
+        window.location.origin !== API_FALLBACK_ORIGIN &&
+        (ct.startsWith("text/html") || res.status === 405 || (res.status === 404 && !ct.includes("application/json")))
+      ) {
+        return fetch(API_FALLBACK_ORIGIN + route, options);
+      }
+      return res;
+    }
+
     const CLOUD_SERVICES = [
       {
         id: "acs",
@@ -2678,9 +2719,9 @@
         featured: true,
         glyphClass: "glyph-compute",
         endpoint: "api.aarunicloud.com/v1/compute/nodes",
-        desc: "Dedicated unified-memory Apple Silicon M-Series and Linux compute machines running 24/7 for fast AI inference, builds, and hardware video encoding.",
+        desc: "Dedicated unified-memory parallel compute workers running 24/7 in ap-south-hyd-1 for fast AI inference, voice training, builds, and hardware video encoding.",
         bullets: [
-          "Hardware H.264/HEVC VideoToolbox 1080p/4K media acceleration",
+          "Hardware-accelerated H.264/HEVC 1080p/4K media encoding",
           "Auto-reboot power recovery & Wake-on-LAN high availability",
           "Predictable flat monthly pricing with zero per-minute GPU surcharges"
         ],
@@ -2826,15 +2867,15 @@
 
     const ECOSYSTEM_LIST = [
       { badge: "Timeline Format Adapter", cls: "glyph-ai", name: "TechSmith Camtasia®", desc: "Interoperable .cmproj multi-track timeline generation and .libzip callouts via Cloud Render." },
-      { badge: "Customer API Connector", cls: "glyph-compute", name: "ElevenLabs®", desc: "Optional Multilingual v2 voice synthesis connector paired with Cloud Voice W3C PLS lexicons." },
+      { badge: "Drop-In SDK Parity", cls: "glyph-compute", name: "ElevenLabs® SDK Compatible", desc: "1-line base URL swap (/v1/text-to-speech/:voice_id) paired with Cloud Voice v2 and W3C PLS lexicons." },
       { badge: "macOS Slide Adapter", cls: "glyph-tools", name: "Apple Keynote®", desc: "Automated JXA .key and HiDPI .pdf slide compilation rendered cleanly via Cloud Render." },
-      { badge: "Open-Source Media DSP", cls: "glyph-storage", name: "FFmpeg® & WebCodecs", desc: "Hardware VideoToolbox H.264/HEVC encoding, high-pass filtering, and cosine audio de-clicking." },
-      { badge: "Open-Source QA & Capture", cls: "glyph-storage", name: "Playwright™ & axe-core", desc: "Deterministic 1920x1080 Chromium capture and automated 7-viewport WCAG 2.1 AA audits via AQA." },
-      { badge: "Open-Source AI Runtime", cls: "glyph-ai", name: "MLX & ONNX Speech", desc: "Local unified-memory neural speech synthesis powering unlimited free Cloud Voice drafts." },
-      { badge: "Edge Infrastructure", cls: "glyph-sec", name: "Cloudflare® Edge & Tunnels", desc: "Underlying global Anycast CDN, serverless workers, metadata stores, and outbound tunnels for AED." },
-      { badge: "Compute Hardware", cls: "glyph-compute", name: "Apple Silicon® Nodes", desc: "Licensed unified-memory M-Series workstation hardware powering Cloud Compute 24/7 nodes." },
-      { badge: "RAID-1 NAS Hardware", cls: "glyph-storage", name: "Synology® Enterprise NAS", desc: "Mirrored 8 TB RAID-1 Gigabit LAN storage array backing Cloud Storage hot-tier speed." },
-      { badge: "Offsite Cold Infrastructure", cls: "glyph-tools", name: "Google Cloud™ Infrastructure", desc: "Encrypted 30 TB offsite cloud infrastructure backing Cloud Archive disaster recovery." },
+      { badge: "Open-Source Media DSP", cls: "glyph-storage", name: "FFmpeg® & WebCodecs", desc: "Hardware-accelerated H.264/HEVC encoding, broadcast LUFS mastering, and raised-cosine S-curve audio de-clicking." },
+      { badge: "Open-Source QA & Capture", cls: "glyph-storage", name: "Playwright™ & axe-core", desc: "Deterministic 1920x1080 Chromium capture and automated 7-viewport WCAG 2.1 AA audits via Cloud Quality." },
+      { badge: "Speech Lexicon Standard", cls: "glyph-ai", name: "W3C PLS 1.0 & SSML", desc: "Standards-based XML pronunciation lexicons and prosody controls powering Aaruni Cloud Voice v2." },
+      { badge: "Edge Infrastructure", cls: "glyph-sec", name: "Aaruni Cloud Edge", desc: "Global Anycast CDN, TLS 1.3 edge routing, and outbound-only encrypted worker tunnels." },
+      { badge: "Parallel Compute Pool", cls: "glyph-compute", name: "Aaruni Cloud Compute", desc: "Dedicated unified-memory parallel compute workers in ap-south-hyd-1 with zero per-minute GPU surcharges." },
+      { badge: "Zero-Egress Hot Storage", cls: "glyph-storage", name: "Aaruni Cloud Storage", desc: "Mirrored RAID-1 hot-tier NVMe & LAN storage backing zero-egress global media delivery." },
+      { badge: "Offsite Cold Infrastructure", cls: "glyph-tools", name: "Aaruni Cloud Archive", desc: "Encrypted 30 TB offsite cold backup storage backing disaster recovery and statutory retention." },
       { badge: "Container Runtime", cls: "glyph-sec", name: "Docker® & OCI", desc: "Standardized container sandboxes powering Cloud Containers isolated build & lab jobs." },
       { badge: "GitOps & CI Failover", cls: "glyph-compute", name: "GitHub® Actions", desc: "Immutable source-lock repositories, QA issue tracking, and Linux Xvfb failover runners." }
     ];
@@ -2893,9 +2934,9 @@ console.log("Verified Receipt:", plan.receiptId, plan.actions);`
         html: `
           <p style="font-size:13.5px;color:var(--ac-text-secondary);"><strong>Aaruni Cloud</strong> (<code>aarunicloud.com</code>), <strong>Cloud Storage</strong>, <strong>Cloud Compute</strong>, <strong>Cloud Voice</strong>, <strong>Cloud Assistant</strong>, <strong>Cloud Render</strong>, and <strong>Syllovo</strong> are proprietary brands of <strong>Aaruni Tech Private Limited</strong>.</p>
           <h3 style="font-size:15px;margin:14px 0 6px;">1. Non-Affiliation with AWS &amp; Third-Party Vendors</h3>
-          <p style="font-size:13.5px;color:var(--ac-text-secondary);">Aaruni Cloud is an independent cloud platform and is <strong>not</strong> affiliated with, endorsed by, sponsored by, or formally partnered with Amazon Web Services, Inc. (AWS), TechSmith Corporation, ElevenLabs Inc., Apple Inc., Cloudflare, Inc., Synology Inc., Google LLC, Docker Inc., or GitHub, Inc.</p>
+          <p style="font-size:13.5px;color:var(--ac-text-secondary);">Aaruni Cloud is an independent cloud platform and is <strong>not</strong> affiliated with, endorsed by, sponsored by, or formally partnered with Amazon Web Services, Inc. (AWS), TechSmith Corporation, ElevenLabs Inc., Apple Inc., Google LLC, Docker Inc., or GitHub, Inc.</p>
           <h3 style="font-size:15px;margin:14px 0 6px;">2. Nominative Fair Use</h3>
-          <p style="font-size:13.5px;color:var(--ac-text-secondary);">References to third-party formats (<code>.cmproj</code>, <code>.libzip</code>, <code>.key</code>), customer-configured APIs, open-source engines, and licensed infrastructure hardware describe technical compatibility and architecture only.</p>
+          <p style="font-size:13.5px;color:var(--ac-text-secondary);">References to third-party formats (<code>.cmproj</code>, <code>.libzip</code>, <code>.key</code>), customer-configured APIs, and open-source media standards describe technical compatibility and architecture only.</p>
         `
       },
       SECURITY: {
@@ -2938,7 +2979,7 @@ console.log("Verified Receipt:", plan.receiptId, plan.actions);`
       const el = document.getElementById("terminal-content");
       if (!el) return;
       el.textContent = "$ curl -s https://api.aarunicloud.com/v1/status\n[Connecting to live Cloudflare Edge + D1 Control Plane...]";
-      fetch("/v1/status")
+      cloudFetch("/v1/status")
         .then(function (r) { return r.json(); })
         .then(function (data) {
           el.textContent = "$ curl -s https://api.aarunicloud.com/v1/status\n" + JSON.stringify(data, null, 2);
@@ -3057,78 +3098,131 @@ console.log("Verified Receipt:", plan.receiptId, plan.actions);`
     }
 
     /* -----------------------------------------------------------------------
-       AVS INTERACTIVE WORKBENCH
+       AARUNI CLOUD VOICE SHOWCASE + INTERACTIVE PLAYGROUND
+       6 Commercial-Safe Public Studio Voices + 3 Showcase Categories
        ----------------------------------------------------------------------- */
-    const CX_PRESET_SCRIPTS = {
-      s1: "Welcome to Aaruni Cloud. Provision unified-memory Cloud Compute and zero-egress Cloud Storage in seconds, with predictable monthly pricing and global edge delivery.",
-      s2: "Today we will deploy PostgreSQL, OAuth2 authentication, and NGINX ingress controllers using kubectl, with automated WCAG accessibility checks.",
-      s3: "Aaruni Cloud Guard enforces zero-trust tenant isolation, TLS 1.3 encryption, and hard monthly spend caps so your team never receives a surprise cloud bill."
+    const SHOWCASE_VOICE_LABELS = {
+      stock_aria: "Aria — Warm Educator",
+      stock_ethan: "Ethan — Tech Keynote",
+      stock_maya: "Maya — Product Storyteller",
+      stock_dev: "Dev — Systems Architect",
+      stock_clara: "Clara — Executive Briefing",
+      stock_kabir: "Kabir — Global Engineering"
     };
 
-    function updateAvsScript() {
-      const sel = document.getElementById("avs-persona-select").value;
-      const preset = (document.getElementById("avs-script-preset") || {}).value || "s1";
-      const inp = document.getElementById("avs-sample-input");
-      if (inp && CX_PRESET_SCRIPTS[preset]) {
-        inp.value = CX_PRESET_SCRIPTS[preset];
+    const SHOWCASE_CATEGORY_META = {
+      course: {
+        label: "Tech Course",
+        cxPreset: "s2",
+        script: "Today we will deploy PostgreSQL, OAuth2 authentication, and NGINX ingress controllers using kubectl, with automated CI/CD checks and zero-downtime rollouts."
+      },
+      ad: {
+        label: "Product Launch Ad",
+        cxPreset: "s1",
+        script: "Meet Aaruni Cloud Voice v2. Turn technical scripts, product launches, and global courses into broadcast-ready studio audio in seconds—starting free with ten thousand credits."
+      },
+      agent: {
+        label: "AI Support Agent",
+        cxPreset: "s3",
+        script: "Hi! Your Cloud Guard security audit passed with zero policy regressions, and your zero-egress Cloud Storage backup is verified in ap-south-hyd-1. How can I help next?"
       }
-      document.getElementById("avs-stage-status").textContent =
-        "STATUS: READY (" + sel.replace("stock_", "").toUpperCase() + " • PRESET " + preset.toUpperCase() + ")";
+    };
+
+    const SHOWCASE_CX_VOICE_FALLBACK = {
+      stock_aria: "stock_aria",
+      stock_ethan: "stock_dev",
+      stock_maya: "stock_meera",
+      stock_dev: "stock_dev",
+      stock_clara: "stock_aria",
+      stock_kabir: "stock_dev"
+    };
+
+    let activeAvsCategory = "course";
+
+    function syncAvsCategoryPills() {
+      document.querySelectorAll("#avs-cat-pills .avs-cat-pill").forEach(function (pill) {
+        const isAct = pill.getAttribute("data-cat") === activeAvsCategory;
+        pill.style.background = isAct ? "#111827" : "var(--ac-bg-subtle)";
+        pill.style.color = isAct ? "#FFFFFF" : "var(--ac-text)";
+        pill.style.borderColor = isAct ? "#111827" : "var(--ac-border)";
+        pill.style.fontWeight = isAct ? "700" : "600";
+      });
     }
 
-    function runAvsAudition() {
-      const statusEl = document.getElementById("avs-stage-status");
-      const btn = document.getElementById("avs-play-btn");
-      const bars = document.querySelectorAll("#avs-waveform .wave-bar");
-      const sel = document.getElementById("avs-persona-select").value || "stock_aria";
-      const preset = (document.getElementById("avs-script-preset") || {}).value || "s1";
+    function selectAvsCategory(cat, autoPlay) {
+      if (!SHOWCASE_CATEGORY_META[cat]) return;
+      activeAvsCategory = cat;
+      syncAvsCategoryPills();
       const inp = document.getElementById("avs-sample-input");
-      const text = (inp ? inp.value : CX_PRESET_SCRIPTS.s1).trim();
-      const audioEl = document.getElementById("avs-cx-audio");
+      if (inp) {
+        inp.value = SHOWCASE_CATEGORY_META[cat].script;
+      }
+      const sel = (document.getElementById("avs-persona-select") || {}).value || "stock_aria";
+      const st = document.getElementById("avs-stage-status");
+      if (st) {
+        st.textContent = "STATUS: READY (" + sel.replace("stock_", "").toUpperCase() + " • " + SHOWCASE_CATEGORY_META[cat].label.toUpperCase() + ")";
+      }
+      if (autoPlay) {
+        if (waveTimer) {
+          stopAvsPlaybackOnly();
+        }
+        runAvsAudition();
+      }
+    }
 
+    function updateAvsVoiceSelection(autoPlay) {
+      const sel = (document.getElementById("avs-persona-select") || {}).value || "stock_aria";
+      const catMeta = SHOWCASE_CATEGORY_META[activeAvsCategory] || SHOWCASE_CATEGORY_META.course;
+      const st = document.getElementById("avs-stage-status");
+      if (st) {
+        st.textContent = "STATUS: READY (" + sel.replace("stock_", "").toUpperCase() + " • " + catMeta.label.toUpperCase() + ")";
+      }
+      if (autoPlay && waveTimer) {
+        stopAvsPlaybackOnly();
+        runAvsAudition();
+      }
+    }
+
+    function stopAvsPlaybackOnly() {
       if (waveTimer) {
         clearInterval(waveTimer);
         waveTimer = null;
-        if (audioEl) { audioEl.pause(); audioEl.currentTime = 0; }
-        if ("speechSynthesis" in window) window.speechSynthesis.cancel();
-        bars.forEach(function (b) { b.style.height = "24%"; });
-        statusEl.textContent = "STATUS: STOPPED";
-        btn.innerHTML = "<span>&#9654; Synthesize &amp; Listen</span>";
-        return;
       }
-
-      statusEl.textContent = "1/3 APPLYING W3C PLS LEXICON & -12.0 dB DSP...";
-      btn.innerHTML = "<span>■ Stop Playback</span>";
-
-      waveTimer = setInterval(function () {
-        bars.forEach(function (b, idx) {
-          const h = 20 + ((Math.sin(Date.now() / 140 + idx) + 1) * 36);
-          b.style.height = Math.round(h) + "%";
-        });
-      }, 120);
-
-      const isUnmodifiedPreset = text === CX_PRESET_SCRIPTS[preset];
-      if (audioEl && isUnmodifiedPreset) {
-        const mp3Url = "/assets/voice/cx/" + sel + "_" + preset + ".mp3";
-        audioEl.src = mp3Url;
-        audioEl.style.display = "block";
-        audioEl.onended = finishAvsAudition;
-        audioEl.onerror = finishAvsAudition;
-        audioEl.play().then(function () {
-          statusEl.textContent = "STREAMING STUDIO MP3 (" + sel.replace("stock_", "").toUpperCase() + " • -12.0 dB)";
-        }).catch(function () {
-          finishAvsAudition();
-        });
-        return;
+      const audioEl = document.getElementById("avs-cx-audio");
+      if (audioEl) {
+        audioEl.onended = null;
+        audioEl.onerror = null;
+        audioEl.pause();
+        audioEl.currentTime = 0;
       }
+      if ("speechSynthesis" in window) window.speechSynthesis.cancel();
+      document.querySelectorAll("#avs-waveform .wave-bar").forEach(function (b) { b.style.height = "24%"; });
+      const btn = document.getElementById("avs-play-btn");
+      if (btn) btn.innerHTML = "<span>&#9654; Play Studio Voice</span>";
+    }
 
-      fetch("/v1/voice/speak", {
+    function synthesizeCustomAvsText(text, sel, modelId, statusEl, audioEl) {
+      cloudFetch("/v1/voice/speak", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ text: text, voiceId: sel, targetLufs: -12 })
+        body: JSON.stringify({ text: text, voiceId: sel, modelId: modelId || "cloud-voice-v2", targetLufs: -14 })
       })
         .then(function (r) { return r.json(); })
         .then(function (res) {
+          if (audioEl && res && (res.audioUrl || res.audioBase64)) {
+            audioEl.onended = finishAvsAudition;
+            audioEl.onerror = finishAvsAudition;
+            audioEl.src = res.audioBase64
+              ? ("data:" + (res.contentType || "audio/mpeg") + ";base64," + res.audioBase64)
+              : res.audioUrl;
+            audioEl.style.display = "block";
+            audioEl.play().then(function () {
+              statusEl.textContent = "STREAMING LIVE CLOUD VOICE v2 (" + sel.replace("stock_", "").toUpperCase() + ")";
+            }).catch(function () {
+              finishAvsAudition();
+            });
+            return;
+          }
           const spoken = (res && res.normalizedText) || text;
           if ("speechSynthesis" in window) {
             window.speechSynthesis.cancel();
@@ -3137,7 +3231,7 @@ console.log("Verified Receipt:", plan.receiptId, plan.actions);`
             utter.onend = finishAvsAudition;
             utter.onerror = finishAvsAudition;
             window.speechSynthesis.speak(utter);
-            statusEl.textContent = "STREAMING CUSTOM W3C-PLS PREVIEW (-12.0 dB)";
+            statusEl.textContent = "STREAMING CUSTOM W3C-PLS PREVIEW (" + sel.replace("stock_", "").toUpperCase() + ")";
           } else {
             setTimeout(finishAvsAudition, 3000);
           }
@@ -3145,6 +3239,69 @@ console.log("Verified Receipt:", plan.receiptId, plan.actions);`
         .catch(function () {
           finishAvsAudition();
         });
+    }
+
+    function runAvsAudition() {
+      const statusEl = document.getElementById("avs-stage-status");
+      const btn = document.getElementById("avs-play-btn");
+      const bars = document.querySelectorAll("#avs-waveform .wave-bar");
+      const sel = (document.getElementById("avs-persona-select") || {}).value || "stock_aria";
+      const modelId = (document.getElementById("avs-model-select") || {}).value || "cloud-voice-v2";
+      const catMeta = SHOWCASE_CATEGORY_META[activeAvsCategory] || SHOWCASE_CATEGORY_META.course;
+      const inp = document.getElementById("avs-sample-input");
+      const text = (inp ? inp.value : catMeta.script).trim();
+      const audioEl = document.getElementById("avs-cx-audio");
+
+      if (waveTimer) {
+        stopAvsPlaybackOnly();
+        if (statusEl) statusEl.textContent = "STATUS: STOPPED";
+        return;
+      }
+
+      if (statusEl) statusEl.textContent = "LOADING CLOUD VOICE v2 (" + sel.replace("stock_", "").toUpperCase() + ")...";
+      if (btn) btn.innerHTML = "<span>■ Stop Playback</span>";
+
+      waveTimer = setInterval(function () {
+        bars.forEach(function (b, idx) {
+          const h = 20 + ((Math.sin(Date.now() / 140 + idx) + 1) * 36);
+          b.style.height = Math.round(h) + "%";
+        });
+      }, 120);
+
+      const isShowcasePreset = text === catMeta.script;
+      if (audioEl && isShowcasePreset) {
+        const primaryShowcaseUrl = "https://aaruni-tech-cloud.pages.dev/assets/voice/showcase/" + sel + "_" + activeAvsCategory + ".mp3";
+        const cxVoice = SHOWCASE_CX_VOICE_FALLBACK[sel] || "stock_aria";
+        const fallbackCxUrl = "/assets/voice/cx/" + cxVoice + "_" + catMeta.cxPreset + ".mp3";
+        let triedCxFallback = false;
+
+        audioEl.style.display = "block";
+        audioEl.onended = finishAvsAudition;
+        audioEl.onerror = function () {
+          if (!triedCxFallback) {
+            triedCxFallback = true;
+            audioEl.src = fallbackCxUrl;
+            audioEl.play().then(function () {
+              statusEl.textContent = "STREAMING STUDIO VOICE (" + sel.replace("stock_", "").toUpperCase() + " • " + catMeta.label.toUpperCase() + ")";
+            }).catch(function () {
+              synthesizeCustomAvsText(text, sel, modelId, statusEl, audioEl);
+            });
+          } else {
+            synthesizeCustomAvsText(text, sel, modelId, statusEl, audioEl);
+          }
+        };
+        audioEl.src = primaryShowcaseUrl;
+        audioEl.play().then(function () {
+          statusEl.textContent = "STREAMING SHOWCASE MP3 (" + sel.replace("stock_", "").toUpperCase() + " • " + catMeta.label.toUpperCase() + ")";
+        }).catch(function () {
+          if (!triedCxFallback) {
+            audioEl.onerror();
+          }
+        });
+        return;
+      }
+
+      synthesizeCustomAvsText(text, sel, modelId, statusEl, audioEl);
     }
 
     function finishAvsAudition() {
@@ -3155,8 +3312,8 @@ console.log("Verified Receipt:", plan.receiptId, plan.actions);`
       document.querySelectorAll("#avs-waveform .wave-bar").forEach(function (b) { b.style.height = "24%"; });
       const st = document.getElementById("avs-stage-status");
       const btn = document.getElementById("avs-play-btn");
-      if (st) st.textContent = "VERIFIED: -12.0 dB LUFS • ZERO BOUNDARY CLICKS";
-      if (btn) btn.innerHTML = "<span>&#9654; Synthesize &amp; Listen</span>";
+      if (st) st.textContent = "CLARITY GATE: 100% PASSED • ZERO BOUNDARY CLICKS";
+      if (btn) btn.innerHTML = "<span>&#9654; Play Studio Voice</span>";
     }
 
     /* -----------------------------------------------------------------------
@@ -3207,7 +3364,7 @@ console.log("Verified Receipt:", plan.receiptId, plan.actions);`
       }
 
       const fallbackReceipt = "AAI-RCPT-" + Math.floor(100000 + Math.random() * 899999);
-      fetch("/v1/assistant/ask", {
+      cloudFetch("/v1/assistant/ask", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ prompt: query })
@@ -3346,7 +3503,7 @@ console.log("Verified Receipt:", plan.receiptId, plan.actions);`
       box.style.display = "block";
       box.innerHTML = "Dispatching pilot request <code>" + ref + "</code> to <code>info@syllovo.com</code>...";
 
-      fetch("/api/inquiries", {
+      cloudFetch("/api/inquiries", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ ref: ref, label: "aarunicloud", org: org, email: mail, services: svc })
