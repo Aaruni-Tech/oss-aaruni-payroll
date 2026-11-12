@@ -892,7 +892,7 @@ print(res["normalizedText"])</pre>
   </div>
 
   <script>
-    const API_BASE = "";
+    const API_BASE = window.location.hostname.endsWith("aarunicloud.com") ? "" : "https://console.aarunicloud.com";
     let activeApiKey = localStorage.getItem("acloud_api_key") || "";
     let currentAccount = null;
     let activeConsentCode = "4829";
@@ -1441,7 +1441,7 @@ print(res["normalizedText"])</pre>
       const el = document.getElementById("customer-zero-summary");
       if (!el) return;
       try {
-        const r = await fetch("/v1/projects/prj_syllovo_prod/public-manifest");
+        const r = await fetch(API_BASE + "/v1/projects/prj_syllovo_prod/public-manifest");
         if (!r.ok) return;
         const j = await r.json();
         if (j && j.project) {
