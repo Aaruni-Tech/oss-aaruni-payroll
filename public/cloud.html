@@ -3219,8 +3219,8 @@ console.log("Verified Receipt:", plan.receiptId, plan.actions);`
     }
 
     function openConsoleSignInModal() {
-      if (window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1") {
-        window.location.href = "/console.html";
+      if (window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1" || window.location.hostname.endsWith(".pages.dev")) {
+        window.location.href = "/console";
         return;
       }
       window.location.href = "https://console.aarunicloud.com";

@@ -364,7 +364,7 @@
     </div>
     <div class="topbar-actions">
       <span id="account-pill" class="region-pill mono">Guest (Not Signed In)</span>
-      <a href="https://aarunicloud.com" class="btn btn-sm">← Cloud Storefront</a>
+      <a id="storefront-back-link" href="/" class="btn btn-sm">← Cloud Storefront</a>
       <button type="button" id="theme-btn" class="btn btn-sm" onclick="toggleTheme()">☀ Light</button>
     </div>
   </header>
@@ -1795,6 +1795,10 @@ print(res["normalizedText"])</pre>
       const savedTheme = localStorage.getItem("acloud_theme") || localStorage.getItem("acloud_console_theme") || "dark";
       document.documentElement.setAttribute("data-theme", savedTheme);
       document.getElementById("theme-btn").textContent = savedTheme === "light" ? "☾ Dark" : "☀ Light";
+      const sfLink = document.getElementById("storefront-back-link");
+      if (sfLink && window.location.hostname.endsWith("aarunicloud.com")) {
+        sfLink.href = "https://aarunicloud.com";
+      }
       detectPlsTerms();
       fetchConsentChallenge();
       loadCustomerZeroManifest();
