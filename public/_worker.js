@@ -42,6 +42,38 @@ async function sha256Hex(input) {
     .join("");
 }
 
+async function hmacSha256Hex(secret, message) {
+  const enc = new TextEncoder();
+  const key = await crypto.subtle.importKey(
+    "raw",
+    enc.encode(String(secret || "")),
+    { name: "HMAC", hash: "SHA-256" },
+    false,
+    ["sign"]
+  );
+  const sig = await crypto.subtle.sign("HMAC", key, enc.encode(String(message || "")));
+  return Array.from(new Uint8Array(sig))
+    .map((b) => b.toString(16).padStart(2, "0"))
+    .join("");
+}
+
+function timingSafeEqualStr(a, b) {
+  const sa = String(a || "");
+  const sb = String(b || "");
+  if (sa.length !== sb.length || sa.length === 0) return false;
+  let diff = 0;
+  for (let i = 0; i < sa.length; i++) {
+    diff |= sa.charCodeAt(i) ^ sb.charCodeAt(i);
+  }
+  return diff === 0;
+}
+
+const PLAN_CATALOG = {
+  free: { id: "free", plan: "free", name: "Free Starter", inrMonthly: 0, usdMonthly: 0, amountPaise: 0, amountCents: 0, charsLimit: 2000, voicesLimit: 1 },
+  creator: { id: "creator", plan: "creator", name: "Creator Studio", inrMonthly: 1499, usdMonthly: 19, amountPaise: 149900, amountCents: 1900, charsLimit: 100000, voicesLimit: 3 },
+  pro: { id: "pro", plan: "pro", name: "Pro Team", inrMonthly: 3999, usdMonthly: 49, amountPaise: 399900, amountCents: 4900, charsLimit: 350000, voicesLimit: 10 }
+};
+
 function makeId(prefix) {
   const rand = crypto.randomUUID().replace(/-/g, "").slice(0, 12);
   return `${prefix}_${rand}`;
@@ -101,9 +133,9 @@ const SERVICE_CATALOG = [
 ];
 
 const STOCK_VOICES = [
-  { voiceId: "stock_aria", name: "Aria — Technical Educator", type: "stock", language: "en-US", pitch: 1.04, rate: 0.96, badge: "Built-In Studio" },
-  { voiceId: "stock_dev", name: "Dev — Systems Architect", type: "stock", language: "en-IN", pitch: 0.94, rate: 0.95, badge: "Built-In Studio" },
-  { voiceId: "stock_meera", name: "Meera — Product Walkthrough", type: "stock", language: "en-GB", pitch: 1.08, rate: 0.97, badge: "Built-In Studio" }
+  { voiceId: "stock_aria", name: "Aria — Technical Educator", type: "stock", engine: "kokoro-82m", license: "Apache-2.0", language: "en-US", pitch: 1.04, rate: 0.96, badge: "Kokoro-82M (Apache-2.0)" },
+  { voiceId: "stock_dev", name: "Dev — Systems Architect", type: "stock", engine: "kokoro-82m", license: "Apache-2.0", language: "en-IN", pitch: 0.94, rate: 0.95, badge: "Kokoro-82M (Apache-2.0)" },
+  { voiceId: "stock_meera", name: "Meera — Product Walkthrough", type: "stock", engine: "kokoro-82m", license: "Apache-2.0", language: "en-GB", pitch: 1.08, rate: 0.97, badge: "Kokoro-82M (Apache-2.0)" }
 ];
 
 const W3C_PLS_LEXICON = [
@@ -283,7 +315,7 @@ async function handleCloudApiV1(request, env, executeD1Query) {
         platform: "Aaruni Cloud",
         consoleUrl: "https://console.aarunicloud.com",
         cliBinary: "acloud",
-        version: "1.3.0",
+        version: "1.4.0",
         status: "OPERATIONAL",
         controlPlaneRegion: "ap-south-hyd-1",
         edgePop: colo,
@@ -603,9 +635,7 @@ async function handleCloudApiV1(request, env, executeD1Query) {
     if (path === "/v1/voice/list" && request.method === "GET") {
       const principal = await tryOptionalGuard(request, env, executeD1Query);
       let customVoices = [];
-      let isAdminOwner = false;
       if (principal) {
-        isAdminOwner = principal.role === "admin";
         const user = await resolveOrCreateUserForPrincipal(env, executeD1Query, principal);
         const { results } = await executeD1Query(
           env,
@@ -613,65 +643,13 @@ async function handleCloudApiV1(request, env, executeD1Query) {
           [user.user_id]
         );
         customVoices = (results || []).map((v) => ({ ...v, type: "cloned", badge: "Your Cloned Voice" }));
-        if (isAdminOwner) {
-          customVoices.unshift({
-            voiceId: "vox_rupesh_v4_ultra",
-            name: "Rupesh Tiwari — Studio Master v4 Ultra",
-            language: "en-US",
-            type: "cloned",
-            badge: "Private Tenant Clone • 99.63% Sim • 0.00% WER",
-            model: "qwen3-tts-12hz-1.7b-rupesh-v4-ultra-bf16",
-            status: "READY"
-          });
-        }
       }
       return jsonRes({
         ok: true,
         service: "VOICE",
-        ownerMode: isAdminOwner,
         clonedCount: customVoices.length,
         clonedVoices: customVoices,
         stockVoices: STOCK_VOICES
-      });
-    }
-
-    if (path === "/v1/voice/services" && (request.method === "GET" || request.method === "POST")) {
-      const adminAuth = await authenticateAdminOnly(request, env, executeD1Query);
-      if (!adminAuth.ok) return jsonRes({ ok: false, error: adminAuth.error }, adminAuth.status);
-      if (request.method === "POST") {
-        const body = await request.json().catch(() => ({}));
-        const instName = String(body.serviceName || "atc-avgs-v4-syllovo-prod").slice(0, 60);
-        const gpuNode = String(body.computeNode || "acc-hyd1-m4pro-01 (Apple M4 Pro 24GB)").slice(0, 80);
-        const svcId = makeId("svc_avgs");
-        await logAudit(env, executeD1Query, adminAuth.principal.key_id, "VOICE", `spinup_service:${svcId}`);
-        return jsonRes({
-          ok: true,
-          service: "VOICE",
-          instanceId: svcId,
-          serviceName: instName,
-          model: "qwen3-tts-12hz-1.7b-rupesh-v4-ultra-bf16",
-          license: "Apache-2.0",
-          computeNode: gpuNode,
-          boundApp: "Syllovo Studio (prj_syllovo_prod)",
-          status: "RUNNING",
-          metrics: { werPct: 0.0, speakerSimPct: 99.63, peakDb: -6.8, studioRolloffHz: 4726 },
-          createdAt: new Date().toISOString()
-        }, 201);
-      }
-      return jsonRes({
-        ok: true,
-        service: "VOICE",
-        instances: [
-          {
-            instanceId: "svc_avgs_v4_hyd1",
-            serviceName: "atc-avgs-v4-syllovo-prod",
-            model: "qwen3-tts-12hz-1.7b-rupesh-v4-ultra-bf16",
-            computeNode: "acc-hyd1-m4pro-01 (rt-labs Apple M4 Pro · 24 GB Unified GPU)",
-            boundApp: "Syllovo Studio (syllovo.com / prj_syllovo_prod)",
-            status: "RUNNING",
-            metrics: { werPct: 0.0, speakerSimPct: 99.63, peakDb: -6.8, studioRolloffHz: 4726 }
-          }
-        ]
       });
     }
 
@@ -823,27 +801,145 @@ async function handleCloudApiV1(request, env, executeD1Query) {
         }
 
         let voiceMeta = STOCK_VOICES.find((v) => v.voiceId === requestedVoiceId) || null;
-        if (requestedVoiceId === "vox_rupesh_v4_ultra") {
-          if (principal.role !== "admin") {
-            return jsonRes({ ok: false, error: "Blocked by Cloud Guard Tenant Isolation: Private owner voice clone requires admin tenancy." }, 403);
-          }
-          voiceMeta = {
-            voiceId: "vox_rupesh_v4_ultra",
-            name: "Rupesh Tiwari — Studio Master v4 Ultra",
-            language: "en-US",
-            type: "cloned",
-            model: "qwen3-tts-12hz-1.7b-rupesh-v4-ultra-bf16"
-          };
-        } else if (requestedVoiceId.startsWith("vox_")) {
+        if (requestedVoiceId.startsWith("vox_")) {
           const vq = await executeD1Query(
             env,
-            "SELECT voice_id AS voiceId, name, language, ref_duration_sec AS durationSec FROM cloud_voice_profiles WHERE voice_id = ? AND user_id = ? LIMIT 1",
+            "SELECT voice_id AS voiceId, name, language, ref_duration_sec AS durationSec, ref_transcript AS refTranscript, ref_audio_b64 AS refAudioB64 FROM cloud_voice_profiles WHERE voice_id = ? AND user_id = ? LIMIT 1",
             [requestedVoiceId, user.user_id]
           );
           if (!vq.results || vq.results.length === 0) {
             return jsonRes({ ok: false, error: `Cloned voice '${requestedVoiceId}' not found in your isolated account.` }, 404);
           }
-          voiceMeta = { ...vq.results[0], type: "cloned" };
+          voiceMeta = {
+            voiceId: vq.results[0].voiceId,
+            name: vq.results[0].name,
+            language: vq.results[0].language,
+            durationSec: vq.results[0].durationSec,
+            type: "cloned",
+            engine: "openf5-tts-base",
+            license: "Apache-2.0"
+          };
+        }
+
+        const camtasiaTimeline = body.includeCamtasiaTimeline
+          ? {
+              schema: "aarunicloud.camtasia.tscproj.bridge/v1",
+              nominativeNotice: "Compatible with TechSmith Camtasia® (.tscproj JSON)",
+              frameRate: 30,
+              resolution: "1920x1080",
+              leadInSilenceSec: 0.5,
+              spokenDurationEstSec: pls.estDurationSec,
+              tailSilenceSec: 0.5,
+              targetLoudnessLufs: targetLufs,
+              normalizedTranscript: pls.normalizedText
+            }
+          : undefined;
+
+        // MODE A: BYOK ElevenLabs® Pass-Through + SHA-256 Sentence Cache
+        if (engine === "elevenlabs_byok") {
+          const connQ = await executeD1Query(
+            env,
+            "SELECT api_key_secret, default_voice_id FROM cloud_user_connectors WHERE user_id = ? AND provider = 'elevenlabs_byok' LIMIT 1",
+            [user.user_id]
+          );
+          if (!connQ.results || connQ.results.length === 0 || !connQ.results[0].api_key_secret) {
+            return jsonRes({
+              ok: false,
+              error: "ElevenLabs® BYOK connector is not configured for your account yet. Save your key in Console ▸ Cloud Voice ▸ Partner Connectors or via 'acloud voice connector set elevenlabs --key <key>'."
+            }, 400);
+          }
+          const byokKey = connQ.results[0].api_key_secret;
+          const elVoiceId = String(body.elevenlabsVoiceId || connQ.results[0].default_voice_id || "21m00Tcm4TlvDq8ikWAM").trim();
+          const cacheHash = await sha256Hex(`${user.user_id}:elevenlabs_byok:${elVoiceId}:${targetLufs}:${pls.normalizedText}`);
+
+          const cacheQ = await executeD1Query(
+            env,
+            "SELECT audio_b64, content_type, size_bytes, duration_sec, hit_count FROM cloud_voice_cache WHERE cache_hash = ? LIMIT 1",
+            [cacheHash]
+          );
+          if (cacheQ.results && cacheQ.results.length > 0) {
+            const hit = cacheQ.results[0];
+            await executeD1Query(env, "UPDATE cloud_voice_cache SET hit_count = hit_count + 1 WHERE cache_hash = ?", [cacheHash]);
+            await logAudit(env, executeD1Query, principal.key_id, "VOICE", `byok_cache_hit:${cacheHash.slice(0, 12)}`);
+            return jsonRes({
+              ok: true,
+              service: "VOICE",
+              mode: "BYOK_ELEVENLABS_CACHE_HIT",
+              cacheHit: true,
+              cacheHash,
+              hitCount: Number(hit.hit_count || 0) + 1,
+              contentType: hit.content_type || "audio/mpeg",
+              sizeBytes: hit.size_bytes,
+              audioBase64: hit.audio_b64,
+              audioDataUri: `data:${hit.content_type || "audio/mpeg"};base64,${hit.audio_b64}`,
+              originalText: rawText,
+              normalizedText: pls.normalizedText,
+              plsReplacements: pls.replacements,
+              dsp: dspSpec,
+              ...(camtasiaTimeline ? { camtasiaTimeline } : {}),
+              quota: { charsUsed: user.chars_used, charsLimit: user.chars_limit, planTier: user.plan_tier }
+            }, 200, { "X-Aaruni-Service": "VOICE" });
+          }
+
+          const elRes = await fetch(
+            `https://api.elevenlabs.io/v1/text-to-speech/${encodeURIComponent(elVoiceId)}?output_format=mp3_44100_128`,
+            {
+              method: "POST",
+              headers: {
+                "xi-api-key": byokKey,
+                "Content-Type": "application/json",
+                "Accept": "audio/mpeg"
+              },
+              body: JSON.stringify({
+                text: pls.normalizedText,
+                model_id: "eleven_multilingual_v2",
+                voice_settings: {
+                  stability: 0.40,
+                  similarity_boost: 0.82,
+                  style: 0.08,
+                  use_speaker_boost: true
+                }
+              })
+            }
+          );
+          if (!elRes.ok) {
+            const errTxt = await elRes.text().catch(() => "");
+            return jsonRes({
+              ok: false,
+              error: `ElevenLabs® BYOK upstream returned HTTP ${elRes.status}: ${errTxt.slice(0, 220)}`
+            }, 502);
+          }
+
+          const mp3Buf = await elRes.arrayBuffer();
+          const mp3B64 = bufToBase64(mp3Buf);
+          if (mp3Buf.byteLength < 700_000) {
+            await executeD1Query(
+              env,
+              `INSERT OR REPLACE INTO cloud_voice_cache (cache_hash, user_id, engine, voice_id, content_type, audio_b64, size_bytes, duration_sec, hit_count)
+               VALUES (?, ?, 'elevenlabs_byok', ?, 'audio/mpeg', ?, ?, ?, 0)`,
+              [cacheHash, user.user_id, elVoiceId, mp3B64, mp3Buf.byteLength, pls.estDurationSec]
+            );
+          }
+          await executeD1Query(env, "UPDATE cloud_users SET chars_used = chars_used + ? WHERE user_id = ?", [rawText.length, user.user_id]);
+          await logAudit(env, executeD1Query, principal.key_id, "VOICE", `byok_speak:${elVoiceId}`);
+
+          return jsonRes({
+            ok: true,
+            service: "VOICE",
+            mode: "BYOK_ELEVENLABS_LIVE_MP3",
+            cacheHit: false,
+            cacheHash,
+            contentType: "audio/mpeg",
+            sizeBytes: mp3Buf.byteLength,
+            audioBase64: mp3B64,
+            audioDataUri: `data:audio/mpeg;base64,${mp3B64}`,
+            originalText: rawText,
+            normalizedText: pls.normalizedText,
+            plsReplacements: pls.replacements,
+            dsp: dspSpec,
+            ...(camtasiaTimeline ? { camtasiaTimeline } : {}),
+            quota: { charsUsed: user.chars_used + rawText.length, charsLimit: user.chars_limit, planTier: user.plan_tier }
+          }, 200, { "X-Aaruni-Service": "VOICE" });
         }
 
         await executeD1Query(
@@ -854,7 +950,11 @@ async function handleCloudApiV1(request, env, executeD1Query) {
 
         const jobId = makeId("job_vox");
         const isCloned = Boolean(voiceMeta && voiceMeta.type === "cloned");
-        const jobStatus = isCloned && engine === "guest-mlx" ? "QUEUED" : "READY";
+        const isWorkerQueued = engine === "guest-mlx" || engine === "openf5" || engine === "kokoro-worker";
+        const jobStatus = isWorkerQueued ? "QUEUED" : "READY";
+        const commercialEngineSpec = isCloned
+          ? { engine: "openf5-tts-base", checkpoint: "mrfakename/OpenF5-TTS-Base", license: "Apache-2.0", ccByNcBlocked: true }
+          : { engine: "kokoro-82m", checkpoint: "hexgrad/Kokoro-82M", license: "Apache-2.0", ccByNcBlocked: true };
 
         await executeD1Query(
           env,
@@ -862,9 +962,15 @@ async function handleCloudApiV1(request, env, executeD1Query) {
            VALUES (?, 'VOICE', ?, ?, ?, ?, 'ap-south-hyd-1', ?, datetime('now'), datetime('now'))`,
           [
             jobId,
-            isCloned ? "speak_cloned_voice" : "speak_stock_voice",
-            JSON.stringify({ voiceId: requestedVoiceId, text: rawText, normalizedText: pls.normalizedText }),
-            JSON.stringify({ pls, dspSpec, voice: voiceMeta || STOCK_VOICES[0] }),
+            isCloned ? "speak_openf5_apache2" : "speak_kokoro_apache2",
+            JSON.stringify({
+              voiceId: requestedVoiceId,
+              text: rawText,
+              normalizedText: pls.normalizedText,
+              targetLufs,
+              ...commercialEngineSpec
+            }),
+            JSON.stringify({ pls, dspSpec, commercialEngineSpec, voice: voiceMeta || STOCK_VOICES[0] }),
             jobStatus,
             principal.key_id
           ]
@@ -874,7 +980,8 @@ async function handleCloudApiV1(request, env, executeD1Query) {
         return jsonRes({
           ok: true,
           service: "VOICE",
-          mode: isCloned ? "ISOLATED_CLONED_VOICE" : "AUTHENTICATED_STUDIO_VOICE",
+          mode: isCloned ? "ISOLATED_CLONED_VOICE_APACHE2" : "COMMERCIAL_KOKORO_APACHE2",
+          commercialEngine: commercialEngineSpec,
           gpuTrainingYieldGuard: "PROTECTED_ZERO_TRAINING_INTERFERENCE",
           jobId,
           status: jobStatus,
@@ -886,6 +993,7 @@ async function handleCloudApiV1(request, env, executeD1Query) {
           estimatedDurationSec: pls.estDurationSec,
           plsReplacements: pls.replacements,
           dsp: dspSpec,
+          ...(camtasiaTimeline ? { camtasiaTimeline } : {}),
           quota: {
             charsUsed: user.chars_used + rawText.length,
             charsLimit: user.chars_limit,
@@ -1959,6 +2067,448 @@ async function handleCloudApiV1(request, env, executeD1Query) {
         acloudYaml: generatedYaml,
         deployCommand: `acloud deploy --project ${projectId} --file acloud.yaml`
       }, 200, { "X-Aaruni-Service": "BUILDER" });
+    }
+
+    // =========================================================================
+    // 9. PHASE 1B — AUTOMATED BILLING (RAZORPAY + STRIPE HMAC) & BYOK CONNECTORS
+    // =========================================================================
+
+    async function fulfillPaidPlanUpgrade({ userId, email, targetPlan, orderId, gateway, paymentId }) {
+      const spec = PLAN_CATALOG[targetPlan] || PLAN_CATALOG.creator;
+      const invoiceNo = `INV-ACLOUD-${new Date().toISOString().slice(0, 10).replace(/-/g, "")}-${Math.floor(1000 + Math.random() * 9000)}`;
+
+      await executeD1Query(
+        env,
+        "UPDATE cloud_users SET plan_tier = ?, chars_limit = ?, voices_limit = ? WHERE user_id = ?",
+        [spec.plan, spec.charsLimit, spec.voicesLimit, userId]
+      );
+      await executeD1Query(
+        env,
+        "UPDATE cloud_organizations SET plan_tier = ?, monthly_cap_inr = ? WHERE owner_email = ?",
+        [spec.plan, spec.inrMonthly, email]
+      );
+      if (orderId) {
+        await executeD1Query(
+          env,
+          "UPDATE cloud_billing_orders SET status = 'PAID', gateway_payment_id = ?, invoice_no = ?, paid_at = datetime('now') WHERE order_id = ?",
+          [String(paymentId || ""), invoiceNo, orderId]
+        );
+      }
+      return {
+        planTier: spec.plan,
+        unlockedPlan: spec.plan,
+        charsLimit: spec.charsLimit,
+        voicesLimit: spec.voicesLimit,
+        monthlyCapInr: spec.inrMonthly,
+        invoiceNo,
+        gateway
+      };
+    }
+
+    if (path === "/v1/voice/connectors" && (request.method === "GET" || request.method === "POST")) {
+      const auth = await authenticateGuard(request, env, executeD1Query);
+      if (!auth.ok) return jsonRes({ ok: false, error: auth.error }, auth.status);
+      const user = await resolveOrCreateUserForPrincipal(env, executeD1Query, auth.principal);
+
+      if (request.method === "GET") {
+        const { results } = await executeD1Query(
+          env,
+          "SELECT provider, api_key_secret, default_voice_id AS defaultVoiceId, settings_json, updated_at AS updatedAt FROM cloud_user_connectors WHERE user_id = ? ORDER BY provider ASC",
+          [user.user_id]
+        );
+        return jsonRes({
+          ok: true,
+          service: "VOICE",
+          connectors: (results || []).map((c) => ({
+            provider: c.provider,
+            configured: Boolean(c.api_key_secret || c.settings_json),
+            maskedKey: c.api_key_secret ? maskSecretValue(c.api_key_secret) : null,
+            defaultVoiceId: c.defaultVoiceId || null,
+            updatedAt: c.updatedAt
+          })),
+          supportedProviders: [
+            { id: "elevenlabs_byok", name: "ElevenLabs® BYOK Pass-Through + SHA-256 Sentence Cache" },
+            { id: "camtasia_tscproj", name: "TechSmith Camtasia® (.tscproj) Timeline Bridge" }
+          ]
+        });
+      }
+
+      const body = await request.json().catch(() => ({}));
+      const provider = String(body.provider || "elevenlabs_byok").toLowerCase().trim();
+      if (!["elevenlabs_byok", "camtasia_tscproj"].includes(provider)) {
+        return jsonRes({ ok: false, error: "Unsupported connector provider. Use 'elevenlabs_byok' or 'camtasia_tscproj'." }, 400);
+      }
+      const apiKeySecret = String(body.apiKey || "").trim();
+      const defaultVoiceId = String(body.defaultVoiceId || "").trim();
+      const settingsJson = JSON.stringify(body.settings || {});
+
+      if (provider === "elevenlabs_byok" && !apiKeySecret) {
+        return jsonRes({ ok: false, error: "Missing 'apiKey' for ElevenLabs® BYOK connector." }, 400);
+      }
+
+      await executeD1Query(
+        env,
+        `INSERT INTO cloud_user_connectors (connector_id, user_id, provider, api_key_secret, default_voice_id, settings_json, updated_at)
+         VALUES (?, ?, ?, ?, ?, ?, datetime('now'))
+         ON CONFLICT(user_id, provider) DO UPDATE SET
+           api_key_secret = excluded.api_key_secret,
+           default_voice_id = excluded.default_voice_id,
+           settings_json = excluded.settings_json,
+           updated_at = datetime('now')`,
+        [makeId("con"), user.user_id, provider, apiKeySecret, defaultVoiceId, settingsJson]
+      );
+      await logAudit(env, executeD1Query, auth.principal.key_id, "VOICE", `save_connector:${provider}`);
+
+      return jsonRes({
+        ok: true,
+        service: "VOICE",
+        provider,
+        maskedKey: apiKeySecret ? maskSecretValue(apiKeySecret) : null,
+        defaultVoiceId: defaultVoiceId || null,
+        status: "CONNECTED"
+      });
+    }
+
+    const delConnMatch = path.match(/^\/v1\/voice\/connectors\/([a-z0-9_]+)$/);
+    if (delConnMatch && request.method === "DELETE") {
+      const auth = await authenticateGuard(request, env, executeD1Query);
+      if (!auth.ok) return jsonRes({ ok: false, error: auth.error }, auth.status);
+      const user = await resolveOrCreateUserForPrincipal(env, executeD1Query, auth.principal);
+      await executeD1Query(
+        env,
+        "DELETE FROM cloud_user_connectors WHERE user_id = ? AND provider = ?",
+        [user.user_id, delConnMatch[1]]
+      );
+      return jsonRes({ ok: true, deletedProvider: delConnMatch[1] });
+    }
+
+    if (path === "/v1/billing/plans" && request.method === "GET") {
+      return jsonRes({
+        ok: true,
+        plans: Object.values(PLAN_CATALOG),
+        gatewaysConfigured: {
+          razorpayInrUpiCards: Boolean(env && env.RAZORPAY_KEY_ID && env.RAZORPAY_KEY_SECRET),
+          stripeUsdGlobal: Boolean(env && env.STRIPE_SECRET_KEY)
+        }
+      });
+    }
+
+    if (path === "/v1/billing/orders" && request.method === "GET") {
+      const auth = await authenticateGuard(request, env, executeD1Query);
+      if (!auth.ok) return jsonRes({ ok: false, error: auth.error }, auth.status);
+      const user = await resolveOrCreateUserForPrincipal(env, executeD1Query, auth.principal);
+      const sql = auth.principal.role === "admin"
+        ? "SELECT order_id AS orderId, user_id AS userId, email, target_plan AS targetPlan, currency, amount_minor AS amountMinor, gateway, status, invoice_no AS invoiceNo, created_at AS createdAt, paid_at AS paidAt FROM cloud_billing_orders ORDER BY created_at DESC LIMIT 30"
+        : "SELECT order_id AS orderId, user_id AS userId, email, target_plan AS targetPlan, currency, amount_minor AS amountMinor, gateway, status, invoice_no AS invoiceNo, created_at AS createdAt, paid_at AS paidAt FROM cloud_billing_orders WHERE user_id = ? ORDER BY created_at DESC LIMIT 20";
+      const params = auth.principal.role === "admin" ? [] : [user.user_id];
+      const { results } = await executeD1Query(env, sql, params);
+      return jsonRes({ ok: true, count: results.length, orders: results });
+    }
+
+    if (path === "/v1/billing/checkout" && request.method === "POST") {
+      const auth = await authenticateGuard(request, env, executeD1Query);
+      if (!auth.ok) return jsonRes({ ok: false, error: auth.error }, auth.status);
+      const user = await resolveOrCreateUserForPrincipal(env, executeD1Query, auth.principal);
+      const body = await request.json().catch(() => ({}));
+
+      const targetPlan = body.plan === "pro" ? "pro" : "creator";
+      const spec = PLAN_CATALOG[targetPlan];
+      const gateway = body.gateway === "stripe" ? "stripe" : "razorpay";
+      const currency = gateway === "stripe" ? "USD" : "INR";
+      const amountMinor = gateway === "stripe" ? spec.amountCents : spec.amountPaise;
+      const orderId = makeId("ord");
+
+      // 1. Live Razorpay Order Creation (UPI / GPay / PhonePe / Cards in ₹ INR)
+      if (gateway === "razorpay" && env && env.RAZORPAY_KEY_ID && env.RAZORPAY_KEY_SECRET) {
+        const basic = btoa(`${env.RAZORPAY_KEY_ID}:${env.RAZORPAY_KEY_SECRET}`);
+        const rzpRes = await fetch("https://api.razorpay.com/v1/orders", {
+          method: "POST",
+          headers: {
+            Authorization: `Basic ${basic}`,
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({
+            amount: spec.amountPaise,
+            currency: "INR",
+            receipt: orderId,
+            notes: { user_id: user.user_id, email: user.email, target_plan: targetPlan }
+          })
+        });
+        const rzpJson = await rzpRes.json().catch(() => ({}));
+        if (!rzpRes.ok || !rzpJson.id) {
+          return jsonRes({ ok: false, error: `Razorpay order creation failed: ${rzpJson.error?.description || rzpRes.status}` }, 502);
+        }
+        await executeD1Query(
+          env,
+          `INSERT INTO cloud_billing_orders (order_id, user_id, email, target_plan, currency, amount_minor, gateway, gateway_order_id, status)
+           VALUES (?, ?, ?, ?, 'INR', ?, 'razorpay', ?, 'CREATED')`,
+          [orderId, user.user_id, user.email, targetPlan, spec.amountPaise, rzpJson.id]
+        );
+        return jsonRes({
+          ok: true,
+          mode: "LIVE_RAZORPAY_CHECKOUT",
+          orderId,
+          gateway: "razorpay",
+          razorpayKeyId: env.RAZORPAY_KEY_ID,
+          razorpayOrderId: rzpJson.id,
+          amountMinor: spec.amountPaise,
+          currency: "INR",
+          targetPlan
+        });
+      }
+
+      // 2. Live Stripe Checkout Session ($ USD Global Cards)
+      if (gateway === "stripe" && env && env.STRIPE_SECRET_KEY) {
+        const form = new URLSearchParams();
+        form.set("mode", "payment");
+        form.set("success_url", "https://console.aarunicloud.com/?checkout=success");
+        form.set("cancel_url", "https://console.aarunicloud.com/?checkout=cancelled");
+        form.set("customer_email", user.email);
+        form.set("client_reference_id", orderId);
+        form.set("metadata[order_id]", orderId);
+        form.set("metadata[user_id]", user.user_id);
+        form.set("metadata[target_plan]", targetPlan);
+        form.set("line_items[0][quantity]", "1");
+        form.set("line_items[0][price_data][currency]", "usd");
+        form.set("line_items[0][price_data][unit_amount]", String(spec.amountCents));
+        form.set("line_items[0][price_data][product_data][name]", `Aaruni Cloud — ${spec.name} (${spec.charsLimit.toLocaleString()} chars/mo)`);
+
+        const stRes = await fetch("https://api.stripe.com/v1/checkout/sessions", {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${env.STRIPE_SECRET_KEY}`,
+            "Content-Type": "application/x-www-form-urlencoded"
+          },
+          body: form.toString()
+        });
+        const stJson = await stRes.json().catch(() => ({}));
+        if (!stRes.ok || !stJson.url) {
+          return jsonRes({ ok: false, error: `Stripe session creation failed: ${stJson.error?.message || stRes.status}` }, 502);
+        }
+        await executeD1Query(
+          env,
+          `INSERT INTO cloud_billing_orders (order_id, user_id, email, target_plan, currency, amount_minor, gateway, gateway_order_id, status)
+           VALUES (?, ?, ?, ?, 'USD', ?, 'stripe', ?, 'CREATED')`,
+          [orderId, user.user_id, user.email, targetPlan, spec.amountCents, stJson.id]
+        );
+        return jsonRes({
+          ok: true,
+          mode: "LIVE_STRIPE_CHECKOUT",
+          orderId,
+          gateway: "stripe",
+          checkoutUrl: stJson.url,
+          sessionId: stJson.id,
+          amountMinor: spec.amountCents,
+          currency: "USD",
+          targetPlan
+        });
+      }
+
+      // 3. Honest Pre-Merchant-Key Fallback (Records real order in D1 + notifies Billing Inbox)
+      await executeD1Query(
+        env,
+        `INSERT INTO cloud_billing_orders (order_id, user_id, email, target_plan, currency, amount_minor, gateway, gateway_order_id, status)
+         VALUES (?, ?, ?, ?, ?, ?, ?, ?, 'CREATED')`,
+        [orderId, user.user_id, user.email, targetPlan, currency, amountMinor, gateway, `pending_${orderId}`]
+      );
+
+      if (env && env.EMAIL_RELAY && typeof env.EMAIL_RELAY.fetch === "function") {
+        try {
+          await env.EMAIL_RELAY.fetch("https://internal/send", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              from: "contact@aarunitech.com",
+              replyTo: user.email,
+              subject: `[Aaruni Cloud Order ${orderId}] ${spec.name} (${currency === "INR" ? `₹${spec.inrMonthly}` : `$${spec.usdMonthly}`})`,
+              text: `Order ID: ${orderId}\nUser: ${user.user_id} (${user.email})\nPlan: ${targetPlan}\nActivate instantly via CLI:\nacloud billing activate --order ${orderId}`
+            })
+          });
+        } catch (_) {}
+      }
+
+      return jsonRes({
+        ok: true,
+        mode: "ORDER_CREATED_AWAITING_MERCHANT_GATEWAY_OR_UPI",
+        orderId,
+        gateway,
+        targetPlan,
+        currency,
+        amountDisplay: currency === "INR" ? `₹${spec.inrMonthly}/mo` : `$${spec.usdMonthly}/mo`,
+        message: `Order ${orderId} created (${currency === "INR" ? `₹${spec.inrMonthly}/mo` : `$${spec.usdMonthly}/mo`}). Set RAZORPAY_KEY_ID / STRIPE_SECRET_KEY on Worker for instant popup checkout, or activate immediately via 'acloud billing activate --order ${orderId}'.`
+      }, 201);
+    }
+
+    // Cryptographic Razorpay Checkout Callback Verification (HMAC-SHA256 over order_id|payment_id)
+    if (path === "/v1/billing/razorpay/verify" && request.method === "POST") {
+      const auth = await authenticateGuard(request, env, executeD1Query);
+      if (!auth.ok) return jsonRes({ ok: false, error: auth.error }, auth.status);
+      const secret = env && env.RAZORPAY_KEY_SECRET;
+      if (!secret) {
+        return jsonRes({ ok: false, error: "RAZORPAY_KEY_SECRET is not configured on this edge worker." }, 503);
+      }
+      const body = await request.json().catch(() => ({}));
+      const rzpOrderId = String(body.razorpay_order_id || "");
+      const rzpPaymentId = String(body.razorpay_payment_id || "");
+      const rzpSig = String(body.razorpay_signature || "");
+      const expected = await hmacSha256Hex(secret, `${rzpOrderId}|${rzpPaymentId}`);
+      if (!timingSafeEqualStr(expected, rzpSig)) {
+        return jsonRes({ ok: false, error: "Invalid Razorpay HMAC-SHA256 payment signature." }, 403);
+      }
+
+      const oq = await executeD1Query(
+        env,
+        "SELECT order_id, user_id, email, target_plan, status FROM cloud_billing_orders WHERE gateway_order_id = ? LIMIT 1",
+        [rzpOrderId]
+      );
+      if (!oq.results || oq.results.length === 0) {
+        return jsonRes({ ok: false, error: "Matching billing order not found." }, 404);
+      }
+      const ord = oq.results[0];
+      const unlocked = await fulfillPaidPlanUpgrade({
+        userId: ord.user_id,
+        email: ord.email,
+        targetPlan: ord.target_plan,
+        orderId: ord.order_id,
+        gateway: "razorpay",
+        paymentId: rzpPaymentId
+      });
+      await logAudit(env, executeD1Query, auth.principal.key_id, "GUARD", `razorpay_paid:${ord.order_id}`);
+      return jsonRes({ ok: true, orderId: ord.order_id, ...unlocked });
+    }
+
+    // Cryptographic Razorpay Server-to-Server Webhook (X-Razorpay-Signature)
+    if (path === "/v1/billing/webhook/razorpay" && request.method === "POST") {
+      const webhookSecret = env && (env.RAZORPAY_WEBHOOK_SECRET || env.RAZORPAY_KEY_SECRET);
+      if (!webhookSecret) {
+        return jsonRes({ ok: false, error: "Razorpay webhook secret is not configured." }, 503);
+      }
+      const rawBody = await request.text();
+      const headerSig = request.headers.get("X-Razorpay-Signature") || "";
+      const expected = await hmacSha256Hex(webhookSecret, rawBody);
+      if (!timingSafeEqualStr(expected, headerSig)) {
+        return jsonRes({ ok: false, error: "Invalid X-Razorpay-Signature." }, 403);
+      }
+      const event = JSON.parse(rawBody || "{}");
+      if (event.event === "payment.captured" || event.event === "order.paid") {
+        const paymentEntity = event.payload?.payment?.entity || {};
+        const rzpOrderId = paymentEntity.order_id || event.payload?.order?.entity?.id;
+        const oq = await executeD1Query(
+          env,
+          "SELECT order_id, user_id, email, target_plan FROM cloud_billing_orders WHERE gateway_order_id = ? LIMIT 1",
+          [String(rzpOrderId || "")]
+        );
+        if (oq.results && oq.results.length > 0) {
+          const ord = oq.results[0];
+          const unlocked = await fulfillPaidPlanUpgrade({
+            userId: ord.user_id,
+            email: ord.email,
+            targetPlan: ord.target_plan,
+            orderId: ord.order_id,
+            gateway: "razorpay_webhook",
+            paymentId: paymentEntity.id || "rzp_webhook"
+          });
+          return jsonRes({ ok: true, processed: true, ...unlocked });
+        }
+      }
+      return jsonRes({ ok: true, processed: false });
+    }
+
+    // Cryptographic Stripe Server-to-Server Webhook (Stripe-Signature: t=...,v1=...)
+    if (path === "/v1/billing/webhook/stripe" && request.method === "POST") {
+      const stripeWebhookSecret = env && env.STRIPE_WEBHOOK_SECRET;
+      if (!stripeWebhookSecret) {
+        return jsonRes({ ok: false, error: "STRIPE_WEBHOOK_SECRET is not configured." }, 503);
+      }
+      const rawBody = await request.text();
+      const sigHeader = request.headers.get("Stripe-Signature") || "";
+      const parts = Object.fromEntries(sigHeader.split(",").map((kv) => kv.trim().split("=")));
+      if (!parts.t || !parts.v1) {
+        return jsonRes({ ok: false, error: "Malformed Stripe-Signature header." }, 400);
+      }
+      const expected = await hmacSha256Hex(stripeWebhookSecret, `${parts.t}.${rawBody}`);
+      if (!timingSafeEqualStr(expected, parts.v1)) {
+        return jsonRes({ ok: false, error: "Invalid Stripe HMAC-SHA256 signature." }, 403);
+      }
+      const event = JSON.parse(rawBody || "{}");
+      if (event.type === "checkout.session.completed") {
+        const sess = event.data?.object || {};
+        const orderId = sess.metadata?.order_id || sess.client_reference_id;
+        const oq = await executeD1Query(
+          env,
+          "SELECT order_id, user_id, email, target_plan FROM cloud_billing_orders WHERE order_id = ? LIMIT 1",
+          [String(orderId || "")]
+        );
+        if (oq.results && oq.results.length > 0) {
+          const ord = oq.results[0];
+          const unlocked = await fulfillPaidPlanUpgrade({
+            userId: ord.user_id,
+            email: ord.email,
+            targetPlan: ord.target_plan,
+            orderId: ord.order_id,
+            gateway: "stripe_webhook",
+            paymentId: sess.payment_intent || sess.id
+          });
+          return jsonRes({ ok: true, processed: true, ...unlocked });
+        }
+      }
+      return jsonRes({ ok: true, processed: false });
+    }
+
+    // Owner Admin Instant Quota & Plan Activation (UPI Receipt / Enterprise Grant / Promo)
+    if (path === "/v1/billing/admin-activate" && request.method === "POST") {
+      const adminAuth = await authenticateAdminOnly(request, env, executeD1Query);
+      if (!adminAuth.ok) return jsonRes({ ok: false, error: adminAuth.error }, adminAuth.status);
+
+      const body = await request.json().catch(() => ({}));
+      const orderId = String(body.orderId || "").trim();
+      let targetEmail = String(body.email || "").toLowerCase().trim();
+      let targetPlan = body.plan === "pro" ? "pro" : "creator";
+      let userId = "";
+
+      if (orderId) {
+        const oq = await executeD1Query(
+          env,
+          "SELECT order_id, user_id, email, target_plan FROM cloud_billing_orders WHERE order_id = ? LIMIT 1",
+          [orderId]
+        );
+        if (!oq.results || oq.results.length === 0) {
+          return jsonRes({ ok: false, error: `Order '${orderId}' not found.` }, 404);
+        }
+        userId = oq.results[0].user_id;
+        targetEmail = oq.results[0].email;
+        targetPlan = oq.results[0].target_plan;
+      } else if (targetEmail) {
+        const uq = await executeD1Query(
+          env,
+          "SELECT user_id, email FROM cloud_users WHERE email = ? LIMIT 1",
+          [targetEmail]
+        );
+        if (!uq.results || uq.results.length === 0) {
+          return jsonRes({ ok: false, error: `Subscriber '${targetEmail}' not found.` }, 404);
+        }
+        userId = uq.results[0].user_id;
+      } else {
+        return jsonRes({ ok: false, error: "Provide either 'orderId' or subscriber 'email'." }, 400);
+      }
+
+      const unlocked = await fulfillPaidPlanUpgrade({
+        userId,
+        email: targetEmail,
+        targetPlan,
+        orderId: orderId || null,
+        gateway: "admin_grant",
+        paymentId: String(body.paymentRef || "admin_verified")
+      });
+      await logAudit(env, executeD1Query, adminAuth.principal.key_id, "GUARD", `admin_activate:${userId}:${targetPlan}`);
+
+      return jsonRes({
+        ok: true,
+        userId,
+        email: targetEmail,
+        orderId: orderId || null,
+        ...unlocked
+      });
     }
 
     return jsonRes({

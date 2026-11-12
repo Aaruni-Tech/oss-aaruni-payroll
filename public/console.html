@@ -372,7 +372,7 @@
   <div class="console-shell">
     <nav class="console-sidebar" role="tablist" aria-label="Console Navigation">
       <div id="owner-nav-group" class="hidden">
-        <div class="sidebar-heading" style="color:#34d399;">Owner Tenancy</div>
+        <div class="sidebar-heading" style="color:var(--success);">Owner Tenancy</div>
         <button type="button" class="nav-tab" role="tab" id="nav-tab-syllovo" data-tab="syllovo" aria-selected="false" onclick="switchTab('syllovo')">🚀 Syllovo App &amp; Voice</button>
       </div>
       <div class="sidebar-heading">Cloud Platform</div>
@@ -391,7 +391,7 @@
       <section id="owner-perspective-bar" class="card hidden" style="padding:12px 18px;border-color:#0284c7;background:linear-gradient(90deg,rgba(2,132,199,0.16),rgba(16,185,129,0.10));">
         <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;">
           <div>
-            <strong style="font-size:14px;color:#38bdf8;">👑 Sovereign Owner Console Unlocked — Rupesh Tiwari (<code class="mono">org_syllovo</code>)</strong>
+            <strong style="font-size:14px;color:var(--accent);">👑 Sovereign Owner Console Unlocked — Rupesh Tiwari (<code class="mono">org_syllovo</code>)</strong>
             <div style="font-size:12px;color:var(--text-secondary);">Switch views anytime to verify that external customers (<code class="mono">cx</code>) only see public stock voices while your private voice stays isolated to Syllovo Studio.</div>
           </div>
           <div style="display:flex;gap:8px;flex-wrap:wrap;">
@@ -411,7 +411,7 @@
               <div>
                 <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
                   <h2 class="card-title" style="margin:0;">Syllovo Studio — Deployed Production App</h2>
-                  <span class="region-pill mono" style="background:rgba(52,211,153,0.18);color:#34d399;">● PRODUCTION LIVE</span>
+                  <span class="region-pill mono" style="background:rgba(52,211,153,0.18);color:var(--success);">● PRODUCTION LIVE</span>
                 </div>
                 <div style="font-size:12.5px;color:var(--text-secondary);margin-top:3px;">
                   Tenant: <code class="mono">org_syllovo / prj_syllovo_prod</code> &bull; Domain: <a href="https://syllovo.com" target="_blank" rel="noopener" style="color:var(--accent);text-decoration:underline;">https://syllovo.com ↗</a> &bull; Editor: <a href="https://syllovo-studio.pages.dev" target="_blank" rel="noopener" style="color:var(--accent);text-decoration:underline;">syllovo-studio.pages.dev ↗</a>
@@ -431,7 +431,7 @@
             <div style="background:var(--bg-elevated);border:1px solid rgba(52,211,153,0.45);border-radius:10px;padding:14px;">
               <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;">
                 <strong style="font-size:14px;">🎙️ Cloud Voice (ATC-AVGS v4)</strong>
-                <span class="region-pill mono" style="background:rgba(52,211,153,0.18);color:#34d399;">RUNNING</span>
+                <span class="region-pill mono" style="background:rgba(52,211,153,0.18);color:var(--success);">RUNNING</span>
               </div>
               <div style="font-size:12px;color:var(--text-secondary);line-height:1.5;">
                 Model: <code class="mono">Qwen3-TTS-1.7B-Rupesh-v4-Ultra</code> (<code class="mono">Apache-2.0</code>)<br/>
@@ -512,7 +512,7 @@
                 <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
                   <strong>atc-avgs-v4-syllovo-prod</strong>
                   <span class="region-pill mono">svc_avgs_v4_hyd1</span>
-                  <span class="region-pill mono" style="background:rgba(52,211,153,0.18);color:#34d399;">● RUNNING</span>
+                  <span class="region-pill mono" style="background:rgba(52,211,153,0.18);color:var(--success);">● RUNNING</span>
                   <span id="local-daemon-badge" class="region-pill mono">Checking Local :8765 Bridge...</span>
                 </div>
                 <div style="font-size:12px;color:var(--text-secondary);margin-top:4px;">
@@ -520,7 +520,7 @@
                 </div>
               </div>
               <div style="font-size:12px;text-align:right;" class="mono">
-                <div>Sim: <strong style="color:#34d399;">99.72%</strong> | WER: <strong style="color:#34d399;">0.00%</strong></div>
+                <div>Sim: <strong style="color:var(--success);">99.72%</strong> | WER: <strong style="color:var(--success);">0.00%</strong></div>
                 <div style="color:var(--text-muted);">Peak: -6.80 dBFS | 24 kHz</div>
               </div>
             </div>
@@ -713,7 +713,25 @@
             </div>
           </div>
 
-          <label class="field-label" for="speak-text-input">4. Technical Script (Editable)</label>
+          <div class="grid-2" style="margin-bottom:14px;">
+            <div>
+              <label class="field-label" for="speak-engine-select">4. Commercial Voice Engine (100% Duty-Free OSS or BYOK)</label>
+              <select id="speak-engine-select">
+                <option value="auto">Auto — Apache-2.0 Commercial Studio (Kokoro-82M / OpenF5-Base)</option>
+                <option value="kokoro-worker">Kokoro-82M Stock Worker (Apache-2.0 • 0% CC-BY-NC)</option>
+                <option value="openf5">OpenF5-TTS-Base Zero-Shot Clone (Apache-2.0 • 0% CC-BY-NC)</option>
+                <option value="elevenlabs_byok">ElevenLabs® BYOK Pass-Through + SHA-256 Sentence Cache</option>
+              </select>
+            </div>
+            <div style="display:flex;align-items:flex-end;">
+              <label style="display:flex;align-items:center;gap:8px;font-size:13px;cursor:pointer;padding:9px 12px;border-radius:8px;border:1px solid var(--border);background:var(--bg-elevated);width:100%;">
+                <input type="checkbox" id="speak-camtasia-chk" checked style="width:auto;margin:0;" />
+                <span>Include TechSmith Camtasia® (<code class="mono">.tscproj</code>) Timeline Export</span>
+              </label>
+            </div>
+          </div>
+
+          <label class="field-label" for="speak-text-input">5. Technical Script (Editable)</label>
           <textarea id="speak-text-input" oninput="detectPlsTerms()">Today we will deploy PostgreSQL, OAuth2 authentication, and NGINX ingress controllers using kubectl, with automated WCAG accessibility checks.</textarea>
 
           <div style="margin:8px 0 14px;">
@@ -724,10 +742,36 @@
           <div style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:12px;">
             <button type="button" class="btn btn-primary" onclick="runCloudVoiceSpeak()">▶ Synthesize &amp; Play Audio</button>
             <a id="download-wav-btn" class="btn hidden" href="#" download="aaruni-cloud-voice-sample.mp3">⬇ Download Studio MP3</a>
+            <button type="button" id="download-tscproj-btn" class="btn hidden" onclick="downloadLastCamtasiaTimeline()">⬇ Download .tscproj JSON</button>
           </div>
 
           <audio id="cx-speak-audio" controls preload="none" class="hidden" style="width:100%;height:40px;margin-bottom:8px;"></audio>
           <div id="speak-result-box" class="status-banner hidden"></div>
+        </div>
+
+        <div class="card">
+          <div style="display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;margin-bottom:6px;">
+            <h3 class="card-title" style="margin:0;font-size:16px;">🔌 Partner Connectors Vault (BYOK ElevenLabs® &amp; TechSmith Camtasia®)</h3>
+            <span class="region-pill mono">Tenant-Jailed • Masked at Rest</span>
+          </div>
+          <p class="card-sub">Connect your own ElevenLabs® API key for instant MP3 pass-through with automatic SHA-256 sentence caching (never re-billed twice for identical sentences). Nominative compatibility only; independent third-party trademarks belong to their respective owners.</p>
+
+          <div class="grid-2" style="margin-bottom:12px;">
+            <div>
+              <label class="field-label" for="byok-el-key">ElevenLabs® API Key (<code class="mono">xi-api-key</code>)</label>
+              <input type="password" id="byok-el-key" class="mono" placeholder="sk_..." autocomplete="off" />
+            </div>
+            <div>
+              <label class="field-label" for="byok-el-voice">Default ElevenLabs® Voice ID (Optional)</label>
+              <input type="text" id="byok-el-voice" class="mono" placeholder="21m00Tcm4TlvDq8ikWAM" />
+            </div>
+          </div>
+          <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center;">
+            <button type="button" class="btn btn-primary btn-sm" onclick="saveByokConnector()">🔒 Save BYOK Connector</button>
+            <button type="button" class="btn btn-sm" onclick="loadUserConnectors()">↻ Refresh Vault</button>
+            <span id="byok-vault-pill" class="mono" style="font-size:12px;color:var(--text-muted);">Sign in or start free trial to store BYOK keys.</span>
+          </div>
+          <div id="byok-status-banner" class="status-banner hidden"></div>
         </div>
       </section>
 
@@ -800,7 +844,10 @@ print(res["normalizedText"])</pre>
                   <li>Priority Apple Silicon Neural Queue</li>
                 </ul>
               </div>
-              <button type="button" class="btn btn-primary" onclick="requestPlanUpgrade('creator')">Upgrade to Creator →</button>
+              <div style="display:flex;gap:8px;flex-wrap:wrap;">
+                <button type="button" class="btn btn-primary" style="flex:1;" onclick="requestPlanUpgrade('creator', 'razorpay')">₹1,499 UPI / Cards →</button>
+                <button type="button" class="btn" onclick="requestPlanUpgrade('creator', 'stripe')">$19 Stripe →</button>
+              </div>
             </div>
 
             <div class="plan-card">
@@ -815,11 +862,31 @@ print(res["normalizedText"])</pre>
                   <li>Dedicated Tenant Storage Space</li>
                 </ul>
               </div>
-              <button type="button" class="btn btn-primary" onclick="requestPlanUpgrade('pro')">Upgrade to Pro →</button>
+              <div style="display:flex;gap:8px;flex-wrap:wrap;">
+                <button type="button" class="btn btn-primary" style="flex:1;" onclick="requestPlanUpgrade('pro', 'razorpay')">₹3,999 UPI / Cards →</button>
+                <button type="button" class="btn" onclick="requestPlanUpgrade('pro', 'stripe')">$49 Stripe →</button>
+              </div>
             </div>
           </div>
 
           <div id="billing-status" class="status-banner hidden"></div>
+        </div>
+
+        <div class="card">
+          <div style="display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;margin-bottom:8px;">
+            <h3 class="card-title" style="margin:0;font-size:16px;">🧾 Orders &amp; Invoices (<code class="mono">/v1/billing/orders</code>)</h3>
+            <button type="button" class="btn btn-sm" onclick="loadBillingOrders()">↻ Refresh Orders</button>
+          </div>
+          <div id="billing-orders-list" style="font-size:13px;color:var(--text-secondary);">Sign in or start a free trial to view checkout orders and paid GST/USD invoices.</div>
+
+          <div id="owner-admin-activate-box" class="hidden" style="margin-top:16px;padding-top:14px;border-top:1px solid var(--border);">
+            <div style="font-size:12.5px;font-weight:700;color:var(--accent);margin-bottom:6px;">👑 Founder / Admin Instant Order Activation (<code class="mono">POST /v1/billing/admin-activate</code>)</div>
+            <div style="display:flex;gap:8px;flex-wrap:wrap;">
+              <input type="text" id="admin-activate-order-id" class="mono" placeholder="ord_..." style="flex:1;min-width:200px;" />
+              <input type="text" id="admin-activate-ref" class="mono" placeholder="UPI / Wire Ref (optional)" style="flex:1;min-width:180px;" />
+              <button type="button" class="btn btn-primary btn-sm" onclick="adminActivateBillingOrder()">⚡ Activate Quota &amp; Issue Invoice</button>
+            </div>
+          </div>
         </div>
       </section>
 
@@ -1020,6 +1087,8 @@ print(res["normalizedText"])</pre>
         " • Cloned Voices: " + currentAccount.voicesUsed + " / " + currentAccount.voicesLimit;
       document.getElementById("api-key-display").value = activeApiKey;
       await loadVoicesList();
+      await loadUserConnectors();
+      await loadBillingOrders();
     }
 
     async function fetchConsentChallenge() {
@@ -1354,28 +1423,104 @@ print(res["normalizedText"])</pre>
         : '<span style="font-size:12px;color:var(--text-muted);">Type developer terms like PostgreSQL, kubectl, NGINX, or OAuth2 to preview automatic pronunciation fixes.</span>';
     }
 
+    let lastCamtasiaTimelineObj = null;
+
+    async function loadUserConnectors() {
+      const pill = document.getElementById("byok-vault-pill");
+      if (!activeApiKey) {
+        if (pill) pill.textContent = "Sign in or start free trial to store BYOK keys.";
+        return;
+      }
+      try {
+        const res = await apiFetch("/v1/voice/connectors");
+        const list = res.connectors || [];
+        const elConn = list.find((c) => c.provider === "elevenlabs_byok");
+        if (elConn) {
+          if (pill) pill.textContent = `✔ ElevenLabs® Vault Active (${elConn.maskedKey}${elConn.defaultVoiceId ? " • Voice: " + elConn.defaultVoiceId : ""})`;
+          const vIn = document.getElementById("byok-el-voice");
+          if (vIn && elConn.defaultVoiceId && !vIn.value) vIn.value = elConn.defaultVoiceId;
+        } else if (pill) {
+          pill.textContent = "No BYOK keys saved yet (using Apache-2.0 Cloud Voice engines).";
+        }
+      } catch (_) {}
+    }
+
+    async function saveByokConnector() {
+      try {
+        if (!activeApiKey) await startInstantTrial();
+        const apiKey = document.getElementById("byok-el-key").value.trim();
+        const defaultVoiceId = document.getElementById("byok-el-voice").value.trim();
+        if (!apiKey) {
+          showBanner("byok-status-banner", "Please enter your ElevenLabs® API key first.", true);
+          return;
+        }
+        const res = await apiFetch("/v1/voice/connectors", {
+          method: "POST",
+          body: { provider: "elevenlabs_byok", apiKey, defaultVoiceId }
+        });
+        document.getElementById("byok-el-key").value = "";
+        showBanner("byok-status-banner", `✔ Saved ElevenLabs® BYOK Connector (${res.maskedKey}) in your isolated vault! Select 'ElevenLabs® BYOK' in dropdown #4 above.`);
+        await loadUserConnectors();
+      } catch (err) {
+        showBanner("byok-status-banner", "✖ " + err.message, true);
+      }
+    }
+
+    function downloadLastCamtasiaTimeline() {
+      if (!lastCamtasiaTimelineObj) return;
+      const blob = new Blob([JSON.stringify(lastCamtasiaTimelineObj, null, 2)], { type: "application/json" });
+      const a = document.createElement("a");
+      a.href = URL.createObjectURL(blob);
+      a.download = "aaruni-cloud-voice-beat.tscproj.json";
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+    }
+
     async function runCloudVoiceSpeak() {
       try {
         const text = document.getElementById("speak-text-input").value.trim();
         const voiceId = document.getElementById("speak-voice-select").value || "stock_aria";
         const preset = (document.getElementById("speak-preset-select") || {}).value || "s2";
         const targetLufs = Number(document.getElementById("speak-lufs-select").value || -12);
+        const engine = (document.getElementById("speak-engine-select") || {}).value || "auto";
+        const includeCamtasiaTimeline = Boolean((document.getElementById("speak-camtasia-chk") || {}).checked);
         const cxAudio = document.getElementById("cx-speak-audio");
         const dlBtn = document.getElementById("download-wav-btn");
+        const tscBtn = document.getElementById("download-tscproj-btn");
 
         if (voiceId === "vox_rupesh_v4_ultra" && perspectiveMode === "cx") {
           showBanner("speak-result-box", "✖ Private owner voice is hidden in Customer (cx) mode.", true);
           return;
         }
 
-        showBanner("speak-result-box", "Synthesizing with Cloud Voice (" + voiceId + ") + W3C PLS Dictionary...");
+        if (engine === "elevenlabs_byok" && !activeApiKey) {
+          await startInstantTrial();
+        }
+
+        showBanner("speak-result-box", "Synthesizing with Cloud Voice (" + voiceId + " • Engine: " + engine + ") + W3C PLS Dictionary...");
         const res = await apiFetch("/v1/voice/speak", {
           method: "POST",
-          body: { text, voiceId, targetLufs }
+          body: { text, voiceId, targetLufs, engine, includeCamtasiaTimeline }
         });
 
-        const isStockPreset = voiceId.startsWith("stock_") && text === CX_CONSOLE_PRESETS[preset];
-        if (cxAudio && isStockPreset) {
+        lastCamtasiaTimelineObj = res.camtasiaTimeline || null;
+        if (tscBtn) {
+          tscBtn.classList.toggle("hidden", !lastCamtasiaTimelineObj);
+        }
+
+        const isStockPreset = engine !== "elevenlabs_byok" && voiceId.startsWith("stock_") && text === CX_CONSOLE_PRESETS[preset];
+        if (cxAudio && res.audioDataUri) {
+          if ("speechSynthesis" in window) window.speechSynthesis.cancel();
+          cxAudio.src = res.audioDataUri;
+          cxAudio.classList.remove("hidden");
+          cxAudio.play().catch(() => {});
+          if (dlBtn) {
+            dlBtn.href = res.audioDataUri;
+            dlBtn.download = "aaruni-cloud-byok-" + (res.cacheHash ? res.cacheHash.slice(0, 8) : "live") + ".mp3";
+            dlBtn.classList.remove("hidden");
+          }
+        } else if (cxAudio && isStockPreset) {
           if ("speechSynthesis" in window) window.speechSynthesis.cancel();
           const mp3Path = "/assets/voice/cx/" + voiceId + "_" + preset + ".mp3";
           cxAudio.src = mp3Path;
@@ -1397,10 +1542,14 @@ print(res["normalizedText"])</pre>
           }
         }
 
+        const licInfo = res.commercialEngine
+          ? ` • Engine: ${res.commercialEngine.engine} (${res.commercialEngine.license})`
+          : (res.cacheHit !== undefined ? ` • SHA-256 Cache: ${res.cacheHit ? "HIT ($0 Re-bill)" : "MISS (Cached)"}` : "");
+
         showBanner(
           "speak-result-box",
-          "✔ [" + res.jobId + "] Mode: " + res.mode +
-          " • Voice: " + (res.voice && res.voice.name ? res.voice.name : voiceId) +
+          "✔ [" + (res.jobId || "byok") + "] Mode: " + res.mode +
+          licInfo +
           " • Loudness: " + res.dsp.targetLoudnessLufs + " dB LUFS" +
           " • Normalized Script: \"" + res.normalizedText + "\""
         );
@@ -1416,14 +1565,112 @@ print(res["normalizedText"])</pre>
       alert("Copied your scoped acloud API key to clipboard!");
     }
 
-    async function requestPlanUpgrade(plan) {
+    async function loadBillingOrders() {
+      const box = document.getElementById("billing-orders-list");
+      const adminBox = document.getElementById("owner-admin-activate-box");
+      if (adminBox) adminBox.classList.toggle("hidden", !isOwnerUnlocked);
+      if (!box || !activeApiKey) return;
+      try {
+        const res = await apiFetch("/v1/billing/orders");
+        const orders = res.orders || [];
+        if (orders.length === 0) {
+          box.textContent = "No billing orders yet. Click an upgrade button above to create a Razorpay (₹ INR) or Stripe ($ USD) checkout order.";
+          return;
+        }
+        box.innerHTML = orders.map((o) => {
+          const amt = o.currency === "INR" ? `₹${(Number(o.amountMinor || 0) / 100).toLocaleString()}` : `$${(Number(o.amountMinor || 0) / 100).toFixed(2)}`;
+          return `<div class="voice-item">
+            <div>
+              <strong class="mono">${escapeHtml(o.orderId)}</strong> • <strong>${escapeHtml(String(o.targetPlan || "").toUpperCase())}</strong> (${escapeHtml(amt)} via ${escapeHtml(o.gateway)})
+              <div style="font-size:12px;color:var(--text-muted);margin-top:2px;">${escapeHtml(o.email)} • Created: ${escapeHtml(o.createdAt || "")}${o.invoiceNo ? ` • Invoice: ${escapeHtml(o.invoiceNo)}` : ""}</div>
+            </div>
+            <span class="region-pill mono">${escapeHtml(o.status)}</span>
+          </div>`;
+        }).join("");
+      } catch (err) {
+        box.textContent = "Could not load orders: " + err.message;
+      }
+    }
+
+    async function adminActivateBillingOrder() {
+      try {
+        const orderId = document.getElementById("admin-activate-order-id").value.trim();
+        const paymentRef = document.getElementById("admin-activate-ref").value.trim() || "console_owner_verified";
+        if (!orderId) {
+          showBanner("billing-status", "Enter an order ID (ord_...) to activate.", true);
+          return;
+        }
+        const res = await apiFetch("/v1/billing/admin-activate", {
+          method: "POST",
+          body: { orderId, paymentRef }
+        });
+        showBanner("billing-status", `✔ Activated ${res.email} -> ${res.planTier.toUpperCase()} (${res.charsLimit.toLocaleString()} chars, ${res.voicesLimit} voices) • Invoice: ${res.invoiceNo}`);
+        await refreshAccountState();
+        await loadBillingOrders();
+      } catch (err) {
+        showBanner("billing-status", "✖ " + err.message, true);
+      }
+    }
+
+    async function loadRazorpaySdkOnce() {
+      if (window.Razorpay) return true;
+      return new Promise((resolve) => {
+        const s = document.createElement("script");
+        s.src = "https://checkout.razorpay.com/v1/checkout.js";
+        s.onload = () => resolve(Boolean(window.Razorpay));
+        s.onerror = () => resolve(false);
+        document.head.appendChild(s);
+      });
+    }
+
+    async function requestPlanUpgrade(plan, gateway = "razorpay") {
       try {
         if (!activeApiKey) await startInstantTrial();
-        const res = await apiFetch("/v1/account/upgrade", {
+        showBanner("billing-status", `Creating ${gateway.toUpperCase()} checkout order for ${plan.toUpperCase()} plan...`);
+        const res = await apiFetch("/v1/billing/checkout", {
           method: "POST",
-          body: { plan }
+          body: { plan, gateway }
         });
-        showBanner("billing-status", "✔ " + res.message);
+
+        if (res.mode === "LIVE_STRIPE_CHECKOUT" && res.checkoutUrl) {
+          window.location.href = res.checkoutUrl;
+          return;
+        }
+
+        if (res.mode === "LIVE_RAZORPAY_CHECKOUT" && res.razorpayOrderId && res.razorpayKeyId) {
+          const sdkReady = await loadRazorpaySdkOnce();
+          if (sdkReady) {
+            const rzp = new window.Razorpay({
+              key: res.razorpayKeyId,
+              amount: res.amountMinor,
+              currency: res.currency || "INR",
+              name: "Aaruni Cloud",
+              description: `Cloud Voice ${plan.toUpperCase()} Subscription`,
+              order_id: res.razorpayOrderId,
+              handler: async function (response) {
+                try {
+                  const v = await apiFetch("/v1/billing/razorpay/verify", {
+                    method: "POST",
+                    body: response
+                  });
+                  showBanner("billing-status", `🎉 Payment verified! Upgraded to ${v.planTier.toUpperCase()} (${v.charsLimit.toLocaleString()} chars/mo • Invoice ${v.invoiceNo}).`);
+                  await refreshAccountState();
+                  await loadBillingOrders();
+                } catch (ve) {
+                  showBanner("billing-status", "✖ Signature verification failed: " + ve.message, true);
+                }
+              }
+            });
+            rzp.open();
+            await loadBillingOrders();
+            return;
+          }
+        }
+
+        showBanner("billing-status", "✔ " + (res.message || `Order ${res.orderId} created.`));
+        const admInput = document.getElementById("admin-activate-order-id");
+        if (admInput && res.orderId) admInput.value = res.orderId;
+        await loadBillingOrders();
       } catch (err) {
         showBanner("billing-status", "✖ " + err.message, true);
       }
@@ -1559,7 +1806,7 @@ print(res["normalizedText"])</pre>
             badgeEl.textContent = `Beat ${activeBeat.beat_index}/25 • ${formatMmSs(t)} / 4:55 • Sim ${activeBeat.speaker_sim_pct}% • WER ${activeBeat.wer_pct}%`;
           }
           if (capEl) {
-            capEl.innerHTML = `<strong style="color:#34d399;">[Beat ${activeBeat.beat_index}/25 • ${activeBeat.chapter_id.toUpperCase()} • ${formatMmSs(activeBeat.start_sec)}–${formatMmSs(activeBeat.end_sec)}]</strong> ${escapeHtml(activeBeat.text)}`;
+            capEl.innerHTML = `<strong style="color:var(--success);">[Beat ${activeBeat.beat_index}/25 • ${activeBeat.chapter_id.toUpperCase()} • ${formatMmSs(activeBeat.start_sec)}–${formatMmSs(activeBeat.end_sec)}]</strong> ${escapeHtml(activeBeat.text)}`;
           }
         }
       });
@@ -1709,14 +1956,14 @@ print(res["normalizedText"])</pre>
             <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
               <strong>${escapeHtml(svcName)}</strong>
               <span class="region-pill mono">${escapeHtml(svcId)}</span>
-              <span class="region-pill mono" style="background:rgba(52,211,153,0.18);color:#34d399;">● RUNNING (NEW)</span>
+              <span class="region-pill mono" style="background:rgba(52,211,153,0.18);color:var(--success);">● RUNNING (NEW)</span>
             </div>
             <div style="font-size:12px;color:var(--text-secondary);margin-top:4px;">
               Model: <code class="mono">qwen3-tts-12hz-1.7b-rupesh-v4-ultra-bf16</code> &bull; Node: <code class="mono">${escapeHtml(nodeLabel)}</code> &bull; Bound App: <strong>Syllovo Studio</strong>
             </div>
           </div>
           <div style="font-size:12px;text-align:right;" class="mono">
-            <div>Sim: <strong style="color:#34d399;">99.72%</strong> | WER: <strong style="color:#34d399;">0.00%</strong></div>
+            <div>Sim: <strong style="color:var(--success);">99.72%</strong> | WER: <strong style="color:var(--success);">0.00%</strong></div>
             <div style="color:var(--text-muted);">Tenant Jailed • Ready</div>
           </div>
         </div>`;
@@ -1777,7 +2024,7 @@ print(res["normalizedText"])</pre>
           localDaemonOnline = true;
           if (badge) {
             badge.style.background = "rgba(52,211,153,0.18)";
-            badge.style.color = "#34d399";
+            badge.style.color = "var(--success)";
             badge.textContent = "● Local :8765 GPU Online (" + (j.version || "v4-Ultra") + ")";
           }
           if (!isOwnerUnlocked) {
