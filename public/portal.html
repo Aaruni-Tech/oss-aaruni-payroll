@@ -2,6 +2,30 @@
 <html lang="en" data-theme="light">
 <head>
   <script>
+    // ============================================================================
+    // DYNAMIC IST DATE & CALENDAR ENGINE (AUTO-SYNCED TO ASIA/KOLKATA TIMEZONE)
+    // ============================================================================
+    function getTodayDateStr() {
+      // Returns YYYY-MM-DD in Indian Standard Time (IST)
+      return new Intl.DateTimeFormat('en-CA', { timeZone: 'Asia/Kolkata' }).format(new Date());
+    }
+
+    function getTodayFormattedLong() {
+      // Returns e.g. "Thursday, 12 Nov 2026"
+      return new Intl.DateTimeFormat('en-IN', {
+        timeZone: 'Asia/Kolkata',
+        weekday: 'long',
+        day: 'numeric',
+        month: 'short',
+        year: 'numeric'
+      }).format(new Date());
+    }
+
+    function getTodayDayOfMonth() {
+      // Returns integer day number (e.g. 12 on Nov 12)
+      return parseInt(new Intl.DateTimeFormat('en-IN', { timeZone: 'Asia/Kolkata', day: 'numeric' }).format(new Date()), 10);
+    }
+
     // Global Employee Photo Resolver with Cache-Buster & Ali Executive Suit ID Photo
     
     // ============================================================================
@@ -175,14 +199,14 @@
         count += (state.advanceRequests || []).filter(a => a.status === "Pending").length;
         const activeStaff = (state.employees || []).filter(e => e.trackTimesheet && e.status === "Active");
         const missingToday = activeStaff.filter(e => {
-          return !(state.timesheets || []).some(t => t.empId === e.id && t.date === "2026-11-11" && t.hours > 0);
+          return !(state.timesheets || []).some(t => t.empId === e.id && t.date === getTodayDateStr() && t.hours > 0);
         });
         count += missingToday.length;
       } else {
         const empId = state.persona;
         const activeBroadcasts = (state.broadcasts || []).filter(b => b.active && !(state.dismissedBroadcasts && state.dismissedBroadcasts[empId] && state.dismissedBroadcasts[empId].includes(b.id)));
         count += activeBroadcasts.length;
-        const hasToday = (state.timesheets || []).some(t => t.empId === empId && t.date === "2026-11-11" && t.hours > 0);
+        const hasToday = (state.timesheets || []).some(t => t.empId === empId && t.date === getTodayDateStr() && t.hours > 0);
         if (!hasToday) count += 1;
       }
       if (count > 0) {
@@ -200,7 +224,7 @@
       const pendingAdvances = (state.advanceRequests || []).filter(a => a.status === "Pending");
       const activeStaff = (state.employees || []).filter(e => e.trackTimesheet && e.status === "Active");
       const missingTimesheetStaff = activeStaff.filter(e => {
-        return !(state.timesheets || []).some(t => t.empId === e.id && t.date === "2026-11-11" && t.hours > 0);
+        return !(state.timesheets || []).some(t => t.empId === e.id && t.date === getTodayDateStr() && t.hours > 0);
       });
 
       const activeBroadcasts = (state.broadcasts || []).filter(b => b.active && !(state.dismissedBroadcasts && state.dismissedBroadcasts[empId] && state.dismissedBroadcasts[empId].includes(b.id)));
@@ -1510,6 +1534,7 @@ button, a.button {
       { id: "NOV-005-07", empId: "AAR-0005", date: "2026-11-07", entryTime: "10:00", exitTime: "18:00", hours: 8, status: "Worked", summary: "Demos", taskLink: "Auto-resolved (kjhanvi88)", source: "Aaruni Database (Verified)" },
       { id: "NOV-005-10", empId: "AAR-0005", date: "2026-11-10", entryTime: "14:00", exitTime: "18:00", hours: 4, status: "Worked", summary: "Demo", taskLink: "Auto-resolved (kjhanvi88)", source: "Aaruni Database (Verified)" },
       { id: "NOV-005-11", empId: "AAR-0005", date: "2026-11-11", entryTime: "14:00", exitTime: "18:00", hours: 4, status: "Worked", summary: "Demo", taskLink: "Auto-resolved (kjhanvi88)", source: "Aaruni Database (Verified)" },
+      { id: "NOV-005-12", empId: "AAR-0005", date: "2026-11-12", entryTime: "14:00", exitTime: "18:00", hours: 4, status: "Worked", summary: "Demo and Course QA Review", taskLink: "Auto-resolved (kjhanvi88)", source: "Aaruni Mobile App (D1 Verified)" },
 
       // Koppula Ramya (AAR-0006) — 7 Days (44h)
       { id: "NOV-006-01", empId: "AAR-0006", date: "2026-11-01", entryTime: "10:00", exitTime: "18:00", hours: 8, status: "Worked (Sunday Extra)", summary: "Worked on m1-d3 video", taskLink: "Verified Submission #187", source: "Aaruni Database (Verified)" },
@@ -2033,7 +2058,9 @@ button, a.button {
     function computeEmployeePayroll(emp, ym = "2026-11") {
       const [y, m] = ym.split("-").map(Number);
       const calendarDays = new Date(y, m, 0).getDate();
-      const limitDay = ym === "2026-11" ? 9 : calendarDays;
+      const currentYm = getTodayDateStr().slice(0, 7);
+      const todayDay = getTodayDayOfMonth();
+      const limitDay = (ym === currentYm) ? todayDay : (ym < currentYm ? calendarDays : 0);
       const shift = Number(emp.shiftHours || 8);
       const ctc = Number(emp.monthlyCtc || 0);
       const dailyRate = calendarDays > 0 ? ctc / calendarDays : 0;
@@ -2101,7 +2128,7 @@ button, a.button {
       const loanCut = pendingLoans.reduce((sum, l) => sum + Math.min(Number(l.monthlyDeduction || 0), Number(l.remainingBalance || 0)), 0);
       const netPay = Math.max(0, grossEarned - loanCut);
 
-      const submittedToday = mapByDate.has("2026-11-09");
+      const submittedToday = mapByDate.has(getTodayDateStr());
 
       return {
         emp,
@@ -2157,6 +2184,9 @@ button, a.button {
         state.activeTab = "phonetool";
       }
       renderApp();
+      if (val !== "LOGIN") {
+        syncTimesheetsWithServer();
+      }
     }
 
     function toggleMobileSimulator(forceVal) {
@@ -2189,6 +2219,9 @@ button, a.button {
     function setTab(tabId) {
       state.activeTab = tabId;
       renderApp();
+      if (tabId === "timesheet" || tabId === "pulse" || tabId === "phonetool" || tabId === "roster") {
+        syncTimesheetsWithServer();
+      }
     }
 
     function renderHeaderSession() {
@@ -3988,9 +4021,10 @@ button, a.button {
           }
         }
 
-        // Audit completed past days from employee start day to Nov 10 (Day 11 is today in progress)
+        // Audit completed past days from employee start day up to yesterday
+        const todayDay = getTodayDayOfMonth();
         const missingDates = [];
-        for (let day = empJoinDay; day <= 10; day++) {
+        for (let day = empJoinDay; day < todayDay; day++) {
           const dStr = `2026-11-${String(day).padStart(2, '0')}`;
           const dObj = new Date(dStr + "T12:00:00Z");
           const isSun = dObj.getUTCDay() === 0;
@@ -4013,7 +4047,7 @@ button, a.button {
                   </div>
                   <div>
                     <div style="font-size:14px;font-weight:800;color:#166534;display:flex;align-items:center;gap:8px;">
-                      <span>All Past Timesheets Up-to-Date (1–10 Nov 2026)</span>
+                      <span>All Past Timesheets Up-to-Date (1–${todayDay - 1} Nov 2026)</span>
                       <span style="font-size:10px;font-weight:700;background:#dcfce7;color:#15803d;padding:2px 8px;border-radius:999px;border:1px solid #86efac;">100% Verified</span>
                     </div>
                     <div style="font-size:12px;color:#15803d;margin-top:2px;">
@@ -4245,8 +4279,10 @@ button, a.button {
 
       // 5. TAB VIEW 1: PHONETOOL PROFILE (OVERVIEW & DIRECTORY CARDS)
       if (activeTab === "phonetool") {
-        const todayDateStr = "2026-11-11";
-        const todayLog = (state.timesheets || []).find(t => t.empId === emp.id && t.date === todayDateStr);
+        const todayDateStr = getTodayDateStr();
+        const todayFormattedLong = getTodayFormattedLong();
+        const selectedDate = state.activeTimesheetDate || todayDateStr;
+        const todayLog = (state.timesheets || []).find(t => t.empId === emp.id && t.date === selectedDate);
         const todaySubmitted = !!todayLog;
 
         return `
@@ -4262,42 +4298,51 @@ button, a.button {
               <div class="flex items-center gap-2.5">
                 <span class="text-2xl">${todaySubmitted ? '✅' : '⏱️'}</span>
                 <div>
-                  <div class="flex items-center gap-2">
-                    <span class="text-xs font-black uppercase tracking-wider ${todaySubmitted ? 'text-emerald-400' : 'text-orange-400'}">Today's Timesheet Entry</span>
+                  <div class="flex items-center gap-2 flex-wrap">
+                    <span class="text-xs font-black uppercase tracking-wider ${todaySubmitted ? 'text-emerald-400' : 'text-orange-400'}">Daily Timesheet Entry</span>
                     <span class="text-[10px] px-2 py-0.5 rounded-full font-bold ${todaySubmitted ? 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/40' : 'bg-amber-500/20 text-amber-300 border border-amber-500/40'}">
                       ${todaySubmitted ? '🟢 Logged (' + todayLog.hours + ' hrs)' : '🟡 Pending Submission'}
                     </span>
+                    <span class="text-[10px] font-mono px-2 py-0.5 rounded-full bg-slate-100 dark:bg-slate-800 text-sky-700 dark:text-sky-300 border border-slate-300 dark:border-slate-700 font-bold">
+                      📅 ${selectedDate === todayDateStr ? 'Today: ' + selectedDate : selectedDate}
+                    </span>
                   </div>
-                  <div class="text-xs text-slate-300 mt-0.5">Wednesday, 11 Nov 2026 &bull; Standard Shift: 10:00 AM – 7:00 PM IST</div>
-                  <div class="text-[11px] text-emerald-400 font-semibold mt-0.5">⚡ Official In-App Timesheet &bull; Direct Corporate Sync &bull; Google Form Retired</div>
+                  <div class="text-xs text-slate-600 dark:text-slate-300 mt-0.5">${selectedDate === todayDateStr ? todayFormattedLong : selectedDate} &bull; Standard Shift: 10:00 AM – 7:00 PM IST</div>
+                  <div class="text-[11px] text-emerald-600 dark:text-emerald-400 font-semibold mt-0.5">⚡ Official In-App Timesheet &bull; Cloudflare D1 SQL Verified &bull; Google Form Retired</div>
                 </div>
               </div>
-              <button onclick="setTab('timesheet')" class="text-xs text-orange-400 hover:text-orange-300 font-semibold flex items-center gap-1 cursor-pointer">
-                <span>📅 View Full Monthly History & Missing Days</span> <span>→</span>
-              </button>
+              <div class="flex items-center gap-2">
+                <button onclick="syncTimesheetsWithServer(true)" class="text-xs px-2.5 py-1 rounded-lg bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 border border-slate-300 dark:border-slate-700 font-semibold cursor-pointer inline-flex items-center gap-1 shadow-sm" title="Force Refresh with Cloudflare D1 Database">
+                  <span>🔄</span> <span>Sync Database</span>
+                </button>
+                <button onclick="setTab('timesheet')" class="text-xs text-orange-600 dark:text-orange-400 hover:underline font-semibold flex items-center gap-1 cursor-pointer">
+                  <span>📅 Monthly History</span> <span>→</span>
+                </button>
+              </div>
             </div>
 
-            <!-- Direct Quick Input Row (Fully Responsive — Zero Mobile Squishing) -->
-            <div class="${isInsideSimulator ? 'space-y-2.5' : 'grid grid-cols-1 md:grid-cols-4 gap-2.5 items-end'}">
-              <div class="${isInsideSimulator ? 'grid grid-cols-2 gap-2' : 'contents md:contents'}">
-                <div>
-                  <label class="block text-[11px] font-bold text-slate-400 mb-1">Check-In Time</label>
-                  <input type="time" id="tsIn" value="${todayLog ? todayLog.entryTime : '10:00'}" class="w-full at-form-input font-mono" />
-                </div>
-                <div>
-                  <label class="block text-[11px] font-bold text-slate-400 mb-1">Check-Out Time</label>
-                  <input type="time" id="tsOut" value="${todayLog ? todayLog.exitTime : '19:00'}" class="w-full at-form-input font-mono" />
-                </div>
+            <!-- Direct Quick Input Row (Fully Responsive — With Accessible Visible Date Picker) -->
+            <div class="${isInsideSimulator ? 'space-y-2.5' : 'grid grid-cols-1 md:grid-cols-5 gap-2.5 items-end'}">
+              <div>
+                <label class="block text-[11px] font-bold text-slate-500 dark:text-slate-400 mb-1">Timesheet Date</label>
+                <input type="date" id="tsDate" value="${selectedDate}" max="${todayDateStr}" onchange="handleTimesheetDateSelect('${emp.id}', this.value)" class="w-full at-form-input font-mono font-bold" />
+              </div>
+              <div>
+                <label class="block text-[11px] font-bold text-slate-500 dark:text-slate-400 mb-1">Check-In Time</label>
+                <input type="time" id="tsIn" value="${todayLog ? todayLog.entryTime : '10:00'}" class="w-full at-form-input font-mono" />
+              </div>
+              <div>
+                <label class="block text-[11px] font-bold text-slate-500 dark:text-slate-400 mb-1">Check-Out Time</label>
+                <input type="time" id="tsOut" value="${todayLog ? todayLog.exitTime : '19:00'}" class="w-full at-form-input font-mono" />
               </div>
               <div class="${isInsideSimulator ? 'w-full' : ''}">
-                <label class="block text-[11px] font-bold text-slate-400 mb-1">Work Tasks / Deliverables</label>
-                <input type="text" id="tsSummary" value="${todayLog ? (todayLog.summary || '') : ''}" placeholder="Security operations and office facility management..." class="w-full at-form-input" />
-                <input type="hidden" id="tsDate" value="2026-11-11" />
-                <input type="hidden" id="tsLink" value="Direct Entry" />
+                <label class="block text-[11px] font-bold text-slate-500 dark:text-slate-400 mb-1">Work Tasks / Deliverables</label>
+                <input type="text" id="tsSummary" value="${todayLog ? (todayLog.summary || '') : ''}" placeholder="Tasks worked on..." class="w-full at-form-input" />
+                <input type="hidden" id="tsLink" value="Aaruni Mobile App (D1 Verified)" />
               </div>
               <div class="${isInsideSimulator ? 'w-full pt-1' : ''}">
                 <button onclick="submitStaffTimesheet('${emp.id}')" class="w-full brand-grad text-white font-bold text-xs py-2.5 px-4 rounded-xl shadow cursor-pointer hover:opacity-90 flex items-center justify-center gap-1.5">
-                  <span>${todaySubmitted ? '🔄 Update Today Timesheet' : '💾 Submit Today Timesheet'}</span>
+                  <span>${todaySubmitted ? '🔄 Update Timesheet' : '💾 Submit Timesheet'}</span>
                 </button>
               </div>
             </div>
@@ -4535,12 +4580,13 @@ button, a.button {
           }
         }
 
-        for (let d = 11; d >= 1; d--) {
+        const todayDay = getTodayDayOfMonth();
+        for (let d = todayDay; d >= 1; d--) {
           const dateStr = `2026-11-${String(d).padStart(2, '0')}`;
           const dt = new Date(2026, 10, d);
           const dayName = dayNames[dt.getDay()];
           const isSunday = (dt.getDay() === 0);
-          const isToday = (d === 11);
+          const isToday = (d === todayDay);
           const isPreTenure = (d < empJoinDay);
 
           const entry = (state.timesheets || []).find(t => t.empId === emp.id && t.date === dateStr);
@@ -4657,7 +4703,7 @@ button, a.button {
                   </div>
                 </div>
                 <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
-                  <button onclick="openQuickTimesheetModal('${emp.id}', '${missingDays[0] ? missingDays[0].dateStr : '2026-11-11'}')" style="background:#fe5f01;color:#ffffff;font-size:12px;font-weight:700;padding:6px 14px;border-radius:8px;border:none;cursor:pointer;display:inline-flex;align-items:center;gap:4px;">
+                  <button onclick="openQuickTimesheetModal('${emp.id}', '${missingDays[0] ? missingDays[0].dateStr : getTodayDateStr()}')" style="background:#fe5f01;color:#ffffff;font-size:12px;font-weight:700;padding:6px 14px;border-radius:8px;border:none;cursor:pointer;display:inline-flex;align-items:center;gap:4px;">
                     ✍️ Log In-App Hours
                   </button>
                 </div>
@@ -4672,7 +4718,7 @@ button, a.button {
                 <h3 class="text-sm font-bold text-white">Daily Attendance &amp; Timesheet Audit — November 2026</h3>
                 <p class="text-xs text-slate-400">Comprehensive daily breakdown showing working hours, weekly rest, leaves, and missing entries.</p>
               </div>
-              <button onclick="openQuickTimesheetModal('${emp.id}', '2026-11-11')" class="brand-grad text-white text-xs font-bold px-3 py-1.5 rounded-lg shadow cursor-pointer">
+              <button onclick="openQuickTimesheetModal('${emp.id}', getTodayDateStr())" class="brand-grad text-white text-xs font-bold px-3 py-1.5 rounded-lg shadow cursor-pointer">
                 + Log Today's Timesheet
               </button>
             </div>
@@ -6435,7 +6481,7 @@ button, a.button {
           
           <div class="grid grid-cols-1 md:grid-cols-3 gap-3 mb-4">
             <div class="glass-card rounded-xl p-3 border-l-4 border-emerald-500">
-              <div class="text-xs text-slate-400">Logged Today (11 Nov 2026)</div>
+              <div class="text-xs text-slate-400">Logged Today (${getTodayFormattedLong()})</div>
               <div class="text-lg font-extrabold text-white mt-0.5">${loggedTodayCount} / ${trackedStaff.length}</div>
               <div class="text-[11px] text-emerald-400 mt-0.5">${Math.round((loggedTodayCount/trackedStaff.length)*100)}% verified clock-in</div>
             </div>
@@ -6453,7 +6499,7 @@ button, a.button {
 
           <div class="glass-card rounded-2xl p-4 mb-4">
             <div class="flex items-center justify-between mb-3 flex-wrap gap-2">
-              <h2 class="text-base font-bold text-white">Daily Attendance Pulse — 11 November 2026</h2>
+              <h2 class="text-base font-bold text-white">Daily Attendance Pulse — ${getTodayFormattedLong()}</h2>
               <button onclick="triggerAutomatedTimesheetReminders()" class="brand-grad text-white text-xs font-bold px-3 py-1.5 rounded-lg shadow cursor-pointer">
                 🔔 Trigger Timesheet Reminders
               </button>
@@ -7189,29 +7235,54 @@ button, a.button {
     }
 
     
-    // CLOUDFLARE D1 AUTOMATIC 2-WAY SYNC
-    async function syncTimesheetsWithServer() {
+    // CLOUDFLARE D1 AUTOMATIC 2-WAY SYNC (SINGLE SOURCE OF TRUTH)
+    async function syncTimesheetsWithServer(isManual = false) {
       try {
-        const res = await fetch("/api/timesheets", { cache: "no-store" });
+        if (isManual) {
+          showToast("🔄 Syncing Database...", "Connecting to Cloudflare D1 edge database...");
+        }
+        const res = await fetch("/api/timesheets?t=" + Date.now(), { cache: "no-store" });
         if (!res.ok) return;
         const json = await res.json();
         if (json && json.success && Array.isArray(json.data) && json.data.length > 0) {
-          const existingIds = new Set(state.timesheets.map(t => t.id));
-          let added = 0;
+          let updatedCount = 0;
           json.data.forEach(remoteEntry => {
-            if (!existingIds.has(remoteEntry.id)) {
+            const existingIdx = state.timesheets.findIndex(
+              t => t.empId === remoteEntry.empId && t.date === remoteEntry.date
+            );
+            if (existingIdx >= 0) {
+              const local = state.timesheets[existingIdx];
+              if (
+                local.hours !== remoteEntry.hours ||
+                local.entryTime !== remoteEntry.entryTime ||
+                local.exitTime !== remoteEntry.exitTime ||
+                local.summary !== remoteEntry.summary ||
+                local.id !== remoteEntry.id
+              ) {
+                state.timesheets[existingIdx] = { ...local, ...remoteEntry };
+                updatedCount++;
+              }
+            } else {
               state.timesheets.push(remoteEntry);
-              existingIds.add(remoteEntry.id);
-              added++;
+              updatedCount++;
             }
           });
-          if (added > 0) {
+
+          if (updatedCount > 0) {
             saveState();
             renderApp();
+            if (isManual) {
+              showToast("✅ Database Synchronized", `Updated ${updatedCount} timesheets from Cloudflare D1.`);
+            }
+          } else if (isManual) {
+            showToast("✅ Up-to-Date", "Your device has all the latest Cloudflare D1 entries.");
           }
         }
       } catch (err) {
         console.log("D1 sync offline/idle:", err.message);
+        if (isManual) {
+          showToast("⚠️ Sync Notice", "Cloudflare edge database temporarily busy. Using local cache.");
+        }
       }
     }
 
@@ -7374,7 +7445,12 @@ button, a.button {
       }
     }
 
-    function submitStaffTimesheet(empId, customDate, customIn, customOut, customSummary) {
+    function handleTimesheetDateSelect(empId, selectedDate) {
+      state.activeTimesheetDate = selectedDate;
+      renderApp();
+    }
+
+    async function submitStaffTimesheet(empId, customDate, customIn, customOut, customSummary) {
       const emp = state.employees.find(e => e.id === empId);
       const dtEl = document.getElementById("tsDate");
       const inEl = document.getElementById("tsIn") || document.getElementById("tsEntry");
@@ -7382,13 +7458,15 @@ button, a.button {
       const sumEl = document.getElementById("tsSummary");
       const linkEl = document.getElementById("tsLink");
 
-      const dt = customDate || (dtEl ? dtEl.value : "2026-11-11");
+      const todayDefault = getTodayDateStr();
+      const dt = customDate || (dtEl ? dtEl.value : todayDefault);
       const inT = customIn || (inEl ? inEl.value : "10:00");
       const outT = customOut || (outEl ? outEl.value : "19:00");
       const summary = (customSummary || (sumEl ? sumEl.value.trim() : "")) || "Engineering, video production & daily operations tasks";
-      const link = (linkEl ? linkEl.value.trim() : "") || "Direct Timesheet";
+      const link = (linkEl ? linkEl.value.trim() : "") || "Aaruni Mobile App (D1 Verified)";
       const hrs = calcHoursBetween(inT, outT);
 
+      // Remove existing entry for this employee and date
       state.timesheets = state.timesheets.filter(t => !(t.empId === empId && t.date === dt));
       const newTsEntry = {
         id: `TS-${empId}-${dt}`,
@@ -7408,22 +7486,25 @@ button, a.button {
 
       state.timesheets.unshift(newTsEntry);
       saveState();
-      showToast("✅ Timesheet Recorded!", `${emp.name}: ${hrs} hrs (${inT} → ${outT}) logged for ${dt}. Synced to Cloudflare D1.`);
-      closeModal();
+      showToast("✅ Timesheet Recorded!", `${emp ? emp.name : empId}: ${hrs} hrs (${inT} → ${outT}) saved for ${dt}. Syncing to Cloudflare D1...`);
+      if (typeof closeModal === "function") closeModal();
       renderApp();
 
       // Cloudflare D1 Remote Edge Sync
       try {
-        fetch("/api/timesheets", {
+        const resp = await fetch("/api/timesheets", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(newTsEntry)
-        }).then(r => r.json()).then(data => {
-          if (data && data.success) {
-            console.log("Cloudflare D1 sync confirmed:", data.message);
-          }
-        }).catch(err => console.log("Background D1 push offline notice:", err.message));
-      } catch (e) {}
+        });
+        const resJson = await resp.json();
+        if (resJson && resJson.success) {
+          console.log("Cloudflare D1 sync confirmed:", resJson.message);
+          showToast("🟢 Database Synced", `Timesheet for ${dt} successfully committed to Cloudflare D1.`);
+        }
+      } catch (err) {
+        console.log("Background D1 push offline notice:", err.message);
+      }
     }
 
     function openLiveTimesheetModal(empId) {

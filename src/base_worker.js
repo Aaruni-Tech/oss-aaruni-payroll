@@ -171,6 +171,9 @@ export default {
           const taskVal = body.taskLink || "Employee Portal Submission";
           const sourceVal = body.source || "Aaruni Portal App (Live D1)";
 
+          // Ensure 100% deduplication: purge any older duplicate row for the same employee & date
+          await executeD1Query(env, "DELETE FROM timesheets WHERE emp_id = ? AND date = ? AND id != ?", [body.empId, body.date, body.id]);
+
           const insertSql = `
             INSERT INTO timesheets (id, emp_id, emp_name, email, date, month, entry_time, exit_time, hours, status, summary, task_link, source, created_at)
             VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, datetime('now'))
