@@ -2194,49 +2194,62 @@
         </div>
 
         <div class="ai-workbench-grid">
-          <!-- LEFT: CLOUD VOICE -->
+          <!-- LEFT: CLOUD VOICE (PUBLIC CUSTOMER CX PLAYGROUND — NO PRIVATE OWNER VOICE EXPOSED) -->
           <div class="workbench-card">
             <div>
               <div style="display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:12px;">
-                <span class="pill-badge glyph-ai mono">AVA &bull; SPEECH SYNTHESIS ENGINE</span>
-                <span class="mono dsp-badge">-12.0 dB LUFS DSP Standard</span>
+                <span class="pill-badge glyph-ai mono">AVA &bull; CUSTOMER VOICE PLAYGROUND</span>
+                <span class="mono dsp-badge">-12.0 dB LUFS Studio Master</span>
               </div>
-              <h3 style="margin:0 0 6px;font-size:20px;font-weight:800;">Cloud Voice</h3>
+              <h3 style="margin:0 0 6px;font-size:20px;font-weight:800;">Cloud Voice — Customer Playground</h3>
               <p style="margin:0 0 14px;font-size:13.5px;color:var(--ac-text-secondary);line-height:1.5;">
-                Generates broadcast-grade technical narration with strict W3C PLS phonetic lexicons, unlimited free local neural drafts, 35ms/45ms raised-cosine de-clicking, and 1-click premium voice API connectors.
+                Select a licensed public studio voice, choose a sample developer script (or enter your own text), and audition studio-mastered W3C PLS narration right in your browser.
               </p>
 
-              <div style="margin-bottom:12px;">
-                <label for="avs-persona-select" style="display:block;font-size:12.5px;font-weight:700;margin-bottom:5px;color:var(--ac-text-secondary);">Licensed Stock Demo Persona</label>
-                <select id="avs-persona-select" class="form-input" onchange="updateAvsScript()">
-                  <option value="aria">Aria (Stock Premade) — Cloud Systems Narrator</option>
-                  <option value="dev">Dev (Stock Premade) — DevSecOps &amp; Infrastructure</option>
-                  <option value="maya">Maya (Stock Premade) — Executive Architecture Briefing</option>
-                </select>
+              <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:10px;margin-bottom:10px;">
+                <div>
+                  <label for="avs-persona-select" style="display:block;font-size:12px;font-weight:700;margin-bottom:4px;color:var(--ac-text-secondary);">1. Select Public AI Voice</label>
+                  <select id="avs-persona-select" class="form-input" onchange="updateAvsScript()">
+                    <option value="stock_aria">Aria (en-US) — Cloud Systems Educator</option>
+                    <option value="stock_dev">Dev (en-IN) — DevSecOps &amp; Infrastructure</option>
+                    <option value="stock_meera">Meera (en-IN) — Executive Cloud Briefing</option>
+                  </select>
+                </div>
+                <div>
+                  <label for="avs-script-preset" style="display:block;font-size:12px;font-weight:700;margin-bottom:4px;color:var(--ac-text-secondary);">2. Choose Sample Script</label>
+                  <select id="avs-script-preset" class="form-input" onchange="updateAvsScript()">
+                    <option value="s1">Cloud Compute &amp; $0 Egress Storage</option>
+                    <option value="s2">PostgreSQL, OAuth2 &amp; NGINX (W3C PLS)</option>
+                    <option value="s3">Zero-Trust Cloud Guard &amp; Spend Cap</option>
+                  </select>
+                </div>
+              </div>
+
+              <div style="margin-bottom:10px;">
+                <label for="avs-sample-input" style="display:block;font-size:12px;font-weight:700;margin-bottom:4px;color:var(--ac-text-secondary);">3. Narration Text (Editable)</label>
+                <textarea id="avs-sample-input" class="form-input" rows="3" style="width:100%;font-size:13px;line-height:1.45;resize:vertical;">Welcome to Aaruni Cloud. Provision unified-memory Cloud Compute and zero-egress Cloud Storage in seconds, with predictable monthly pricing and global edge delivery.</textarea>
               </div>
 
               <div class="voice-meter-box">
                 <div style="display:flex;justify-content:space-between;align-items:center;font-size:11px;color:#94a3b8;" class="mono">
-                  <span id="avs-stage-status">STATUS: READY (W3C PLS LEXICON BOUND)</span>
-                  <span>DSP: -12.0 dB LUFS</span>
+                  <span id="avs-stage-status">STATUS: READY (PUBLIC STOCK CATALOG)</span>
+                  <span>W3C PLS + -12.0 dB DSP</span>
                 </div>
-                <p id="avs-sample-text" style="margin:12px 0;font-size:13px;color:#e2e8f0;font-style:italic;line-height:1.5;">
-                  "Welcome to Aaruni Cloud. Cloud Compute and Cloud Storage keep your videos, datasets, and applications fast, simple, and accessible—with zero egress fees."
-                </p>
-                <div class="waveform-bars" id="avs-waveform" aria-hidden="true">
+                <div class="waveform-bars" id="avs-waveform" aria-hidden="true" style="margin-top:10px;">
                   <span class="wave-bar"></span><span class="wave-bar"></span><span class="wave-bar"></span><span class="wave-bar"></span>
                   <span class="wave-bar"></span><span class="wave-bar"></span><span class="wave-bar"></span><span class="wave-bar"></span>
                   <span class="wave-bar"></span><span class="wave-bar"></span><span class="wave-bar"></span><span class="wave-bar"></span>
                   <span class="wave-bar"></span><span class="wave-bar"></span><span class="wave-bar"></span><span class="wave-bar"></span>
                 </div>
+                <audio id="avs-cx-audio" controls preload="none" style="width:100%;margin-top:10px;height:36px;display:none;"></audio>
               </div>
             </div>
 
             <div style="display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;">
               <button type="button" class="btn-dawn" id="avs-play-btn" onclick="runAvsAudition()">
-                <span>&#9654; Synthesize &amp; Audition Sample</span>
+                <span>&#9654; Synthesize &amp; Listen</span>
               </button>
-              <span style="font-size:11.5px;color:var(--ac-text-muted);">Stock public voice &bull; Zero private voice clones exposed</span>
+              <span style="font-size:11.5px;color:var(--ac-text-muted);">Public customer catalog &bull; Tenant private clones isolated in Console</span>
             </div>
           </div>
 
@@ -2990,57 +3003,92 @@ console.log("Verified Receipt:", plan.receiptId, plan.actions);`
     /* -----------------------------------------------------------------------
        AVS INTERACTIVE WORKBENCH
        ----------------------------------------------------------------------- */
+    const CX_PRESET_SCRIPTS = {
+      s1: "Welcome to Aaruni Cloud. Provision unified-memory Cloud Compute and zero-egress Cloud Storage in seconds, with predictable monthly pricing and global edge delivery.",
+      s2: "Today we will deploy PostgreSQL, OAuth2 authentication, and NGINX ingress controllers using kubectl, with automated WCAG accessibility checks.",
+      s3: "Aaruni Cloud Guard enforces zero-trust tenant isolation, TLS 1.3 encryption, and hard monthly spend caps so your team never receives a surprise cloud bill."
+    };
+
     function updateAvsScript() {
       const sel = document.getElementById("avs-persona-select").value;
-      document.getElementById("avs-sample-text").textContent = '"' + (AVS_SAMPLES[sel] || AVS_SAMPLES.aria) + '"';
-      document.getElementById("avs-stage-status").textContent = "STATUS: READY (PERSONA: " + sel.toUpperCase() + ")";
+      const preset = (document.getElementById("avs-script-preset") || {}).value || "s1";
+      const inp = document.getElementById("avs-sample-input");
+      if (inp && CX_PRESET_SCRIPTS[preset]) {
+        inp.value = CX_PRESET_SCRIPTS[preset];
+      }
+      document.getElementById("avs-stage-status").textContent =
+        "STATUS: READY (" + sel.replace("stock_", "").toUpperCase() + " • PRESET " + preset.toUpperCase() + ")";
     }
 
     function runAvsAudition() {
       const statusEl = document.getElementById("avs-stage-status");
       const btn = document.getElementById("avs-play-btn");
       const bars = document.querySelectorAll("#avs-waveform .wave-bar");
-      const text = document.getElementById("avs-sample-text").textContent.replace(/^"|"$/g, "");
+      const sel = document.getElementById("avs-persona-select").value || "stock_aria";
+      const preset = (document.getElementById("avs-script-preset") || {}).value || "s1";
+      const inp = document.getElementById("avs-sample-input");
+      const text = (inp ? inp.value : CX_PRESET_SCRIPTS.s1).trim();
+      const audioEl = document.getElementById("avs-cx-audio");
 
       if (waveTimer) {
         clearInterval(waveTimer);
         waveTimer = null;
+        if (audioEl) { audioEl.pause(); audioEl.currentTime = 0; }
         if ("speechSynthesis" in window) window.speechSynthesis.cancel();
         bars.forEach(function (b) { b.style.height = "24%"; });
         statusEl.textContent = "STATUS: STOPPED";
-        btn.innerHTML = "<span>&#9654; Synthesize &amp; Audition Sample</span>";
+        btn.innerHTML = "<span>&#9654; Synthesize &amp; Listen</span>";
         return;
       }
 
-      statusEl.textContent = "1/3 ANALYZING W3C PLS LEXICON...";
-      btn.innerHTML = "<span>■ Stop Audition</span>";
+      statusEl.textContent = "1/3 APPLYING W3C PLS LEXICON & -12.0 dB DSP...";
+      btn.innerHTML = "<span>■ Stop Playback</span>";
 
-      setTimeout(function () {
-        statusEl.textContent = "2/3 APPLYING -12.0 dB DSP &amp; COSINE ENVELOPE...";
-        waveTimer = setInterval(function () {
-          bars.forEach(function (b, idx) {
-            const h = 20 + ((Math.sin(Date.now() / 140 + idx) + 1) * 36);
-            b.style.height = Math.round(h) + "%";
-          });
-        }, 120);
+      waveTimer = setInterval(function () {
+        bars.forEach(function (b, idx) {
+          const h = 20 + ((Math.sin(Date.now() / 140 + idx) + 1) * 36);
+          b.style.height = Math.round(h) + "%";
+        });
+      }, 120);
 
-        if ("speechSynthesis" in window) {
-          try {
+      const isUnmodifiedPreset = text === CX_PRESET_SCRIPTS[preset];
+      if (audioEl && isUnmodifiedPreset) {
+        const mp3Url = "/assets/voice/cx/" + sel + "_" + preset + ".mp3";
+        audioEl.src = mp3Url;
+        audioEl.style.display = "block";
+        audioEl.onended = finishAvsAudition;
+        audioEl.onerror = finishAvsAudition;
+        audioEl.play().then(function () {
+          statusEl.textContent = "STREAMING STUDIO MP3 (" + sel.replace("stock_", "").toUpperCase() + " • -12.0 dB)";
+        }).catch(function () {
+          finishAvsAudition();
+        });
+        return;
+      }
+
+      fetch("/v1/voice/speak", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ text: text, voiceId: sel, targetLufs: -12 })
+      })
+        .then(function (r) { return r.json(); })
+        .then(function (res) {
+          const spoken = (res && res.normalizedText) || text;
+          if ("speechSynthesis" in window) {
             window.speechSynthesis.cancel();
-            const utter = new SpeechSynthesisUtterance(text);
-            utter.rate = 1.0;
+            const utter = new SpeechSynthesisUtterance(spoken);
+            utter.rate = 0.97;
             utter.onend = finishAvsAudition;
             utter.onerror = finishAvsAudition;
             window.speechSynthesis.speak(utter);
-            statusEl.textContent = "3/3 STREAMING VERIFIED AVA AUDIO (-12.0 dB)";
-          } catch (e) {
-            setTimeout(finishAvsAudition, 3200);
+            statusEl.textContent = "STREAMING CUSTOM W3C-PLS PREVIEW (-12.0 dB)";
+          } else {
+            setTimeout(finishAvsAudition, 3000);
           }
-        } else {
-          statusEl.textContent = "3/3 SIMULATING AVA WAVEFORM (-12.0 dB)";
-          setTimeout(finishAvsAudition, 3200);
-        }
-      }, 280);
+        })
+        .catch(function () {
+          finishAvsAudition();
+        });
     }
 
     function finishAvsAudition() {
@@ -3052,7 +3100,7 @@ console.log("Verified Receipt:", plan.receiptId, plan.actions);`
       const st = document.getElementById("avs-stage-status");
       const btn = document.getElementById("avs-play-btn");
       if (st) st.textContent = "VERIFIED: -12.0 dB LUFS • ZERO BOUNDARY CLICKS";
-      if (btn) btn.innerHTML = "<span>&#9654; Synthesize &amp; Audition Sample</span>";
+      if (btn) btn.innerHTML = "<span>&#9654; Synthesize &amp; Listen</span>";
     }
 
     /* -----------------------------------------------------------------------

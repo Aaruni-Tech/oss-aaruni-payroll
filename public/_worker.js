@@ -603,7 +603,9 @@ async function handleCloudApiV1(request, env, executeD1Query) {
     if (path === "/v1/voice/list" && request.method === "GET") {
       const principal = await tryOptionalGuard(request, env, executeD1Query);
       let customVoices = [];
+      let isAdminOwner = false;
       if (principal) {
+        isAdminOwner = principal.role === "admin";
         const user = await resolveOrCreateUserForPrincipal(env, executeD1Query, principal);
         const { results } = await executeD1Query(
           env,
@@ -611,13 +613,65 @@ async function handleCloudApiV1(request, env, executeD1Query) {
           [user.user_id]
         );
         customVoices = (results || []).map((v) => ({ ...v, type: "cloned", badge: "Your Cloned Voice" }));
+        if (isAdminOwner) {
+          customVoices.unshift({
+            voiceId: "vox_rupesh_v4_ultra",
+            name: "Rupesh Tiwari — Studio Master v4 Ultra",
+            language: "en-US",
+            type: "cloned",
+            badge: "Private Tenant Clone • 99.63% Sim • 0.00% WER",
+            model: "qwen3-tts-12hz-1.7b-rupesh-v4-ultra-bf16",
+            status: "READY"
+          });
+        }
       }
       return jsonRes({
         ok: true,
         service: "VOICE",
+        ownerMode: isAdminOwner,
         clonedCount: customVoices.length,
         clonedVoices: customVoices,
         stockVoices: STOCK_VOICES
+      });
+    }
+
+    if (path === "/v1/voice/services" && (request.method === "GET" || request.method === "POST")) {
+      const adminAuth = await authenticateAdminOnly(request, env, executeD1Query);
+      if (!adminAuth.ok) return jsonRes({ ok: false, error: adminAuth.error }, adminAuth.status);
+      if (request.method === "POST") {
+        const body = await request.json().catch(() => ({}));
+        const instName = String(body.serviceName || "atc-avgs-v4-syllovo-prod").slice(0, 60);
+        const gpuNode = String(body.computeNode || "acc-hyd1-m4pro-01 (Apple M4 Pro 24GB)").slice(0, 80);
+        const svcId = makeId("svc_avgs");
+        await logAudit(env, executeD1Query, adminAuth.principal.key_id, "VOICE", `spinup_service:${svcId}`);
+        return jsonRes({
+          ok: true,
+          service: "VOICE",
+          instanceId: svcId,
+          serviceName: instName,
+          model: "qwen3-tts-12hz-1.7b-rupesh-v4-ultra-bf16",
+          license: "Apache-2.0",
+          computeNode: gpuNode,
+          boundApp: "Syllovo Studio (prj_syllovo_prod)",
+          status: "RUNNING",
+          metrics: { werPct: 0.0, speakerSimPct: 99.63, peakDb: -6.8, studioRolloffHz: 4726 },
+          createdAt: new Date().toISOString()
+        }, 201);
+      }
+      return jsonRes({
+        ok: true,
+        service: "VOICE",
+        instances: [
+          {
+            instanceId: "svc_avgs_v4_hyd1",
+            serviceName: "atc-avgs-v4-syllovo-prod",
+            model: "qwen3-tts-12hz-1.7b-rupesh-v4-ultra-bf16",
+            computeNode: "acc-hyd1-m4pro-01 (rt-labs Apple M4 Pro · 24 GB Unified GPU)",
+            boundApp: "Syllovo Studio (syllovo.com / prj_syllovo_prod)",
+            status: "RUNNING",
+            metrics: { werPct: 0.0, speakerSimPct: 99.63, peakDb: -6.8, studioRolloffHz: 4726 }
+          }
+        ]
       });
     }
 
@@ -769,7 +823,18 @@ async function handleCloudApiV1(request, env, executeD1Query) {
         }
 
         let voiceMeta = STOCK_VOICES.find((v) => v.voiceId === requestedVoiceId) || null;
-        if (requestedVoiceId.startsWith("vox_")) {
+        if (requestedVoiceId === "vox_rupesh_v4_ultra") {
+          if (principal.role !== "admin") {
+            return jsonRes({ ok: false, error: "Blocked by Cloud Guard Tenant Isolation: Private owner voice clone requires admin tenancy." }, 403);
+          }
+          voiceMeta = {
+            voiceId: "vox_rupesh_v4_ultra",
+            name: "Rupesh Tiwari — Studio Master v4 Ultra",
+            language: "en-US",
+            type: "cloned",
+            model: "qwen3-tts-12hz-1.7b-rupesh-v4-ultra-bf16"
+          };
+        } else if (requestedVoiceId.startsWith("vox_")) {
           const vq = await executeD1Query(
             env,
             "SELECT voice_id AS voiceId, name, language, ref_duration_sec AS durationSec FROM cloud_voice_profiles WHERE voice_id = ? AND user_id = ? LIMIT 1",

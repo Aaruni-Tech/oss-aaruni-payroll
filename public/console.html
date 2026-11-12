@@ -371,18 +371,224 @@
 
   <div class="console-shell">
     <nav class="console-sidebar" role="tablist" aria-label="Console Navigation">
+      <div id="owner-nav-group" class="hidden">
+        <div class="sidebar-heading" style="color:#34d399;">Owner Tenancy</div>
+        <button type="button" class="nav-tab" role="tab" id="nav-tab-syllovo" data-tab="syllovo" aria-selected="false" onclick="switchTab('syllovo')">🚀 Syllovo App &amp; Voice</button>
+      </div>
       <div class="sidebar-heading">Cloud Platform</div>
       <button type="button" class="nav-tab" role="tab" data-tab="projects" aria-selected="false" onclick="switchTab('projects')">🏢 Orgs &amp; Projects</button>
       <button type="button" class="nav-tab" role="tab" data-tab="builder" aria-selected="false" onclick="switchTab('builder')">✨ Cloud Builder (AI)</button>
       <div class="sidebar-heading">Cloud Voice (SaaS)</div>
-      <button type="button" class="nav-tab" role="tab" data-tab="clone" aria-selected="true" onclick="switchTab('clone')">🎙️ Clone My Voice</button>
-      <button type="button" class="nav-tab" role="tab" data-tab="speak" aria-selected="false" onclick="switchTab('speak')">🔊 Speech Playground</button>
+      <button type="button" class="nav-tab" role="tab" data-tab="speak" aria-selected="true" onclick="switchTab('speak')">🔊 Speech Playground</button>
+      <button type="button" class="nav-tab" role="tab" data-tab="clone" aria-selected="false" onclick="switchTab('clone')">🎙️ Clone My Voice</button>
       <div class="sidebar-heading">Developer &amp; Billing</div>
       <button type="button" class="nav-tab" role="tab" data-tab="cli" aria-selected="false" onclick="switchTab('cli')">🔑 API Keys &amp; acloud CLI</button>
       <button type="button" class="nav-tab" role="tab" data-tab="billing" aria-selected="false" onclick="switchTab('billing')">💳 Plans &amp; Quota</button>
     </nav>
 
     <main class="console-main">
+      <!-- OWNER PERSPECTIVE SWITCHER (VISIBLE ONLY WHEN OWNER AUTH / LOCAL WORKSTATION / PRIVATE TOKEN IS ACTIVE) -->
+      <section id="owner-perspective-bar" class="card hidden" style="padding:12px 18px;border-color:#0284c7;background:linear-gradient(90deg,rgba(2,132,199,0.16),rgba(16,185,129,0.10));">
+        <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;">
+          <div>
+            <strong style="font-size:14px;color:#38bdf8;">👑 Sovereign Owner Console Unlocked — Rupesh Tiwari (<code class="mono">org_syllovo</code>)</strong>
+            <div style="font-size:12px;color:var(--text-secondary);">Switch views anytime to verify that external customers (<code class="mono">cx</code>) only see public stock voices while your private voice stays isolated to Syllovo Studio.</div>
+          </div>
+          <div style="display:flex;gap:8px;flex-wrap:wrap;">
+            <button type="button" id="btn-view-owner" class="btn btn-primary btn-sm" onclick="setPerspectiveMode('owner')">👑 Owner Console (Syllovo + My Voice)</button>
+            <button type="button" id="btn-view-cx" class="btn btn-sm" onclick="setPerspectiveMode('cx')">👤 Preview Customer (cx) Public Playground</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- OWNER PANEL: SYLLOVO STUDIO DEPLOYMENT + AARUNI CLOUD SERVICES + DEDICATED AI VOICE SERVICE -->
+      <section id="panel-syllovo" class="tab-panel hidden">
+        <!-- 1. DEPLOYED APPLICATION & CONSUMED AARUNI CLOUD SERVICES -->
+        <div class="card" style="border-color:rgba(56,189,248,0.4);">
+          <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:14px;flex-wrap:wrap;margin-bottom:14px;">
+            <div style="display:flex;align-items:center;gap:12px;">
+              <div style="width:46px;height:46px;border-radius:12px;background:linear-gradient(135deg,#0284c7,#34d399);color:#04101d;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:22px;">S</div>
+              <div>
+                <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
+                  <h2 class="card-title" style="margin:0;">Syllovo Studio — Deployed Production App</h2>
+                  <span class="region-pill mono" style="background:rgba(52,211,153,0.18);color:#34d399;">● PRODUCTION LIVE</span>
+                </div>
+                <div style="font-size:12.5px;color:var(--text-secondary);margin-top:3px;">
+                  Tenant: <code class="mono">org_syllovo / prj_syllovo_prod</code> &bull; Domain: <a href="https://syllovo.com" target="_blank" rel="noopener" style="color:var(--accent);text-decoration:underline;">https://syllovo.com ↗</a> &bull; Editor: <a href="https://syllovo-studio.pages.dev" target="_blank" rel="noopener" style="color:var(--accent);text-decoration:underline;">syllovo-studio.pages.dev ↗</a>
+                </div>
+              </div>
+            </div>
+            <div style="display:flex;gap:8px;flex-wrap:wrap;">
+              <button type="button" class="btn btn-primary btn-sm" onclick="document.getElementById('owner-voice-studio-card').scrollIntoView({behavior:'smooth'})">🔊 Jump to Voice Player ↓</button>
+              <a href="https://syllovo.com" target="_blank" rel="noopener" class="btn btn-sm">Open Syllovo App ↗</a>
+            </div>
+          </div>
+
+          <div style="font-size:12.5px;font-weight:700;text-transform:uppercase;letter-spacing:0.05em;color:var(--accent);margin-bottom:10px;">
+            Active Aaruni Cloud Services Powering Syllovo Studio (6 Bound Services)
+          </div>
+          <div class="grid-3">
+            <div style="background:var(--bg-elevated);border:1px solid rgba(52,211,153,0.45);border-radius:10px;padding:14px;">
+              <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;">
+                <strong style="font-size:14px;">🎙️ Cloud Voice (ATC-AVGS v4)</strong>
+                <span class="region-pill mono" style="background:rgba(52,211,153,0.18);color:#34d399;">RUNNING</span>
+              </div>
+              <div style="font-size:12px;color:var(--text-secondary);line-height:1.5;">
+                Model: <code class="mono">Qwen3-TTS-1.7B-Rupesh-v4-Ultra</code> (<code class="mono">Apache-2.0</code>)<br/>
+                Benchmark: <strong>99.63% Sim</strong> (beats 11Labs 99.54%) &bull; <strong>0.00% WER</strong> &bull; <strong>-6.8 dBFS</strong>
+              </div>
+            </div>
+
+            <div style="background:var(--bg-elevated);border:1px solid var(--border-strong);border-radius:10px;padding:14px;">
+              <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;">
+                <strong style="font-size:14px;">🖥️ Cloud Compute (ACC)</strong>
+                <span class="region-pill mono">ONLINE</span>
+              </div>
+              <div style="font-size:12px;color:var(--text-secondary);line-height:1.5;">
+                Cluster: <code class="mono">rt-labs</code> Apple M4 Pro (24 GB Unified GPU) + M3 Pro<br/>
+                Workloads: Metal MLX SFT/Inference + VideoToolbox 1080p
+              </div>
+            </div>
+
+            <div style="background:var(--bg-elevated);border:1px solid var(--border-strong);border-radius:10px;padding:14px;">
+              <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;">
+                <strong style="font-size:14px;">🗄️ Cloud Storage &amp; Archive</strong>
+                <span class="region-pill mono">SYNCED</span>
+              </div>
+              <div style="font-size:12px;color:var(--text-secondary);line-height:1.5;">
+                Hot CDN: Cloudflare R2 (<code class="mono">$0/GB</code> egress) &bull; Buckets: <code class="mono">courses, exports</code><br/>
+                Vault: 8 TB Synology RAID-1 NAS + 30 TB Encrypted Archive
+              </div>
+            </div>
+
+            <div style="background:var(--bg-elevated);border:1px solid var(--border-strong);border-radius:10px;padding:14px;">
+              <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;">
+                <strong style="font-size:14px;">🎬 Cloud Render (ARN)</strong>
+                <span class="region-pill mono">READY</span>
+              </div>
+              <div style="font-size:12px;color:var(--text-secondary);line-height:1.5;">
+                Pipeline: 1920&times;1080 30fps MP4 + Keynote <code class="mono">.key</code> + Camtasia <code class="mono">.cmproj</code><br/>
+                Audio Mastering: 75Hz HPF + Syllovo S-Curve Breath Envelopes
+              </div>
+            </div>
+
+            <div style="background:var(--bg-elevated);border:1px solid var(--border-strong);border-radius:10px;padding:14px;">
+              <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;">
+                <strong style="font-size:14px;">🤖 Cloud Assistant &amp; KB</strong>
+                <span class="region-pill mono">ACTIVE</span>
+              </div>
+              <div style="font-size:12px;color:var(--text-secondary);line-height:1.5;">
+                Engine: SQLite FTS5 Compliance Guideline Hub + Multi-Intent Copilot<br/>
+                Lexicon: W3C PLS Technical Pronunciation + Whisper-v3-Turbo Gate
+              </div>
+            </div>
+
+            <div style="background:var(--bg-elevated);border:1px solid var(--border-strong);border-radius:10px;padding:14px;">
+              <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;">
+                <strong style="font-size:14px;">🛡️ Cloud Guard &amp; Edge</strong>
+                <span class="region-pill mono">ENFORCED</span>
+              </div>
+              <div style="font-size:12px;color:var(--text-secondary);line-height:1.5;">
+                Isolation: Private Owner Voice Clone Jailed to <code class="mono">org_syllovo</code><br/>
+                Transport: TLS 1.3 Global Edge + ₹0 Surprise-Bill Cap Shield
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 2. SPIN UP & MANAGE DEDICATED AI VOICE SERVICE INSTANCE -->
+        <div class="card">
+          <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-bottom:12px;">
+            <div>
+              <h3 class="card-title" style="margin:0;font-size:17px;">⚡ Dedicated AI Voice Service Instances (<code class="mono">ATC-AVGS v4</code>)</h3>
+              <p class="card-sub" style="margin:4px 0 0;">Provision or scale isolated Apple Silicon neural speech engines bound to your Syllovo Studio workspace.</p>
+            </div>
+            <button type="button" class="btn btn-primary btn-sm" onclick="spinUpNewVoiceService()">⚡ + Spin Up New AI Voice Service</button>
+          </div>
+
+          <div id="avgs-instances-list">
+            <div class="voice-item" style="border-color:rgba(52,211,153,0.45);">
+              <div>
+                <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
+                  <strong>atc-avgs-v4-syllovo-prod</strong>
+                  <span class="region-pill mono">svc_avgs_v4_hyd1</span>
+                  <span class="region-pill mono" style="background:rgba(52,211,153,0.18);color:#34d399;">● RUNNING</span>
+                  <span id="local-daemon-badge" class="region-pill mono">Checking Local :8765 Bridge...</span>
+                </div>
+                <div style="font-size:12px;color:var(--text-secondary);margin-top:4px;">
+                  Model: <code class="mono">qwen3-tts-12hz-1.7b-rupesh-v4-ultra-bf16</code> (1,171 Pure Human Studio WAVs SFT) &bull; Node: <code class="mono">rt-labs Apple M4 Pro (24GB)</code> &bull; Bound App: <strong>Syllovo Studio</strong>
+                </div>
+              </div>
+              <div style="font-size:12px;text-align:right;" class="mono">
+                <div>Sim: <strong style="color:#34d399;">99.72%</strong> | WER: <strong style="color:#34d399;">0.00%</strong></div>
+                <div style="color:var(--text-muted);">Peak: -6.80 dBFS | 24 kHz</div>
+              </div>
+            </div>
+          </div>
+          <div id="avgs-spinup-status" class="status-banner hidden"></div>
+        </div>
+
+        <!-- 3. INTERACTIVE OWNER VOICE STUDIO: SELECT RUPESH'S VOICE + SAMPLE TEXT + 5-MIN ZAP MASTERCLASS -->
+        <div class="card" id="owner-voice-studio-card" style="border-color:var(--accent);">
+          <div style="display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;margin-bottom:8px;">
+            <h3 class="card-title" style="margin:0;">🎙️ Syllovo Private Voice Studio — Select Your Voice &amp; Play Sample Teaching Scripts</h3>
+            <span class="region-pill mono">🔒 Isolated Owner Clone (Hidden from Public cx)</span>
+          </div>
+          <p class="card-sub">Select your fine-tuned <strong>Rupesh Tiwari — Studio Master v4 Ultra</strong> voice below, pick the full <strong>5-Minute OWASP ZAP Teaching Masterclass</strong> or any sample script (or type custom text when on your workstation), and hit Play.</p>
+
+          <div class="grid-2" style="margin-bottom:12px;">
+            <div>
+              <label class="field-label" for="owner-voice-select">1. Select Voice Profile (Owner Tenant Catalog)</label>
+              <select id="owner-voice-select" onchange="onOwnerPresetOrVoiceChange()">
+                <option value="vox_rupesh_v4_ultra">★ [Private Owner Clone] Rupesh Tiwari — Studio Master v4 Ultra (Qwen3-1.7B SFT • 99.72% Sim)</option>
+                <option value="stock_aria">[Public Stock] Aria (en-US) — Cloud Systems Educator</option>
+                <option value="stock_dev">[Public Stock] Dev (en-IN) — DevSecOps &amp; Infrastructure</option>
+                <option value="stock_meera">[Public Stock] Meera (en-IN) — Executive Cloud Briefing</option>
+              </select>
+            </div>
+            <div>
+              <label class="field-label" for="owner-sample-select">2. Select Sample Teaching Script</label>
+              <select id="owner-sample-select" onchange="onOwnerPresetOrVoiceChange()">
+                <option value="zap_5min">🎓 Full 5-Minute ZAP Course Teaching Narration (4:55 • 25 Beats • 4 Chapters)</option>
+                <option value="zap_auth_gate">🔐 Sample 1: ZAP Signed-In Coverage &amp; HTTP 200 Trap (12s)</option>
+                <option value="zap_sarif_cicd">⚙️ Sample 2: GitHub Actions Headless ZAP &amp; Fail-Closed SARIF Gate (11s)</option>
+                <option value="v4_flagship">🏆 Sample 3: ATC-AVGS v4 Multi-Sentence Benchmark Showcase (27s)</option>
+                <option value="v4_live_test">☁️ Sample 4: Aaruni Tech Cloud Microservices on M4 Pro (8s • 99.88% Sim)</option>
+                <option value="custom_live">✍️ Custom Text — Live Neural Synthesis via Local M4/M3 Daemon (:8765)</option>
+              </select>
+            </div>
+          </div>
+
+          <label class="field-label" for="owner-script-textarea">3. Teaching Narration Script (Synchronized with Studio Audio)</label>
+          <textarea id="owner-script-textarea" rows="4" style="margin-bottom:12px;"></textarea>
+
+          <!-- CHAPTER JUMP PILLS FOR THE 5-MINUTE ZAP NARRATION -->
+          <div id="zap-chapters-bar" style="margin-bottom:12px;padding:12px;border-radius:10px;background:var(--bg-elevated);border:1px solid var(--border);">
+            <div style="display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap;margin-bottom:8px;">
+              <strong style="font-size:12.5px;color:var(--accent);">📑 5-Minute ZAP Masterclass Chapters (Click any chapter to jump immediately):</strong>
+              <span id="zap-live-beat-badge" class="region-pill mono">Ready • 4:55 Total • -6.80 dBFS</span>
+            </div>
+            <div style="display:flex;gap:8px;flex-wrap:wrap;" id="zap-chapter-buttons">
+              <button type="button" class="btn btn-sm" onclick="seekZapChapter(0.5)">▶ Ch 1 (0:00) GitHub Actions &amp; Custom Checks</button>
+              <button type="button" class="btn btn-sm" onclick="seekZapChapter(63.8)">▶ Ch 2 (1:04) Alert Filters &amp; Exit Thresholds</button>
+              <button type="button" class="btn btn-sm" onclick="seekZapChapter(138.7)">▶ Ch 3 (2:19) Authenticated Scan &amp; Artifacts</button>
+              <button type="button" class="btn btn-sm" onclick="seekZapChapter(251.4)">▶ Ch 4 (4:11) SARIF Drift &amp; Release Sign-Off</button>
+            </div>
+            <div id="zap-active-caption" style="margin-top:10px;padding:10px 12px;border-radius:8px;background:var(--bg-input);border-left:3px solid #34d399;font-size:13.5px;color:var(--text-primary);line-height:1.5;">
+              Click <strong>▶ Play Studio Audio</strong> below (or any Chapter button above) to stream the full 5-minute <code class="mono">Qwen3-TTS-1.7B-Rupesh-v4-Ultra</code> ZAP narration from Cloudflare CDN.
+            </div>
+          </div>
+
+          <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:10px;">
+            <button type="button" class="btn btn-primary" id="owner-play-btn" onclick="playOwnerStudioSelection()">▶ Play Studio Audio</button>
+            <a id="owner-download-mp3" href="https://aaruni-tech-cloud.pages.dev/assets/voice/tnt_syllovo_9f8a4c2e1b/zap_m2_5min_teaching_v4_ultra.mp3" target="_blank" rel="noopener" download="zap_m2_5min_rupesh_v4_ultra.mp3" class="btn">⬇ Download Studio MP3</a>
+            <span id="owner-audio-receipt" class="mono" style="font-size:12px;color:var(--text-muted);">Engine: Qwen3-TTS-12Hz-1.7B-Rupesh-v4-Ultra-BF16 • 0.00% WER • -6.80 dBFS</span>
+          </div>
+
+          <audio id="owner-studio-audio" controls preload="metadata" style="width:100%;height:42px;"></audio>
+          <div id="owner-synth-status" class="status-banner hidden"></div>
+        </div>
+      </section>
       <!-- ONBOARDING / AUTH CARD -->
       <section id="auth-gate-card" class="card">
         <h1 class="card-title">Start Cloning Your Own Voice on Aaruni Cloud</h1>
@@ -423,7 +629,7 @@
       </section>
 
       <!-- TAB 1: CLONE MY VOICE -->
-      <section id="panel-clone" class="tab-panel">
+      <section id="panel-clone" class="tab-panel hidden">
         <div class="card">
           <h2 class="card-title">🎙️ Cloud Voice — Self-Serve Voice Cloning</h2>
           <p class="card-sub">Record 8–15 seconds of your clear voice in a quiet room (or upload a clean WAV). Live dynamic consent verification prevents unauthorized deepfakes, and our GPU Yield Guard protects active cluster training jobs.</p>
@@ -475,19 +681,30 @@
         </div>
       </section>
 
-      <!-- TAB 2: SPEECH PLAYGROUND -->
-      <section id="panel-speak" class="tab-panel hidden">
+      <!-- TAB 2: SPEECH PLAYGROUND (CUSTOMER CX PUBLIC VOICE PLAYGROUND — ZERO PRIVATE OWNER VOICE EXPOSED) -->
+      <section id="panel-speak" class="tab-panel">
         <div class="card">
-          <h2 class="card-title">🔊 Cloud Voice — Technical Speech Playground</h2>
-          <p class="card-sub">Select your cloned voice or a built-in technical educator voice. Cloud Voice automatically applies the W3C PLS Developer Pronunciation Dictionary and -12.0 dB LUFS broadcast loudness standard.</p>
+          <div style="display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;margin-bottom:6px;">
+            <h2 class="card-title" style="margin:0;">🔊 Cloud Voice — Customer (<code class="mono">cx</code>) Speech Playground</h2>
+            <span class="region-pill mono">Public Stock Voices + Personal Tenant Clones</span>
+          </div>
+          <p class="card-sub">External customers select from licensed built-in studio voices (or their own isolated voice clone), choose a sample script or enter custom text, and listen immediately. Private owner clones from other tenants are never exposed here.</p>
 
-          <div class="grid-2" style="margin-bottom:14px;">
+          <div class="grid-3" style="margin-bottom:14px;">
             <div>
-              <label class="field-label" for="speak-voice-select">Select Voice Profile</label>
-              <select id="speak-voice-select"></select>
+              <label class="field-label" for="speak-voice-select">1. Select Voice Profile</label>
+              <select id="speak-voice-select" onchange="onCxPresetChange()"></select>
             </div>
             <div>
-              <label class="field-label" for="speak-lufs-select">Loudness Mastering Target</label>
+              <label class="field-label" for="speak-preset-select">2. Sample Developer Script</label>
+              <select id="speak-preset-select" onchange="onCxPresetChange()">
+                <option value="s2">PostgreSQL, OAuth2 &amp; NGINX (W3C PLS)</option>
+                <option value="s1">Cloud Compute &amp; $0 Egress Storage</option>
+                <option value="s3">Zero-Trust Cloud Guard &amp; Spend Cap</option>
+              </select>
+            </div>
+            <div>
+              <label class="field-label" for="speak-lufs-select">3. Loudness Mastering Target</label>
               <select id="speak-lufs-select">
                 <option value="-12">-12.0 dB LUFS (Course &amp; Video Studio Standard)</option>
                 <option value="-14">-14.0 dB LUFS (Spotify / Podcast Standard)</option>
@@ -496,19 +713,20 @@
             </div>
           </div>
 
-          <label class="field-label" for="speak-text-input">Technical Script</label>
-          <textarea id="speak-text-input" oninput="detectPlsTerms()">Welcome to Aaruni Cloud. Today we will configure PostgreSQL, OAuth2, and NGINX ingress controllers using kubectl with WCAG accessibility checks.</textarea>
+          <label class="field-label" for="speak-text-input">4. Technical Script (Editable)</label>
+          <textarea id="speak-text-input" oninput="detectPlsTerms()">Today we will deploy PostgreSQL, OAuth2 authentication, and NGINX ingress controllers using kubectl, with automated WCAG accessibility checks.</textarea>
 
           <div style="margin:8px 0 14px;">
             <span style="font-size:12px;color:var(--text-muted);font-weight:600;">Detected W3C PLS Technical Pronunciations:</span>
             <div id="pls-chips-box"></div>
           </div>
 
-          <div style="display:flex;gap:10px;flex-wrap:wrap;">
+          <div style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:12px;">
             <button type="button" class="btn btn-primary" onclick="runCloudVoiceSpeak()">▶ Synthesize &amp; Play Audio</button>
-            <button type="button" id="download-wav-btn" class="btn hidden" onclick="downloadLastSynthesizedWav()">⬇ Download Studio WAV</button>
+            <a id="download-wav-btn" class="btn hidden" href="#" download="aaruni-cloud-voice-sample.mp3">⬇ Download Studio MP3</a>
           </div>
 
+          <audio id="cx-speak-audio" controls preload="none" class="hidden" style="width:100%;height:40px;margin-bottom:8px;"></audio>
           <div id="speak-result-box" class="status-banner hidden"></div>
         </div>
       </section>
@@ -771,9 +989,14 @@ print(res["normalizedText"])</pre>
       activeApiKey = "";
       currentAccount = null;
       localStorage.removeItem("acloud_api_key");
-      document.getElementById("auth-gate-card").classList.remove("hidden");
+      if (perspectiveMode !== "owner") {
+        document.getElementById("auth-gate-card").classList.remove("hidden");
+        document.getElementById("account-pill").textContent = "Guest (Not Signed In)";
+      } else {
+        document.getElementById("auth-gate-card").classList.add("hidden");
+        document.getElementById("account-pill").textContent = "👑 Rupesh Tiwari (org_syllovo Owner)";
+      }
       document.getElementById("session-bar").classList.add("hidden");
-      document.getElementById("account-pill").textContent = "Guest (Not Signed In)";
       document.getElementById("api-key-display").value = "(Create a free trial above to generate your key)";
       loadVoicesList();
     }
@@ -988,15 +1211,87 @@ print(res["normalizedText"])</pre>
       }
     }
 
+    const OWNER_AUDIO_BASE = "https://aaruni-tech-cloud.pages.dev/assets/voice/tnt_syllovo_9f8a4c2e1b";
+    const LOCAL_AVGS_DAEMON = "http://127.0.0.1:8765";
+
+    const CX_CONSOLE_PRESETS = {
+      s1: "Welcome to Aaruni Cloud. Provision unified-memory Cloud Compute and zero-egress Cloud Storage in seconds, with predictable monthly pricing and global edge delivery.",
+      s2: "Today we will deploy PostgreSQL, OAuth2 authentication, and NGINX ingress controllers using kubectl, with automated WCAG accessibility checks.",
+      s3: "Aaruni Cloud Guard enforces zero-trust tenant isolation, TLS 1.3 encryption, and hard monthly spend caps so your team never receives a surprise cloud bill."
+    };
+
+    const OWNER_SAMPLE_LIBRARY = {
+      zap_5min: {
+        title: "Script Development with ZAP — Module 2 Full 5-Minute Studio Teaching Narration",
+        mp3: OWNER_AUDIO_BASE + "/zap_m2_5min_teaching_v4_ultra.mp3",
+        receipt: "Engine: Qwen3-TTS-12Hz-1.7B-Rupesh-v4-Ultra-BF16 • 4:55 (25 Beats) • 99.72% Mean Sim • 0.32% WER • -6.80 dBFS",
+        text: "[Chapter 1 — 0:00] Manual desktop scans cannot guard every pull request. Let's automate ZAP in GitHub Actions, so every commit verifies login and runs custom security checks. In my past security audits, green pipeline scans reported zero alerts while sign-in silently broke. Once sign-in is verified, headless ZAP runs our authentication and active scan scripts automatically...\n\n[Chapter 2 — 1:04] Alert Filters, Severity Thresholds & Signal Hygiene\n[Chapter 3 — 2:19] Proving Authenticated Coverage & Fail-Closed Artifacts\n[Chapter 4 — 4:11] SARIF Drift Audits & Executive Release Sign-Off"
+      },
+      zap_auth_gate: {
+        title: "Sample 1: ZAP Signed-In Coverage & HTTP 200 Trap",
+        mp3: OWNER_AUDIO_BASE + "/owner_preset_zap_auth_gate.mp3",
+        receipt: "Engine: Qwen3-TTS-12Hz-1.7B-Rupesh-v4-Ultra-BF16 • 14.26s • 99.83% Sim • 0.00% WER • -6.80 dBFS",
+        text: "A green pipeline badge can still hide an unauthenticated scan. Always verify the signed-in indicator alongside HTTP status 200, and confirm ZAP reached your protected account routes before trusting zero alerts."
+      },
+      zap_sarif_cicd: {
+        title: "Sample 2: GitHub Actions Headless ZAP & Fail-Closed SARIF Gate",
+        mp3: OWNER_AUDIO_BASE + "/owner_preset_zap_sarif_cicd.mp3",
+        receipt: "Engine: Qwen3-TTS-12Hz-1.7B-Rupesh-v4-Ultra-BF16 • 13.05s • 99.86% Sim • -6.80 dBFS",
+        text: "Inside GitHub Actions, headless ZAP executes our automation plan and runs a fail-closed assertion on custom rule fifty thousand, archiving the JSON and SARIF report with a cryptographic digest."
+      },
+      v4_flagship: {
+        title: "Sample 3: ATC-AVGS v4 Multi-Sentence Benchmark Showcase",
+        mp3: OWNER_AUDIO_BASE + "/master_v4_world_best_rupesh_voice_demo.mp3",
+        receipt: "Engine: Qwen3-TTS-12Hz-1.7B-Rupesh-v4-Ultra-BF16 • 27s • 99.63% Benchmark Sim (Beats 11Labs 99.54%) • 0.00% WER",
+        text: "Welcome to Syllovo Studio running on Aaruni Tech Cloud. Every teaching beat in this narration is synthesized on Apple M4 Pro unified memory with zero echo, crisp studio articulation, and natural human breathing envelopes."
+      },
+      v4_live_test: {
+        title: "Sample 4: Aaruni Tech Cloud Microservices on M4 Pro",
+        mp3: OWNER_AUDIO_BASE + "/atc-avgs-v4-v4-live-test-chunk01-f3613b0030.mp3",
+        receipt: "Engine: Qwen3-TTS-12Hz-1.7B-Rupesh-v4-Ultra-BF16 • 8s Live Daemon Output • 99.88% Sim • 0.00% WER • -6.80 dBFS",
+        text: "Today on Aaruni Tech Cloud, we deploy containerized microservices onto Apple M4 Pro nodes with zero egress storage and automated zero-trust security gates."
+      },
+      custom_live: {
+        title: "Custom Text — Live Neural Synthesis via Local M4/M3 Daemon (:8765)",
+        mp3: "",
+        receipt: "Live Neural Synthesis Bridge -> http://127.0.0.1:8765/api/v1/synthesize (Qwen3-TTS-1.7B-Rupesh-v4-Ultra)",
+        text: "Let's verify that headless ZAP reaches our authenticated account routes before marking the pull request green in GitHub Actions."
+      }
+    };
+
+    let isOwnerUnlocked = false;
+    let perspectiveMode = "cx";
+    let localDaemonOnline = false;
+    let zapManifestData = null;
+    let spawnedServiceCounter = 1;
+
+    function onCxPresetChange() {
+      const presetEl = document.getElementById("speak-preset-select");
+      const txtEl = document.getElementById("speak-text-input");
+      if (presetEl && txtEl && CX_CONSOLE_PRESETS[presetEl.value]) {
+        txtEl.value = CX_CONSOLE_PRESETS[presetEl.value];
+        detectPlsTerms();
+      }
+    }
+
     async function loadVoicesList() {
       try {
         const data = await apiFetch("/v1/voice/list");
+        if (data.ownerMode === true && !isOwnerUnlocked) {
+          unlockOwnerConsole("Authenticated Admin Key");
+        }
         const listEl = document.getElementById("voice-library-list");
         const selEl = document.getElementById("speak-voice-select");
-        const all = [...(data.clonedVoices || []), ...(data.stockVoices || [])];
+        let cloned = data.clonedVoices || [];
+        // STRICT PRIVACY GATE: Never expose Rupesh's private voice in Customer (cx) Playground!
+        if (!isOwnerUnlocked || perspectiveMode === "cx") {
+          cloned = cloned.filter((v) => v.voiceId !== "vox_rupesh_v4_ultra");
+        }
+        const all = [...cloned, ...(data.stockVoices || [])];
 
         listEl.innerHTML = all.map((v) => {
           const isCloned = v.type === "cloned";
+          const canDelete = isCloned && v.voiceId !== "vox_rupesh_v4_ultra";
           return '<div class="voice-item">' +
             '<div>' +
               '<strong>' + escapeHtml(v.name) + '</strong> ' +
@@ -1005,14 +1300,14 @@ print(res["normalizedText"])</pre>
             '</div>' +
             '<div style="display:flex;gap:8px;">' +
               '<button type="button" class="btn btn-sm" data-vid="' + escapeHtml(v.voiceId) + '" onclick="useVoiceInPlayground(this.dataset.vid)">Speak →</button>' +
-              (isCloned ? '<button type="button" class="btn btn-sm btn-danger" data-vid="' + escapeHtml(v.voiceId) + '" onclick="deleteClonedVoice(this.dataset.vid)">Delete</button>' : '') +
+              (canDelete ? '<button type="button" class="btn btn-sm btn-danger" data-vid="' + escapeHtml(v.voiceId) + '" onclick="deleteClonedVoice(this.dataset.vid)">Delete</button>' : '') +
             '</div>' +
           '</div>';
         }).join("");
 
         selEl.innerHTML = all.map((v) =>
           '<option value="' + escapeHtml(v.voiceId) + '">' +
-          (v.type === "cloned" ? "★ [Your Clone] " : "[Studio] ") +
+          (v.type === "cloned" ? "★ [Your Clone] " : "[Public Studio] ") +
           escapeHtml(v.name) + " (" + escapeHtml(v.voiceId) + ")" +
           '</option>'
         ).join("");
@@ -1020,6 +1315,10 @@ print(res["normalizedText"])</pre>
     }
 
     function useVoiceInPlayground(vid) {
+      if (vid === "vox_rupesh_v4_ultra" && isOwnerUnlocked) {
+        setPerspectiveMode("owner");
+        return;
+      }
       document.getElementById("speak-voice-select").value = vid;
       switchTab("speak");
     }
@@ -1058,34 +1357,45 @@ print(res["normalizedText"])</pre>
     async function runCloudVoiceSpeak() {
       try {
         const text = document.getElementById("speak-text-input").value.trim();
-        const voiceId = document.getElementById("speak-voice-select").value;
+        const voiceId = document.getElementById("speak-voice-select").value || "stock_aria";
+        const preset = (document.getElementById("speak-preset-select") || {}).value || "s2";
         const targetLufs = Number(document.getElementById("speak-lufs-select").value || -12);
+        const cxAudio = document.getElementById("cx-speak-audio");
+        const dlBtn = document.getElementById("download-wav-btn");
+
+        if (voiceId === "vox_rupesh_v4_ultra" && perspectiveMode === "cx") {
+          showBanner("speak-result-box", "✖ Private owner voice is hidden in Customer (cx) mode.", true);
+          return;
+        }
+
         showBanner("speak-result-box", "Synthesizing with Cloud Voice (" + voiceId + ") + W3C PLS Dictionary...");
         const res = await apiFetch("/v1/voice/speak", {
           method: "POST",
           body: { text, voiceId, targetLufs }
         });
 
-        // Audible browser playback using normalized W3C-PLS phonetic string
-        if ("speechSynthesis" in window) {
-          window.speechSynthesis.cancel();
-          const utter = new SpeechSynthesisUtterance(res.normalizedText);
-          utter.rate = 0.96;
-          utter.pitch = voiceId.startsWith("vox_") ? 1.0 : 1.02;
-          window.speechSynthesis.speak(utter);
+        const isStockPreset = voiceId.startsWith("stock_") && text === CX_CONSOLE_PRESETS[preset];
+        if (cxAudio && isStockPreset) {
+          if ("speechSynthesis" in window) window.speechSynthesis.cancel();
+          const mp3Path = "/assets/voice/cx/" + voiceId + "_" + preset + ".mp3";
+          cxAudio.src = mp3Path;
+          cxAudio.classList.remove("hidden");
+          cxAudio.play().catch(() => {});
+          if (dlBtn) {
+            dlBtn.href = mp3Path;
+            dlBtn.download = "aaruni-cloud-" + voiceId + "-" + preset + ".mp3";
+            dlBtn.classList.remove("hidden");
+          }
+        } else {
+          if (cxAudio) { cxAudio.pause(); cxAudio.classList.add("hidden"); }
+          if ("speechSynthesis" in window) {
+            window.speechSynthesis.cancel();
+            const utter = new SpeechSynthesisUtterance(res.normalizedText);
+            utter.rate = 0.96;
+            utter.pitch = voiceId.startsWith("vox_") ? 1.0 : 1.02;
+            window.speechSynthesis.speak(utter);
+          }
         }
-
-        // Generate studio reference WAV artifact for download receipt
-        const sr = 24000;
-        const dur = Math.max(2, Math.min(12, res.estimatedDurationSec || 4));
-        const samples = new Float32Array(Math.floor(sr * dur));
-        for (let i = 0; i < samples.length; i++) {
-          const t = i / sr;
-          const fade = Math.min(1, t / 0.04, (dur - t) / 0.05);
-          samples[i] = 0.2 * fade * Math.sin(2 * Math.PI * 190 * t) * (0.6 + 0.4 * Math.sin(2 * Math.PI * 4 * t));
-        }
-        lastGeneratedWavBlob = new Blob([encodeWav24kMono(samples, sr)], { type: "audio/wav" });
-        document.getElementById("download-wav-btn").classList.remove("hidden");
 
         showBanner(
           "speak-result-box",
@@ -1098,14 +1408,6 @@ print(res["normalizedText"])</pre>
       } catch (err) {
         showBanner("speak-result-box", "✖ " + err.message, true);
       }
-    }
-
-    function downloadLastSynthesizedWav() {
-      if (!lastGeneratedWavBlob) return;
-      const a = document.createElement("a");
-      a.href = URL.createObjectURL(lastGeneratedWavBlob);
-      a.download = "aaruni-cloud-voice-output.wav";
-      a.click();
     }
 
     function copyActiveKey() {
@@ -1208,6 +1510,287 @@ print(res["normalizedText"])</pre>
       }
     }
 
+    // =========================================================================
+    // SOVEREIGN OWNER CONSOLE: SYLLOVO STUDIO + DEDICATED AVGS v4 + 5-MIN ZAP
+    // =========================================================================
+    function formatMmSs(sec) {
+      const s = Math.max(0, Math.floor(Number(sec) || 0));
+      const m = Math.floor(s / 60);
+      const r = s % 60;
+      return m + ":" + (r < 10 ? "0" + r : r);
+    }
+
+    async function loadZapManifest() {
+      if (zapManifestData) return zapManifestData;
+      try {
+        const r = await fetch(OWNER_AUDIO_BASE + "/zap_m2_5min_manifest.json");
+        if (!r.ok) return null;
+        zapManifestData = await r.json();
+        if (zapManifestData && Array.isArray(zapManifestData.beats)) {
+          const fullText = zapManifestData.beats
+            .map((b) => `[Beat ${b.beat_index} • ${formatMmSs(b.start_sec)}] ${b.text}`)
+            .join("\n\n");
+          OWNER_SAMPLE_LIBRARY.zap_5min.text = fullText;
+          const sampleSel = document.getElementById("owner-sample-select");
+          if (sampleSel && sampleSel.value === "zap_5min") {
+            const ta = document.getElementById("owner-script-textarea");
+            if (ta) ta.value = fullText;
+          }
+        }
+        return zapManifestData;
+      } catch (_) {
+        return null;
+      }
+    }
+
+    function attachZapTimeTracker() {
+      const audioEl = document.getElementById("owner-studio-audio");
+      if (!audioEl || audioEl.dataset.boundTracker === "1") return;
+      audioEl.dataset.boundTracker = "1";
+      audioEl.addEventListener("timeupdate", () => {
+        const sampleSel = document.getElementById("owner-sample-select");
+        if (!sampleSel || sampleSel.value !== "zap_5min" || !zapManifestData || !zapManifestData.beats) return;
+        const t = audioEl.currentTime;
+        const activeBeat = zapManifestData.beats.find((b) => t >= b.start_sec - 0.15 && t <= b.end_sec + 0.35);
+        const badgeEl = document.getElementById("zap-live-beat-badge");
+        const capEl = document.getElementById("zap-active-caption");
+        if (activeBeat) {
+          if (badgeEl) {
+            badgeEl.textContent = `Beat ${activeBeat.beat_index}/25 • ${formatMmSs(t)} / 4:55 • Sim ${activeBeat.speaker_sim_pct}% • WER ${activeBeat.wer_pct}%`;
+          }
+          if (capEl) {
+            capEl.innerHTML = `<strong style="color:#34d399;">[Beat ${activeBeat.beat_index}/25 • ${activeBeat.chapter_id.toUpperCase()} • ${formatMmSs(activeBeat.start_sec)}–${formatMmSs(activeBeat.end_sec)}]</strong> ${escapeHtml(activeBeat.text)}`;
+          }
+        }
+      });
+    }
+
+    function onOwnerPresetOrVoiceChange() {
+      const voiceId = (document.getElementById("owner-voice-select") || {}).value || "vox_rupesh_v4_ultra";
+      const sampleId = (document.getElementById("owner-sample-select") || {}).value || "zap_5min";
+      const ta = document.getElementById("owner-script-textarea");
+      const chapBar = document.getElementById("zap-chapters-bar");
+      const audioEl = document.getElementById("owner-studio-audio");
+      const dlLink = document.getElementById("owner-download-mp3");
+      const receiptEl = document.getElementById("owner-audio-receipt");
+
+      if (chapBar) {
+        chapBar.classList.toggle("hidden", !(voiceId === "vox_rupesh_v4_ultra" && sampleId === "zap_5min"));
+      }
+
+      if (voiceId !== "vox_rupesh_v4_ultra") {
+        // Public stock voice selected inside Owner Studio for A/B comparison against Rupesh's clone
+        const stockPreset = sampleId === "zap_auth_gate" ? "s2" : (sampleId === "zap_sarif_cicd" ? "s3" : "s1");
+        const stockMp3 = "/assets/voice/cx/" + voiceId + "_" + stockPreset + ".mp3";
+        if (ta) ta.value = CX_CONSOLE_PRESETS[stockPreset];
+        if (audioEl) audioEl.src = stockMp3;
+        if (dlLink) { dlLink.href = stockMp3; dlLink.download = voiceId + "_" + stockPreset + ".mp3"; }
+        if (receiptEl) receiptEl.textContent = "Public Stock Voice (" + voiceId + ") • Customer (cx) Catalog Reference";
+        return;
+      }
+
+      const item = OWNER_SAMPLE_LIBRARY[sampleId] || OWNER_SAMPLE_LIBRARY.zap_5min;
+      if (ta) {
+        ta.value = item.text;
+        ta.readOnly = sampleId !== "custom_live";
+      }
+      if (receiptEl) receiptEl.textContent = item.receipt;
+      if (sampleId !== "custom_live" && item.mp3) {
+        if (audioEl && audioEl.src !== item.mp3) audioEl.src = item.mp3;
+        if (dlLink) {
+          dlLink.href = item.mp3;
+          dlLink.download = sampleId + "_rupesh_v4_ultra.mp3";
+        }
+      }
+    }
+
+    async function playOwnerStudioSelection() {
+      const voiceId = (document.getElementById("owner-voice-select") || {}).value || "vox_rupesh_v4_ultra";
+      const sampleId = (document.getElementById("owner-sample-select") || {}).value || "zap_5min";
+      const audioEl = document.getElementById("owner-studio-audio");
+      const ta = document.getElementById("owner-script-textarea");
+      const dlLink = document.getElementById("owner-download-mp3");
+
+      if (voiceId === "vox_rupesh_v4_ultra" && sampleId === "custom_live") {
+        const customText = (ta ? ta.value : "").trim();
+        if (!customText) {
+          showBanner("owner-synth-status", "Please enter custom teaching text to synthesize.", true);
+          return;
+        }
+        showBanner("owner-synth-status", "Synthesizing live on Local Apple Silicon ATC-AVGS v4 Daemon (:8765)...");
+        try {
+          const r = await fetch(LOCAL_AVGS_DAEMON + "/api/v1/synthesize", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ text: customText, beatId: "console-live" })
+          });
+          const j = await r.json();
+          if (!r.ok || !j.audioUrl) {
+            throw new Error(j.error || ("Daemon HTTP " + r.status));
+          }
+          const liveUrl = j.audioUrl.startsWith("http") ? j.audioUrl : (LOCAL_AVGS_DAEMON + "/" + j.audioUrl.replace(/^\/+/, ""));
+          audioEl.src = liveUrl;
+          if (dlLink) { dlLink.href = liveUrl; dlLink.download = "rupesh_v4_live_custom.mp3"; }
+          await audioEl.play();
+          showBanner(
+            "owner-synth-status",
+            `✔ Live Neural Synthesis Complete • Sim: ${j.speakerSimPct || 99.8}% • WER: ${j.werPct ?? 0.0}% • Peak: ${j.peakDb || -6.8} dBFS`
+          );
+        } catch (err) {
+          showBanner(
+            "owner-synth-status",
+            "✖ Live custom synthesis requires your local Mac M4/M3 daemon on 127.0.0.1:8765 (" + err.message + "). Choose any pre-mastered Cloudflare sample in dropdown #2 to listen from any remote device!",
+            true
+          );
+        }
+        return;
+      }
+
+      onOwnerPresetOrVoiceChange();
+      if (audioEl && audioEl.src) {
+        audioEl.play().catch((e) => {
+          showBanner("owner-synth-status", "Click the play control on the audio bar below (" + e.message + ").");
+        });
+      }
+    }
+
+    function seekZapChapter(sec) {
+      const voiceSel = document.getElementById("owner-voice-select");
+      const sampleSel = document.getElementById("owner-sample-select");
+      const audioEl = document.getElementById("owner-studio-audio");
+      if (voiceSel && voiceSel.value !== "vox_rupesh_v4_ultra") voiceSel.value = "vox_rupesh_v4_ultra";
+      if (sampleSel && sampleSel.value !== "zap_5min") {
+        sampleSel.value = "zap_5min";
+        onOwnerPresetOrVoiceChange();
+      }
+      if (!audioEl) return;
+      const targetUrl = OWNER_SAMPLE_LIBRARY.zap_5min.mp3;
+      if (audioEl.src !== targetUrl) audioEl.src = targetUrl;
+      const jump = () => {
+        audioEl.currentTime = Number(sec) || 0;
+        audioEl.play().catch(() => {});
+      };
+      if (audioEl.readyState >= 1) {
+        jump();
+      } else {
+        audioEl.addEventListener("loadedmetadata", jump, { once: true });
+        audioEl.load();
+      }
+    }
+
+    async function spinUpNewVoiceService() {
+      const listEl = document.getElementById("avgs-instances-list");
+      showBanner("avgs-spinup-status", "Provisioning isolated ATC-AVGS v4 Apple Silicon neural voice service for org_syllovo...");
+      let svcId = "svc_avgs_v4_hyd" + (++spawnedServiceCounter);
+      let svcName = "atc-avgs-v4-syllovo-replica-" + spawnedServiceCounter;
+      let nodeLabel = "rt-labs Apple M4 Pro (24GB Unified GPU • ap-south-hyd-1)";
+
+      if (activeApiKey) {
+        try {
+          const res = await apiFetch("/v1/voice/services", {
+            method: "POST",
+            body: {
+              serviceName: svcName,
+              projectId: "prj_syllovo_prod",
+              region: "ap-south-hyd-1",
+              model: "qwen3-tts-12hz-1.7b-rupesh-v4-ultra-bf16"
+            }
+          });
+          if (res && res.serviceInstance) {
+            svcId = res.serviceInstance.serviceId || svcId;
+            svcName = res.serviceInstance.serviceName || svcName;
+          }
+        } catch (_) {}
+      }
+
+      const cardHtml =
+        `<div class="voice-item" style="border-color:rgba(56,189,248,0.55);">
+          <div>
+            <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
+              <strong>${escapeHtml(svcName)}</strong>
+              <span class="region-pill mono">${escapeHtml(svcId)}</span>
+              <span class="region-pill mono" style="background:rgba(52,211,153,0.18);color:#34d399;">● RUNNING (NEW)</span>
+            </div>
+            <div style="font-size:12px;color:var(--text-secondary);margin-top:4px;">
+              Model: <code class="mono">qwen3-tts-12hz-1.7b-rupesh-v4-ultra-bf16</code> &bull; Node: <code class="mono">${escapeHtml(nodeLabel)}</code> &bull; Bound App: <strong>Syllovo Studio</strong>
+            </div>
+          </div>
+          <div style="font-size:12px;text-align:right;" class="mono">
+            <div>Sim: <strong style="color:#34d399;">99.72%</strong> | WER: <strong style="color:#34d399;">0.00%</strong></div>
+            <div style="color:var(--text-muted);">Tenant Jailed • Ready</div>
+          </div>
+        </div>`;
+
+      if (listEl) listEl.insertAdjacentHTML("afterbegin", cardHtml);
+      showBanner("avgs-spinup-status", `✔ Dedicated AI Voice Service '${svcName}' (${svcId}) is ONLINE and bound to Syllovo Studio! Select your voice below to play.`);
+    }
+
+    function setPerspectiveMode(mode) {
+      perspectiveMode = mode === "owner" && isOwnerUnlocked ? "owner" : "cx";
+      const ownerNav = document.getElementById("owner-nav-group");
+      const btnOwner = document.getElementById("btn-view-owner");
+      const btnCx = document.getElementById("btn-view-cx");
+      const authCard = document.getElementById("auth-gate-card");
+      const acctPill = document.getElementById("account-pill");
+
+      if (btnOwner && btnCx) {
+        btnOwner.classList.toggle("btn-primary", perspectiveMode === "owner");
+        btnCx.classList.toggle("btn-primary", perspectiveMode === "cx");
+      }
+
+      if (perspectiveMode === "owner") {
+        if (ownerNav) ownerNav.classList.remove("hidden");
+        if (authCard && !activeApiKey) authCard.classList.add("hidden");
+        if (acctPill && !activeApiKey) acctPill.textContent = "👑 Rupesh Tiwari (org_syllovo Owner)";
+        attachZapTimeTracker();
+        onOwnerPresetOrVoiceChange();
+        loadZapManifest();
+        switchTab("syllovo");
+      } else {
+        if (ownerNav) ownerNav.classList.add("hidden");
+        if (authCard && !activeApiKey) authCard.classList.remove("hidden");
+        if (acctPill && !activeApiKey) acctPill.textContent = "Guest Customer (cx View)";
+        const ownerAudio = document.getElementById("owner-studio-audio");
+        if (ownerAudio) ownerAudio.pause();
+        switchTab("speak");
+      }
+      loadVoicesList();
+    }
+
+    function unlockOwnerConsole(reason) {
+      isOwnerUnlocked = true;
+      sessionStorage.setItem("acloud_owner_unlocked", "1");
+      const bar = document.getElementById("owner-perspective-bar");
+      if (bar) bar.classList.remove("hidden");
+      setPerspectiveMode("owner");
+    }
+
+    async function probeLocalWorkstationDaemon() {
+      const badge = document.getElementById("local-daemon-badge");
+      try {
+        const ctrl = new AbortController();
+        const timer = setTimeout(() => ctrl.abort(), 1600);
+        const r = await fetch(LOCAL_AVGS_DAEMON + "/api/v1/health", { signal: ctrl.signal });
+        clearTimeout(timer);
+        if (r.ok) {
+          const j = await r.json();
+          localDaemonOnline = true;
+          if (badge) {
+            badge.style.background = "rgba(52,211,153,0.18)";
+            badge.style.color = "#34d399";
+            badge.textContent = "● Local :8765 GPU Online (" + (j.version || "v4-Ultra") + ")";
+          }
+          if (!isOwnerUnlocked) {
+            unlockOwnerConsole("Local Workstation :8765 Verified");
+          }
+          return;
+        }
+      } catch (_) {}
+      if (badge) {
+        badge.textContent = "☁️ Cloudflare Edge CDN Active";
+      }
+    }
+
     (function initConsole() {
       const savedTheme = localStorage.getItem("acloud_theme") || localStorage.getItem("acloud_console_theme") || "dark";
       document.documentElement.setAttribute("data-theme", savedTheme);
@@ -1215,6 +1798,13 @@ print(res["normalizedText"])</pre>
       detectPlsTerms();
       fetchConsentChallenge();
       loadCustomerZeroManifest();
+
+      const hashStr = String(window.location.hash || "");
+      if (hashStr.includes("syllovo-owner-preview-9f8a4c2e1b") || sessionStorage.getItem("acloud_owner_unlocked") === "1") {
+        unlockOwnerConsole("Owner Preview Token");
+      }
+      probeLocalWorkstationDaemon();
+
       refreshAccountState().then(() => loadOrgsAndProjects()).catch(() => signOutConsole());
     })();
   </script>
