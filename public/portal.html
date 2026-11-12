@@ -1598,9 +1598,9 @@ button, a.button {
         id: "AAR-0008",
         zohoId: "AAR-0008",
         name: "Shaik Ali Moulali",
-        role: "Security Operations",
-        designationSub: "Security Operations",
-        department: "Operations & Security",
+        role: "IT & Workplace Operations",
+        designationSub: "IT & Workplace Operations Lead",
+        department: "IT & Workplace Operations",
         workLocation: "Head Office",
         gender: "Male",
         status: "Active",
@@ -1936,8 +1936,9 @@ button, a.button {
     const aliEmp = (state.employees || []).find(e => e.id === "AAR-0008");
     if (aliEmp) {
       aliEmp.joiningDate = "09/11/2026";
-      aliEmp.role = "Security Operations";
-      aliEmp.department = "Operations & Security";
+      aliEmp.role = "IT & Workplace Operations";
+      aliEmp.department = "IT & Workplace Operations";
+      aliEmp.designationSub = "IT & Workplace Operations Lead";
     }
 
     function saveState() {

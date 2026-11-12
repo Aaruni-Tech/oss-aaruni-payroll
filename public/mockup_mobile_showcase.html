@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Aaruni Tech — Mobile Experience & URL Showcase (my.aarunitech.com)</title>
+  <script src="https://www.gstatic.com/antigravity/web/dev/tailwindcss.min.js"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background: #0f172a;
+      color: #f8fafc;
+      -webkit-font-smoothing: antialiased;
+    }
+    .font-mono {
+      font-family: 'JetBrains Mono', monospace;
+    }
+    /* Realistic iPhone 15 Pro Chassis */
+    .phone-chassis {
+      width: 390px;
+      height: 844px;
+      border-radius: 54px;
+      background: #ffffff;
+      box-shadow: 0 0 0 12px #1e293b, 0 0 0 14px #334155, 0 25px 60px -15px rgba(0, 0, 0, 0.7);
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      color: #0f172a;
+    }
+    /* Dynamic Island */
+    .dynamic-island {
+      width: 120px;
+      height: 32px;
+      background: #000000;
+      border-radius: 20px;
+      position: absolute;
+      top: 10px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 50;
+    }
+    .card-subtle {
+      background: #ffffff;
+      border: 1px solid #e2e8f0;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.02);
+    }
+    .btn-orange {
+      background: #fe5f01;
+      color: #ffffff;
+      font-weight: 600;
+      box-shadow: 0 2px 8px rgba(254, 95, 1, 0.2);
+    }
+    .btn-subtle {
+      background: #ffffff;
+      border: 1px solid #e2e8f0;
+      color: #334155;
+      font-weight: 600;
+    }
+  </style>
+</head>
+<body class="min-h-screen py-10 px-4 flex flex-col items-center justify-center">
+
+  <!-- TOP TITLE & CONTROLS -->
+  <div class="max-w-4xl w-full text-center mb-8 space-y-2">
+    <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-slate-800 text-orange-400 border border-slate-700 text-xs font-bold uppercase tracking-wider">
+      <span>📱 Mobile-First Experience Showcase</span>
+    </div>
+    <h1 class="text-3xl font-extrabold text-white tracking-tight">Direct URL Access: <span class="text-orange-400 font-mono">my.aarunitech.com</span></h1>
+    <p class="text-sm text-slate-400 max-w-xl mx-auto">
+      Showing how Shaik Ali Moulali sees the app on his phone with his new role as <strong class="text-slate-200">IT &amp; Workplace Operations Lead</strong> and instant auto-updating without downloading any APK.
+    </p>
+
+    <!-- Interactive Persona Switcher -->
+    <div class="flex items-center justify-center gap-3 pt-3">
+      <span class="text-xs font-semibold text-slate-400">Switch View:</span>
+      <button onclick="switchView('ali')" id="btnAli" class="px-3.5 py-1.5 rounded-xl text-xs font-bold bg-orange-500 text-white shadow-md transition-all">
+        👨‍💼 Shaik Ali (IT &amp; Workplace Ops)
+      </button>
+      <button onclick="switchView('nandini')" id="btnNandini" class="px-3.5 py-1.5 rounded-xl text-xs font-bold bg-slate-800 text-slate-300 hover:bg-slate-700 transition-all">
+        👩‍💼 Chukka Nandini (Team Lead)
+      </button>
+    </div>
+  </div>
+
+  <!-- THE PHONE CHASSIS -->
+  <div class="phone-chassis">
+    <!-- Dynamic Island -->
+    <div class="dynamic-island flex items-center justify-between px-3 text-[10px] text-white">
+      <span class="text-[9px] text-slate-400 ml-1">9:41</span>
+      <div class="w-3 h-3 rounded-full bg-slate-900 border border-slate-700"></div>
+    </div>
+
+    <!-- MOBILE BROWSER URL BAR (SHOWING my.aarunitech.com) -->
+    <div class="pt-12 px-3 pb-2 bg-slate-100 border-b border-slate-200 shrink-0">
+      <div class="bg-white rounded-xl py-1.5 px-3 flex items-center justify-between text-xs border border-slate-300 shadow-sm">
+        <div class="flex items-center gap-1.5 overflow-hidden">
+          <span class="text-emerald-600 text-xs">🔒</span>
+          <span class="font-bold text-slate-900 truncate">my.aarunitech.com</span>
+        </div>
+        <div class="flex items-center gap-2 text-slate-400 text-xs">
+          <button onclick="triggerReloadNotice()" title="Refresh" class="hover:text-slate-700">🔄</button>
+          <span>⋮</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- IN-APP AUTO-UPDATE NOTIFICATION BANNER (DEMONSTRATES HOW UPDATES REACH ALI INSTANTLY) -->
+    <div id="updateBanner" class="bg-gradient-to-r from-slate-900 to-indigo-950 text-white px-3 py-2 text-[11px] flex items-center justify-between shadow-sm shrink-0 border-b border-indigo-900">
+      <div class="flex items-center gap-1.5">
+        <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+        <span class="font-bold">v2.4.2 Live on Cloudflare</span>
+      </div>
+      <button onclick="applyAppUpdate()" class="px-2 py-0.5 rounded bg-orange-500 text-white font-bold text-[10px] shadow hover:bg-orange-600">
+        Auto-Synced ✓
+      </button>
+    </div>
+
+    <!-- PHONE APP CONTENT (SCROLLABLE) -->
+    <div class="flex-1 overflow-y-auto p-4 space-y-4 bg-slate-50">
+
+      <!-- 1. COMPACT PROFILE HEADER WITH ALI'S NEW ROLE -->
+      <div class="card-subtle rounded-2xl p-4 bg-white">
+        <div class="flex items-center gap-3">
+          <div class="relative">
+            <img id="userPhoto" src="photos/AAR-0008_v2.jpeg" class="w-14 h-14 rounded-2xl object-cover border-2 border-orange-500 shadow-sm" />
+            <span class="absolute -bottom-1 -right-1 w-3.5 h-3.5 rounded-full bg-emerald-500 border-2 border-white"></span>
+          </div>
+          <div class="min-w-0 flex-1">
+            <div class="flex items-center gap-1.5 flex-wrap">
+              <h2 id="userName" class="text-base font-extrabold text-slate-900 truncate">Shaik Ali Moulali</h2>
+              <span id="userBadge" class="text-[10px] font-mono font-bold px-1.5 py-0.2 rounded bg-orange-50 text-orange-700 border border-orange-200">AAR-0008</span>
+            </div>
+            <!-- ALI'S NEW RECOMMENDED ROLE -->
+            <div id="userRole" class="text-xs font-bold text-orange-600 mt-0.5">
+              IT &amp; Workplace Operations Lead
+            </div>
+            <p id="userDept" class="text-[11px] text-slate-500 mt-0.5">
+              IT Systems &bull; Vendor Management &bull; Hyderabad Hub
+            </p>
+          </div>
+        </div>
+
+        <!-- Quick Action Buttons -->
+        <div class="grid grid-cols-3 gap-2 mt-3 pt-3 border-t border-slate-100 text-center">
+          <button class="py-1.5 px-2 rounded-xl bg-slate-50 hover:bg-slate-100 text-slate-700 text-[11px] font-bold border border-slate-200">
+            🪪 ID Badge
+          </button>
+          <button onclick="openInstallSheet()" class="py-1.5 px-2 rounded-xl bg-orange-50 hover:bg-orange-100 text-orange-700 text-[11px] font-bold border border-orange-200">
+            📲 Home Screen
+          </button>
+          <button class="py-1.5 px-2 rounded-xl bg-slate-50 hover:bg-slate-100 text-slate-700 text-[11px] font-bold border border-slate-200">
+            🔑 Password
+          </button>
+        </div>
+      </div>
+
+      <!-- 2. STREAMLINED SUB-NAV PILLS -->
+      <div class="flex items-center gap-1.5 overflow-x-auto pb-1 text-[11px] scrollbar-none">
+        <button class="px-3 py-1.5 rounded-xl bg-slate-900 text-white font-bold shrink-0">
+          Overview
+        </button>
+        <button class="px-3 py-1.5 rounded-xl bg-white text-slate-600 font-semibold border border-slate-200 shrink-0">
+          Attendance &bull; 4d
+        </button>
+        <button class="px-3 py-1.5 rounded-xl bg-white text-slate-600 font-semibold border border-slate-200 shrink-0">
+          Salary
+        </button>
+        <button class="px-3 py-1.5 rounded-xl bg-white text-slate-600 font-semibold border border-slate-200 shrink-0">
+          Payslips
+        </button>
+      </div>
+
+      <!-- ========================================================================= -->
+      <!-- CORE THING 1: TIMESHEET STATUS HERO CARD                                  -->
+      <!-- ========================================================================= -->
+      
+      <!-- LOGGED STATE FOR ALI (NOV 12 ALREADY SUBMITTED) -->
+      <div id="timesheetStatusCard" class="card-subtle rounded-2xl p-4 bg-white border-l-4 border-l-emerald-500 space-y-2.5">
+        <div class="flex items-start justify-between gap-2">
+          <div class="flex items-start gap-2.5">
+            <div class="w-8 h-8 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center font-bold text-sm shrink-0 border border-emerald-100">
+              ✓
+            </div>
+            <div>
+              <div class="flex items-center gap-1.5 flex-wrap">
+                <span class="text-xs font-bold text-slate-900">Today's Shift Logged</span>
+                <span class="text-[10px] font-bold px-1.5 py-0.2 rounded bg-emerald-50 text-emerald-700 border border-emerald-200">
+                  8.0h Done
+                </span>
+              </div>
+              <div class="text-[11px] text-slate-500 font-mono mt-0.5">
+                Thursday, 12 Nov &bull; 10:00 – 19:00 IST
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="text-[11px] text-slate-600 bg-slate-50 p-2 rounded-xl border border-slate-200/80">
+          <span class="font-bold text-slate-800">Tasks:</span>
+          <span id="taskSummaryText">IT workstation setup, vendor internet coordination, and premises security audit</span>
+        </div>
+
+        <div class="flex items-center gap-2 pt-1">
+          <button onclick="openPunchModal()" class="flex-1 py-2 rounded-xl btn-subtle text-xs font-bold text-center">
+            ✏️ Edit Today's Entry
+          </button>
+          <button onclick="showToast('🔄 Synced with Cloudflare D1 SQL database')" class="p-2 rounded-xl btn-subtle text-xs" title="Refresh">
+            🔄
+          </button>
+        </div>
+      </div>
+
+      <!-- 3. GLANCE METRICS TILES -->
+      <div class="grid grid-cols-3 gap-2">
+        <div class="card-subtle rounded-xl p-2.5 text-center bg-white">
+          <span class="text-[10px] font-bold text-slate-400 uppercase block">November</span>
+          <span id="metricDays" class="text-sm font-extrabold text-slate-900 mt-0.5 block">4 / 4 Days</span>
+          <span class="text-[9px] text-emerald-600 font-semibold block mt-0.5">● 100% On-Track</span>
+        </div>
+        <div class="card-subtle rounded-xl p-2.5 text-center bg-white">
+          <span class="text-[10px] font-bold text-slate-400 uppercase block">Accrued</span>
+          <span id="metricSalary" class="text-sm font-extrabold text-slate-900 mt-0.5 block">₹1,333</span>
+          <span class="text-[9px] text-slate-400 font-medium block mt-0.5">In-Hand Net</span>
+        </div>
+        <div class="card-subtle rounded-xl p-2.5 text-center bg-white">
+          <span class="text-[10px] font-bold text-slate-400 uppercase block">Shift</span>
+          <span class="text-sm font-extrabold text-slate-900 mt-0.5 block">8.0 hrs</span>
+          <span class="text-[9px] text-sky-600 font-semibold block mt-0.5">10am–7pm</span>
+        </div>
+      </div>
+
+      <!-- ========================================================================= -->
+      <!-- CORE THING 3: RECENT WORK ACTIVITY (LAST 2 DAYS ONLY)                     -->
+      <!-- ========================================================================= -->
+      <div class="card-subtle rounded-2xl p-4 bg-white space-y-2.5">
+        <div class="flex items-center justify-between">
+          <h3 class="text-xs font-bold text-slate-900 uppercase tracking-wider">Recent Activity (Last 2 Days)</h3>
+          <span class="text-[10px] text-orange-600 font-bold">12 Nov &bull; 11 Nov</span>
+        </div>
+
+        <div class="divide-y divide-slate-100 text-xs">
+          <!-- Item 1: Today -->
+          <div class="py-2 flex items-start justify-between gap-2">
+            <div>
+              <div class="flex items-center gap-1.5">
+                <span class="font-bold text-slate-800">Today (12 Nov)</span>
+                <span class="text-[10px] font-mono text-slate-400">10:00–19:00</span>
+                <span class="text-[10px] font-bold text-emerald-700 bg-emerald-50 px-1 rounded">8h</span>
+              </div>
+              <p id="item1Desc" class="text-[11px] text-slate-500 mt-0.5">IT workstation setup &amp; vendor internet coordination</p>
+            </div>
+            <span class="text-[10px] text-emerald-600 font-bold shrink-0">● Verified</span>
+          </div>
+
+          <!-- Item 2: Yesterday -->
+          <div class="py-2 flex items-start justify-between gap-2">
+            <div>
+              <div class="flex items-center gap-1.5">
+                <span class="font-bold text-slate-800">Yesterday (11 Nov)</span>
+                <span class="text-[10px] font-mono text-slate-400">10:00–19:00</span>
+                <span class="text-[10px] font-bold text-emerald-700 bg-emerald-50 px-1 rounded">8h</span>
+              </div>
+              <p id="item2Desc" class="text-[11px] text-slate-500 mt-0.5">Security operations &amp; facility management</p>
+            </div>
+            <span class="text-[10px] text-emerald-600 font-bold shrink-0">● Verified</span>
+          </div>
+        </div>
+
+        <!-- Full Attendance Link -->
+        <button class="w-full py-2 rounded-xl bg-slate-50 hover:bg-slate-100 border border-slate-200 text-slate-700 text-xs font-bold text-center block transition-colors">
+          View Complete Attendance History (4 Days) &rarr;
+        </button>
+      </div>
+
+    </div>
+
+    <!-- BOTTOM APP BAR (NATIVE MOBILE FEEL) -->
+    <div class="py-2 px-4 bg-white border-t border-slate-200 flex items-center justify-around text-center text-[10px] text-slate-500 shrink-0">
+      <div class="text-orange-600 font-bold">
+        <span class="text-base block">👤</span>
+        <span>Profile</span>
+      </div>
+      <div class="hover:text-slate-800 cursor-pointer">
+        <span class="text-base block">🕒</span>
+        <span>Attendance</span>
+      </div>
+      <div class="hover:text-slate-800 cursor-pointer">
+        <span class="text-base block">💰</span>
+        <span>Salary</span>
+      </div>
+      <div class="hover:text-slate-800 cursor-pointer">
+        <span class="text-base block">📄</span>
+        <span>Payslips</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- POPUP MODAL (THE CLEAN 3-FIELD MODAL) -->
+  <div id="punchModal" class="hidden fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-sm flex items-end sm:items-center justify-center p-0 sm:p-4">
+    <div class="bg-white rounded-t-3xl sm:rounded-2xl border border-slate-200 shadow-2xl max-w-sm w-full p-5 space-y-3.5">
+      <div class="flex items-center justify-between pb-2 border-b border-slate-100">
+        <div>
+          <h3 class="font-bold text-sm text-slate-900">Today's Timesheet Entry</h3>
+          <p class="text-[11px] text-slate-500">Thursday, 12 Nov 2026 &bull; D1 Edge SQL</p>
+        </div>
+        <button onclick="closePunchModal()" class="w-7 h-7 rounded-lg bg-slate-100 text-slate-500 text-xs font-bold flex items-center justify-center">✕</button>
+      </div>
+
+      <div>
+        <label class="block text-xs font-bold text-slate-700 mb-1">Timesheet Date</label>
+        <input type="date" value="2026-11-12" max="2026-11-12" class="w-full px-3 py-2 border border-slate-200 rounded-xl text-xs font-mono font-bold bg-slate-50" />
+      </div>
+
+      <div>
+        <div class="flex items-center justify-between mb-1">
+          <label class="text-xs font-bold text-slate-700">Shift Timing</label>
+          <div class="flex gap-1 text-[10px] font-bold">
+            <span class="px-2 py-0.5 rounded bg-slate-900 text-white">8h</span>
+            <span class="px-2 py-0.5 rounded bg-slate-100 text-slate-600">4h</span>
+          </div>
+        </div>
+        <div class="grid grid-cols-2 gap-2">
+          <input type="time" value="10:00" class="w-full px-3 py-1.5 border border-slate-200 rounded-xl text-xs font-mono bg-slate-50" />
+          <input type="time" value="19:00" class="w-full px-3 py-1.5 border border-slate-200 rounded-xl text-xs font-mono bg-slate-50" />
+        </div>
+      </div>
+
+      <div>
+        <label class="block text-xs font-bold text-slate-700 mb-1">Work Tasks / Deliverables</label>
+        <textarea rows="3" class="w-full px-3 py-2 border border-slate-200 rounded-xl text-xs" placeholder="Describe work done today...">IT workstation setup, vendor internet coordination, and premises security audit</textarea>
+      </div>
+
+      <div class="pt-2 border-t border-slate-100 flex items-center justify-end gap-2">
+        <button onclick="closePunchModal()" class="px-3 py-1.5 rounded-xl text-xs font-semibold text-slate-600">Cancel</button>
+        <button onclick="closePunchModal(); alert('Saved directly to Cloudflare D1!');" class="btn-orange px-4 py-2 rounded-xl text-xs font-bold">Save Timesheet</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ADD TO HOME SCREEN GUIDE MODAL -->
+  <div id="installSheet" class="hidden fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-sm flex items-end sm:items-center justify-center p-0 sm:p-4">
+    <div class="bg-white rounded-t-3xl sm:rounded-2xl border border-slate-200 shadow-2xl max-w-sm w-full p-5 space-y-4">
+      <div class="flex items-center justify-between pb-2 border-b border-slate-100">
+        <div class="flex items-center gap-2">
+          <span class="text-xl">📲</span>
+          <div>
+            <h3 class="font-bold text-sm text-slate-900">Add to Phone Home Screen</h3>
+            <p class="text-[11px] text-slate-500">No APK download required &bull; Always up to date</p>
+          </div>
+        </div>
+        <button onclick="closeInstallSheet()" class="w-7 h-7 rounded-lg bg-slate-100 text-slate-500 text-xs font-bold flex items-center justify-center">✕</button>
+      </div>
+
+      <div class="space-y-3 text-xs text-slate-600">
+        <div class="p-3 bg-slate-50 rounded-xl border border-slate-200">
+          <div class="font-bold text-slate-800 mb-1">For Android (Chrome):</div>
+          <ol class="list-decimal list-inside space-y-1 text-[11px]">
+            <li>Open <strong class="text-slate-900 font-mono">my.aarunitech.com</strong> in Chrome.</li>
+            <li>Tap the <strong>3 dots (⋮)</strong> menu in top-right.</li>
+            <li>Tap <strong>"Install App"</strong> or <strong>"Add to Home screen"</strong>.</li>
+          </ol>
+        </div>
+
+        <div class="p-3 bg-slate-50 rounded-xl border border-slate-200">
+          <div class="font-bold text-slate-800 mb-1">For iPhone (Safari):</div>
+          <ol class="list-decimal list-inside space-y-1 text-[11px]">
+            <li>Open <strong class="text-slate-900 font-mono">my.aarunitech.com</strong> in Safari.</li>
+            <li>Tap the <strong>Share (⎋)</strong> button at the bottom.</li>
+            <li>Tap <strong>"Add to Home Screen"</strong>.</li>
+          </ol>
+        </div>
+      </div>
+
+      <div class="pt-2 border-t border-slate-100 text-right">
+        <button onclick="closeInstallSheet()" class="btn-orange px-4 py-2 rounded-xl text-xs font-bold">Got it!</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function switchView(persona) {
+      if (persona === 'ali') {
+        document.getElementById('userName').innerText = "Shaik Ali Moulali";
+        document.getElementById('userBadge').innerText = "AAR-0008";
+        document.getElementById('userRole').innerText = "IT & Workplace Operations Lead";
+        document.getElementById('userDept').innerText = "IT Systems • Vendor Management • Hyderabad Hub";
+        document.getElementById('userPhoto').src = "photos/AAR-0008_v2.jpeg";
+        document.getElementById('taskSummaryText').innerText = "IT workstation setup, vendor internet coordination, and premises security audit";
+        document.getElementById('metricDays').innerText = "4 / 4 Days";
+        document.getElementById('metricSalary').innerText = "₹1,333";
+        document.getElementById('item1Desc').innerText = "IT workstation setup & vendor internet coordination";
+        document.getElementById('item2Desc').innerText = "Security operations & facility management";
+        document.getElementById('btnAli').className = "px-3.5 py-1.5 rounded-xl text-xs font-bold bg-orange-500 text-white shadow-md transition-all";
+        document.getElementById('btnNandini').className = "px-3.5 py-1.5 rounded-xl text-xs font-bold bg-slate-800 text-slate-300 hover:bg-slate-700 transition-all";
+      } else {
+        document.getElementById('userName').innerText = "Chukka Nandini";
+        document.getElementById('userBadge').innerText = "AAR-0004";
+        document.getElementById('userRole').innerText = "Technical Team Lead";
+        document.getElementById('userDept').innerText = "Engineering & Technology • Hyderabad Hub";
+        document.getElementById('userPhoto').src = "photos/004.jpeg";
+        document.getElementById('taskSummaryText').innerText = "worked on the slides and m2-01 and 02 videos";
+        document.getElementById('metricDays').innerText = "12 / 12 Days";
+        document.getElementById('metricSalary').innerText = "₹5,000";
+        document.getElementById('item1Desc').innerText = "worked on the slides and m2-01 and 02 videos";
+        document.getElementById('item2Desc').innerText = "worked on m2-01 and 02 findings";
+        document.getElementById('btnNandini').className = "px-3.5 py-1.5 rounded-xl text-xs font-bold bg-orange-500 text-white shadow-md transition-all";
+        document.getElementById('btnAli').className = "px-3.5 py-1.5 rounded-xl text-xs font-bold bg-slate-800 text-slate-300 hover:bg-slate-700 transition-all";
+      }
+    }
+
+    function openPunchModal() {
+      document.getElementById('punchModal').classList.remove('hidden');
+    }
+    function closePunchModal() {
+      document.getElementById('punchModal').classList.add('hidden');
+    }
+    function openInstallSheet() {
+      document.getElementById('installSheet').classList.remove('hidden');
+    }
+    function closeInstallSheet() {
+      document.getElementById('installSheet').classList.add('hidden');
+    }
+    function triggerReloadNotice() {
+      alert('Refreshing directly from https://my.aarunitech.com...\nLatest Cloudflare D1 edge code loaded!');
+    }
+    function applyAppUpdate() {
+      alert('App is already at the latest release v2.4.2.\nDirect URL always loads latest code automatically!');
+    }
+  </script>
+</body>
+</html>
