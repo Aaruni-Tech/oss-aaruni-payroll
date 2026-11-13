@@ -82,7 +82,11 @@ function timingSafeEqualStr(a, b) {
   return diff === 0;
 }
 
-const GOOGLE_OAUTH_CLIENT_ID = "328466516565-3fcj6hq7jina42asssrq68qvt2lpjs0s.apps.googleusercontent.com";
+const GOOGLE_OAUTH_CLIENT_ID = "328466516565-bs75ucvo6h5qtu0n60iqd917ssvs0c31.apps.googleusercontent.com";
+const ALLOWED_GOOGLE_CLIENT_IDS = new Set([
+  GOOGLE_OAUTH_CLIENT_ID,
+  "328466516565-3fcj6hq7jina42asssrq68qvt2lpjs0s.apps.googleusercontent.com"
+]);
 const OWNER_EMAILS = new Set(["rupesh@fullstackmaster.net", "roopkt@gmail.com"]);
 
 const DISPOSABLE_EMAIL_DOMAINS = new Set([
@@ -621,7 +625,7 @@ async function handleCloudApiV1(request, env, executeD1Query) {
       if (!verifyRes.ok || tokenInfo.error) {
         return jsonRes({ ok: false, error: "Google OAuth token verification failed or token expired." }, 401);
       }
-      if (String(tokenInfo.aud || "") !== GOOGLE_OAUTH_CLIENT_ID) {
+      if (!ALLOWED_GOOGLE_CLIENT_IDS.has(String(tokenInfo.aud || ""))) {
         return jsonRes({ ok: false, error: "Google OAuth audience mismatch for Aaruni Cloud Voice." }, 403);
       }
       if (String(tokenInfo.email_verified || "").toLowerCase() !== "true") {
