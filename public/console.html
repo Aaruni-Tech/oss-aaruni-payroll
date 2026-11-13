@@ -637,7 +637,7 @@
                 <span class="region-pill mono" style="color:var(--success);">ACTIVE PRIMARY</span>
                 <div style="font-size:12px;color:var(--text-secondary);margin-top:3px;">0.00% WER &bull; 99.74% Sim &bull; 360 .pls rules &bull; 6 Tuning Knobs &bull; -20.5 LUFS</div>
               </div>
-              <button type="button" class="btn btn-primary btn-sm" onclick="openConsoleModelInStudio('vox_rupesh_v5_waterclean', 'v5_hook')">🎙 Open in Voice Playground &amp; Speak</button>
+              <button type="button" class="btn btn-primary btn-sm" onclick="openConsoleModelInStudio('', 'v5_hook')">🎙 Open in Voice Playground &amp; Speak</button>
             </div>
             <div class="voice-item">
               <div>
@@ -645,7 +645,7 @@
                 <span class="region-pill mono">VERIFIED REFERENCE BASELINE</span>
                 <div style="font-size:12px;color:var(--text-secondary);margin-top:3px;">4:55 OWASP ZAP Course Masterclass (25 Beats) &bull; -20.5 LUFS</div>
               </div>
-              <button type="button" class="btn btn-sm" onclick="openConsoleModelInStudio('vox_rupesh_v4_ultra', 'zap_5min')">🎙 Open in Voice Playground &amp; Speak</button>
+              <button type="button" class="btn btn-sm" onclick="openConsoleModelInStudio('', 'zap_5min')">🎙 Open in Voice Playground &amp; Speak</button>
             </div>
           </div>
 
@@ -2247,9 +2247,10 @@ acloud voice speak "Scale PostgreSQL and NGINX with kubectl" --voice stock_aria<
           showBanner("owner-synth-status", "✔ Live Studio Synthesis Complete • Clarity Gate: 100% Passed • -20.5 LUFS");
         } catch (err) {
           try {
+            const fallbackOwnerVoice = voiceId || ((dynamicPrivateVoices[0] && dynamicPrivateVoices[0].voiceId) || "stock_aria");
             const edgeRes = await apiFetch("/v1/voice/speak", {
               method: "POST",
-              body: { text: customText, voiceId: voiceId || "vox_rupesh_v5_waterclean", modelId: "cloud-voice-v2", targetLufs: -20.5 }
+              body: { text: customText, voiceId: fallbackOwnerVoice, modelId: "cloud-voice-v2", targetLufs: -20.5 }
             });
             if (edgeRes.audioUrl) {
               audioEl.src = edgeRes.audioUrl;
@@ -2366,7 +2367,8 @@ acloud voice speak "Scale PostgreSQL and NGINX with kubectl" --voice stock_aria<
       setPerspectiveMode("owner");
       const vSel = document.getElementById("owner-voice-select");
       const sSel = document.getElementById("owner-sample-select");
-      if (vSel && voiceId) vSel.value = voiceId;
+      const targetVoice = voiceId || ((dynamicPrivateVoices[0] && dynamicPrivateVoices[0].voiceId) || "");
+      if (vSel && targetVoice) vSel.value = targetVoice;
       if (sSel && presetKey) sSel.value = presetKey;
       onOwnerPresetOrVoiceChange();
       const card = document.getElementById("owner-voice-studio-card");

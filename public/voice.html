@@ -2781,15 +2781,16 @@
             ownerZone.classList.add("visible");
             const ow = vData.ownerWorkspace || {};
             state.syllovoDropInKey = state.apiKey || ow.dropInEndpoint || "";
+            const primaryOwnerVoiceId = (state.voicesCatalog.find((v) => v.privateOwner) || {}).id || state.selectedVoice;
             if (quickBar) {
               quickBar.style.display = "flex";
               quickBar.innerHTML =
                 '<div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;">' +
                   '<span class="vc-brand-badge">Owner Sovereign Workspace</span>' +
-                  '<span style="font-size:13px;font-weight:600;color:var(--ink-strong);">' + escVc(ow.ownerDisplayName || "Rupesh Tiwari") + ' • FullStackMaster ($0.00 Billed)</span>' +
+                  '<span style="font-size:13px;font-weight:600;color:var(--ink-strong);">' + escVc(ow.ownerDisplayName || "Workspace Owner") + ' • FullStackMaster ($0.00 Billed)</span>' +
                 '</div>' +
                 '<div style="display:flex;gap:8px;flex-wrap:wrap;">' +
-                  '<button type="button" class="btn-pill btn-outline btn-sm" onclick="selectVoice(\'vox_rupesh_v5_waterclean\', false)">🎙 Select v2.2 Pro Voice</button>' +
+                  '<button type="button" class="btn-pill btn-outline btn-sm" onclick="selectVoice(\'' + escVc(primaryOwnerVoiceId) + '\', false)">🎙 Select v2.2 Pro Voice</button>' +
                   '<button type="button" class="btn-pill btn-dawn btn-sm" onclick="switchView(\'api\');setTimeout(()=>document.getElementById(\'vcOwnerZone\').scrollIntoView({behavior:\'smooth\'}),80)">📊 Models, History &amp; $0.00 Telemetry →</button>' +
                 '</div>';
             }
