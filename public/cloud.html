@@ -3270,16 +3270,25 @@ console.log("Verified Receipt:", plan.receiptId, plan.actions);`
 
       const isShowcasePreset = text === catMeta.script;
       if (audioEl && isShowcasePreset) {
-        const primaryShowcaseUrl = "https://aaruni-tech-cloud.pages.dev/assets/voice/showcase/" + sel + "_" + activeAvsCategory + ".mp3";
+        const primaryShowcaseUrl = "/assets/voice/showcase/" + sel + "_" + activeAvsCategory + ".mp3";
+        const edgeShowcaseUrl = "https://voice.aarunicloud.com/assets/voice/showcase/" + sel + "_" + activeAvsCategory + ".mp3";
         const cxVoice = SHOWCASE_CX_VOICE_FALLBACK[sel] || "stock_aria";
         const fallbackCxUrl = "/assets/voice/cx/" + cxVoice + "_" + catMeta.cxPreset + ".mp3";
-        let triedCxFallback = false;
+        let fallbackStep = 0;
 
         audioEl.style.display = "block";
         audioEl.onended = finishAvsAudition;
         audioEl.onerror = function () {
-          if (!triedCxFallback) {
-            triedCxFallback = true;
+          if (fallbackStep === 0) {
+            fallbackStep = 1;
+            audioEl.src = edgeShowcaseUrl;
+            audioEl.play().then(function () {
+              statusEl.textContent = "STREAMING SHOWCASE MP3 (" + sel.replace("stock_", "").toUpperCase() + " • " + catMeta.label.toUpperCase() + ")";
+            }).catch(function () {
+              audioEl.onerror();
+            });
+          } else if (fallbackStep === 1) {
+            fallbackStep = 2;
             audioEl.src = fallbackCxUrl;
             audioEl.play().then(function () {
               statusEl.textContent = "STREAMING STUDIO VOICE (" + sel.replace("stock_", "").toUpperCase() + " • " + catMeta.label.toUpperCase() + ")";
@@ -3294,7 +3303,7 @@ console.log("Verified Receipt:", plan.receiptId, plan.actions);`
         audioEl.play().then(function () {
           statusEl.textContent = "STREAMING SHOWCASE MP3 (" + sel.replace("stock_", "").toUpperCase() + " • " + catMeta.label.toUpperCase() + ")";
         }).catch(function () {
-          if (!triedCxFallback) {
+          if (fallbackStep === 0) {
             audioEl.onerror();
           }
         });
@@ -3432,7 +3441,7 @@ console.log("Verified Receipt:", plan.receiptId, plan.actions);`
     }
 
     function openConsoleSignInModal() {
-      if (window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1" || window.location.hostname.endsWith(".pages.dev")) {
+      if (window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1") {
         window.location.href = "/console";
         return;
       }

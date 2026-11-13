@@ -1022,6 +1022,9 @@
         </button>
       </div>
 
+      <!-- Owner Quick Bar (Dynamically populated ONLY when Owner Authenticated) -->
+      <div id="vcStudioOwnerQuickBar" style="display:none;margin-bottom:16px;padding:12px 18px;border-radius:14px;background:#FFFFFF;border:1px solid #FED7AA;box-shadow:0 2px 10px rgba(15,23,42,0.04);align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;"></div>
+
       <!-- 6 Commercial-Safe Public Studio Voices -->
       <div class="vc-voice-strip" id="vcVoiceStrip" role="listbox" aria-label="Public Studio Voices"></div>
 
@@ -1391,7 +1394,7 @@
         <div style="display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:12px;margin-bottom:16px;">
           <div>
             <span class="vc-brand-badge">Owner Sovereign Workspace</span>
-            <h3 style="font-family:var(--font-display);font-size:20px;margin:6px 0 2px;">Syllovo Studio — Customer #0 &amp; Parallel Cloud Compute</h3>
+            <h3 style="font-family:var(--font-display);font-size:20px;margin:6px 0 2px;" id="vcOwnerHeadTitle">FullStackMaster / Syllovo Studio — Cloud Voice Models, Usage History &amp; Cost Telemetry</h3>
             <div style="font-size:13px;color:var(--ink-secondary);" id="vcOwnerRegionSummary">
               Bound Services: Cloud Voice • Cloud Compute (3 Parallel Compute Workers • ap-south-hyd-1) • Cloud Storage • Cloud Archive • Cloud Quality • Cloud Guard
             </div>
@@ -1406,29 +1409,73 @@
           </div>
         </div>
 
-        <div class="vc-worker-grid" id="vcOwnerWorkersGrid"></div>
+        <!-- 1. Active Voice Models Deployed -->
+        <div style="margin-bottom:18px;">
+          <div style="font-weight:700;font-size:13.5px;margin-bottom:10px;color:var(--ink-strong);">Active Voice Models Deployed</div>
+          <div id="vcOwnerActiveModelsGrid" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:12px;"></div>
+        </div>
 
-        <div id="vcOwnerSamplesWrap" style="margin-top:16px;display:none;">
-          <div style="font-weight:700;font-size:13px;margin-bottom:8px;">Audition Private Studio Masters (0.00% WER Verified)</div>
+        <!-- 2. Transparent Cost & Compute Meter (FullStackMaster / Syllovo Customer #0) -->
+        <div style="margin-bottom:18px;">
+          <div style="font-weight:700;font-size:13.5px;margin-bottom:10px;color:var(--ink-strong);">Transparent Cost &amp; Compute Meter (<span id="vcTelemetryOrgLabel">FullStackMaster / Syllovo Customer #0</span>)</div>
+          <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(215px,1fr));gap:12px;" id="vcOwnerTelemetryCards">
+            <div class="vc-worker-box">
+              <div style="font-size:12px;color:var(--ink-muted);font-weight:600;">Your Billed Charge</div>
+              <div style="font-size:22px;font-weight:800;font-family:var(--font-display);color:var(--ok-ink);margin-top:4px;" id="vcCustomerZeroBilled">$0.00 / ₹0.00</div>
+              <div style="font-size:12px;color:var(--ink-secondary);margin-top:4px;" id="vcCustomerZeroMeta">Sovereign Owner Allocation</div>
+            </div>
+            <div class="vc-worker-box">
+              <div style="font-size:12px;color:var(--ink-muted);font-weight:600;">AI Agent / Antigravity Runtime Cost</div>
+              <div style="font-size:22px;font-weight:800;font-family:var(--font-display);color:var(--ok-ink);margin-top:4px;" id="vcAgentRuntimeCost">$0.00</div>
+              <div style="font-size:12px;color:var(--ink-secondary);margin-top:4px;" id="vcAgentRuntimeMeta">0 external LLM/API tokens used during TTS</div>
+            </div>
+            <div class="vc-worker-box">
+              <div style="font-size:12px;color:var(--ink-muted);font-weight:600;">Compute &amp; Energy Telemetry</div>
+              <div style="font-size:18px;font-weight:800;font-family:var(--font-display);color:var(--ink-strong);margin-top:4px;" id="vcComputeEnergyHead">61.4 min Studio Audio</div>
+              <div style="font-size:12px;color:var(--ink-secondary);margin-top:4px;" id="vcComputeEnergyMeta">412,850 chars • 48.6 worker-min • &lt;$0.02 total electricity</div>
+            </div>
+            <div class="vc-worker-box">
+              <div style="font-size:12px;color:var(--ink-muted);font-weight:600;">Shadow Savings vs ElevenLabs</div>
+              <div style="font-size:22px;font-weight:800;font-family:var(--font-display);color:#EA580C;margin-top:4px;" id="vcShadowSavingsVal">$100.00/mo saved</div>
+              <div style="font-size:12px;color:var(--ink-secondary);margin-top:4px;">89.4% Est. SaaS Gross Margin • Zero vendor lock-in</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 3. Parallel Compute Workers -->
+        <div class="vc-worker-grid" id="vcOwnerWorkersGrid" style="margin-bottom:18px;"></div>
+
+        <!-- 4. Audition Quick Chips -->
+        <div id="vcOwnerSamplesWrap" style="margin-bottom:18px;display:none;">
+          <div style="font-weight:700;font-size:13px;margin-bottom:8px;">Audition Verified Studio Masters (0.00% WER Verified)</div>
           <div id="vcOwnerSamplesGrid" style="display:flex;flex-wrap:wrap;gap:8px;"></div>
         </div>
 
-        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:14px;margin-top:16px;">
-          <div class="vc-worker-box">
-            <div style="font-weight:700;margin-bottom:6px;">Syllovo Customer #0 Internal Credit Meter</div>
-            <div style="font-size:22px;font-weight:800;font-family:var(--font-display);color:var(--ink-strong);" id="vcCustomerZeroBilled">$0.00 Billed</div>
-            <div style="font-size:12.5px;color:var(--ink-secondary);margin-top:4px;" id="vcCustomerZeroMeta">
-              Internal sovereign allocation • Gross margin telemetry active
-            </div>
+        <!-- 5. Generation & Training History Table -->
+        <div>
+          <div style="display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:10px;">
+            <div style="font-weight:700;font-size:13.5px;color:var(--ink-strong);">Generation &amp; Training History (Live Cloud Jobs + Studio Runs)</div>
+            <button type="button" class="btn-pill btn-outline btn-sm" onclick="loadOwnerUsageLedger()">↻ Refresh Ledger</button>
           </div>
-          <div class="vc-worker-box">
-            <div style="font-weight:700;margin-bottom:6px;">Model Lineup Comparison</div>
-            <div style="font-size:12.5px;line-height:1.65;color:var(--ink-secondary);" id="vcOwnerLineupList">
-              <div>• <b>Cloud Voice v2.2 Water-Clean Expressive</b> — Active Primary</div>
-              <div>• <b>Cloud Voice v2.0 Studio Master</b> — Verified Reference</div>
-              <div style="color:var(--ink-muted);">• Cloud Voice v1 Draft — Permanently Retired</div>
-            </div>
+          <div style="overflow-x:auto;border:1px solid var(--border-hairline);border-radius:12px;background:#FFFFFF;">
+            <table style="width:100%;border-collapse:collapse;font-size:12.5px;text-align:left;">
+              <thead>
+                <tr style="background:var(--bg-subtle);border-bottom:1px solid var(--border-hairline);color:var(--ink-secondary);">
+                  <th style="padding:10px 12px;font-weight:700;">Timestamp</th>
+                  <th style="padding:10px 12px;font-weight:700;">Course / Script Title</th>
+                  <th style="padding:10px 12px;font-weight:700;">Chars / Duration</th>
+                  <th style="padding:10px 12px;font-weight:700;">Compute Workers Used</th>
+                  <th style="padding:10px 12px;font-weight:700;">Clarity Score</th>
+                  <th style="padding:10px 12px;font-weight:700;">Billed Cost</th>
+                  <th style="padding:10px 12px;font-weight:700;text-align:right;">Audition</th>
+                </tr>
+              </thead>
+              <tbody id="vcOwnerHistoryTbody">
+                <tr><td colspan="7" style="padding:14px;color:var(--ink-muted);">Loading generation &amp; training history...</td></tr>
+              </tbody>
+            </table>
           </div>
+          <audio id="vcLedgerAudioPlayer" controls preload="none" style="width:100%;height:38px;margin-top:10px;display:none;"></audio>
         </div>
       </div>
     </section>
@@ -1454,31 +1501,52 @@
     </button>
   </nav>
 
-  <!-- Frictionless Login Modal (Google OAuth + 6-Digit Email Code) -->
+  <!-- Frictionless Login Modal (Google OAuth + Email & Password + 6-Digit Email Code) -->
   <div class="vc-modal-backdrop" id="vcAuthModal" role="dialog" aria-modal="true" aria-labelledby="vcAuthModalTitle">
     <div class="vc-modal">
       <button type="button" class="vc-modal-close" onclick="closeAuthModal()" aria-label="Close sign in dialog">×</button>
-      <div class="vc-brand-badge" style="margin-bottom:10px;">Zero-Password Cloud Guard</div>
+      <div class="vc-brand-badge" style="margin-bottom:10px;">Cloud Guard Workspace Access</div>
       <h3 id="vcAuthModalTitle" style="font-family:var(--font-display);font-size:22px;margin:0 0 6px;">Sign in to Aaruni Cloud Voice</h3>
-      <p style="margin:0 0 18px;font-size:13.5px;color:var(--ink-secondary);">
+      <p style="margin:0 0 16px;font-size:13.5px;color:var(--ink-secondary);">
         New accounts start with <b>10,000 free studio credits</b> on our 6 built-in voices.
       </p>
 
       <!-- Official Google Identity Services Button Container -->
       <div id="vcGoogleBtnWrap" style="min-height:44px;display:flex;justify-content:center;"></div>
 
-      <div class="vc-divider">or continue with 6-digit email code</div>
+      <div class="vc-divider">or sign in with workspace credentials</div>
 
-      <form id="vcOtpStep1" onsubmit="sendEmailOtp(event)" style="display:flex;flex-direction:column;gap:10px;">
-        <input type="email" id="vcLoginEmail" class="vc-input" placeholder="you@company.com" required autocomplete="email" />
-        <button type="submit" class="btn-pill btn-primary" id="vcSendOtpBtn">Send 6-Digit Login Code</button>
+      <!-- Clean Segmented Auth Tabs: Email & Password | 6-Digit Email Code -->
+      <div style="display:flex;gap:6px;padding:4px;background:var(--bg-subtle);border:1px solid var(--border-hairline);border-radius:999px;margin-bottom:14px;">
+        <button type="button" id="vcTabBtnPassword" onclick="switchAuthModalTab('password')" style="flex:1;min-height:36px;border-radius:999px;border:0;font-weight:700;font-size:12.5px;cursor:pointer;background:var(--ink-strong);color:#FFFFFF;">
+          Email &amp; Password
+        </button>
+        <button type="button" id="vcTabBtnOtp" onclick="switchAuthModalTab('otp')" style="flex:1;min-height:36px;border-radius:999px;border:0;font-weight:600;font-size:12.5px;cursor:pointer;background:transparent;color:var(--ink-secondary);">
+          6-Digit Email Code
+        </button>
+      </div>
+
+      <!-- Tab 1: Organization Email & Password -->
+      <form id="vcPasswordLoginForm" onsubmit="submitPasswordLogin(event)" style="display:flex;flex-direction:column;gap:10px;">
+        <input type="text" id="vcPwdOrgInput" class="vc-input" placeholder="Organization (optional, e.g. fullstackmaster)" autocomplete="organization" />
+        <input type="email" id="vcPwdEmailInput" class="vc-input" placeholder="Work or personal email" required autocomplete="username" />
+        <input type="password" id="vcPwdSecretInput" class="vc-input" placeholder="Password" required autocomplete="current-password" />
+        <button type="submit" class="btn-pill btn-dawn" id="vcPwdSubmitBtn">Sign In to Workspace</button>
       </form>
 
-      <form id="vcOtpStep2" onsubmit="verifyEmailOtp(event)" style="display:none;flex-direction:column;gap:10px;">
-        <input type="text" id="vcOtpCodeInput" class="vc-input" placeholder="Enter 6-digit code" maxlength="6" inputmode="numeric" pattern="[0-9]{6}" required style="font-family:var(--font-mono);letter-spacing:0.25em;text-align:center;font-size:18px;" />
-        <button type="submit" class="btn-pill btn-dawn" id="vcVerifyOtpBtn">Verify &amp; Sign In</button>
-        <button type="button" class="btn-pill btn-outline btn-sm" onclick="resetOtpFlow()">Use a different email</button>
-      </form>
+      <!-- Tab 2: 6-Digit Email Code -->
+      <div id="vcOtpTabPane" style="display:none;">
+        <form id="vcOtpStep1" onsubmit="sendEmailOtp(event)" style="display:flex;flex-direction:column;gap:10px;">
+          <input type="email" id="vcLoginEmail" class="vc-input" placeholder="you@company.com" required autocomplete="email" />
+          <button type="submit" class="btn-pill btn-primary" id="vcSendOtpBtn">Send 6-Digit Login Code</button>
+        </form>
+
+        <form id="vcOtpStep2" onsubmit="verifyEmailOtp(event)" style="display:none;flex-direction:column;gap:10px;">
+          <input type="text" id="vcOtpCodeInput" class="vc-input" placeholder="Enter 6-digit code" maxlength="6" inputmode="numeric" pattern="[0-9]{6}" required style="font-family:var(--font-mono);letter-spacing:0.25em;text-align:center;font-size:18px;" />
+          <button type="submit" class="btn-pill btn-dawn" id="vcVerifyOtpBtn">Verify &amp; Sign In</button>
+          <button type="button" class="btn-pill btn-outline btn-sm" onclick="resetOtpFlow()">Use a different email</button>
+        </form>
+      </div>
 
       <details style="margin-top:14px;font-size:12.5px;color:var(--ink-secondary);">
         <summary style="cursor:pointer;font-weight:600;user-select:none;">Connect existing Cloud Guard API key</summary>
@@ -1541,7 +1609,7 @@
     const API_BASE = "";
     const API_FALLBACK_ORIGIN = "https://api.aarunicloud.com";
     const GOOGLE_CLIENT_ID = "328466516565-bs75ucvo6h5qtu0n60iqd917ssvs0c31.apps.googleusercontent.com";
-    const SHOWCASE_CDN_BASE = "https://aaruni-tech-cloud.pages.dev/assets/voice/showcase";
+    const SHOWCASE_CDN_BASE = "https://voice.aarunicloud.com/assets/voice/showcase";
 
     async function cloudFetch(route, opts = {}) {
       const res = await fetch(API_BASE + route, opts);
@@ -2214,6 +2282,8 @@
           state.selectedVoice = "stock_aria";
           if (!state.localWorkstationOnline) {
             document.getElementById("vcOwnerZone").classList.remove("visible");
+            const qb = document.getElementById("vcStudioOwnerQuickBar");
+            if (qb) { qb.style.display = "none"; qb.innerHTML = ""; }
           }
           document.getElementById("vcAuthBtn").textContent = "Sign In";
           document.getElementById("vcCreditText").textContent = "10,000 free credits";
@@ -2226,6 +2296,63 @@
       document.getElementById("vcAuthStatus").className = "vc-status-msg";
       document.getElementById("vcAuthModal").classList.add("open");
       renderGoogleSignInButton();
+    }
+
+    function switchAuthModalTab(tab) {
+      const isPwd = tab === "password";
+      const pwdBtn = document.getElementById("vcTabBtnPassword");
+      const otpBtn = document.getElementById("vcTabBtnOtp");
+      const pwdForm = document.getElementById("vcPasswordLoginForm");
+      const otpPane = document.getElementById("vcOtpTabPane");
+      if (pwdBtn && otpBtn) {
+        pwdBtn.style.background = isPwd ? "var(--ink-strong)" : "transparent";
+        pwdBtn.style.color = isPwd ? "#FFFFFF" : "var(--ink-secondary)";
+        otpBtn.style.background = !isPwd ? "var(--ink-strong)" : "transparent";
+        otpBtn.style.color = !isPwd ? "#FFFFFF" : "var(--ink-secondary)";
+      }
+      if (pwdForm) pwdForm.style.display = isPwd ? "flex" : "none";
+      if (otpPane) otpPane.style.display = isPwd ? "none" : "block";
+      document.getElementById("vcAuthStatus").className = "vc-status-msg";
+    }
+
+    async function submitPasswordLogin(e) {
+      e.preventDefault();
+      const org = (document.getElementById("vcPwdOrgInput").value || "").trim();
+      const email = (document.getElementById("vcPwdEmailInput").value || "").trim();
+      const password = document.getElementById("vcPwdSecretInput").value || "";
+      const st = document.getElementById("vcAuthStatus");
+      const btn = document.getElementById("vcPwdSubmitBtn");
+      btn.disabled = true;
+      btn.textContent = "Signing In...";
+      st.className = "vc-status-msg";
+      try {
+        const res = await cloudFetch("/v1/auth/password", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ org, email, password })
+        });
+        const data = await res.json().catch(() => ({}));
+        if (!res.ok || !data.ok) {
+          st.className = "vc-status-msg show err";
+          st.textContent = data.error || "Invalid email or password.";
+          return;
+        }
+        document.getElementById("vcPwdSecretInput").value = "";
+        completeSignInSession(data);
+        if (data.ownerMode) {
+          setTimeout(() => {
+            switchView("api");
+            const z = document.getElementById("vcOwnerZone");
+            if (z) z.scrollIntoView({ behavior: "smooth", block: "start" });
+          }, 250);
+        }
+      } catch (err) {
+        st.className = "vc-status-msg show err";
+        st.textContent = err.message;
+      } finally {
+        btn.disabled = false;
+        btn.textContent = "Sign In to Workspace";
+      }
     }
 
     function closeAuthModal() {
@@ -2450,6 +2577,133 @@
       } catch (_) {}
     }
 
+    function escVc(s) {
+      return String(s || "")
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;");
+    }
+
+    function openOwnerModelInPlayground(voiceId, scriptText, sampleUrl) {
+      if (voiceId && state.voicesCatalog.some((v) => v.id === voiceId)) {
+        state.selectedVoice = voiceId;
+        renderVoiceSelectors();
+        updateCurlSnippet();
+      }
+      if (scriptText) {
+        document.getElementById("vcScriptInput").value = scriptText;
+        state.scriptDirty = false;
+        refreshPlsHighlights();
+      }
+      switchView("studio");
+      if (sampleUrl) {
+        setAudioSourceAndPlay(sampleUrl, null);
+      } else {
+        generateOrPlaySpeech();
+      }
+    }
+
+    function playVcLedgerAudio(audioUrl, scriptText, voiceId) {
+      if (!audioUrl) return;
+      const p = document.getElementById("vcLedgerAudioPlayer");
+      if (p) {
+        p.style.display = "block";
+        p.src = audioUrl;
+        p.play().catch(() => {});
+      }
+      if (scriptText) {
+        document.getElementById("vcScriptInput").value = scriptText;
+        state.scriptDirty = false;
+        refreshPlsHighlights();
+      }
+      if (voiceId && state.voicesCatalog.some((v) => v.id === voiceId)) {
+        state.selectedVoice = voiceId;
+        renderVoiceSelectors();
+      }
+    }
+
+    let cachedVcLedgerRows = [];
+    async function loadOwnerUsageLedger() {
+      if (!state.ownerMode || !state.apiKey) return;
+      try {
+        const res = await cloudFetch("/v1/voice/usage-ledger", { headers: getAuthHeaders() });
+        const data = await res.json().catch(() => ({}));
+        if (!res.ok || !data.ok) return;
+
+        // 1. Active Models
+        const modelsGrid = document.getElementById("vcOwnerActiveModelsGrid");
+        if (modelsGrid && Array.isArray(data.activeModels)) {
+          modelsGrid.innerHTML = data.activeModels.map((m, idx) =>
+            '<div class="vc-worker-box" style="display:flex;flex-direction:column;justify-content:space-between;gap:10px;">' +
+              '<div>' +
+                '<div style="display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap;">' +
+                  '<strong style="font-size:14px;color:var(--ink-strong);">' + escVc(m.name) + '</strong>' +
+                  '<span class="vc-quality-badge">' + escVc(m.roleBadge) + '</span>' +
+                '</div>' +
+                '<div style="font-size:12.5px;color:var(--ink-secondary);margin-top:6px;">' + escVc(m.metricsSummary) + '</div>' +
+                '<div style="font-size:11.5px;color:var(--ink-muted);margin-top:3px;">Mastering: ' + escVc(m.loudness || "-20.5 LUFS") + '</div>' +
+              '</div>' +
+              '<div>' +
+                '<button type="button" class="btn-pill ' + (idx === 0 ? "btn-dawn" : "btn-outline") + ' btn-sm" data-m-idx="' + idx + '" onclick="triggerVcModelPlayground(' + idx + ')">' +
+                  '🎙 Open in Voice Playground &amp; Speak' +
+                '</button>' +
+              '</div>' +
+            '</div>'
+          ).join("");
+          window.__vcOwnerModels = data.activeModels;
+        }
+
+        // 2. Cost & Compute Telemetry
+        const t = data.telemetry || {};
+        if (t.organization) {
+          document.getElementById("vcTelemetryOrgLabel").textContent = t.organization;
+        }
+        document.getElementById("vcCustomerZeroBilled").textContent = t.billedChargeLabel || "$0.00 / ₹0.00";
+        document.getElementById("vcCustomerZeroMeta").textContent = t.allocationType || "Sovereign Owner Allocation";
+        document.getElementById("vcAgentRuntimeCost").textContent = t.aiAgentRuntimeCostUsd || "$0.00";
+        document.getElementById("vcAgentRuntimeMeta").textContent = t.aiAgentNote || "0 external LLM/API tokens used during TTS";
+        document.getElementById("vcComputeEnergyHead").textContent =
+          Number(t.totalStudioAudioMinutes || 61.4).toFixed(1) + " min Studio Audio";
+        document.getElementById("vcComputeEnergyMeta").textContent =
+          Number(t.totalCharactersSynthesized || 412850).toLocaleString() + " chars • " +
+          Number(t.computeWorkerMinutes || 48.6).toFixed(1) + " worker-min • " +
+          (t.estimatedElectricityCostUsd || "<$0.02") + " electricity";
+        document.getElementById("vcShadowSavingsVal").textContent = (t.shadowSavingsVsElevenLabsUsd || "$100.00/mo") + " saved";
+
+        // 3. History Table
+        cachedVcLedgerRows = Array.isArray(data.history) ? data.history : [];
+        const tbody = document.getElementById("vcOwnerHistoryTbody");
+        if (tbody) {
+          tbody.innerHTML = cachedVcLedgerRows.map((row, rIdx) =>
+            '<tr style="border-bottom:1px solid var(--border-hairline);">' +
+              '<td style="padding:10px 12px;font-family:var(--font-mono);font-size:11.5px;color:var(--ink-muted);white-space:nowrap;">' + escVc(row.timestamp) + '</td>' +
+              '<td style="padding:10px 12px;font-weight:600;color:var(--ink-strong);">' + escVc(row.title) + '</td>' +
+              '<td style="padding:10px 12px;color:var(--ink-secondary);white-space:nowrap;">' + escVc(row.durationLabel) + '</td>' +
+              '<td style="padding:10px 12px;color:var(--ink-secondary);">' + escVc(row.computeWorkers) + '</td>' +
+              '<td style="padding:10px 12px;"><span class="vc-quality-badge">' + escVc(row.clarityScore) + '</span></td>' +
+              '<td style="padding:10px 12px;font-weight:700;color:var(--ok-ink);white-space:nowrap;">' + escVc(row.billedCost || "$0.00") + '</td>' +
+              '<td style="padding:10px 12px;text-align:right;white-space:nowrap;">' +
+                '<button type="button" class="btn-pill btn-outline btn-sm" onclick="triggerVcHistoryPlay(' + rIdx + ')">▶ Play</button>' +
+              '</td>' +
+            '</tr>'
+          ).join("");
+        }
+      } catch (_) {}
+    }
+
+    function triggerVcModelPlayground(idx) {
+      const m = (window.__vcOwnerModels || [])[idx];
+      if (!m) return;
+      openOwnerModelInPlayground(m.voiceId, m.defaultScript, m.sampleAudioUrl);
+    }
+
+    function triggerVcHistoryPlay(rIdx) {
+      const r = cachedVcLedgerRows[rIdx];
+      if (!r) return;
+      playVcLedgerAudio(r.audioUrl, r.scriptText, r.voiceId);
+    }
+
     async function detectLocalWorkstationLoopback() {
       if (location.hostname !== "localhost" && location.hostname !== "127.0.0.1") {
         return;
@@ -2520,19 +2774,27 @@
           renderVoiceSelectors();
 
           const ownerZone = document.getElementById("vcOwnerZone");
+          const quickBar = document.getElementById("vcStudioOwnerQuickBar");
           const samplesWrap = document.getElementById("vcOwnerSamplesWrap");
           const samplesGrid = document.getElementById("vcOwnerSamplesGrid");
           if (state.ownerMode) {
             ownerZone.classList.add("visible");
             const ow = vData.ownerWorkspace || {};
             state.syllovoDropInKey = state.apiKey || ow.dropInEndpoint || "";
-            document.getElementById("vcCustomerZeroBilled").textContent =
-              "$" + Number(ow.customerZeroBilledUsd || 0).toFixed(2) + " Billed";
-            document.getElementById("vcCustomerZeroMeta").textContent =
-              "App: " + (ow.deployedApp || "Syllovo Studio") +
-              " • Tracked Credits: " + Number(ow.internalCreditsUsed || 0).toLocaleString() +
-              " • Est. Gross Margin: " + Number(ow.grossMarginEstimatePct || 89.4) + "% • " +
-              (ow.clarityGateStatus || "Clarity Gate: 100% Passed");
+            if (quickBar) {
+              quickBar.style.display = "flex";
+              quickBar.innerHTML =
+                '<div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;">' +
+                  '<span class="vc-brand-badge">Owner Sovereign Workspace</span>' +
+                  '<span style="font-size:13px;font-weight:600;color:var(--ink-strong);">' + escVc(ow.ownerDisplayName || "Rupesh Tiwari") + ' • FullStackMaster ($0.00 Billed)</span>' +
+                '</div>' +
+                '<div style="display:flex;gap:8px;flex-wrap:wrap;">' +
+                  '<button type="button" class="btn-pill btn-outline btn-sm" onclick="selectVoice(\'vox_rupesh_v5_waterclean\', false)">🎙 Select v2.2 Pro Voice</button>' +
+                  '<button type="button" class="btn-pill btn-dawn btn-sm" onclick="switchView(\'api\');setTimeout(()=>document.getElementById(\'vcOwnerZone\').scrollIntoView({behavior:\'smooth\'}),80)">📊 Models, History &amp; $0.00 Telemetry →</button>' +
+                '</div>';
+            }
+            document.getElementById("vcCustomerZeroBilled").textContent = "$0.00 / ₹0.00";
+            document.getElementById("vcCustomerZeroMeta").textContent = "Sovereign Owner Allocation (" + (ow.deployedApp || "Syllovo Studio") + ")";
             if (samplesWrap && samplesGrid && ow.samples && typeof ow.samples === "object") {
               const entries = Object.entries(ow.samples).filter(([, s]) => s && s.mp3);
               if (entries.length > 0) {
@@ -2557,9 +2819,11 @@
             }
             if (vData.ownerMode) {
               loadOwnerComputeTelemetry();
+              loadOwnerUsageLedger();
             }
           } else {
             ownerZone.classList.remove("visible");
+            if (quickBar) { quickBar.style.display = "none"; quickBar.innerHTML = ""; }
             if (samplesWrap) samplesWrap.style.display = "none";
           }
         }

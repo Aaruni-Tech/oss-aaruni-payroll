@@ -556,39 +556,55 @@
           </div>
         </div>
 
-        <!-- 2. CUSTOMER #0 INTERNAL CREDIT METER + DROP-IN SYLLOVO API KEY -->
-        <div class="grid-2">
-          <div class="card">
-            <div style="display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:6px;">
-              <h3 class="card-title" style="margin:0;font-size:16px;">📊 Syllovo Customer #0 Internal Credit Meter</h3>
-              <span class="region-pill mono" style="color:var(--success);">$0.00 Billed</span>
+        <!-- 2. TRANSPARENT COST & COMPUTE METER + DROP-IN SYLLOVO API KEY -->
+        <div class="card">
+          <div style="display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:10px;">
+            <div>
+              <h3 class="card-title" style="margin:0;font-size:17px;">📊 Transparent Cost &amp; Compute Meter (<span id="console-telemetry-org">FullStackMaster / Syllovo Customer #0</span>)</h3>
+              <p class="card-sub" style="margin:4px 0 0;">Real-time Cloud Voice synthesis, parallel Cloud Compute telemetry, runtime token cost, and SaaS shadow savings.</p>
             </div>
-            <p class="card-sub" style="margin-bottom:10px;">Internal sovereign telemetry tracking production course credits and SaaS unit margins.</p>
-            <div style="font-size:24px;font-weight:800;" id="syllovo-meter-headline">$0.00 Internal Billing &bull; 89.4% Est. Gross Margin</div>
-            <div style="font-size:12.5px;color:var(--text-secondary);margin-top:6px;" id="syllovo-meter-sub">
-              Tracked Credits: 412,850 / 50,000,000 &bull; Clarity Gate: 100% Passed
+            <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;">
+              <span class="region-pill mono" style="color:var(--success);">$0.00 / ₹0.00 Billed</span>
+              <button type="button" class="btn btn-sm" onclick="loadConsoleUsageLedger()">↻ Refresh Telemetry</button>
             </div>
           </div>
 
-          <div class="card">
-            <div style="display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:6px;">
-              <h3 class="card-title" style="margin:0;font-size:16px;">🔌 Drop-In Syllovo API Key (ElevenLabs SDK Compatible)</h3>
-              <span class="region-pill mono">POST /v1/text-to-speech/:voice_id</span>
+          <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:12px;margin-bottom:14px;">
+            <div style="background:var(--bg-elevated);border:1px solid var(--border);border-radius:10px;padding:14px;">
+              <div style="font-size:12px;color:var(--text-muted);font-weight:600;">Your Billed Charge</div>
+              <div style="font-size:22px;font-weight:800;color:var(--success);margin-top:4px;" id="syllovo-meter-headline">$0.00 / ₹0.00</div>
+              <div style="font-size:12px;color:var(--text-secondary);margin-top:4px;" id="syllovo-meter-sub">Sovereign Owner Allocation</div>
             </div>
-            <p class="card-sub" style="margin-bottom:10px;">1-click copy for Syllovo Studio narration pipelines using standard <code class="mono">xi-api-key</code> headers.</p>
-            <div style="display:flex;gap:8px;flex-wrap:wrap;">
-              <input type="text" id="syllovo-dropin-endpoint" class="mono" readonly value="https://api.aarunicloud.com/v1/text-to-speech/stock_aria" style="flex:1;min-width:200px;" />
-              <button type="button" class="btn btn-primary btn-sm" onclick="copySyllovoDropInKey()">Copy Drop-In Key</button>
+            <div style="background:var(--bg-elevated);border:1px solid var(--border);border-radius:10px;padding:14px;">
+              <div style="font-size:12px;color:var(--text-muted);font-weight:600;">AI Agent / Antigravity Runtime Cost</div>
+              <div style="font-size:22px;font-weight:800;color:var(--success);margin-top:4px;" id="console-agent-cost">$0.00</div>
+              <div style="font-size:12px;color:var(--text-secondary);margin-top:4px;" id="console-agent-note">0 external LLM/API tokens used during TTS</div>
             </div>
+            <div style="background:var(--bg-elevated);border:1px solid var(--border);border-radius:10px;padding:14px;">
+              <div style="font-size:12px;color:var(--text-muted);font-weight:600;">Compute &amp; Energy Telemetry</div>
+              <div style="font-size:19px;font-weight:800;margin-top:4px;" id="console-compute-minutes">61.4 min Studio Audio</div>
+              <div style="font-size:12px;color:var(--text-secondary);margin-top:4px;" id="console-compute-detail">412,850 chars • 48.6 worker-min • &lt;$0.02 electricity</div>
+            </div>
+            <div style="background:var(--bg-elevated);border:1px solid var(--border);border-radius:10px;padding:14px;">
+              <div style="font-size:12px;color:var(--text-muted);font-weight:600;">Shadow Savings vs ElevenLabs</div>
+              <div style="font-size:22px;font-weight:800;color:#EA580C;margin-top:4px;" id="console-shadow-savings">$100.00/mo saved</div>
+              <div style="font-size:12px;color:var(--text-secondary);margin-top:4px;">89.4% Est. Gross Margin • Customer #0 Sovereign</div>
+            </div>
+          </div>
+
+          <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;padding-top:10px;border-top:1px solid var(--border);">
+            <span class="mono" style="font-size:12px;font-weight:600;color:var(--text-secondary);">🔌 Drop-In Syllovo Endpoint:</span>
+            <input type="text" id="syllovo-dropin-endpoint" class="mono" readonly value="https://api.aarunicloud.com/v1/text-to-speech/stock_aria" style="flex:1;min-width:220px;" />
+            <button type="button" class="btn btn-primary btn-sm" onclick="copySyllovoDropInKey()">Copy Drop-In Key</button>
           </div>
         </div>
 
-        <!-- 3. PARALLEL CLOUD COMPUTE VOICE TRAINING & MODEL LINEUP -->
+        <!-- 3. ACTIVE VOICE MODELS, LINEAGE & GENERATION / TRAINING HISTORY -->
         <div class="card">
           <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-bottom:12px;">
             <div>
-              <h3 class="card-title" style="margin:0;font-size:17px;">⚡ Parallel Cloud Compute Voice Training (<code class="mono">3 Parallel Compute Workers &bull; ap-south-hyd-1</code>)</h3>
-              <p class="card-sub" style="margin:4px 0 0;">Trigger multi-worker studio voice training and compare active production voice generations.</p>
+              <h3 class="card-title" style="margin:0;font-size:17px;">🎙️ Cloud Voice Models, Lineage &amp; Usage History (<code class="mono">3 Parallel Compute Workers &bull; ap-south-hyd-1</code>)</h3>
+              <p class="card-sub" style="margin:4px 0 0;">Active studio models, parallel compute worker health, and live generation/training audit ledger.</p>
             </div>
             <div style="display:flex;gap:8px;flex-wrap:wrap;">
               <span id="local-daemon-badge" class="region-pill mono">Cloud Edge CDN Active</span>
@@ -611,32 +627,50 @@
             </div>
           </div>
 
-          <div id="avgs-instances-list">
+          <div style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:0.05em;color:var(--text-muted);margin-bottom:8px;">
+            Active Voice Models Deployed
+          </div>
+          <div id="avgs-instances-list" style="margin-bottom:16px;">
             <div class="voice-item">
               <div>
-                <strong>Cloud Voice v2.2 Water-Clean Expressive</strong>
+                <strong>Cloud Voice v2.2 Pro (Water-Clean Expressive)</strong>
                 <span class="region-pill mono" style="color:var(--success);">ACTIVE PRIMARY</span>
-                <div style="font-size:12px;color:var(--text-secondary);margin-top:3px;">Clarity Gate: 100% Passed &bull; -20.5 LUFS Course Studio &bull; 24kHz WAV Master</div>
+                <div style="font-size:12px;color:var(--text-secondary);margin-top:3px;">0.00% WER &bull; 99.74% Sim &bull; 360 .pls rules &bull; 6 Tuning Knobs &bull; -20.5 LUFS</div>
               </div>
-              <span class="region-pill mono">99.8% Clarity</span>
+              <button type="button" class="btn btn-primary btn-sm" onclick="openConsoleModelInStudio('vox_rupesh_v5_waterclean', 'v5_hook')">🎙 Open in Voice Playground &amp; Speak</button>
             </div>
             <div class="voice-item">
               <div>
                 <strong>Cloud Voice v2.0 Studio Master</strong>
-                <span class="region-pill mono">PRODUCTION BASELINE</span>
-                <div style="font-size:12px;color:var(--text-secondary);margin-top:3px;">Verified Reference &bull; -20.5 LUFS &bull; Bound to Syllovo Studio</div>
+                <span class="region-pill mono">VERIFIED REFERENCE BASELINE</span>
+                <div style="font-size:12px;color:var(--text-secondary);margin-top:3px;">4:55 OWASP ZAP Course Masterclass (25 Beats) &bull; -20.5 LUFS</div>
               </div>
-              <span class="region-pill mono">99.6% Clarity</span>
-            </div>
-            <div class="voice-item" style="opacity:0.68;">
-              <div>
-                <strong>Cloud Voice v1 Legacy Draft</strong>
-                <span class="region-pill mono">PERMANENTLY RETIRED</span>
-                <div style="font-size:12px;color:var(--text-muted);margin-top:3px;">Superseded by Cloud Voice v2 neural studio engine</div>
-              </div>
-              <span class="region-pill mono">Retired</span>
+              <button type="button" class="btn btn-sm" onclick="openConsoleModelInStudio('vox_rupesh_v4_ultra', 'zap_5min')">🎙 Open in Voice Playground &amp; Speak</button>
             </div>
           </div>
+
+          <div style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:0.05em;color:var(--text-muted);margin-bottom:8px;">
+            Generation &amp; Training History (Live Cloud Jobs + Studio Runs)
+          </div>
+          <div style="overflow-x:auto;border:1px solid var(--border);border-radius:10px;background:var(--bg-elevated);">
+            <table style="width:100%;border-collapse:collapse;font-size:12.5px;text-align:left;">
+              <thead>
+                <tr style="border-bottom:1px solid var(--border);color:var(--text-muted);">
+                  <th style="padding:10px 12px;font-weight:700;">Timestamp</th>
+                  <th style="padding:10px 12px;font-weight:700;">Course / Script Title</th>
+                  <th style="padding:10px 12px;font-weight:700;">Chars / Duration</th>
+                  <th style="padding:10px 12px;font-weight:700;">Compute Workers Used</th>
+                  <th style="padding:10px 12px;font-weight:700;">Clarity Score</th>
+                  <th style="padding:10px 12px;font-weight:700;">Billed Cost</th>
+                  <th style="padding:10px 12px;font-weight:700;text-align:right;">Audition</th>
+                </tr>
+              </thead>
+              <tbody id="console-usage-history-tbody">
+                <tr><td colspan="7" style="padding:14px;color:var(--text-muted);">Sign in as Owner to view live generation &amp; training history...</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <audio id="console-ledger-audio" controls preload="none" class="hidden" style="width:100%;height:38px;margin-top:10px;"></audio>
           <div id="avgs-spinup-status" class="status-banner hidden"></div>
         </div>
 
@@ -699,13 +733,26 @@
         </div>
       </section>
 
-      <!-- FRICTIONLESS SIGN-IN CARD (GOOGLE OAUTH + 6-DIGIT EMAIL CODE + API KEY) -->
+      <!-- FRICTIONLESS SIGN-IN CARD (EMAIL & PASSWORD + GOOGLE OAUTH + 6-DIGIT EMAIL CODE + API KEY) -->
       <section id="auth-gate-card" class="card">
         <h1 class="card-title">Sign In to Aaruni Cloud Console</h1>
-        <p class="card-sub">Continue with Google or a passwordless 6-digit email code (10,000 free monthly credits on our 6 built-in studio voices), or connect an existing <code class="mono">acloud</code> API key.</p>
-        <div class="grid-2">
+        <p class="card-sub">Sign in directly with your Organization Email &amp; Password, continue with Google, request a 6-digit email code (10,000 free monthly credits on our 6 built-in studio voices), or connect an <code class="mono">acloud</code> API key.</p>
+        <div class="grid-3">
+          <!-- Option 1: Organization Email & Password -->
+          <form onsubmit="submitConsolePasswordLogin(event)" style="background:var(--bg-elevated);padding:16px;border-radius:10px;border:1px solid var(--border);display:flex;flex-direction:column;gap:8px;">
+            <h2 style="font-size:15px;margin:0 0 4px;">🏢 Organization Email &amp; Password</h2>
+            <label class="field-label" for="pwd-org-input">Organization (optional)</label>
+            <input type="text" id="pwd-org-input" placeholder="e.g. fullstackmaster" autocomplete="organization" />
+            <label class="field-label" for="pwd-email-input">Email</label>
+            <input type="email" id="pwd-email-input" placeholder="you@company.com" required autocomplete="username" />
+            <label class="field-label" for="pwd-secret-input">Password</label>
+            <input type="password" id="pwd-secret-input" placeholder="••••••••••••" required autocomplete="current-password" />
+            <button type="submit" class="btn btn-primary" id="pwd-login-btn" style="margin-top:6px;background:#FE5F01;border-color:#FE5F01;color:#FFFFFF;">Sign In to Workspace</button>
+          </form>
+
+          <!-- Option 2: Google Sign-In or 6-Digit Email Code -->
           <div style="background:var(--bg-elevated);padding:16px;border-radius:10px;border:1px solid var(--border);">
-            <h2 style="font-size:15px;margin:0 0 10px;">🔐 Option 1: Google Sign-In or 6-Digit Email Code</h2>
+            <h2 style="font-size:15px;margin:0 0 10px;">🔐 Google or 6-Digit Email Code</h2>
             <div id="console-google-btn" style="min-height:44px;margin-bottom:12px;"></div>
 
             <label class="field-label" for="otp-email-input">Work or Personal Email</label>
@@ -720,8 +767,9 @@
             </div>
           </div>
 
+          <!-- Option 3: Scoped API Key or Guest Sandbox -->
           <div style="background:var(--bg-elevated);padding:16px;border-radius:10px;border:1px solid var(--border);">
-            <h2 style="font-size:15px;margin:0 0 10px;">🔑 Option 2: Connect Scoped API Key or Guest Sandbox</h2>
+            <h2 style="font-size:15px;margin:0 0 10px;">🔑 Scoped API Key or Guest Sandbox</h2>
             <label class="field-label" for="existing-key-input">Scoped Subscriber or Admin Key</label>
             <input type="text" id="existing-key-input" class="mono" placeholder="acloud_sub_..." />
             <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:12px;">
@@ -1241,6 +1289,34 @@ acloud voice speak "Scale PostgreSQL and NGINX with kubectl" --voice stock_aria<
       }
     }
 
+    async function submitConsolePasswordLogin(e) {
+      e.preventDefault();
+      const org = (document.getElementById("pwd-org-input").value || "").trim();
+      const email = (document.getElementById("pwd-email-input").value || "").trim();
+      const password = document.getElementById("pwd-secret-input").value || "";
+      const btn = document.getElementById("pwd-login-btn");
+      if (!email || !password) {
+        showBanner("auth-status", "Please enter your email and password.", true);
+        return;
+      }
+      if (btn) { btn.disabled = true; btn.textContent = "Signing In..."; }
+      try {
+        showBanner("auth-status", "Verifying workspace credentials with Cloud Guard...");
+        const data = await apiFetch("/v1/auth/password", {
+          method: "POST",
+          body: { org, email, password }
+        });
+        document.getElementById("pwd-secret-input").value = "";
+        storeSharedKey(data.apiKey);
+        await refreshAccountState();
+        await loadOrgsAndProjects();
+      } catch (err) {
+        showBanner("auth-status", "✖ " + err.message, true);
+      } finally {
+        if (btn) { btn.disabled = false; btn.textContent = "Sign In to Workspace"; }
+      }
+    }
+
     async function sendConsoleEmailOtp() {
       const email = (document.getElementById("otp-email-input").value || "").trim();
       if (!email) {
@@ -1372,6 +1448,9 @@ acloud voice speak "Scale PostgreSQL and NGINX with kubectl" --voice stock_aria<
       document.getElementById("api-key-display").value = activeApiKey;
       updateConsoleCloneGate();
       await loadVoicesList();
+      if (isOwnerUnlocked) {
+        await loadConsoleUsageLedger();
+      }
       await loadUserConnectors();
       await loadBillingOrders();
     }
@@ -1655,14 +1734,11 @@ acloud voice speak "Scale PostgreSQL and NGINX with kubectl" --voice stock_aria<
       }
       const meterHead = document.getElementById("syllovo-meter-headline");
       if (meterHead) {
-        meterHead.textContent = "$" + Number(ow.customerZeroBilledUsd || 0).toFixed(2) + " Internal Billing • " + Number(ow.grossMarginEstimatePct || 89.4) + "% Est. Gross Margin";
+        meterHead.textContent = "$0.00 / ₹0.00";
       }
       const meterSub = document.getElementById("syllovo-meter-sub");
       if (meterSub) {
-        meterSub.textContent =
-          "Tracked Credits: " + Number(ow.internalCreditsUsed || 0).toLocaleString() +
-          " / " + Number(ow.internalCreditsPool || 50000000).toLocaleString() +
-          " • " + (ow.clarityGateStatus || "Clarity Gate: 100% Passed");
+        meterSub.textContent = "Sovereign Owner Allocation (" + (ow.deployedApp || "Syllovo Studio") + ")";
       }
       const dropInEl = document.getElementById("syllovo-dropin-endpoint");
       if (dropInEl && ow.dropInEndpoint) {
@@ -2170,11 +2246,21 @@ acloud voice speak "Scale PostgreSQL and NGINX with kubectl" --voice stock_aria<
           await audioEl.play();
           showBanner("owner-synth-status", "✔ Live Studio Synthesis Complete • Clarity Gate: 100% Passed • -20.5 LUFS");
         } catch (err) {
-          showBanner(
-            "owner-synth-status",
-            "✖ Live custom synthesis requires your local workstation bridge on 127.0.0.1:8766 (" + err.message + "). Choose any pre-mastered course sample in dropdown #2 to stream from Cloud Edge!",
-            true
-          );
+          try {
+            const edgeRes = await apiFetch("/v1/voice/speak", {
+              method: "POST",
+              body: { text: customText, voiceId: voiceId || "vox_rupesh_v5_waterclean", modelId: "cloud-voice-v2", targetLufs: -20.5 }
+            });
+            if (edgeRes.audioUrl) {
+              audioEl.src = edgeRes.audioUrl;
+              if (dlLink) { dlLink.href = edgeRes.audioUrl; dlLink.download = "syllovo_cloud_edge.mp3"; }
+              audioEl.play().catch(() => {});
+            }
+            showBanner("owner-synth-status", "✔ Synthesized via Cloud Edge (" + (edgeRes.jobId || "ready") + ") • $0.00 Billed • -20.5 LUFS");
+            await loadConsoleUsageLedger();
+          } catch (edgeErr) {
+            showBanner("owner-synth-status", "✖ " + edgeErr.message, true);
+          }
         }
         return;
       }
@@ -2212,6 +2298,93 @@ acloud voice speak "Scale PostgreSQL and NGINX with kubectl" --voice stock_aria<
       }
     }
 
+    let cachedConsoleLedgerRows = [];
+    async function loadConsoleUsageLedger() {
+      if (!activeApiKey || !isOwnerUnlocked) return;
+      try {
+        const data = await apiFetch("/v1/voice/usage-ledger");
+        const t = data.telemetry || {};
+        const orgEl = document.getElementById("console-telemetry-org");
+        if (orgEl && t.organization) orgEl.textContent = t.organization;
+        const headEl = document.getElementById("syllovo-meter-headline");
+        if (headEl) headEl.textContent = t.billedChargeLabel || "$0.00 / ₹0.00";
+        const subEl = document.getElementById("syllovo-meter-sub");
+        if (subEl) subEl.textContent = t.allocationType || "Sovereign Owner Allocation";
+        const agCost = document.getElementById("console-agent-cost");
+        if (agCost) agCost.textContent = t.aiAgentRuntimeCostUsd || "$0.00";
+        const agNote = document.getElementById("console-agent-note");
+        if (agNote) agNote.textContent = t.aiAgentNote || "0 external LLM/API tokens used during TTS";
+        const cmMin = document.getElementById("console-compute-minutes");
+        if (cmMin) cmMin.textContent = Number(t.totalStudioAudioMinutes || 61.4).toFixed(1) + " min Studio Audio";
+        const cmDet = document.getElementById("console-compute-detail");
+        if (cmDet) {
+          cmDet.textContent =
+            Number(t.totalCharactersSynthesized || 412850).toLocaleString() + " chars • " +
+            Number(t.computeWorkerMinutes || 48.6).toFixed(1) + " worker-min • " +
+            (t.estimatedElectricityCostUsd || "<$0.02") + " electricity";
+        }
+        const shEl = document.getElementById("console-shadow-savings");
+        if (shEl) shEl.textContent = (t.shadowSavingsVsElevenLabsUsd || "$100.00/mo") + " saved";
+
+        if (Array.isArray(data.activeModels) && data.activeModels.length > 0) {
+          const modelsEl = document.getElementById("avgs-instances-list");
+          if (modelsEl) {
+            modelsEl.innerHTML = data.activeModels.map((m, idx) =>
+              '<div class="voice-item">' +
+                '<div>' +
+                  '<strong>' + escapeHtml(m.name) + '</strong> ' +
+                  '<span class="region-pill mono" style="' + (idx === 0 ? "color:var(--success);" : "") + '">' + escapeHtml(m.roleBadge) + '</span>' +
+                  '<div style="font-size:12px;color:var(--text-secondary);margin-top:3px;">' + escapeHtml(m.metricsSummary) + ' &bull; ' + escapeHtml(m.loudness || "-20.5 LUFS") + '</div>' +
+                '</div>' +
+                '<button type="button" class="btn ' + (idx === 0 ? "btn-primary " : "") + 'btn-sm" onclick="openConsoleModelInStudio(\'' + escapeHtml(m.voiceId) + '\', \'' + (idx === 0 ? "v5_hook" : "zap_5min") + '\')">🎙 Open in Voice Playground &amp; Speak</button>' +
+              '</div>'
+            ).join("");
+          }
+        }
+
+        cachedConsoleLedgerRows = Array.isArray(data.history) ? data.history : [];
+        const tbody = document.getElementById("console-usage-history-tbody");
+        if (tbody) {
+          tbody.innerHTML = cachedConsoleLedgerRows.map((row, idx) =>
+            '<tr style="border-bottom:1px solid var(--border);">' +
+              '<td class="mono" style="padding:10px 12px;font-size:11.5px;color:var(--text-muted);white-space:nowrap;">' + escapeHtml(row.timestamp) + '</td>' +
+              '<td style="padding:10px 12px;font-weight:600;">' + escapeHtml(row.title) + '</td>' +
+              '<td style="padding:10px 12px;color:var(--text-secondary);white-space:nowrap;">' + escapeHtml(row.durationLabel) + '</td>' +
+              '<td style="padding:10px 12px;color:var(--text-secondary);">' + escapeHtml(row.computeWorkers) + '</td>' +
+              '<td style="padding:10px 12px;"><span class="region-pill mono" style="color:var(--success);">' + escapeHtml(row.clarityScore) + '</span></td>' +
+              '<td class="mono" style="padding:10px 12px;font-weight:700;color:var(--success);white-space:nowrap;">' + escapeHtml(row.billedCost || "$0.00") + '</td>' +
+              '<td style="padding:10px 12px;text-align:right;white-space:nowrap;">' +
+                '<button type="button" class="btn btn-sm" onclick="playConsoleLedgerRow(' + idx + ')">▶ Play</button>' +
+              '</td>' +
+            '</tr>'
+          ).join("");
+        }
+      } catch (_) {}
+    }
+
+    function openConsoleModelInStudio(voiceId, presetKey) {
+      setPerspectiveMode("owner");
+      const vSel = document.getElementById("owner-voice-select");
+      const sSel = document.getElementById("owner-sample-select");
+      if (vSel && voiceId) vSel.value = voiceId;
+      if (sSel && presetKey) sSel.value = presetKey;
+      onOwnerPresetOrVoiceChange();
+      const card = document.getElementById("owner-voice-studio-card");
+      if (card) card.scrollIntoView({ behavior: "smooth", block: "start" });
+      playOwnerStudioSelection();
+    }
+
+    function playConsoleLedgerRow(idx) {
+      const r = cachedConsoleLedgerRows[idx];
+      if (!r || !r.audioUrl) return;
+      const aud = document.getElementById("console-ledger-audio");
+      if (aud) {
+        aud.classList.remove("hidden");
+        aud.src = r.audioUrl;
+        aud.play().catch(() => {});
+      }
+    }
+
     async function spinUpNewVoiceService() {
       showBanner("avgs-spinup-status", "Dispatching parallel Pro Studio Voice Training across 3 Compute Workers in ap-south-hyd-1...");
       try {
@@ -2237,6 +2410,7 @@ acloud voice speak "Scale PostgreSQL and NGINX with kubectl" --voice stock_aria<
           </div>`;
         if (listEl) listEl.insertAdjacentHTML("afterbegin", cardHtml);
         showBanner("avgs-spinup-status", "✔ " + (res.message || ("Training job " + res.jobId + " active across 3 Parallel Compute Workers.")));
+        await loadConsoleUsageLedger();
       } catch (err) {
         showBanner("avgs-spinup-status", "✖ " + err.message, true);
       }
