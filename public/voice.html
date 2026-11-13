@@ -6,6 +6,10 @@
   <title>Aaruni Cloud Voice — Studio Text to Speech, .pls Dictionaries, Train &amp; API</title>
   <meta name="description" content="Aaruni Cloud Voice delivers crystal-clear studio narration, multi-domain W3C .pls pronunciation dictionaries, live sound polish, voice cloning, training, and a drop-in REST API." />
   <meta name="theme-color" content="#FFFFFF" />
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  <link rel="shortcut icon" href="/favicon.ico" />
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%23FE5F01'/%3E%3Cpath d='M13.5 7L7.5 23h3.4l1.3-3.8h5.6l1.3 3.8h3.4L16.5 7h-3zm-.3 9.4L15 11l1.8 5.4h-3.6z' fill='%23FFFFFF'/%3E%3Crect x='23.5' y='11' width='2.2' height='10' rx='1.1' fill='%23FFFFFF' fill-opacity='0.92'/%3E%3Crect x='27' y='13.5' width='2' height='5' rx='1' fill='%23FFFFFF' fill-opacity='0.75'/%3E%3C/svg%3E" />
+  <link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%23FE5F01'/%3E%3Cpath d='M13.5 7L7.5 23h3.4l1.3-3.8h5.6l1.3 3.8h3.4L16.5 7h-3zm-.3 9.4L15 11l1.8 5.4h-3.6z' fill='%23FFFFFF'/%3E%3Crect x='23.5' y='11' width='2.2' height='10' rx='1.1' fill='%23FFFFFF' fill-opacity='0.92'/%3E%3Crect x='27' y='13.5' width='2' height='5' rx='1' fill='%23FFFFFF' fill-opacity='0.75'/%3E%3C/svg%3E" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
@@ -868,8 +872,8 @@
       gap: 10px;
       margin-bottom: 16px;
     }
-    @media (min-width: 740px) {
-      .goal-cards-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+    @media (min-width: 680px) {
+      .goal-cards-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
     }
     .goal-radio-card {
       border: 1px solid var(--border-hairline);
@@ -1089,6 +1093,450 @@
     @media (min-width: 900px) {
       .vc-toast { bottom: 22px; }
     }
+
+    /* ====================================================================== */
+    /* STUDIO VOICE PRESETS & SYLLOVO SHARE CONFIG CARD                       */
+    /* ====================================================================== */
+    .studio-presets-box {
+      padding: 10px 12px;
+      border: 1px solid var(--border-hairline);
+      border-radius: var(--radius-md);
+      background: #FFFFFF;
+    }
+    .preset-pills-wrap {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+    .preset-pill-btn {
+      appearance: none;
+      border: 1px solid var(--border-hairline);
+      background: #FFFFFF;
+      color: var(--ink-secondary);
+      border-radius: var(--radius-pill);
+      padding: 5px 10px;
+      font-family: var(--font-sans);
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.14s ease;
+    }
+    .preset-pill-btn:hover {
+      border-color: var(--ink-primary);
+      color: var(--ink-primary);
+    }
+    .preset-pill-btn.active {
+      background: var(--ink-primary);
+      border-color: var(--ink-primary);
+      color: #FFFFFF;
+    }
+    .preset-caption-note {
+      font-size: 12px;
+      color: var(--ink-secondary);
+      line-height: 1.45;
+      margin-top: 7px;
+    }
+    .syllovo-share-card {
+      padding: 12px;
+      border: 1px solid var(--border-hairline);
+      border-radius: var(--radius-md);
+      background: #FFFFFF;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      margin-top: 2px;
+    }
+    .local-compute-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 4px 11px;
+      border-radius: var(--radius-pill);
+      background: var(--ok-bg);
+      color: var(--ok-ink);
+      border: 1px solid var(--ok-border);
+      font-size: 12px;
+      font-weight: 700;
+      white-space: nowrap;
+    }
+
+    /* ====================================================================== */
+    /* CLOUD DEVELOPER API & 9-TAB MULTI-LANGUAGE SDK HUB                     */
+    /* ====================================================================== */
+    .api-hero {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 14px;
+      flex-wrap: wrap;
+      margin-bottom: 20px;
+    }
+    .api-hero h2 {
+      font-family: var(--font-display);
+      margin: 0 0 4px;
+      font-size: clamp(20px, 2.6vw, 24px);
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      color: var(--ink-strong);
+    }
+    .api-hero p {
+      margin: 0;
+      color: var(--ink-secondary);
+      font-size: 13.5px;
+    }
+    .compat-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 12px;
+      border-radius: var(--radius-pill);
+      background: var(--ok-bg);
+      color: var(--ok-ink);
+      border: 1px solid var(--ok-border);
+      font-size: 12px;
+      font-weight: 600;
+    }
+    .key-strip {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 14px;
+      padding: 16px;
+      border: 1px solid var(--border-hairline);
+      border-radius: var(--radius-lg);
+      background: #FFFFFF;
+      box-shadow: var(--shadow-xs);
+      margin-bottom: 20px;
+    }
+    @media (min-width: 900px) {
+      .key-strip {
+        grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr);
+        padding: 16px 18px;
+      }
+    }
+    .key-label {
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--ink-secondary);
+      margin-bottom: 6px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+    .scope-chip {
+      font-family: var(--font-mono);
+      font-size: 12px;
+      padding: 1px 7px;
+      border-radius: 6px;
+      background: #F8FAFC;
+      border: 1px solid var(--border-hairline);
+      color: var(--ink-secondary);
+      font-weight: 500;
+    }
+    .key-input-row {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+      flex-wrap: wrap;
+      min-width: 0;
+    }
+    .mono-key-input {
+      flex: 1 1 180px;
+      min-width: 0;
+      width: 100%;
+      padding: 8px 12px;
+      border: 1px solid var(--border-hairline);
+      border-radius: var(--radius-sm);
+      background: #F8FAFC;
+      color: var(--ink-strong);
+      font-family: var(--font-mono);
+      font-size: 12.5px;
+      outline: none;
+    }
+    .sdk-install-box {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      min-width: 0;
+    }
+    .sdk-cmd-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      padding: 8px 12px;
+      border-radius: var(--radius-sm);
+      border: 1px solid var(--border-hairline);
+      background: #F8FAFC;
+      font-family: var(--font-mono);
+      font-size: 12px;
+      color: var(--ink-strong);
+      min-width: 0;
+    }
+    .sdk-cmd-text {
+      overflow-x: auto;
+      white-space: nowrap;
+      scrollbar-width: none;
+      min-width: 0;
+    }
+    .sdk-cmd-text::-webkit-scrollbar { display: none; }
+
+    .api-explorer-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 16px;
+      align-items: start;
+      margin-bottom: 32px;
+    }
+    @media (min-width: 960px) {
+      .api-explorer-grid {
+        grid-template-columns: 350px minmax(0, 1fr);
+        gap: 20px;
+      }
+    }
+    .api-side-panel, .api-code-card {
+      border: 1px solid var(--border-hairline);
+      border-radius: var(--radius-lg);
+      background: #FFFFFF;
+      box-shadow: var(--shadow-xs);
+      overflow: hidden;
+      min-width: 0;
+    }
+    .api-panel-title {
+      padding: 12px 16px;
+      border-bottom: 1px solid var(--border-hairline);
+      font-size: 12px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      color: var(--ink-muted);
+      background: #FFFFFF;
+    }
+    .api-endpoint-list {
+      padding: 8px;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      border-bottom: 1px solid var(--border-hairline);
+    }
+    .ep-item {
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      width: 100%;
+      text-align: left;
+      padding: 9px 10px;
+      border-radius: 10px;
+      border: 1px solid transparent;
+      background: transparent;
+      cursor: pointer;
+      font-family: var(--font-sans);
+      transition: all 0.14s ease;
+    }
+    .ep-item:hover { background: #F8FAFC; }
+    .ep-item.active {
+      background: #FFF7ED;
+      border-color: var(--brand-dawn-border);
+    }
+    .method-badge {
+      font-family: var(--font-mono);
+      font-size: 12px;
+      font-weight: 700;
+      padding: 2px 7px;
+      border-radius: 6px;
+      flex-shrink: 0;
+    }
+    .m-post { background: #EFF6FF; color: #1D4ED8; border: 1px solid #BFDBFE; }
+    .m-get { background: #ECFDF5; color: #047857; border: 1px solid #A7F3D0; }
+    .m-sdk { background: #FFF7ED; color: #C2410C; border: 1px solid #FED7AA; }
+    .ep-meta { min-width: 0; flex: 1; }
+    .ep-name {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--ink-strong);
+      line-height: 1.25;
+    }
+    .ep-path {
+      font-family: var(--font-mono);
+      font-size: 12px;
+      color: var(--ink-muted);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .api-param-form {
+      padding: 14px 16px 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .pls-pack-pills {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+    .pack-pill {
+      appearance: none;
+      padding: 4px 10px;
+      border-radius: var(--radius-pill);
+      border: 1px solid var(--border-hairline);
+      background: #FFFFFF;
+      font-family: var(--font-sans);
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--ink-secondary);
+      cursor: pointer;
+    }
+    .pack-pill.on {
+      background: var(--ink-primary);
+      color: #FFFFFF;
+      border-color: var(--ink-primary);
+    }
+    .lang-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      padding: 10px 14px;
+      border-bottom: 1px solid var(--border-hairline);
+      background: #F8FAFC;
+      flex-wrap: wrap;
+      min-width: 0;
+    }
+    .lang-tabs {
+      display: flex;
+      gap: 4px;
+      overflow-x: auto;
+      scrollbar-width: none;
+      padding-bottom: 2px;
+      max-width: 100%;
+    }
+    .lang-tabs::-webkit-scrollbar { display: none; }
+    .lang-tab {
+      appearance: none;
+      padding: 6px 11px;
+      border-radius: 8px;
+      border: 1px solid transparent;
+      background: transparent;
+      font-family: var(--font-sans);
+      font-size: 12.5px;
+      font-weight: 600;
+      color: var(--ink-secondary);
+      cursor: pointer;
+      white-space: nowrap;
+      transition: all 0.12s ease;
+    }
+    .lang-tab:hover { color: var(--ink-strong); background: #FFFFFF; }
+    .lang-tab.active {
+      background: #FFFFFF;
+      color: var(--ink-strong);
+      border-color: var(--border-hairline);
+      box-shadow: 0 1px 2px rgba(15, 23, 42, 0.05);
+    }
+    .code-subbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 9px 16px;
+      border-bottom: 1px solid var(--border-hairline);
+      background: #FFFFFF;
+      font-size: 12px;
+      color: var(--ink-muted);
+      gap: 8px;
+      flex-wrap: wrap;
+      min-width: 0;
+    }
+    .endpoint-url-line {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-family: var(--font-mono);
+      font-size: 12px;
+      color: var(--ink-strong);
+      overflow-x: auto;
+      max-width: 100%;
+      scrollbar-width: none;
+    }
+    .endpoint-url-line::-webkit-scrollbar { display: none; }
+    .code-viewport {
+      margin: 0;
+      padding: 16px 18px;
+      background: #FFFFFF;
+      color: var(--ink-strong);
+      font-family: var(--font-mono);
+      font-size: 12.5px;
+      line-height: 1.6;
+      overflow-x: auto;
+      max-height: 430px;
+      border-bottom: 1px solid var(--border-hairline);
+      white-space: pre;
+    }
+    .tok-kw { color: #C2410C; font-weight: 600; }
+    .tok-str { color: #0369A1; }
+    .tok-cmt { color: #64748B; font-style: italic; }
+    .tok-num { color: #047857; font-weight: 600; }
+
+    .response-panel {
+      padding: 14px 16px 16px;
+      background: #F8FAFC;
+      min-width: 0;
+    }
+    .resp-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-bottom: 10px;
+    }
+    .status-pills {
+      display: flex;
+      gap: 6px;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+    .st-pill {
+      appearance: none;
+      padding: 3px 9px;
+      border-radius: 6px;
+      font-family: var(--font-mono);
+      font-size: 12px;
+      font-weight: 600;
+      border: 1px solid var(--border-hairline);
+      background: #FFFFFF;
+      color: var(--ink-secondary);
+      cursor: pointer;
+    }
+    .st-pill.active-ok {
+      background: var(--ok-bg);
+      color: var(--ok-ink);
+      border: 1px solid var(--ok-border);
+    }
+    .st-pill.active-err {
+      background: #FEF2F2;
+      color: #B91C1C;
+      border: 1px solid #FECACA;
+    }
+    .resp-box {
+      margin: 0;
+      padding: 12px 14px;
+      border-radius: 10px;
+      border: 1px solid var(--border-hairline);
+      background: #FFFFFF;
+      font-family: var(--font-mono);
+      font-size: 12px;
+      line-height: 1.55;
+      color: var(--ink-strong);
+      overflow-x: auto;
+      white-space: pre;
+    }
+    .toast-pill {
+      display: none;
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--ok-ink);
+    }
+    .toast-pill.show { display: inline-flex; }
   </style>
 </head>
 <body>
@@ -1224,6 +1672,7 @@
 
           <!-- PANE A: ELEVENLABS SETTINGS + INSTANT SOUND POLISH -->
           <div id="rightPaneSettings" style="display:flex;flex-direction:column;gap:14px;">
+            <div id="sidePanelSettings" style="display:flex;flex-direction:column;gap:14px;">
 
             <!-- 1. Voice Picker (Zero Horizontal Scrollbar) -->
             <div class="voice-picker-wrap" id="vcVoicePickerWrap">
@@ -1251,6 +1700,24 @@
               </select>
             </div>
 
+            <!-- 2B. 5 Research-Backed Studio Voice Presets -->
+            <div class="studio-presets-box" id="vcStudioPresetsBox">
+              <div style="display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:7px;">
+                <span style="font-size:12px;font-weight:700;color:var(--ink-primary);">Studio Voice Presets</span>
+                <span style="font-size:12px;font-weight:500;color:var(--ink-muted);">Recommended Setups</span>
+              </div>
+              <div class="preset-pills-wrap" id="vcStudioPresetPills" role="group" aria-label="Studio Voice Presets">
+                <button type="button" class="preset-pill-btn active" data-preset-id="best_teaching" onclick="applyStudioVoicePreset('best_teaching')">Best for Teaching ★</button>
+                <button type="button" class="preset-pill-btn" data-preset-id="crisp_walkthrough" onclick="applyStudioVoicePreset('crisp_walkthrough')">Code &amp; CLI Demo</button>
+                <button type="button" class="preset-pill-btn" data-preset-id="expressive_hook" onclick="applyStudioVoicePreset('expressive_hook')">Expressive Hook &amp; Story</button>
+                <button type="button" class="preset-pill-btn" data-preset-id="natural_conv" onclick="applyStudioVoicePreset('natural_conv')">Natural Conversational</button>
+                <button type="button" class="preset-pill-btn" data-preset-id="exec_summary" onclick="applyStudioVoicePreset('exec_summary')">Executive Summary</button>
+              </div>
+              <div class="preset-caption-note" id="vcPresetHelperCaption">
+                0.95x steady teaching cadence • crisp .pls clarity • -20.5 LUFS
+              </div>
+            </div>
+
             <!-- 3. All 5 Canonical ElevenLabs Settings -->
             <div style="display:flex;flex-direction:column;gap:12px;padding-top:2px;">
 
@@ -1258,9 +1725,9 @@
               <div class="slider-block">
                 <div class="slider-head">
                   <span style="font-weight:600;">Speed</span>
-                  <span id="valSpeed" style="font-family:var(--font-mono);color:var(--ink-muted);">1.00x</span>
+                  <span id="valSpeed" style="font-family:var(--font-mono);color:var(--ink-muted);">0.95x</span>
                 </div>
-                <input type="range" id="rngSpeed" min="70" max="120" value="100" class="el-slider" oninput="onLiveSpeedInput(this.value)" />
+                <input type="range" id="rngSpeed" min="70" max="120" value="95" class="el-slider" oninput="onLiveSpeedInput(this.value)" />
                 <div class="slider-ends"><span>Slower</span><span>1.0x</span><span>Faster</span></div>
               </div>
 
@@ -1268,9 +1735,9 @@
               <div class="slider-block">
                 <div class="slider-head">
                   <span style="font-weight:600;">Stability</span>
-                  <span id="valStability" style="font-family:var(--font-mono);color:var(--ink-muted);">72%</span>
+                  <span id="valStability" style="font-family:var(--font-mono);color:var(--ink-muted);">70%</span>
                 </div>
-                <input type="range" id="rngStability" min="0" max="100" value="72" class="el-slider" oninput="onSynthesisSettingChange('Stability', this.value + '%')" />
+                <input type="range" id="rngStability" min="0" max="100" value="70" class="el-slider" oninput="onSynthesisSettingChange('Stability', this.value + '%')" />
                 <div class="slider-ends"><span>More variable</span><span>More stable</span></div>
               </div>
 
@@ -1278,9 +1745,9 @@
               <div class="slider-block">
                 <div class="slider-head">
                   <span style="font-weight:600;">Similarity</span>
-                  <span id="valSimilarity" style="font-family:var(--font-mono);color:var(--ink-muted);">92%</span>
+                  <span id="valSimilarity" style="font-family:var(--font-mono);color:var(--ink-muted);">88%</span>
                 </div>
-                <input type="range" id="rngSimilarity" min="0" max="100" value="92" class="el-slider" oninput="onSynthesisSettingChange('Similarity', this.value + '%')" />
+                <input type="range" id="rngSimilarity" min="0" max="100" value="88" class="el-slider" oninput="onSynthesisSettingChange('Similarity', this.value + '%')" />
                 <div class="slider-ends"><span>Low</span><span>High</span></div>
               </div>
 
@@ -1288,9 +1755,9 @@
               <div class="slider-block">
                 <div class="slider-head">
                   <span style="font-weight:600;">Style Exaggeration</span>
-                  <span id="valStyle" style="font-family:var(--font-mono);color:var(--ink-muted);">35%</span>
+                  <span id="valStyle" style="font-family:var(--font-mono);color:var(--ink-muted);">10%</span>
                 </div>
-                <input type="range" id="rngStyle" min="0" max="100" value="35" class="el-slider" oninput="onSynthesisSettingChange('Style', this.value + '%')" />
+                <input type="range" id="rngStyle" min="0" max="100" value="10" class="el-slider" oninput="onSynthesisSettingChange('Style', this.value + '%')" />
                 <div class="slider-ends"><span>None</span><span>Exaggerated</span></div>
               </div>
 
@@ -1305,7 +1772,7 @@
             <div style="padding-top:14px;border-top:1px solid var(--border-soft);display:flex;flex-direction:column;gap:11px;">
               <div style="display:flex;align-items:center;justify-content:space-between;">
                 <span style="font-size:12px;font-weight:700;">Sound Polish</span>
-                <span style="font-size:11.5px;font-weight:600;color:var(--ok-ink);">Instant (0s wait)</span>
+                <span style="font-size:12px;font-weight:600;color:var(--ok-ink);">Instant (0s wait)</span>
               </div>
 
               <!-- Reduce Bass -->
@@ -1321,24 +1788,24 @@
               <div class="slider-block">
                 <div class="slider-head">
                   <span style="font-weight:500;color:#374151;">Reduce Echo</span>
-                  <span id="valEcho" style="font-family:var(--font-mono);color:var(--ink-muted);">90% Dry</span>
+                  <span id="valEcho" style="font-family:var(--font-mono);color:var(--ink-muted);">92% Dry</span>
                 </div>
-                <input type="range" id="rngDeEcho" min="0" max="100" value="90" class="el-slider" oninput="onLivePolishChange()" />
+                <input type="range" id="rngDeEcho" min="0" max="100" value="92" class="el-slider" oninput="onLivePolishChange()" />
               </div>
 
               <!-- Environment -->
               <div>
                 <span style="display:block;font-size:12px;font-weight:500;color:#374151;margin-bottom:6px;">Environment</span>
                 <div class="env-seg-grid" role="group" aria-label="Acoustic environment">
-                  <button type="button" class="env-btn active" data-env="studio_booth" data-label="Studio Booth" onclick="selectEnvironment(this)">Studio</button>
-                  <button type="button" class="env-btn" data-env="lecture_hall" data-label="Inside Hall" onclick="selectEnvironment(this)">Hall</button>
-                  <button type="button" class="env-btn" data-env="outdoor" data-label="Outside Air" onclick="selectEnvironment(this)">Outside</button>
-                  <button type="button" class="env-btn" data-env="warm_podcast" data-label="Hill Space" onclick="selectEnvironment(this)">Hill</button>
+                  <button type="button" class="env-btn active" data-env="studio_booth" data-short-env="studio" data-label="Studio Booth" onclick="selectEnvironment(this)">Studio</button>
+                  <button type="button" class="env-btn" data-env="lecture_hall" data-short-env="hall" data-label="Inside Hall" onclick="selectEnvironment(this)">Hall</button>
+                  <button type="button" class="env-btn" data-env="outdoor" data-short-env="outside" data-label="Outside Air" onclick="selectEnvironment(this)">Outside</button>
+                  <button type="button" class="env-btn" data-env="warm_podcast" data-short-env="hill" data-label="Hill Space" onclick="selectEnvironment(this)">Hill</button>
                 </div>
               </div>
 
               <div style="display:flex;align-items:center;justify-content:space-between;padding-top:2px;">
-                <button type="button" onclick="resynthesizeUltraClean()" id="vcResynthCleanBtn" style="border:0;background:none;padding:0;font-size:11.5px;font-weight:600;color:var(--brand-dawn);cursor:pointer;">
+                <button type="button" onclick="resynthesizeUltraClean()" id="vcResynthCleanBtn" style="border:0;background:none;padding:0;font-size:12px;font-weight:600;color:var(--brand-dawn);cursor:pointer;">
                   Re-generate ultra-clean
                 </button>
                 <button type="button" onclick="resetAllVoiceValues()" style="border:0;background:none;padding:0;font-size:12px;font-weight:500;color:var(--ink-muted);cursor:pointer;">
@@ -1347,6 +1814,33 @@
               </div>
             </div>
 
+            <!-- Owner Subtle Re-Train Shortcut Link -->
+            <button type="button" id="vcOwnerRefineLink" onclick="switchView('train')" style="display:none;border:0;background:none;padding:2px 0;font-family:var(--font-sans);font-size:12px;font-weight:600;color:var(--brand-dawn);cursor:pointer;text-align:left;">
+              Not 100% satisfied? Refine / Re-Train Voice →
+            </button>
+
+            <!-- 5. Share Config with Syllovo Studio -->
+            <div class="syllovo-share-card" id="vcSyllovoShareCard">
+              <div style="display:flex;align-items:center;justify-content:space-between;gap:6px;flex-wrap:wrap;">
+                <span style="font-size:12px;font-weight:700;color:var(--ink-primary);">Share Config with Syllovo Studio</span>
+                <span style="font-size:12px;font-family:var(--font-mono);color:var(--ink-muted);">aaruni.voice.profile/v1</span>
+              </div>
+              <div style="display:flex;flex-wrap:wrap;gap:6px;">
+                <button type="button" class="btn-pill btn-outline btn-sm" style="flex:1 1 auto;" onclick="downloadVoiceProfileJson()">
+                  ⬇ Download Config (.json)
+                </button>
+                <button type="button" class="btn-pill btn-primary btn-sm" style="flex:1 1 auto;" onclick="copySyllovoVoiceConfig()">
+                  ⇄ Copy for Syllovo App
+                </button>
+                <label for="vcLoadProfileJsonInput" class="btn-pill btn-outline btn-sm" style="cursor:pointer;margin:0;flex:0 0 auto;">
+                  ⬆ Load .json
+                  <input type="file" id="vcLoadProfileJsonInput" accept=".json,application/json" style="display:none;" onchange="handleLoadVoiceProfileJson(event)" />
+                </label>
+              </div>
+              <div id="vcSyllovoShareStatus" style="display:none;font-size:12px;font-weight:600;color:var(--ok-ink);line-height:1.4;"></div>
+            </div>
+
+            </div>
           </div>
 
           <!-- PANE B: MULTI-DOMAIN W3C .PLS PRONUNCIATION DICTIONARIES -->
@@ -1410,37 +1904,75 @@
           <div class="vc-status-msg" id="vcModelSwitchStatus"></div>
         </div>
 
-        <!-- CARD 2: RUN INCREMENTAL CLARITY & ANTI-GLITCH TRAINING -->
+        <!-- CARD 2: TRIGGER VOICE TRAINING AGAIN & $0.00 LOCAL COMPUTE MONITOR -->
         <div class="vc-card train-card">
-          <div class="train-step-tag">Parallel Cloud Compute</div>
-          <h3>Run Incremental Training &amp; Clarity Polish</h3>
-          <p class="sub">Launch an isolated fine-tuning pass across 3 parallel Cloud Compute workers without overwriting previous builds.</p>
+          <div style="display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;margin-bottom:4px;">
+            <div class="train-step-tag" style="margin:0;">Parallel Cloud Compute</div>
+            <span class="local-compute-badge" id="vcZeroCostComputeBadge" style="display:none;">
+              ● Local Compute • $0.00 Cost • 0 AI Credits
+            </span>
+          </div>
+          <h3>Trigger Voice Training &amp; Studio Refinement</h3>
+          <p class="sub">Launch a targeted voice refinement run anytime across parallel studio compute workers without overwriting previous builds.</p>
 
-          <div class="goal-cards-grid" id="trainGoalCards">
-            <div class="goal-radio-card selected" data-goal="clarity" onclick="selectTrainGoal('clarity')">
-              <strong style="font-size:13.5px;">Boost Open-Studio Clarity</strong>
-              <span style="font-size:12.5px;color:var(--ink-secondary);">Sharpens crisp studio consonants &amp; removes room muddiness.</span>
+          <!-- Live Running Training Job Telemetry Banner -->
+          <div id="liveTrainingMonitorCard" style="display:none;margin-bottom:16px;padding:14px 16px;border-radius:var(--radius-md);border:1px solid var(--ok-border);background:#FFFFFF;">
+            <div style="display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;margin-bottom:8px;">
+              <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;min-width:0;">
+                <strong style="font-size:13px;font-family:var(--font-mono);color:var(--ink-strong);" id="liveTrainJobTitle">job_v30_overnight_ultra_stable_3node</strong>
+                <span class="vc-quality-badge" id="liveTrainRoundBadge">Round 1</span>
+              </div>
+              <span class="local-compute-badge">Local Compute • $0.00 Cost • 0 AI Credits</span>
             </div>
-            <div class="goal-radio-card" data-goal="anti_glitch" onclick="selectTrainGoal('anti_glitch')">
-              <strong style="font-size:13.5px;">Eliminate Glitches</strong>
-              <span style="font-size:12.5px;color:var(--ink-secondary);">Increases stability &amp; trains against flagged phrases.</span>
+            <div style="display:flex;align-items:center;justify-content:space-between;gap:8px;font-size:12px;color:var(--ink-secondary);">
+              <span id="liveTrainStepCounter">Step 0 / 3,600 • Aligning studio prosody...</span>
+              <span style="font-family:var(--font-mono);font-weight:700;color:var(--ink-strong);" id="liveTrainPctLabel">0%</span>
             </div>
-            <div class="goal-radio-card" data-goal="expression" onclick="selectTrainGoal('expression')">
-              <strong style="font-size:13.5px;">Expand Teaching Expression</strong>
-              <span style="font-size:12.5px;color:var(--ink-secondary);">Blends newly recorded hooks &amp; analogies into your voice.</span>
+            <div class="progress-track">
+              <div class="progress-fill" id="liveTrainProgressBar" style="width:0%;background:var(--ok-ink);"></div>
             </div>
           </div>
 
-          <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px;align-items:end;">
+          <div class="goal-cards-grid" id="trainGoalCards">
+            <div class="goal-radio-card selected" data-goal="ultra_stable_teaching" onclick="selectTrainGoal('ultra_stable_teaching')">
+              <strong style="font-size:13.5px;">Ultra-Stable Teaching Cadence</strong>
+              <span style="font-size:12.5px;color:var(--ink-secondary);">Locks steady 0.95x lesson pacing with zero breath clipping or drift.</span>
+            </div>
+            <div class="goal-radio-card" data-goal="crisp_pls_articulation" onclick="selectTrainGoal('crisp_pls_articulation')">
+              <strong style="font-size:13.5px;">Crisper Technical &amp; .pls Articulation</strong>
+              <span style="font-size:12.5px;color:var(--ink-secondary);">Sharpens CLI flags, acronyms, and multi-syllable .pls lexicon terms.</span>
+            </div>
+            <div class="goal-radio-card" data-goal="warmer_storytelling" onclick="selectTrainGoal('warmer_storytelling')">
+              <strong style="font-size:13.5px;">Warmer Storytelling Timbre</strong>
+              <span style="font-size:12.5px;color:var(--ink-secondary);">Enriches natural pitch contour for opening hooks &amp; analogies.</span>
+            </div>
+            <div class="goal-radio-card" data-goal="de_echo_polish" onclick="selectTrainGoal('de_echo_polish')">
+              <strong style="font-size:13.5px;">Open-Studio De-Echo Polish</strong>
+              <span style="font-size:12.5px;color:var(--ink-secondary);">Suppresses room reflections &amp; low-mid boxiness for dry studio clarity.</span>
+            </div>
+          </div>
+
+          <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px;margin-bottom:12px;">
             <div class="vc-field">
-              <label for="trainModeSelect">Training Mode</label>
+              <label for="trainModeSelect">Training Depth</label>
               <select id="trainModeSelect" class="vc-select">
-                <option value="deep_parallel">Deep Parallel Compute Training (3 Workers)</option>
-                <option value="quick_polish">Quick Calibration Polish (~2 mins)</option>
+                <option value="quick_polish">Quick Studio Polish • ~200 steps</option>
+                <option value="deep_parallel" selected>Deep Studio Master • 1,200 steps</option>
+                <option value="continuous_overnight">Continuous Overnight Stability • 3,600+ steps</option>
               </select>
             </div>
+            <div class="vc-field">
+              <label for="trainTargetNoteInput">Optional Target Script / Note</label>
+              <input type="text" id="trainTargetNoteInput" class="vc-input" placeholder="e.g., Smoother pause around --cpus=2 &amp; OAuth2..." />
+            </div>
+          </div>
+
+          <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;">
             <button type="button" class="btn-pill btn-primary" id="btnStartIncrementalTrain" onclick="startIncrementalTraining()">
-              Start Training
+              Trigger Voice Training Again
+            </button>
+            <button type="button" class="btn-pill btn-outline btn-sm" onclick="pollLiveTrainingStatus(true)">
+              ↻ Refresh Live Status
             </button>
           </div>
 
@@ -1588,40 +2120,192 @@
     </section>
 
     <!-- ===================================================================== -->
-    <!-- 4. API & PLANS VIEW                                                   -->
+    <!-- 4. DEVELOPER API & 9-TAB MULTI-LANGUAGE SDK HUB + PLANS               -->
     <!-- ===================================================================== -->
-    <section class="vc-view" id="view-api" aria-label="REST API and Plans">
-      <div class="vc-section-head">
-        <h2>Drop-In REST API &amp; Transparent Plans</h2>
-        <p>Use your scoped API key with any ElevenLabs-compatible SDK, or choose a predictable monthly plan.</p>
+    <section class="vc-view" id="view-api" aria-label="Developer API, SDKs and Plans">
+
+      <div class="api-hero">
+        <div>
+          <h2>Developer API &amp; Official SDKs</h2>
+          <p>Integrate studio-grade speech synthesis, real-time audio streaming, and W3C <code style="font-family:var(--font-mono);">.pls</code> pronunciation dictionaries in minutes.</p>
+        </div>
+        <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
+          <span class="compat-pill">✓ 100% ElevenLabs REST &amp; SDK Compatible</span>
+          <a id="vcApiConsoleLink" href="https://console.aarunicloud.com" class="btn-pill btn-outline btn-sm">Open Cloud Console ↗</a>
+        </div>
       </div>
 
-      <div style="max-width:960px;margin:0 auto 26px;">
-        <div class="vc-card train-card">
-          <div style="display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:12px;">
-            <h3 style="margin:0;">Scoped Cloud Guard API Key</h3>
-            <a id="vcApiConsoleLink" href="https://console.aarunicloud.com" class="btn-pill btn-outline btn-sm">Open Cloud Console ↗</a>
+      <!-- Scoped Key + Quick SDK Install Strip -->
+      <div class="key-strip">
+        <div style="min-width:0;">
+          <div class="key-label">
+            <span>Scoped Cloud Guard API Key</span>
+            <span class="scope-chip">tts:write</span>
+            <span class="scope-chip">pls:write</span>
+            <span class="scope-chip">voices:read</span>
+            <span class="toast-pill" id="vcCopyKeyToast">✓ Copied!</span>
           </div>
-          <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center;">
-            <input type="text" id="vcApiKeyDisplay" class="vc-input" readonly value="Sign in to view or copy your scoped API key" style="flex:1;min-width:220px;font-family:var(--font-mono);font-size:12.5px;" />
+          <div class="key-input-row">
+            <input type="text" id="vcApiKeyDisplay" class="mono-key-input" readonly value="acloud_live_9f8a••••••••••••••••••••4c2e" aria-label="Scoped API key" />
+            <button type="button" class="btn-pill btn-outline btn-sm" id="vcRevealKeyBtn" onclick="toggleRevealScopedApiKey()">Reveal</button>
             <button type="button" class="btn-pill btn-primary btn-sm" onclick="copyScopedApiKey()">Copy Key</button>
           </div>
-          <div id="vcCopyKeyToast" style="font-size:12px;color:var(--ok-ink);margin-top:8px;display:none;">✓ Copied API key to clipboard</div>
+        </div>
 
-          <div style="margin-top:16px;">
-            <div style="font-size:12px;font-weight:600;color:var(--ink-secondary);margin-bottom:6px;">
-              ElevenLabs-Compatible Endpoint (<code style="font-family:var(--font-mono);">POST /v1/text-to-speech/:voice_id</code>)
-            </div>
-            <div class="vc-code-box" id="vcCurlSnippet">curl -X POST "https://api.aarunicloud.com/v1/text-to-speech/stock_aria" \
-  -H "xi-api-key: $AARUNI_API_KEY" \
-  -H "Content-Type: application/json" \
-  -d '{"text":"Deploying OAuth2 and PostgreSQL via CI/CD.","model_id":"cloud-voice-v3.0-master"}' \
-  --output studio.mp3</div>
+        <div class="sdk-install-box">
+          <div class="key-label">
+            <span id="sdkInstallLabel">Quick Install — JavaScript / TypeScript</span>
+            <span class="toast-pill" id="sdkInstallToast">✓ Copied!</span>
+          </div>
+          <div class="sdk-cmd-bar">
+            <span class="sdk-cmd-text" id="sdkInstallCmd">npm install @aarunicloud/voice</span>
+            <button type="button" class="btn-pill btn-outline btn-sm" style="min-height:28px;padding:0 11px;flex-shrink:0;" onclick="copySdkInstallCmd()">Copy</button>
           </div>
         </div>
       </div>
 
-      <div style="text-align:center;">
+      <!-- Interactive 2-Column Cloud API Explorer -->
+      <div class="api-explorer-grid">
+
+        <!-- LEFT: 5 Endpoints + Live Request Builder -->
+        <div class="api-side-panel">
+          <div class="api-panel-title">1. Choose Endpoint</div>
+          <div class="api-endpoint-list" id="apiEndpointList">
+            <button type="button" class="ep-item active" data-ep="tts" onclick="selectApiEndpoint('tts')">
+              <span class="method-badge m-post">POST</span>
+              <div class="ep-meta">
+                <div class="ep-name">Generate Speech</div>
+                <div class="ep-path">/v1/text-to-speech/{voice_id}</div>
+              </div>
+            </button>
+
+            <button type="button" class="ep-item" data-ep="stream" onclick="selectApiEndpoint('stream')">
+              <span class="method-badge m-post">POST</span>
+              <div class="ep-meta">
+                <div class="ep-name">Streaming Audio</div>
+                <div class="ep-path">/v1/text-to-speech/{voice_id}/stream</div>
+              </div>
+            </button>
+
+            <button type="button" class="ep-item" data-ep="pls" onclick="selectApiEndpoint('pls')">
+              <span class="method-badge m-post">POST</span>
+              <div class="ep-meta">
+                <div class="ep-name">Upload .pls Dictionary</div>
+                <div class="ep-path">/v1/voice/pls</div>
+              </div>
+            </button>
+
+            <button type="button" class="ep-item" data-ep="voices" onclick="selectApiEndpoint('voices')">
+              <span class="method-badge m-get">GET</span>
+              <div class="ep-meta">
+                <div class="ep-name">List Voices &amp; Models</div>
+                <div class="ep-path">/v1/voice/list</div>
+              </div>
+            </button>
+
+            <button type="button" class="ep-item" data-ep="compat" onclick="selectApiEndpoint('compat')">
+              <span class="method-badge m-sdk">SDK</span>
+              <div class="ep-meta">
+                <div class="ep-name">1-Line ElevenLabs Migration</div>
+                <div class="ep-path">base_url = api.aarunicloud.com/v1</div>
+              </div>
+            </button>
+          </div>
+
+          <div class="api-panel-title">2. Customize Live Request</div>
+          <div class="api-param-form">
+            <div class="vc-field">
+              <label for="apiParamVoice">Voice (<code style="font-family:var(--font-mono);">voice_id</code>)</label>
+              <select id="apiParamVoice" class="vc-select" onchange="onApiExplorerParamChange('voice')"></select>
+            </div>
+
+            <div class="vc-field">
+              <label for="apiParamModel">Model (<code style="font-family:var(--font-mono);">model_id</code>)</label>
+              <select id="apiParamModel" class="vc-select" onchange="onApiExplorerParamChange('model')">
+                <option value="cloud-voice-v3.0-master">cloud-voice-v3.0-master (Studio Master v3.0)</option>
+                <option value="cloud-voice-v3.0-flash">cloud-voice-v3.0-flash (Low-Latency Flash)</option>
+                <option value="cloud-voice-v2.0-master">cloud-voice-v2.0-master (Classic v2.0)</option>
+              </select>
+            </div>
+
+            <div class="vc-field">
+              <label for="apiParamFormat">Output Format</label>
+              <select id="apiParamFormat" class="vc-select" onchange="renderApiCodeAndResponse()">
+                <option value="mp3_44100_192">mp3_44100_192 (Broadcast MP3 192kbps)</option>
+                <option value="pcm_24000">pcm_24000 (Uncompressed 24kHz WAV/PCM)</option>
+                <option value="opus_48000">opus_48000 (WebRTC Low-Bitrate Opus)</option>
+              </select>
+            </div>
+
+            <div class="vc-field">
+              <label>W3C <code style="font-family:var(--font-mono);">.pls</code> Domain Packs</label>
+              <div class="pls-pack-pills" id="apiPlsPackPills"></div>
+            </div>
+
+            <div class="vc-field">
+              <label for="apiParamText">Sample Text</label>
+              <textarea id="apiParamText" class="vc-input" style="min-height:64px;padding:8px 10px;resize:vertical;line-height:1.45;" oninput="renderApiCodeAndResponse()">Configure OAuth2 with --cpus=2 and export SARIF findings before production release.</textarea>
+            </div>
+          </div>
+        </div>
+
+        <!-- RIGHT: 9 Code Tabs + Live Response Inspector -->
+        <div class="api-code-card">
+          <div class="lang-bar">
+            <div class="lang-tabs" id="apiLangTabs" role="tablist" aria-label="SDK languages">
+              <button type="button" class="lang-tab active" data-lang="js" onclick="selectApiLang('js')">JavaScript</button>
+              <button type="button" class="lang-tab" data-lang="ts" onclick="selectApiLang('ts')">TypeScript</button>
+              <button type="button" class="lang-tab" data-lang="py" onclick="selectApiLang('py')">Python</button>
+              <button type="button" class="lang-tab" data-lang="curl" onclick="selectApiLang('curl')">cURL</button>
+              <button type="button" class="lang-tab" data-lang="go" onclick="selectApiLang('go')">Go</button>
+              <button type="button" class="lang-tab" data-lang="csharp" onclick="selectApiLang('csharp')">C# / .NET</button>
+              <button type="button" class="lang-tab" data-lang="java" onclick="selectApiLang('java')">Java</button>
+              <button type="button" class="lang-tab" data-lang="php" onclick="selectApiLang('php')">PHP / CLI</button>
+              <button type="button" class="lang-tab" data-lang="syllovo" onclick="selectApiLang('syllovo')">Syllovo Plugin (.json)</button>
+            </div>
+            <div style="display:flex;gap:6px;align-items:center;flex-wrap:wrap;">
+              <span class="toast-pill" id="apiCodeToast">✓ Snippet copied!</span>
+              <button type="button" class="btn-pill btn-outline btn-sm" onclick="copyApiCodeSnippet()">Copy Code</button>
+              <button type="button" class="btn-pill btn-dawn btn-sm" id="btnSendApiTestReq" onclick="sendLiveApiTestRequest()">▶ Send Test Request</button>
+            </div>
+          </div>
+
+          <div class="code-subbar">
+            <div class="endpoint-url-line" id="apiEndpointUrlLine">
+              <span class="method-badge m-post" id="apiSubMethodBadge">POST</span>
+              <span id="apiSubUrlText">https://api.aarunicloud.com/v1/text-to-speech/stock_aria</span>
+            </div>
+            <span>Auth: <code style="font-family:var(--font-mono);">Bearer</code> or <code style="font-family:var(--font-mono);">xi-api-key</code></span>
+          </div>
+
+          <pre class="code-viewport" id="apiCodeViewport"></pre>
+
+          <!-- Response & Headers Inspector -->
+          <div class="response-panel">
+            <div class="resp-head">
+              <div style="font-size:12px;font-weight:700;color:var(--ink-secondary);display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
+                <span>Response &amp; Headers</span>
+                <span id="apiLiveRunBadge" style="display:none;color:var(--ok-ink);font-weight:600;"></span>
+              </div>
+              <div class="status-pills">
+                <button type="button" class="st-pill active-ok" id="apiSt200" onclick="selectApiStatus(200)">200 OK</button>
+                <button type="button" class="st-pill" id="apiSt401" onclick="selectApiStatus(401)">401 Auth</button>
+                <button type="button" class="st-pill" id="apiSt402" onclick="selectApiStatus(402)">402 Quota</button>
+                <button type="button" class="st-pill" id="apiSt429" onclick="selectApiStatus(429)">429 Rate Limit</button>
+              </div>
+            </div>
+            <pre class="resp-box" id="apiResponseViewport"></pre>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Preserved Transparent Monthly Plans (USD & INR UPI) -->
+      <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;padding-top:14px;border-top:1px solid var(--border-hairline);">
+        <div>
+          <h3 style="font-family:var(--font-display);margin:0;font-size:18px;font-weight:700;">Transparent API &amp; Studio Plans</h3>
+          <p style="margin:2px 0 0;font-size:13px;color:var(--ink-secondary);">Every plan includes scoped API keys, built-in W3C <code style="font-family:var(--font-mono);">.pls</code> domain dictionaries, and hard spend-cap protection.</p>
+        </div>
         <div style="display:inline-flex;gap:4px;padding:3px;border-radius:var(--radius-pill);border:1px solid var(--border-hairline);background:#FFFFFF;">
           <button type="button" class="btn-pill btn-primary btn-sm" id="currBtnUSD" onclick="setBillingCurrency('USD')">$ USD (Card / Apple Pay)</button>
           <button type="button" class="btn-pill btn-outline btn-sm" id="currBtnINR" onclick="setBillingCurrency('INR')">₹ INR (India UPI)</button>
@@ -1955,6 +2639,92 @@
       pro: { usd: "$29", inr: "₹2,499" }
     };
 
+    const STUDIO_VOICE_PRESETS = {
+      best_teaching: {
+        id: "best_teaching",
+        label: "Best for Teaching ★",
+        speed: 0.95,
+        stability: 70,
+        similarity: 88,
+        style: 10,
+        speakerBoost: true,
+        reduceBassDb: -4.5,
+        reduceEchoPct: 92,
+        environment: "studio",
+        caption: "0.95x steady teaching cadence • crisp .pls clarity • -20.5 LUFS"
+      },
+      crisp_walkthrough: {
+        id: "crisp_walkthrough",
+        label: "Code & CLI Demo",
+        speed: 0.94,
+        stability: 76,
+        similarity: 90,
+        style: 5,
+        speakerBoost: true,
+        reduceBassDb: -5.0,
+        reduceEchoPct: 95,
+        environment: "studio",
+        caption: "Maximum determinism on CLI flags, acronyms & numbers"
+      },
+      expressive_hook: {
+        id: "expressive_hook",
+        label: "Expressive Hook & Story",
+        speed: 0.97,
+        stability: 54,
+        similarity: 86,
+        style: 28,
+        speakerBoost: true,
+        reduceBassDb: -4.0,
+        reduceEchoPct: 90,
+        environment: "studio",
+        caption: "Warm pitch contour for opening hooks & real-world analogies"
+      },
+      natural_conv: {
+        id: "natural_conv",
+        label: "Natural Conversational",
+        speed: 1.00,
+        stability: 62,
+        similarity: 85,
+        style: 16,
+        speakerBoost: true,
+        reduceBassDb: -3.5,
+        reduceEchoPct: 88,
+        environment: "studio",
+        caption: "Relaxed conversational flow for explainers & podcasts"
+      },
+      exec_summary: {
+        id: "exec_summary",
+        label: "Executive Summary",
+        speed: 0.96,
+        stability: 74,
+        similarity: 90,
+        style: 12,
+        speakerBoost: true,
+        reduceBassDb: -4.5,
+        reduceEchoPct: 92,
+        environment: "studio",
+        caption: "Calm, authoritative key-takeaway delivery"
+      }
+    };
+
+    const ENV_SHORT_TO_INTERNAL = {
+      studio: "studio_booth",
+      studio_booth: "studio_booth",
+      hall: "lecture_hall",
+      lecture_hall: "lecture_hall",
+      outside: "outdoor",
+      outdoor: "outdoor",
+      hill: "warm_podcast",
+      warm_podcast: "warm_podcast"
+    };
+
+    const ENV_INTERNAL_TO_SHORT = {
+      studio_booth: "studio",
+      lecture_hall: "hall",
+      outdoor: "outside",
+      warm_podcast: "hill"
+    };
+
     const state = {
       view: "studio",
       rightTab: "settings",
@@ -1962,11 +2732,12 @@
       selectedVoice: "stock_aria",
       selectedCategory: "tech",
       selectedModel: "cloud-voice-v3.0-master",
+      activePreset: "best_teaching",
       speakerBoost: true,
       environment: "studio_booth",
       environmentLabel: "Studio Booth",
       domainPacks: JSON.parse(JSON.stringify(DEFAULT_DOMAIN_PACKS)),
-      trainGoal: "clarity",
+      trainGoal: "ultra_stable_teaching",
       teleprompterIdx: 0,
       currency: "USD",
       scriptDirty: false,
@@ -1980,6 +2751,7 @@
       ownerMode: false,
       localWorkstationOnline: false,
       voicesCatalog: [...PUBLIC_STUDIO_VOICES],
+      availableModels: [],
       ownerWorkspace: null,
       modelVersions: [],
       lastAudioUrl: "",
@@ -2048,6 +2820,12 @@
       document.querySelectorAll("[data-view-btn]").forEach((btn) => {
         btn.classList.toggle("active", btn.getAttribute("data-view-btn") === viewName);
       });
+      if (viewName === "train") {
+        pollLiveTrainingStatus(false);
+      } else if (viewName === "api") {
+        syncApiExplorerControls();
+        renderApiCodeAndResponse();
+      }
       window.scrollTo({ top: 0, behavior: "smooth" });
     }
 
@@ -2212,7 +2990,7 @@
       waDryGain.gain.value = 1.0 - wetAmt * 0.25;
     }
 
-    function onLiveSpeedInput(rawVal) {
+    function onLiveSpeedInput(rawVal, skipApiSync) {
       const spd = Number(rawVal) / 100;
       document.getElementById("valSpeed").textContent = spd.toFixed(2) + "x";
       const player = document.getElementById("vcAudioPlayer");
@@ -2222,12 +3000,18 @@
         player.webkitPreservesPitch = true;
         player.playbackRate = spd;
       }
+      if (!skipApiSync && typeof renderApiCodeAndResponse === "function") {
+        renderApiCodeAndResponse();
+      }
     }
 
-    function onSynthesisSettingChange(name, formatted) {
+    function onSynthesisSettingChange(name, formatted, skipApiSync) {
       const el = document.getElementById("val" + name);
       if (el) el.textContent = formatted;
       state.scriptDirty = true;
+      if (!skipApiSync && typeof renderApiCodeAndResponse === "function") {
+        renderApiCodeAndResponse();
+      }
     }
 
     function toggleSpeakerBoost() {
@@ -2235,18 +3019,25 @@
       state.speakerBoost = !state.speakerBoost;
       btn.classList.toggle("on", state.speakerBoost);
       state.scriptDirty = true;
+      if (typeof renderApiCodeAndResponse === "function") {
+        renderApiCodeAndResponse();
+      }
     }
 
-    function onLivePolishChange() {
+    function onLivePolishChange(skipApiSync) {
       const bassVal = Number(document.getElementById("rngBassCut").value || 45);
-      const echoVal = Number(document.getElementById("rngDeEcho").value || 90);
+      const echoVal = Number(document.getElementById("rngDeEcho").value || 92);
       document.getElementById("valBass").textContent = (bassVal === 0 ? "0.0" : ("-" + (bassVal / 10).toFixed(1))) + " dB";
       document.getElementById("valEcho").textContent = echoVal + "% Dry";
       state.polishTouched = true;
       applyLiveWebAudioParams();
+      if (!skipApiSync && typeof renderApiCodeAndResponse === "function") {
+        renderApiCodeAndResponse();
+      }
     }
 
-    function selectEnvironment(btn) {
+    function selectEnvironment(btn, skipApiSync) {
+      if (!btn) return;
       document.querySelectorAll(".env-btn").forEach((b) => b.classList.remove("active"));
       btn.classList.add("active");
       state.environment = btn.getAttribute("data-env") || "studio_booth";
@@ -2257,26 +3048,374 @@
       document.getElementById("vcAudioMetaTitle").innerHTML =
         escVc(state.environmentLabel) + ' • <span id="vcTimeLabel">' + escVc(curTimeTxt) + '</span>';
       applyLiveWebAudioParams();
+      if (!skipApiSync && typeof renderApiCodeAndResponse === "function") {
+        renderApiCodeAndResponse();
+      }
+    }
+
+    function applyStudioVoicePreset(presetId, opts = {}) {
+      const preset = STUDIO_VOICE_PRESETS[presetId] || STUDIO_VOICE_PRESETS.best_teaching;
+      state.activePreset = preset.id;
+
+      document.querySelectorAll(".preset-pill-btn").forEach((btn) => {
+        btn.classList.toggle("active", btn.getAttribute("data-preset-id") === preset.id);
+      });
+
+      const capEl = document.getElementById("vcPresetHelperCaption");
+      if (capEl) capEl.textContent = preset.caption;
+
+      const speedInt = String(Math.round(preset.speed * 100));
+      document.getElementById("rngSpeed").value = speedInt;
+      onLiveSpeedInput(speedInt, true);
+
+      document.getElementById("rngStability").value = String(preset.stability);
+      document.getElementById("valStability").textContent = preset.stability + "%";
+
+      document.getElementById("rngSimilarity").value = String(preset.similarity);
+      document.getElementById("valSimilarity").textContent = preset.similarity + "%";
+
+      document.getElementById("rngStyle").value = String(preset.style);
+      document.getElementById("valStyle").textContent = preset.style + "%";
+
+      state.speakerBoost = Boolean(preset.speakerBoost);
+      document.getElementById("spkBoostToggle").classList.toggle("on", state.speakerBoost);
+
+      const bassSliderVal = Math.max(0, Math.min(80, Math.round(Math.abs(Number(preset.reduceBassDb)) * 10)));
+      const echoSliderVal = Math.max(0, Math.min(100, Math.round(Number(preset.reduceEchoPct))));
+      document.getElementById("rngBassCut").value = String(bassSliderVal);
+      document.getElementById("rngDeEcho").value = String(echoSliderVal);
+
+      const targetInternalEnv = ENV_SHORT_TO_INTERNAL[preset.environment] || "studio_booth";
+      const envBtn = document.querySelector('.env-btn[data-env="' + targetInternalEnv + '"]');
+      if (envBtn) selectEnvironment(envBtn, true);
+
+      onLivePolishChange(true);
+
+      if (!opts.fromInit) {
+        state.scriptDirty = true;
+      } else {
+        state.polishTouched = false;
+      }
+
+      if (typeof renderApiCodeAndResponse === "function") {
+        renderApiCodeAndResponse();
+      }
+      if (!opts.silent && !opts.fromInit) {
+        notifyToast('Applied "' + preset.label.replace(" ★", "") + '" preset');
+      }
     }
 
     function resetAllVoiceValues() {
-      document.getElementById("rngSpeed").value = "100";
-      onLiveSpeedInput("100");
-      document.getElementById("rngStability").value = "72";
-      document.getElementById("valStability").textContent = "72%";
-      document.getElementById("rngSimilarity").value = "92";
-      document.getElementById("valSimilarity").textContent = "92%";
-      document.getElementById("rngStyle").value = "35";
-      document.getElementById("valStyle").textContent = "35%";
-      state.speakerBoost = true;
-      document.getElementById("spkBoostToggle").classList.add("on");
-      document.getElementById("rngBassCut").value = "45";
-      document.getElementById("rngDeEcho").value = "90";
-      const firstEnv = document.querySelector('.env-btn[data-env="studio_booth"]');
-      if (firstEnv) selectEnvironment(firstEnv);
-      onLivePolishChange();
+      applyStudioVoicePreset("best_teaching", { silent: true });
       state.polishTouched = false;
-      notifyToast("Reset sliders to clean Studio Booth defaults");
+      notifyToast("Reset sliders to Best for Teaching studio defaults");
+    }
+
+    // ========================================================================
+    // SYLLOVO STUDIO VOICE CONFIG JSON EXPORT / COPY+SYNC / LOAD
+    // ========================================================================
+    function showSyllovoShareStatus(msg, isErr) {
+      const el = document.getElementById("vcSyllovoShareStatus");
+      if (!el) return;
+      el.style.display = "block";
+      el.style.color = isErr ? "var(--danger-ink)" : "var(--ok-ink)";
+      el.textContent = msg;
+      clearTimeout(window.__syllovoShareTimer);
+      window.__syllovoShareTimer = setTimeout(() => { el.style.display = "none"; }, 4800);
+    }
+
+    function getCurrentVoiceSettingsNormalized() {
+      return {
+        speed: Number((Number(document.getElementById("rngSpeed").value || 95) / 100).toFixed(2)),
+        stability: Number((Number(document.getElementById("rngStability").value || 70) / 100).toFixed(2)),
+        similarity_boost: Number((Number(document.getElementById("rngSimilarity").value || 88) / 100).toFixed(2)),
+        style: Number((Number(document.getElementById("rngStyle").value || 10) / 100).toFixed(2)),
+        use_speaker_boost: Boolean(state.speakerBoost)
+      };
+    }
+
+    function getCurrentSoundPolishNormalized() {
+      const bassRaw = Number(document.getElementById("rngBassCut").value || 45);
+      const echoRaw = Number(document.getElementById("rngDeEcho").value || 92);
+      return {
+        reduceBassDb: Number((bassRaw === 0 ? 0 : -(bassRaw / 10)).toFixed(1)),
+        reduceEchoPct: Math.round(echoRaw),
+        environment: ENV_INTERNAL_TO_SHORT[state.environment] || "studio",
+        targetLufs: -20.5
+      };
+    }
+
+    function getNormalizedAvailableModelsForExport() {
+      const list = [
+        { id: "cloud-voice-v3.0-master", modelId: "cloud-voice-v3.0-master", label: "Cloud Voice v3.0 Studio Master", name: "Cloud Voice v3.0 Studio Master" },
+        { id: "cloud-voice-v3.0-flash", modelId: "cloud-voice-v3.0-flash", label: "Cloud Voice v3.0 Flash", name: "Cloud Voice v3.0 Flash" },
+        { id: "cloud-voice-v2.0-master", modelId: "cloud-voice-v2.0-master", label: "Cloud Voice v2.0 Studio Master", name: "Cloud Voice v2.0 Studio Master" }
+      ];
+      (state.availableModels || []).forEach((m) => {
+        const mid = m && (m.modelId || m.id);
+        if (mid && !list.some((x) => x.modelId === mid)) {
+          const nm = m.name || m.label || mid;
+          list.push({ id: mid, modelId: mid, label: nm, name: nm, customTrained: Boolean(m.customTrained) });
+        }
+      });
+      if (state.selectedModel && !list.some((x) => x.modelId === state.selectedModel)) {
+        list.push({ id: state.selectedModel, modelId: state.selectedModel, label: state.selectedModel, name: state.selectedModel });
+      }
+      return list;
+    }
+
+    function buildSyllovoVoiceProfilePayload() {
+      const activeObj = state.voicesCatalog.find((x) => x.id === state.selectedVoice) || PUBLIC_STUDIO_VOICES[0];
+      const vs = getCurrentVoiceSettingsNormalized();
+      const sp = getCurrentSoundPolishNormalized();
+      const activePlsDomains = state.domainPacks.filter((d) => d.enabled).map((d) => d.id);
+      const presetVal = state.activePreset || "best_teaching";
+      const syllovoPresetMap = { crisp_walkthrough: "code_cli_demo", natural_conv: "natural", exec_summary: "broadcast_calm" };
+      return {
+        schema: "aaruni.voice.profile/v1",
+        exportedAt: new Date().toISOString(),
+        provider: "aaruni-cloud-voice",
+        endpoint: "https://api.aarunicloud.com/v1",
+        voiceId: state.selectedVoice,
+        voiceName: activeObj ? (activeObj.name || activeObj.shortLabel || state.selectedVoice) : state.selectedVoice,
+        modelId: state.selectedModel,
+        preset: presetVal,
+        presetId: syllovoPresetMap[presetVal] || presetVal,
+        availableModels: getNormalizedAvailableModelsForExport(),
+        voiceSettings: vs,
+        soundPolish: sp,
+        plsDomains: activePlsDomains,
+        fallbackProvider: {
+          provider: "elevenlabs",
+          endpoint: "https://api.elevenlabs.io/v1",
+          modelId: "eleven_multilingual_v2",
+          voiceSettings: {
+            speed: vs.speed,
+            stability: 0.40,
+            similarity_boost: 0.82,
+            style: 0.08,
+            use_speaker_boost: true
+          }
+        }
+      };
+    }
+
+    async function persistVoiceProfileToCloud(payload) {
+      if (!state.apiKey) return;
+      try {
+        const res = await cloudFetch("/v1/voice/profile-config", {
+          method: "POST",
+          headers: getAuthHeaders({ "Content-Type": "application/json" }),
+          body: JSON.stringify({ config: payload })
+        });
+        const data = await res.json().catch(() => ({}));
+        if (res.ok && data.ok && Array.isArray(data.availableModels)) {
+          state.availableModels = data.availableModels;
+          syncModelSelectOptions();
+        }
+      } catch (_) {}
+    }
+
+    function downloadVoiceProfileJson() {
+      const payload = buildSyllovoVoiceProfilePayload();
+      const jsonText = JSON.stringify(payload, null, 2);
+      const blob = new Blob([jsonText], { type: "application/json;charset=utf-8" });
+      const dlUrl = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = dlUrl;
+      a.download = "aaruni-voice-profile.json";
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      setTimeout(() => URL.revokeObjectURL(dlUrl), 1200);
+      persistVoiceProfileToCloud(payload);
+      showSyllovoShareStatus("✓ Downloaded aaruni-voice-profile.json", false);
+      notifyToast("Downloaded aaruni-voice-profile.json");
+    }
+
+    async function copySyllovoVoiceConfig() {
+      const payload = buildSyllovoVoiceProfilePayload();
+      const jsonText = JSON.stringify(payload, null, 2);
+      try {
+        await navigator.clipboard.writeText(jsonText);
+      } catch (_) {
+        const ta = document.createElement("textarea");
+        ta.value = jsonText;
+        document.body.appendChild(ta);
+        ta.select();
+        document.execCommand("copy");
+        ta.remove();
+      }
+      await persistVoiceProfileToCloud(payload);
+      const msg = "✓ Copied! Paste or click Sync in Syllovo Studio.";
+      showSyllovoShareStatus(msg, false);
+      notifyToast(msg);
+    }
+
+    function syncModelSelectOptions() {
+      const baseModels = [
+        { modelId: "cloud-voice-v3.0-master", label: "Cloud Voice v3.0 Studio Master (Highest Clarity)", apiLabel: "cloud-voice-v3.0-master (Studio Master v3.0)" },
+        { modelId: "cloud-voice-v3.0-flash", label: "Cloud Voice v3.0 Flash (Fast Stream)", apiLabel: "cloud-voice-v3.0-flash (Low-Latency Flash)" },
+        { modelId: "cloud-voice-v2.0-master", label: "Cloud Voice v2.0 Studio Master (Reference)", apiLabel: "cloud-voice-v2.0-master (Classic v2.0)" }
+      ];
+      (state.availableModels || []).forEach((m) => {
+        const mid = m && (m.modelId || m.id);
+        if (mid && !baseModels.some((b) => b.modelId === mid)) {
+          const nm = m.name || m.label || mid;
+          baseModels.push({
+            modelId: mid,
+            label: nm,
+            apiLabel: mid + " (" + nm + ")"
+          });
+        }
+      });
+
+      const sideSel = document.getElementById("vcModelSelect");
+      if (sideSel) {
+        if (!baseModels.some((b) => b.modelId === state.selectedModel) && state.selectedModel) {
+          baseModels.push({
+            modelId: state.selectedModel,
+            label: state.selectedModel,
+            apiLabel: state.selectedModel
+          });
+        }
+        sideSel.innerHTML = baseModels.map((b) =>
+          '<option value="' + escVc(b.modelId) + '">' + escVc(b.label) + '</option>'
+        ).join("");
+        sideSel.value = state.selectedModel;
+      }
+
+      const apiSel = document.getElementById("apiParamModel");
+      if (apiSel) {
+        apiSel.innerHTML = baseModels.map((b) =>
+          '<option value="' + escVc(b.modelId) + '">' + escVc(b.apiLabel) + '</option>'
+        ).join("");
+        apiSel.value = state.selectedModel;
+      }
+    }
+
+    async function handleLoadVoiceProfileJson(event) {
+      const file = event.target && event.target.files && event.target.files[0];
+      if (!file) return;
+      try {
+        const rawText = await file.text();
+        const parsed = JSON.parse(rawText);
+        const cfg = (parsed && typeof parsed === "object")
+          ? (parsed.profile || parsed.profileConfig || parsed.config || parsed)
+          : null;
+        if (!cfg || typeof cfg !== "object" || (!cfg.schema && !cfg.voiceSettings && !cfg.soundPolish)) {
+          showSyllovoShareStatus("Invalid voice profile JSON format.", true);
+          notifyToast("Invalid voice profile JSON");
+          return;
+        }
+
+        if (Array.isArray(cfg.availableModels) && cfg.availableModels.length > 0) {
+          const existing = Array.isArray(state.availableModels) ? [...state.availableModels] : [];
+          cfg.availableModels.forEach((m) => {
+            const mid = m && (m.modelId || m.id);
+            if (mid && !existing.some((x) => (x.modelId || x.id) === mid)) {
+              existing.push({ id: mid, modelId: mid, label: m.label || m.name || mid, name: m.name || m.label || mid });
+            }
+          });
+          state.availableModels = existing;
+        }
+
+        const fromSyllovoPresetMap = { code_cli_demo: "crisp_walkthrough", natural: "natural_conv", broadcast_calm: "exec_summary" };
+        const rawImportedPreset = cfg.preset || cfg.presetId;
+        const importedPreset = fromSyllovoPresetMap[rawImportedPreset] || rawImportedPreset;
+        if (importedPreset && STUDIO_VOICE_PRESETS[importedPreset]) {
+          applyStudioVoicePreset(importedPreset, { silent: true });
+        } else {
+          state.activePreset = String(importedPreset || "best_teaching");
+          document.querySelectorAll(".preset-pill-btn").forEach((btn) => {
+            btn.classList.toggle("active", btn.getAttribute("data-preset-id") === state.activePreset);
+          });
+        }
+
+        if (cfg.modelId) {
+          state.selectedModel = String(cfg.modelId);
+          syncModelSelectOptions();
+        }
+
+        if (cfg.voiceId && state.voicesCatalog.some((v) => v.id === cfg.voiceId)) {
+          state.selectedVoice = String(cfg.voiceId);
+          renderVoiceSelectors();
+        }
+
+        const vs = cfg.voiceSettings && typeof cfg.voiceSettings === "object" ? cfg.voiceSettings : {};
+        if (vs.speed !== undefined) {
+          const spInt = Math.max(70, Math.min(120, Math.round(Number(vs.speed) * 100)));
+          document.getElementById("rngSpeed").value = String(spInt);
+          onLiveSpeedInput(String(spInt), true);
+        }
+        if (vs.stability !== undefined) {
+          const rawSt = Number(vs.stability);
+          const stPct = Math.max(0, Math.min(100, Math.round(rawSt <= 1 ? rawSt * 100 : rawSt)));
+          document.getElementById("rngStability").value = String(stPct);
+          document.getElementById("valStability").textContent = stPct + "%";
+        }
+        if (vs.similarity_boost !== undefined) {
+          const rawSim = Number(vs.similarity_boost);
+          const simPct = Math.max(0, Math.min(100, Math.round(rawSim <= 1 ? rawSim * 100 : rawSim)));
+          document.getElementById("rngSimilarity").value = String(simPct);
+          document.getElementById("valSimilarity").textContent = simPct + "%";
+        }
+        if (vs.style !== undefined) {
+          const rawSty = Number(vs.style);
+          const styPct = Math.max(0, Math.min(100, Math.round(rawSty <= 1 ? rawSty * 100 : rawSty)));
+          document.getElementById("rngStyle").value = String(styPct);
+          document.getElementById("valStyle").textContent = styPct + "%";
+        }
+        if (vs.use_speaker_boost !== undefined) {
+          state.speakerBoost = Boolean(vs.use_speaker_boost);
+          document.getElementById("spkBoostToggle").classList.toggle("on", state.speakerBoost);
+        }
+
+        const sp = cfg.soundPolish && typeof cfg.soundPolish === "object" ? cfg.soundPolish : {};
+        if (sp.reduceBassDb !== undefined) {
+          const bSlider = Math.max(0, Math.min(80, Math.round(Math.abs(Number(sp.reduceBassDb)) * 10)));
+          document.getElementById("rngBassCut").value = String(bSlider);
+        }
+        if (sp.reduceEchoPct !== undefined) {
+          const eSlider = Math.max(0, Math.min(100, Math.round(Number(sp.reduceEchoPct))));
+          document.getElementById("rngDeEcho").value = String(eSlider);
+        }
+        if (sp.environment) {
+          const internalEnv = ENV_SHORT_TO_INTERNAL[String(sp.environment).toLowerCase()] || "studio_booth";
+          const envBtn = document.querySelector('.env-btn[data-env="' + internalEnv + '"]');
+          if (envBtn) selectEnvironment(envBtn, true);
+        }
+        onLivePolishChange(true);
+
+        if (Array.isArray(cfg.plsDomains)) {
+          const wantSet = new Set(cfg.plsDomains.map((d) => String(d).toLowerCase()));
+          state.domainPacks.forEach((p) => {
+            p.enabled = wantSet.has(p.id);
+          });
+          renderDomainPacks();
+          refreshPlsHighlights();
+          if (state.apiKey) {
+            cloudFetch("/v1/voice/pls-domains", {
+              method: "POST",
+              headers: getAuthHeaders({ "Content-Type": "application/json" }),
+              body: JSON.stringify({ enabledDomains: cfg.plsDomains })
+            }).catch(() => {});
+          }
+        }
+
+        state.scriptDirty = true;
+        if (typeof syncApiExplorerControls === "function") syncApiExplorerControls();
+        if (typeof renderApiCodeAndResponse === "function") renderApiCodeAndResponse();
+        await persistVoiceProfileToCloud(buildSyllovoVoiceProfilePayload());
+
+        showSyllovoShareStatus("✓ Applied " + file.name + " to Studio Settings & Sound Polish.", false);
+        notifyToast("Loaded " + file.name);
+      } catch (_) {
+        showSyllovoShareStatus("Could not parse JSON profile file.", true);
+        notifyToast("Could not parse JSON file");
+      } finally {
+        if (event.target) event.target.value = "";
+      }
     }
 
     // ========================================================================
@@ -2434,16 +3573,19 @@
     // ========================================================================
     function renderDomainPacks() {
       const box = document.getElementById("vcDomainPacksList");
-      if (!box) return;
-      box.innerHTML = state.domainPacks.map((p, idx) =>
-        '<div class="domain-pack-row' + (p.enabled ? " enabled" : "") + '">' +
-          '<div style="min-width:0;">' +
-            '<div style="font-size:12px;font-weight:600;color:#111827;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">' + escVc(p.name) + '</div>' +
-            '<div style="font-size:11px;color:#6B7280;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">' + escVc(p.meta) + '</div>' +
-          '</div>' +
-          '<button type="button" class="el-switch' + (p.enabled ? " on" : "") + '" onclick="toggleDomainPack(' + idx + ')" aria-label="Toggle ' + escVc(p.name) + '"></button>' +
-        '</div>'
-      ).join("");
+      if (box) {
+        box.innerHTML = state.domainPacks.map((p, idx) =>
+          '<div class="domain-pack-row' + (p.enabled ? " enabled" : "") + '">' +
+            '<div style="min-width:0;">' +
+              '<div style="font-size:12px;font-weight:600;color:#111827;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">' + escVc(p.name) + '</div>' +
+              '<div style="font-size:11px;color:#6B7280;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">' + escVc(p.meta) + '</div>' +
+            '</div>' +
+            '<button type="button" class="el-switch' + (p.enabled ? " on" : "") + '" onclick="toggleDomainPack(' + idx + ')" aria-label="Toggle ' + escVc(p.name) + '"></button>' +
+          '</div>'
+        ).join("");
+      }
+      if (typeof syncApiExplorerControls === "function") syncApiExplorerControls();
+      if (typeof renderApiCodeAndResponse === "function") renderApiCodeAndResponse();
     }
 
     async function toggleDomainPack(idx) {
@@ -3356,12 +4498,114 @@
       });
     }
 
+    function renderLiveTrainingTelemetry(info) {
+      const card = document.getElementById("liveTrainingMonitorCard");
+      if (!card) return;
+      if (!info) {
+        card.style.display = "none";
+        return;
+      }
+      card.style.display = "block";
+      document.getElementById("liveTrainJobTitle").textContent = info.jobId || "job_v30_overnight_ultra_stable_3node";
+      document.getElementById("liveTrainRoundBadge").textContent = info.roundLabel || "Active Pass";
+      document.getElementById("liveTrainStepCounter").textContent = info.stepSummary;
+      document.getElementById("liveTrainPctLabel").textContent = Math.round(info.pct) + "%";
+      document.getElementById("liveTrainProgressBar").style.width = Math.max(2, Math.min(100, info.pct)).toFixed(1) + "%";
+    }
+
+    function normalizeLiveTrainingTelemetry(raw, fromLocalDaemon) {
+      if (!raw || typeof raw !== "object") return null;
+      const job = raw.activeJob || raw.currentJob || raw.overnightJob || raw.job || (Array.isArray(raw.jobs) && raw.jobs[0]) || raw;
+      if (!job || typeof job !== "object") return null;
+
+      const jobId = String(job.jobId || job.job_id || job.id || raw.jobId || raw.job_id || "").trim();
+      const st = String(job.status || job.state || raw.status || "").toLowerCase();
+      const isRunning = Boolean(
+        raw.running || raw.isRunning || raw.is_running ||
+        job.running || job.isRunning || job.is_running ||
+        st === "running" || st === "training" || st === "in_progress" || st === "active"
+      );
+
+      const stepVal = Number(job.step ?? job.currentStep ?? job.current_step ?? job.global_step ?? job.completedSteps ?? raw.step ?? raw.currentStep ?? 0);
+      const totalVal = Number(job.totalSteps ?? job.total_steps ?? job.maxSteps ?? job.max_steps ?? job.steps ?? raw.totalSteps ?? raw.maxSteps ?? 0);
+      const roundRaw = job.round ?? job.currentRound ?? job.current_round ?? job.epoch ?? job.cycle ?? raw.round ?? null;
+      const pctRaw = job.progressPct ?? job.progress_pct ?? job.percent ?? job.pct ?? raw.progressPct ?? raw.percent ?? null;
+
+      if (!isRunning && !jobId && !(fromLocalDaemon && stepVal > 0)) {
+        return null;
+      }
+
+      const defaultTotal = totalVal > 0 ? totalVal : (jobId.includes("overnight") ? 3600 : 1200);
+      const effectiveStep = stepVal > 0 ? stepVal : (st === "completed" ? defaultTotal : 0);
+      const pct = (pctRaw !== null && pctRaw !== undefined && isFinite(Number(pctRaw)))
+        ? Math.max(0, Math.min(100, Number(pctRaw)))
+        : Math.max(0, Math.min(100, (effectiveStep / Math.max(1, defaultTotal)) * 100));
+
+      const detailMsg = String(
+        job.message || job.statusText || job.phase || job.targetNote ||
+        (isRunning ? "Aligning studio cadence & prosody stability..." : (st === "completed" ? "Completed studio refinement pass" : "Ready on local studio compute"))
+      );
+
+      return {
+        jobId: jobId || "job_v30_overnight_ultra_stable_3node",
+        roundLabel: (roundRaw !== null && roundRaw !== undefined && roundRaw !== "")
+          ? ("Round " + roundRaw)
+          : (isRunning ? "Live Pass" : "Studio Build"),
+        stepSummary: "Step " + effectiveStep.toLocaleString() + " / " + defaultTotal.toLocaleString() + " • " + detailMsg,
+        pct,
+        isRunning
+      };
+    }
+
+    async function pollLiveTrainingStatus(manualClick) {
+      // 1. Poll local workstation daemon (:8766) first with short timeout & silent fallback
+      try {
+        const ctrl = new AbortController();
+        const t = setTimeout(() => ctrl.abort(), 1400);
+        const lRes = await fetch(LOCAL_WORKSTATION + "/api/v1/training/status", { signal: ctrl.signal });
+        clearTimeout(t);
+        if (lRes.ok) {
+          state.localWorkstationOnline = true;
+          const badge = document.getElementById("vcZeroCostComputeBadge");
+          if (badge) badge.style.display = "inline-flex";
+          const lData = await lRes.json().catch(() => ({}));
+          const parsedLocal = normalizeLiveTrainingTelemetry(lData, true);
+          if (parsedLocal) {
+            renderLiveTrainingTelemetry(parsedLocal);
+            if (manualClick) notifyToast("Synced live local compute status ($0.00 • 0 credits)");
+            return;
+          }
+        }
+      } catch (_) {}
+
+      // 2. Graceful cloud fallback (/v1/voice/train)
+      if (state.apiKey) {
+        try {
+          const cRes = await cloudFetch("/v1/voice/train", { headers: getAuthHeaders() });
+          const cData = await cRes.json().catch(() => ({}));
+          if (cRes.ok && cData.ok && Array.isArray(cData.jobs) && cData.jobs.length > 0) {
+            const parsedCloud = normalizeLiveTrainingTelemetry(cData, false);
+            if (parsedCloud && (parsedCloud.isRunning || state.ownerMode)) {
+              renderLiveTrainingTelemetry(parsedCloud);
+              if (manualClick) notifyToast("Synced latest studio training build");
+              return;
+            }
+          }
+        } catch (_) {}
+      }
+
+      if (manualClick) {
+        notifyToast("Studio compute idle • Ready to trigger training ($0.00)");
+      }
+    }
+
     async function startIncrementalTraining() {
       if (!state.apiKey && !state.localWorkstationOnline) {
         openAuthModal();
         return;
       }
       const trainingMode = document.getElementById("trainModeSelect").value || "deep_parallel";
+      const targetNote = (document.getElementById("trainTargetNoteInput").value || "").trim();
       const btn = document.getElementById("btnStartIncrementalTrain");
       const progWrap = document.getElementById("trainProgressWrap");
       const progBar = document.getElementById("trainProgressBar");
@@ -3379,18 +4623,22 @@
             improveGoal: state.trainGoal,
             goal: state.trainGoal,
             trainingMode,
-            mode: trainingMode === "deep_parallel" ? "deep_studio" : "quick_polish",
+            mode: trainingMode === "continuous_overnight"
+              ? "continuous_overnight"
+              : (trainingMode === "deep_parallel" ? "deep_studio" : "quick_polish"),
+            targetNote,
             voiceId: state.selectedVoice
           })
         }).catch(() => {});
       }
 
       try {
+        let createdJobId = "";
         if (state.apiKey) {
           const res = await cloudFetch("/v1/voice/train", {
             method: "POST",
             headers: getAuthHeaders({ "Content-Type": "application/json" }),
-            body: JSON.stringify({ improveGoal: state.trainGoal, trainingMode })
+            body: JSON.stringify({ improveGoal: state.trainGoal, trainingMode, targetNote })
           });
           const data = await res.json().catch(() => ({}));
           if (res.status === 402) {
@@ -3401,31 +4649,49 @@
             showStatus("vcIncrementalTrainStatus", data.error || "Could not start training.", true);
             return;
           }
+          createdJobId = data.jobId || "";
         }
+
+        const totalStepsMap = { quick_polish: 200, deep_parallel: 1200, continuous_overnight: 3600 };
+        const stepsCount = totalStepsMap[trainingMode] || 1200;
 
         progWrap.style.display = "block";
         progBar.style.width = "38%";
         progPct.textContent = "38%";
-        progLbl.textContent = "Aligning studio booth samples across Cloud Compute...";
+        progLbl.textContent = "Aligning studio booth samples across local compute ($0.00)...";
 
         setTimeout(() => {
           progBar.style.width = "76%";
           progPct.textContent = "76%";
-          progLbl.textContent = "Running anti-boxiness & clarity verification gate...";
+          progLbl.textContent = "Running anti-boxiness & .pls clarity verification gate...";
         }, 600);
 
         setTimeout(async () => {
           progBar.style.width = "100%";
           progPct.textContent = "100%";
-          progLbl.textContent = "✓ Studio build ready";
-          showStatus("vcIncrementalTrainStatus", "✓ Incremental training pass complete. Build added to Model Versions above.");
+          progLbl.textContent = "✓ Studio build ready (" + stepsCount.toLocaleString() + " steps • $0.00 cost)";
+          showStatus(
+            "vcIncrementalTrainStatus",
+            "✓ Voice refinement pass queued/completed (" + (createdJobId || trainingMode) + " • Local Compute $0.00 • 0 AI Credits)."
+          );
           await loadModelVersionsList();
+          await pollLiveTrainingStatus(false);
+          if (state.apiKey) {
+            try {
+              const profRes = await cloudFetch("/v1/voice/profile-config", { headers: getAuthHeaders() });
+              const profData = await profRes.json().catch(() => ({}));
+              if (profRes.ok && profData.ok && Array.isArray(profData.availableModels)) {
+                state.availableModels = profData.availableModels;
+                syncModelSelectOptions();
+              }
+            } catch (_) {}
+          }
         }, 1300);
       } catch (err) {
         showStatus("vcIncrementalTrainStatus", err.message, true);
       } finally {
         btn.disabled = false;
-        btn.textContent = "Start Training";
+        btn.textContent = "Trigger Voice Training Again";
       }
     }
 
@@ -3552,6 +4818,15 @@
       document.getElementById("vcInstantLockBox").style.display = canInstantClone ? "none" : "flex";
       document.getElementById("vcInstantCloneForm").style.display = canInstantClone ? "flex" : "none";
       document.getElementById("vcTrainTierBanner").style.display = canFullTrain ? "none" : "flex";
+
+      const ownerRefineLink = document.getElementById("vcOwnerRefineLink");
+      if (ownerRefineLink) {
+        ownerRefineLink.style.display = state.ownerMode ? "inline-block" : "none";
+      }
+      const zeroCostBadge = document.getElementById("vcZeroCostComputeBadge");
+      if (zeroCostBadge) {
+        zeroCostBadge.style.display = (state.ownerMode || state.localWorkstationOnline) ? "inline-flex" : "none";
+      }
     }
 
     function fileToBase64(file) {
@@ -3695,13 +4970,18 @@
           state.ownerMode = Boolean(state.localWorkstationOnline);
           state.ownerWorkspace = null;
           state.voicesCatalog = [...PUBLIC_STUDIO_VOICES];
+          state.availableModels = [];
           state.selectedVoice = "stock_aria";
+          apiExplorerState.keyRevealed = false;
           document.getElementById("vcAuthBtn").textContent = "Sign in";
           document.getElementById("vcCreditText").textContent = "10,000 free credits";
           document.getElementById("vcTopVersionBadge").textContent = "v3.0";
-          document.getElementById("vcApiKeyDisplay").value = "Sign in to view or copy your scoped API key";
+          refreshScopedApiKeyDisplay();
           updateConsoleSsoLinks();
+          syncModelSelectOptions();
           renderVoiceSelectors();
+          syncApiExplorerControls();
+          renderApiCodeAndResponse();
           updatePlanGatesUI();
           loadModelVersionsList();
         }
@@ -3857,15 +5137,66 @@
       refreshAccountAndVoices();
     }
 
-    function updateCurlSnippet() {
-      const box = document.getElementById("vcCurlSnippet");
-      if (!box) return;
-      box.textContent =
-`curl -X POST "https://api.aarunicloud.com/v1/text-to-speech/${state.selectedVoice}" \\
-  -H "xi-api-key: $AARUNI_API_KEY" \\
-  -H "Content-Type: application/json" \\
-  -d '{"text":"Deploying OAuth2 and PostgreSQL via CI/CD.","model_id":"${state.selectedModel}"}' \\
-  --output studio.mp3`;
+    // ========================================================================
+    // FULL 9-TAB CLOUD DEVELOPER API & SDK EXPLORER + LIVE TEST RUNNER
+    // ========================================================================
+    const apiExplorerState = {
+      ep: "tts",
+      lang: "js",
+      status: 200,
+      keyRevealed: false,
+      rawCode: "",
+      liveResponseByStatus: {}
+    };
+
+    const SDK_INSTALL_META = {
+      js: { label: "Quick Install — JavaScript (Node 20+ / Edge)", cmd: "npm install @aarunicloud/voice" },
+      ts: { label: "Quick Install — TypeScript (Strict Types)", cmd: "npm install @aarunicloud/voice" },
+      py: { label: "Quick Install — Python 3.10+ (Sync & Async)", cmd: "pip install aarunicloud" },
+      curl: { label: "REST Endpoint — Zero Dependencies", cmd: 'export AARUNI_API_KEY="acloud_live_..."' },
+      go: { label: "Quick Install — Go 1.22+ SDK", cmd: "go get github.com/aarunicloud/aarunicloud-go" },
+      csharp: { label: "Quick Install — .NET 8+ NuGet", cmd: "dotnet add package AaruniCloud.Voice" },
+      java: { label: "Quick Install — Java 21+ (Maven / Gradle)", cmd: 'implementation("com.aarunicloud:voice-sdk:3.0.0")' },
+      php: { label: "Quick Install — PHP 8.2+ / CLI", cmd: "composer require aarunicloud/voice-sdk" },
+      syllovo: { label: "Syllovo Studio Sync — Profile Endpoint", cmd: "https://api.aarunicloud.com/v1/voice/profile-config" }
+    };
+
+    function maskApiKeyValue(k) {
+      const s = String(k || "");
+      if (s.length <= 16) return "acloud_live_9f8a••••••••••••••••••••4c2e";
+      return s.slice(0, 12) + "••••••••••••••••••••" + s.slice(-4);
+    }
+
+    function refreshScopedApiKeyDisplay() {
+      const inp = document.getElementById("vcApiKeyDisplay");
+      const btn = document.getElementById("vcRevealKeyBtn");
+      if (!inp) return;
+      const hasRealKey = Boolean(state.apiKey && (!state.user || !state.user.isGuest));
+      if (!hasRealKey) {
+        inp.value = "acloud_live_9f8a••••••••••••••••••••4c2e";
+        if (btn) btn.textContent = "Reveal";
+        return;
+      }
+      inp.value = apiExplorerState.keyRevealed ? state.apiKey : maskApiKeyValue(state.apiKey);
+      if (btn) btn.textContent = apiExplorerState.keyRevealed ? "Hide" : "Reveal";
+    }
+
+    function toggleRevealScopedApiKey() {
+      const hasRealKey = Boolean(state.apiKey && (!state.user || !state.user.isGuest));
+      if (!hasRealKey) {
+        openAuthModal();
+        return;
+      }
+      apiExplorerState.keyRevealed = !apiExplorerState.keyRevealed;
+      refreshScopedApiKeyDisplay();
+    }
+
+    function flashInlineToast(id) {
+      const el = document.getElementById(id);
+      if (!el) return;
+      el.style.display = "inline";
+      clearTimeout(el.__timer);
+      el.__timer = setTimeout(() => { el.style.display = "none"; }, 2200);
     }
 
     function copyScopedApiKey() {
@@ -3874,10 +5205,733 @@
         return;
       }
       navigator.clipboard.writeText(state.apiKey).then(() => {
-        const toast = document.getElementById("vcCopyKeyToast");
-        toast.style.display = "block";
-        setTimeout(() => { toast.style.display = "none"; }, 2500);
+        flashInlineToast("vcCopyKeyToast");
+      }).catch(() => {});
+    }
+
+    function copySdkInstallCmd() {
+      const cmdEl = document.getElementById("sdkInstallCmd");
+      if (!cmdEl) return;
+      navigator.clipboard.writeText(cmdEl.textContent || "").then(() => {
+        flashInlineToast("sdkInstallToast");
+      }).catch(() => {});
+    }
+
+    function copyApiCodeSnippet() {
+      navigator.clipboard.writeText(apiExplorerState.rawCode || "").then(() => {
+        flashInlineToast("apiCodeToast");
+        notifyToast("Copied code snippet to clipboard");
+      }).catch(() => {});
+    }
+
+    function syncApiExplorerControls() {
+      const voiceSel = document.getElementById("apiParamVoice");
+      if (voiceSel) {
+        const ordered = [
+          ...state.voicesCatalog.filter((v) => v.privateOwner),
+          ...state.voicesCatalog.filter((v) => !v.privateOwner)
+        ];
+        voiceSel.innerHTML = ordered.map((v) => {
+          const lbl = v.shortLabel || v.name;
+          const role = v.role || "Studio Voice";
+          return '<option value="' + escVc(v.id) + '">' + escVc(v.id + " (" + lbl + " — " + role + ")") + '</option>';
+        }).join("");
+        voiceSel.value = state.selectedVoice;
+      }
+
+      syncModelSelectOptions();
+
+      const pillsBox = document.getElementById("apiPlsPackPills");
+      if (pillsBox) {
+        const shortLabels = {
+          tech: "tech",
+          medical: "medical",
+          finance: "finance",
+          legal: "legal",
+          stem: "stem"
+        };
+        pillsBox.innerHTML = state.domainPacks.map((p, idx) =>
+          '<button type="button" class="pls-pack-pill' + (p.enabled ? " on" : "") + '" onclick="toggleDomainPack(' + idx + ')">' +
+            (p.enabled ? "✓ " : "+ ") + escVc(shortLabels[p.id] || p.id) +
+          '</button>'
+        ).join("");
+      }
+    }
+
+    function onApiExplorerParamChange(kind) {
+      if (kind === "voice") {
+        const vId = document.getElementById("apiParamVoice").value;
+        if (vId) selectVoice(vId, false);
+      } else if (kind === "model") {
+        const mId = document.getElementById("apiParamModel").value;
+        if (mId) {
+          const sideSel = document.getElementById("vcModelSelect");
+          if (sideSel) sideSel.value = mId;
+          onModelChange(mId);
+        }
+      }
+      renderApiCodeAndResponse();
+    }
+
+    function selectApiEndpoint(ep) {
+      apiExplorerState.ep = ep;
+      apiExplorerState.liveResponseByStatus = {};
+      const liveBadge = document.getElementById("apiLiveRunBadge");
+      if (liveBadge) liveBadge.style.display = "none";
+      document.querySelectorAll("#apiEndpointList .ep-item").forEach((b) => {
+        b.classList.toggle("active", b.getAttribute("data-ep") === ep);
       });
+      renderApiCodeAndResponse();
+    }
+
+    function selectApiLang(lang) {
+      apiExplorerState.lang = lang;
+      document.querySelectorAll("#apiLangTabs .lang-tab").forEach((b) => {
+        b.classList.toggle("active", b.getAttribute("data-lang") === lang);
+      });
+      const meta = SDK_INSTALL_META[lang] || SDK_INSTALL_META.js;
+      const lbl = document.getElementById("sdkInstallLabel");
+      const cmd = document.getElementById("sdkInstallCmd");
+      if (lbl) lbl.textContent = meta.label;
+      if (cmd) cmd.textContent = meta.cmd;
+      renderApiCodeAndResponse();
+    }
+
+    function selectApiStatus(code) {
+      apiExplorerState.status = Number(code) || 200;
+      const st200 = document.getElementById("apiSt200");
+      const st401 = document.getElementById("apiSt401");
+      const st402 = document.getElementById("apiSt402");
+      const st429 = document.getElementById("apiSt429");
+      if (st200) st200.className = "st-pill" + (apiExplorerState.status === 200 ? " active-ok" : "");
+      if (st401) st401.className = "st-pill" + (apiExplorerState.status === 401 ? " active-err" : "");
+      if (st402) st402.className = "st-pill" + (apiExplorerState.status === 402 ? " active-warn" : "");
+      if (st429) st429.className = "st-pill" + (apiExplorerState.status === 429 ? " active-warn" : "");
+      renderApiCodeAndResponse();
+    }
+
+    function highlightLightCode(raw) {
+      const src = String(raw || "");
+      const tokenRx = /(\/\/[^\n]*|^\s*#[^\n]*|\s#[^\n]*)|("(?:\\.|[^"\\])*"|'(?:\\.|[^'\\])*'|`(?:\\.|[^`\\])*`)|\b(import|from|const|let|var|await|async|new|return|for|if|else|package|func|using|public|class|static|void|def|with|as|export|interface)\b|\b(true|false|null|True|False|None)\b|\b(\d+(?:\.\d+)?)\b/gm;
+      let out = "";
+      let lastIdx = 0;
+      let m;
+      while ((m = tokenRx.exec(src)) !== null) {
+        if (m.index > lastIdx) {
+          out += escVc(src.slice(lastIdx, m.index));
+        }
+        const full = m[0];
+        if (m[1] !== undefined) {
+          const lead = full.match(/^(\s+)(#[\s\S]*)$/);
+          if (lead && !full.startsWith("//") && !full.startsWith("#")) {
+            out += escVc(lead[1]) + '<span class="tok-cmt">' + escVc(lead[2]) + '</span>';
+          } else {
+            out += '<span class="tok-cmt">' + escVc(full) + '</span>';
+          }
+        } else if (m[2] !== undefined) {
+          out += '<span class="tok-str">' + escVc(full) + '</span>';
+        } else if (m[3] !== undefined) {
+          out += '<span class="tok-kw">' + escVc(full) + '</span>';
+        } else if (m[4] !== undefined) {
+          out += '<span class="tok-fn">' + escVc(full) + '</span>';
+        } else if (m[5] !== undefined) {
+          out += '<span class="tok-num">' + escVc(full) + '</span>';
+        } else {
+          out += escVc(full);
+        }
+        lastIdx = tokenRx.lastIndex;
+      }
+      if (lastIdx < src.length) {
+        out += escVc(src.slice(lastIdx));
+      }
+      return out;
+    }
+
+    function getApiExplorerParams() {
+      const fmtEl = document.getElementById("apiParamFormat");
+      const txtEl = document.getElementById("apiParamText");
+      const vs = getCurrentVoiceSettingsNormalized();
+      const sp = getCurrentSoundPolishNormalized();
+      const pls = state.domainPacks.filter((d) => d.enabled).map((d) => d.id);
+      const rawText = (txtEl && txtEl.value ? txtEl.value : "").trim() ||
+        "Configure OAuth2 with --cpus=2 and export SARIF findings before production release.";
+      return {
+        voiceId: state.selectedVoice || "stock_aria",
+        modelId: state.selectedModel || "cloud-voice-v3.0-master",
+        format: (fmtEl && fmtEl.value) ? fmtEl.value : "mp3_44100_192",
+        pls,
+        plsJson: JSON.stringify(pls),
+        text: rawText,
+        cleanText: rawText.replace(/\\/g, "\\\\").replace(/"/g, '\\"').replace(/\n/g, " "),
+        vs,
+        sp
+      };
+    }
+
+    function buildApiCodeSnippet(ep, lang, p) {
+      if (lang === "syllovo") {
+        return JSON.stringify(buildSyllovoVoiceProfilePayload(), null, 2);
+      }
+
+      const vsJsonInline = JSON.stringify({
+        speed: p.vs.speed,
+        stability: p.vs.stability,
+        similarity_boost: p.vs.similarity_boost,
+        style: p.vs.style,
+        use_speaker_boost: p.vs.use_speaker_boost
+      });
+
+      if (ep === "tts") {
+        switch (lang) {
+          case "js":
+            return `import { AaruniVoiceClient } from "@aarunicloud/voice";
+import { writeFile } from "node:fs/promises";
+
+const voice = new AaruniVoiceClient({
+  apiKey: process.env.AARUNI_API_KEY, // Scoped: tts:write
+});
+
+const audio = await voice.textToSpeech.convert("${p.voiceId}", {
+  text: "${p.cleanText}",
+  modelId: "${p.modelId}",
+  outputFormat: "${p.format}",
+  plsDomains: ${p.plsJson},
+  voiceSettings: {
+    speed: ${p.vs.speed},
+    stability: ${p.vs.stability},
+    similarityBoost: ${p.vs.similarity_boost},
+    style: ${p.vs.style},
+    useSpeakerBoost: ${p.vs.use_speaker_boost},
+  },
+});
+
+await writeFile("narration.mp3", Buffer.from(audio));`;
+
+          case "ts":
+            return `import { AaruniVoiceClient, type ConvertSpeechOptions } from "@aarunicloud/voice";
+
+const client = new AaruniVoiceClient({
+  apiKey: process.env.AARUNI_API_KEY!,
+  timeoutMs: 15000,
+  maxRetries: 2,
+});
+
+const params: ConvertSpeechOptions = {
+  text: "${p.cleanText}",
+  modelId: "${p.modelId}",
+  outputFormat: "${p.format}",
+  plsDomains: ${p.plsJson},
+  voiceSettings: {
+    speed: ${p.vs.speed},
+    stability: ${p.vs.stability},
+    similarityBoost: ${p.vs.similarity_boost},
+    style: ${p.vs.style},
+    useSpeakerBoost: ${p.vs.use_speaker_boost},
+  },
+};
+
+const { audioBytes, requestId, creditsUsed } = await client.textToSpeech.convertWithMeta("${p.voiceId}", params);
+console.log({ requestId, creditsUsed, bytes: audioBytes.byteLength });`;
+
+          case "py":
+            return `import os
+from aarunicloud import AaruniVoice
+
+client = AaruniVoice(api_key=os.environ["AARUNI_API_KEY"])
+
+audio_bytes = client.text_to_speech.convert(
+    voice_id="${p.voiceId}",
+    text="${p.cleanText}",
+    model_id="${p.modelId}",
+    output_format="${p.format}",
+    pls_domains=${p.plsJson},
+    voice_settings={
+        "speed": ${p.vs.speed},
+        "stability": ${p.vs.stability},
+        "similarity_boost": ${p.vs.similarity_boost},
+        "style": ${p.vs.style},
+        "use_speaker_boost": ${p.vs.use_speaker_boost ? "True" : "False"},
+    },
+)
+
+with open("narration.mp3", "wb") as f:
+    f.write(audio_bytes)`;
+
+          case "curl":
+            return `curl -X POST "https://api.aarunicloud.com/v1/text-to-speech/${p.voiceId}" \\
+  -H "Authorization: Bearer $AARUNI_API_KEY" \\
+  -H "Content-Type: application/json" \\
+  -d '{
+    "text": "${p.cleanText}",
+    "model_id": "${p.modelId}",
+    "output_format": "${p.format}",
+    "pls_domains": ${p.plsJson},
+    "voice_settings": ${vsJsonInline}
+  }' \\
+  --output narration.mp3`;
+
+          case "go":
+            return `package main
+
+import (
+	"context"
+	"os"
+	aaruni "github.com/aarunicloud/aarunicloud-go"
+)
+
+func main() {
+	client := aaruni.NewClient(os.Getenv("AARUNI_API_KEY"))
+
+	audio, err := client.TextToSpeech.Convert(context.Background(), "${p.voiceId}", aaruni.TTSParams{
+		Text:         "${p.cleanText}",
+		ModelID:      "${p.modelId}",
+		OutputFormat: "${p.format}",
+		PLSDomains:   []string{${p.pls.map((x) => '"' + x + '"').join(", ")}},
+		Speed:        ${p.vs.speed},
+		Stability:    ${p.vs.stability},
+		Similarity:   ${p.vs.similarity_boost},
+		Style:        ${p.vs.style},
+	})
+	if err != nil {
+		panic(err)
+	}
+	_ = os.WriteFile("narration.mp3", audio, 0644)
+}`;
+
+          case "csharp":
+            return `using AaruniCloud.Voice;
+
+var client = new AaruniVoiceClient(Environment.GetEnvironmentVariable("AARUNI_API_KEY")!);
+
+byte[] audio = await client.TextToSpeech.ConvertAsync(
+    voiceId: "${p.voiceId}",
+    new ConvertSpeechRequest
+    {
+        Text = "${p.cleanText}",
+        ModelId = "${p.modelId}",
+        OutputFormat = "${p.format}",
+        PlsDomains = new[] { ${p.pls.map((x) => '"' + x + '"').join(", ")} },
+        Speed = ${p.vs.speed}f,
+        Stability = ${p.vs.stability}f,
+        SimilarityBoost = ${p.vs.similarity_boost}f,
+        Style = ${p.vs.style}f
+    }
+);
+
+await File.WriteAllBytesAsync("narration.mp3", audio);`;
+
+          case "java":
+            return `import com.aarunicloud.voice.AaruniVoiceClient;
+import com.aarunicloud.voice.models.ConvertRequest;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.util.List;
+
+public class StudioDemo {
+    public static void main(String[] args) throws Exception {
+        var client = AaruniVoiceClient.builder()
+            .apiKey(System.getenv("AARUNI_API_KEY"))
+            .build();
+
+        byte[] mp3 = client.textToSpeech().convert("${p.voiceId}", ConvertRequest.builder()
+            .text("${p.cleanText}")
+            .modelId("${p.modelId}")
+            .outputFormat("${p.format}")
+            .plsDomains(List.of(${p.pls.map((x) => '"' + x + '"').join(", ")}))
+            .speed(${p.vs.speed})
+            .stability(${p.vs.stability})
+            .similarityBoost(${p.vs.similarity_boost})
+            .style(${p.vs.style})
+            .build());
+
+        Files.write(Path.of("narration.mp3"), mp3);
+    }
+}`;
+
+          case "php":
+            return `<?php
+require __DIR__ . '/vendor/autoload.php';
+
+use AaruniCloud\\Voice\\VoiceClient;
+
+$client = new VoiceClient(getenv('AARUNI_API_KEY'));
+
+$audio = $client->textToSpeech->convert('${p.voiceId}', [
+    'text' => "${p.cleanText}",
+    'model_id' => '${p.modelId}',
+    'output_format' => '${p.format}',
+    'pls_domains' => [${p.pls.map((x) => "'" + x + "'").join(", ")}],
+    'voice_settings' => [
+        'speed' => ${p.vs.speed},
+        'stability' => ${p.vs.stability},
+        'similarity_boost' => ${p.vs.similarity_boost},
+        'style' => ${p.vs.style},
+    ],
+]);
+
+file_put_contents('narration.mp3', $audio);`;
+        }
+      }
+
+      if (ep === "stream") {
+        switch (lang) {
+          case "py":
+            return `import os
+from aarunicloud import AaruniVoice
+
+client = AaruniVoice(api_key=os.environ["AARUNI_API_KEY"])
+
+# Stream low-latency audio chunks in real time
+stream = client.text_to_speech.stream(
+    voice_id="${p.voiceId}",
+    text="${p.cleanText}",
+    model_id="cloud-voice-v3.0-flash",
+    output_format="${p.format}",
+    pls_domains=${p.plsJson},
+    voice_settings={"speed": ${p.vs.speed}, "stability": ${p.vs.stability}},
+)
+
+with open("live_stream.mp3", "wb") as out:
+    for chunk in stream:
+        out.write(chunk)`;
+
+          case "curl":
+            return `curl -N -X POST "https://api.aarunicloud.com/v1/text-to-speech/${p.voiceId}/stream" \\
+  -H "Authorization: Bearer $AARUNI_API_KEY" \\
+  -H "Content-Type: application/json" \\
+  -d '{
+    "text": "${p.cleanText}",
+    "model_id": "cloud-voice-v3.0-flash",
+    "output_format": "${p.format}",
+    "pls_domains": ${p.plsJson},
+    "voice_settings": ${vsJsonInline}
+  }' \\
+  --output live_stream.mp3`;
+
+          default:
+            return `import { AaruniVoiceClient } from "@aarunicloud/voice";
+
+const voice = new AaruniVoiceClient({ apiKey: process.env.AARUNI_API_KEY });
+
+// Chunked HTTP/2 Transfer-Encoding stream for conversational agents
+const audioStream = await voice.textToSpeech.stream("${p.voiceId}", {
+  text: "${p.cleanText}",
+  modelId: "cloud-voice-v3.0-flash",
+  outputFormat: "${p.format}",
+  plsDomains: ${p.plsJson},
+  voiceSettings: {
+    speed: ${p.vs.speed},
+    stability: ${p.vs.stability},
+    similarityBoost: ${p.vs.similarity_boost},
+    style: ${p.vs.style},
+  },
+});
+
+for await (const chunk of audioStream) {
+  process.stdout.write(chunk); // Pipe directly to WebSocket / WebAudio player
+}`;
+        }
+      }
+
+      if (ep === "pls") {
+        if (lang === "py") {
+          return `import os
+from aarunicloud import AaruniVoice
+
+client = AaruniVoice(api_key=os.environ["AARUNI_API_KEY"])
+
+with open("custom-jargon.pls", "r", encoding="utf-8") as f:
+    res = client.pronunciation.upload_pls(
+        name="custom-engineering-lexicon",
+        xml=f.read(),
+    )
+
+print("Active .pls rules:", res.entry_count)`;
+        }
+        if (lang === "curl") {
+          return `curl -X POST "https://api.aarunicloud.com/v1/voice/pls" \\
+  -H "Authorization: Bearer $AARUNI_API_KEY" \\
+  -H "Content-Type: application/json" \\
+  -d '{
+    "name": "engineering-lexicon.pls",
+    "xml": "<lexicon version=\\"1.0\\" alphabet=\\"ipa\\"><lexeme><grapheme>SARIF</grapheme><alias>serif</alias></lexeme></lexicon>"
+  }'`;
+        }
+        return `import { AaruniVoiceClient } from "@aarunicloud/voice";
+import { readFile } from "node:fs/promises";
+
+const voice = new AaruniVoiceClient({ apiKey: process.env.AARUNI_API_KEY });
+
+const plsXml = await readFile("./engineering-lexicon.pls", "utf8");
+const result = await voice.pronunciation.uploadPls({
+  name: "engineering-lexicon.pls",
+  xml: plsXml,
+});
+
+console.log("Compiled W3C .pls entries:", result.entryCount);`;
+      }
+
+      if (ep === "voices") {
+        if (lang === "curl") {
+          return `curl -X GET "https://api.aarunicloud.com/v1/voice/list" \\
+  -H "Authorization: Bearer $AARUNI_API_KEY"`;
+        }
+        if (lang === "py") {
+          return `import os
+from aarunicloud import AaruniVoice
+
+client = AaruniVoice(api_key=os.environ["AARUNI_API_KEY"])
+catalog = client.voices.list()
+
+for v in catalog.voices:
+    print(v.voice_id, "—", v.name)`;
+        }
+        return `import { AaruniVoiceClient } from "@aarunicloud/voice";
+
+const voice = new AaruniVoiceClient({ apiKey: process.env.AARUNI_API_KEY });
+
+// Returns public studio voices + your workspace-isolated clones & models
+const { voices, clonedVoices, models } = await voice.voices.list();
+console.table(voices.map((v) => ({ id: v.id, name: v.name, style: v.style })));`;
+      }
+
+      // ep === "compat" (1-Line ElevenLabs SDK Migration)
+      if (lang === "py") {
+        return `# Existing ElevenLabs Python SDK — change ONLY base_url & api_key!
+import os
+from elevenlabs.client import ElevenLabs
+
+client = ElevenLabs(
+    base_url="https://api.aarunicloud.com/v1",
+    api_key=os.environ["AARUNI_API_KEY"],
+)
+
+audio = client.text_to_speech.convert(
+    voice_id="${p.voiceId}",
+    model_id="${p.modelId}",
+    text="${p.cleanText}",
+)`;
+      }
+      if (lang === "curl") {
+        return `# Accepts standard xi-api-key header + /v1/text-to-speech/{voice_id}
+curl -X POST "https://api.aarunicloud.com/v1/text-to-speech/${p.voiceId}" \\
+  -H "xi-api-key: $AARUNI_API_KEY" \\
+  -H "Content-Type: application/json" \\
+  -d '{
+    "text": "${p.cleanText}",
+    "model_id": "${p.modelId}",
+    "voice_settings": ${vsJsonInline}
+  }' \\
+  --output output.mp3`;
+      }
+      return `// Existing @elevenlabs/elevenlabs-js project — change ONLY environment/baseUrl!
+import { ElevenLabsClient } from "elevenlabs";
+
+const client = new ElevenLabsClient({
+  environment: "https://api.aarunicloud.com",
+  apiKey: process.env.AARUNI_API_KEY, // Accepts xi-api-key automatically
+});
+
+const audio = await client.textToSpeech.convert("${p.voiceId}", {
+  text: "${p.cleanText}",
+  model_id: "${p.modelId}",
+  voice_settings: {
+    speed: ${p.vs.speed},
+    stability: ${p.vs.stability},
+    similarity_boost: ${p.vs.similarity_boost},
+    style: ${p.vs.style},
+  },
+});`;
+    }
+
+    function buildApiSchemaResponse(status, ep, p) {
+      if (apiExplorerState.liveResponseByStatus[status]) {
+        return apiExplorerState.liveResponseByStatus[status];
+      }
+      if (status === 401) {
+        return `HTTP/2 401 Unauthorized
+content-type: application/json
+x-request-id: req_cv_auth_9102e4
+
+{
+  "ok": false,
+  "error": {
+    "code": "invalid_or_missing_api_key",
+    "message": "Provide a valid Cloud Guard key via Authorization: Bearer <key> or xi-api-key.",
+    "required_scope": "${ep === "pls" ? "pls:write" : (ep === "voices" ? "voices:read" : "tts:write")}"
+  }
+}`;
+      }
+      if (status === 402) {
+        return `HTTP/2 402 Payment Required
+content-type: application/json
+x-credits-remaining: 0
+
+{
+  "ok": false,
+  "error": {
+    "code": "monthly_credit_cap_reached",
+    "message": "Hard spend-cap protection paused synthesis at your plan limit ($0 surprise overage).",
+    "upgrade_url": "https://voice.aarunicloud.com/#api"
+  }
+}`;
+      }
+      if (status === 429) {
+        return `HTTP/2 429 Too Many Requests
+retry-after: 2
+x-ratelimit-limit: 60
+
+{
+  "ok": false,
+  "error": {
+    "code": "rate_limit_exceeded",
+    "message": "Concurrent synthesis limit reached for current plan tier. Retry after 2s."
+  }
+}`;
+      }
+      if (ep === "voices") {
+        return `HTTP/2 200 OK
+content-type: application/json
+x-request-id: req_cv_8f91e04b29
+
+{
+  "ok": true,
+  "voices": [
+    { "id": "${p.voiceId}", "name": "${(state.voicesCatalog.find((v) => v.id === p.voiceId) || {}).name || "Aria"}", "lang": "en", "lufsTarget": -20.5 }
+  ],
+  "models": [
+    { "modelId": "cloud-voice-v3.0-master", "sampleRateHz": 24000 },
+    { "modelId": "cloud-voice-v3.0-flash", "sampleRateHz": 24000 }
+  ]
+}`;
+      }
+      if (ep === "pls") {
+        return `HTTP/2 200 OK
+content-type: application/json
+x-request-id: req_cv_pls_7721a8
+
+{
+  "ok": true,
+  "dictionary": "engineering-lexicon.pls",
+  "entryCount": 42,
+  "activeDomains": ${p.plsJson}
+}`;
+      }
+      return `HTTP/2 200 OK
+content-type: ${p.format.startsWith("pcm") ? "audio/wav" : (p.format.startsWith("opus") ? "audio/ogg" : "audio/mpeg")}
+x-request-id: req_cv_39d108ab12
+x-character-count: ${p.text.length}
+x-pls-domains-applied: ${p.pls.join(",") || "none"}
+x-voice-speed: ${p.vs.speed}
+
+<Binary Audio Stream • ${p.format} • -20.5 LUFS Broadcast Master>`;
+    }
+
+    function renderApiCodeAndResponse() {
+      const codeBox = document.getElementById("apiCodeViewport");
+      const respBox = document.getElementById("apiResponseViewport");
+      if (!codeBox || !respBox) return;
+
+      const p = getApiExplorerParams();
+      const urlMap = {
+        tts: { m: "POST", cls: "m-post", u: "https://api.aarunicloud.com/v1/text-to-speech/" + p.voiceId },
+        stream: { m: "POST", cls: "m-post", u: "https://api.aarunicloud.com/v1/text-to-speech/" + p.voiceId + "/stream" },
+        pls: { m: "POST", cls: "m-post", u: "https://api.aarunicloud.com/v1/voice/pls" },
+        voices: { m: "GET", cls: "m-get", u: "https://api.aarunicloud.com/v1/voice/list" },
+        compat: { m: "POST", cls: "m-sdk", u: "https://api.aarunicloud.com/v1/text-to-speech/" + p.voiceId }
+      };
+      const meta = urlMap[apiExplorerState.ep] || urlMap.tts;
+      const badgeEl = document.getElementById("apiSubMethodBadge");
+      const urlEl = document.getElementById("apiSubUrlText");
+      if (badgeEl) {
+        badgeEl.className = "method-badge " + meta.cls;
+        badgeEl.textContent = meta.m;
+      }
+      if (urlEl) {
+        urlEl.textContent = apiExplorerState.lang === "syllovo"
+          ? "https://api.aarunicloud.com/v1/voice/profile-config"
+          : meta.u;
+      }
+
+      apiExplorerState.rawCode = buildApiCodeSnippet(apiExplorerState.ep, apiExplorerState.lang, p);
+      codeBox.innerHTML = highlightLightCode(apiExplorerState.rawCode);
+      respBox.innerHTML = highlightLightCode(buildApiSchemaResponse(apiExplorerState.status, apiExplorerState.ep, p));
+    }
+
+    async function sendLiveApiTestRequest() {
+      const btn = document.getElementById("btnSendApiTestReq");
+      const liveBadge = document.getElementById("apiLiveRunBadge");
+      if (!btn) return;
+      const p = getApiExplorerParams();
+
+      btn.disabled = true;
+      btn.textContent = "Sending...";
+      const t0 = performance.now();
+
+      try {
+        let res;
+        if (apiExplorerState.ep === "voices") {
+          res = await cloudFetch("/v1/voice/list", { headers: getAuthHeaders() });
+        } else {
+          if (!state.apiKey) {
+            await ensureSessionTokenForSynthesis();
+          }
+          res = await cloudFetch("/v1/voice/speak", {
+            method: "POST",
+            headers: getAuthHeaders({ "Content-Type": "application/json" }),
+            body: JSON.stringify({
+              text: p.text,
+              voiceId: p.voiceId,
+              modelId: p.modelId,
+              outputFormat: p.format,
+              plsDomains: p.pls,
+              targetLufs: -20.5,
+              voiceSettings: p.vs
+            })
+          });
+        }
+
+        const elapsedMs = Math.max(1, Math.round(performance.now() - t0));
+        const ct = res.headers.get("content-type") || "application/json";
+        const reqId = res.headers.get("cf-ray") || res.headers.get("x-request-id") || ("req_live_" + Date.now().toString(36));
+        const data = await res.json().catch(() => ({}));
+
+        const bucket = [200, 401, 402, 429].includes(res.status)
+          ? res.status
+          : (res.ok ? 200 : 401);
+
+        const formattedLive =
+          "HTTP/2 " + res.status + " " + (res.statusText || (res.ok ? "OK" : "Error")) + "\n" +
+          "content-type: " + ct + "\n" +
+          "x-latency-ms: " + elapsedMs + "\n" +
+          "x-request-id: " + reqId + "\n\n" +
+          JSON.stringify(data, null, 2);
+
+        apiExplorerState.liveResponseByStatus[bucket] = formattedLive;
+        if (liveBadge) {
+          liveBadge.style.display = "inline";
+          liveBadge.style.color = res.ok ? "var(--ok-ink)" : "var(--danger-ink)";
+          liveBadge.textContent = "● Live HTTP " + res.status + " • " + elapsedMs + " ms";
+        }
+        selectApiStatus(bucket);
+
+        if (res.ok && data && data.ok && data.audioUrl && apiExplorerState.ep !== "voices") {
+          setAudioSourceAndPlay(data.audioUrl, null, "");
+          notifyToast("Live API test succeeded (" + elapsedMs + " ms)");
+        } else if (res.ok) {
+          notifyToast("Live API GET /v1/voice/list (" + elapsedMs + " ms)");
+        }
+      } catch (err) {
+        notifyToast("Network error running test request");
+      } finally {
+        btn.disabled = false;
+        btn.textContent = "▶ Send Test Request";
+      }
+    }
+
+    function updateCurlSnippet() {
+      syncApiExplorerControls();
+      renderApiCodeAndResponse();
     }
 
     async function detectLocalWorkstationBridge() {
@@ -3912,8 +5966,7 @@
               state.ownerMode ? "Owner • $0.00" : (charsRem.toLocaleString() + " credits");
             document.getElementById("vcAuthBtn").textContent =
               isGuest ? "Sign in" : (meData.account.email.split("@")[0]);
-            document.getElementById("vcApiKeyDisplay").value =
-              isGuest ? "Sign in to view or copy your scoped API key" : state.apiKey;
+            refreshScopedApiKeyDisplay();
 
             if (!isGuest && (state.ownerMode || ["creator", "pro", "owner_sovereign"].includes(meData.account.planTier))) {
               const plsRes = await cloudFetch("/v1/voice/pls", { headers: getAuthHeaders() });
@@ -3924,6 +5977,8 @@
               }
             }
           }
+        } else {
+          refreshScopedApiKeyDisplay();
         }
 
         const vRes = await cloudFetch("/v1/voice/list", { headers: getAuthHeaders() });
@@ -3966,6 +6021,15 @@
           refreshPlsHighlights();
           updateCurlSnippet();
         }
+
+        if (state.apiKey) {
+          const profRes = await cloudFetch("/v1/voice/profile-config", { headers: getAuthHeaders() });
+          const profData = await profRes.json().catch(() => ({}));
+          if (profRes.ok && profData.ok && Array.isArray(profData.availableModels)) {
+            state.availableModels = profData.availableModels;
+            syncModelSelectOptions();
+          }
+        }
       } catch (_) {}
 
       updateConsoleSsoLinks();
@@ -3973,18 +6037,30 @@
       await loadDomainPacksFromServer();
       await loadDatasetSamplesList();
       await loadModelVersionsList();
+      syncApiExplorerControls();
+      renderApiCodeAndResponse();
     }
 
     // Boot
     (async function initApp() {
       document.getElementById("vcScriptInput").value = SHOWCASE_SCRIPTS.tech.text;
+      applyStudioVoicePreset("best_teaching", { fromInit: true, silent: true });
       renderDomainPacks();
       renderVoiceSelectors();
       refreshPlsHighlights();
+      refreshScopedApiKeyDisplay();
+      syncApiExplorerControls();
+      renderApiCodeAndResponse();
       updatePlanGatesUI();
       if (bootTargetView) switchView(bootTargetView);
       await detectLocalWorkstationBridge();
       await refreshAccountAndVoices();
+      pollLiveTrainingStatus(false);
+      setInterval(() => {
+        if (state.view === "train") {
+          pollLiveTrainingStatus(false);
+        }
+      }, 6000);
     })();
   </script>
 </body>

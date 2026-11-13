@@ -22,6 +22,8 @@ const API_CORS = {
   "Access-Control-Expose-Headers": "Content-Length, Content-Range, ETag, X-Aaruni-SHA256, X-Aaruni-Service, X-Aaruni-Zero-Trust, X-Aaruni-Credits-Used"
 };
 
+const AARUNI_FAVICON_SVG = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32"><rect width="32" height="32" rx="8" fill="#FE5F01"/><path d="M13.5 7L7.5 23h3.4l1.3-3.8h5.6l1.3 3.8h3.4L16.5 7h-3zm-.3 9.4L15 11l1.8 5.4h-3.6z" fill="#FFFFFF"/><rect x="23.5" y="11" width="2.2" height="10" rx="1.1" fill="#FFFFFF" fill-opacity="0.92"/><rect x="27" y="13.5" width="2" height="5" rx="1" fill="#FFFFFF" fill-opacity="0.75"/></svg>`;
+
 function jsonRes(data, status = 200, extraHeaders = {}) {
   return new Response(JSON.stringify(data, null, 2), {
     status,
@@ -685,11 +687,15 @@ async function ensureCloudVoiceTables(env, executeD1Query) {
         active_model_id TEXT NOT NULL DEFAULT 'cloud-voice-v3.0-master',
         active_voice_id TEXT DEFAULT '',
         enabled_pls_domains TEXT DEFAULT '["tech","medical","finance"]',
+        profile_config_json TEXT DEFAULT '',
         updated_at TEXT
       )`
     );
     try {
       await executeD1Query(env, "ALTER TABLE cloud_voice_tenant_settings ADD COLUMN enabled_pls_domains TEXT DEFAULT '[\"tech\",\"medical\",\"finance\"]'");
+    } catch (_) {}
+    try {
+      await executeD1Query(env, "ALTER TABLE cloud_voice_tenant_settings ADD COLUMN profile_config_json TEXT DEFAULT ''");
     } catch (_) {}
     try {
       await executeD1Query(env, "ALTER TABLE cloud_users ADD COLUMN password_hash TEXT");
@@ -2039,6 +2045,286 @@ async function handleCloudApiV1(request, env, executeD1Query) {
       }, 200, { "X-Aaruni-Service": "VOICE" });
     }
 
+    if (
+      (path === "/v1/voice/profile-config" && (request.method === "GET" || request.method === "POST")) ||
+      (path === "/v1/voice/models" && request.method === "GET")
+    ) {
+      await ensureCloudVoiceTables(env, executeD1Query);
+
+      const buildNormalizedVoiceProfile = (raw = {}, defaults = {}) => {
+        const vs = (raw && typeof raw.voiceSettings === "object" && raw.voiceSettings) || {};
+        const sp = (raw && typeof raw.soundPolish === "object" && raw.soundPolish) || {};
+        const fb = (raw && typeof raw.fallbackProvider === "object" && raw.fallbackProvider) || {};
+        const fbVs = (fb && typeof fb.voiceSettings === "object" && fb.voiceSettings) || {};
+        const validDomainIds = new Set(BUILTIN_PLS_DOMAIN_CATALOG.map((d) => d.id));
+        const plsList = Array.isArray(raw.plsDomains)
+          ? raw.plsDomains.map((x) => String(x || "").trim().toLowerCase()).filter((x) => validDomainIds.has(x))
+          : (Array.isArray(defaults.plsDomains) ? defaults.plsDomains : ["tech", "medical", "finance"]);
+        const speedVal = Math.max(0.7, Math.min(1.2, Number(vs.speed ?? 0.95) || 0.95));
+        const rawPreset = String(raw.preset || raw.presetId || defaults.preset || "best_teaching").slice(0, 40).trim();
+        const toSyllovoPresetId = { crisp_walkthrough: "code_cli_demo", natural_conv: "natural", exec_summary: "broadcast_calm" };
+        const toVoiceStudioPreset = { code_cli_demo: "crisp_walkthrough", natural: "natural_conv", broadcast_calm: "exec_summary" };
+        const presetVal = toVoiceStudioPreset[rawPreset] || rawPreset;
+        const syllovoPresetId = toSyllovoPresetId[presetVal] || presetVal;
+        return {
+          schema: "aaruni.voice.profile/v1",
+          exportedAt: String(raw.exportedAt || new Date().toISOString()).slice(0, 40),
+          provider: "aaruni-cloud-voice",
+          endpoint: "https://api.aarunicloud.com/v1",
+          voiceId: String(raw.voiceId || defaults.voiceId || "stock_aria").slice(0, 80).trim(),
+          voiceName: String(raw.voiceName || defaults.voiceName || "Aria").slice(0, 80).trim(),
+          modelId: String(raw.modelId || defaults.modelId || "cloud-voice-v3.0-master").slice(0, 80).trim(),
+          preset: presetVal,
+          presetId: syllovoPresetId,
+          voiceSettings: {
+            speed: Number(speedVal.toFixed(2)),
+            stability: Number(Math.max(0, Math.min(1, Number(vs.stability ?? 0.70))).toFixed(2)),
+            similarity_boost: Number(Math.max(0, Math.min(1, Number(vs.similarity_boost ?? 0.88))).toFixed(2)),
+            style: Number(Math.max(0, Math.min(1, Number(vs.style ?? 0.10))).toFixed(2)),
+            use_speaker_boost: Boolean(vs.use_speaker_boost ?? true)
+          },
+          soundPolish: {
+            reduceBassDb: Number(Math.max(-12, Math.min(0, Number(sp.reduceBassDb ?? -4.5))).toFixed(1)),
+            reduceEchoPct: Math.max(0, Math.min(100, Math.round(Number(sp.reduceEchoPct ?? 92)))),
+            environment: String(sp.environment || "studio").slice(0, 32).trim(),
+            targetLufs: Number(sp.targetLufs ?? -20.5) || -20.5
+          },
+          plsDomains: plsList,
+          fallbackProvider: {
+            provider: "elevenlabs",
+            endpoint: "https://api.elevenlabs.io/v1",
+            modelId: String(fb.modelId || "eleven_multilingual_v2").slice(0, 60).trim(),
+            voiceSettings: {
+              speed: Number(Math.max(0.7, Math.min(1.2, Number(fbVs.speed ?? speedVal) || 0.95)).toFixed(2)),
+              stability: Number(Math.max(0, Math.min(1, Number(fbVs.stability ?? 0.40))).toFixed(2)),
+              similarity_boost: Number(Math.max(0, Math.min(1, Number(fbVs.similarity_boost ?? 0.82))).toFixed(2)),
+              style: Number(Math.max(0, Math.min(1, Number(fbVs.style ?? 0.08))).toFixed(2)),
+              use_speaker_boost: Boolean(fbVs.use_speaker_boost ?? true)
+            }
+          }
+        };
+      };
+
+      const decorateModelItem = (m) => ({
+        ...m,
+        id: m.id || m.modelId,
+        modelId: m.modelId || m.id,
+        label: m.label || m.name,
+        name: m.name || m.label
+      });
+
+      const collectAvailableModels = async (userRow, isOwner) => {
+        const modelsOut = CLOUD_VOICE_MODELS.map((m) => decorateModelItem(m));
+        if (!userRow) return modelsOut;
+        try {
+          const jobsQ = isOwner
+            ? await executeD1Query(
+                env,
+                "SELECT job_id, voice_name, model_version, workers_count, region, status, progress_pct, metrics_json, created_at FROM cloud_voice_training_jobs WHERE user_id IN ('usr_owner_sovereign', 'usr_owner_rupesh') ORDER BY created_at DESC LIMIT 15"
+              )
+            : await executeD1Query(
+                env,
+                "SELECT job_id, voice_name, model_version, workers_count, region, status, progress_pct, metrics_json, created_at FROM cloud_voice_training_jobs WHERE user_id = ? ORDER BY created_at DESC LIMIT 10",
+                [userRow.user_id]
+              );
+          for (const tr of jobsQ.results || []) {
+            const st = String(tr.status || "").toUpperCase();
+            const pct = Number(tr.progress_pct ?? tr.progressPct ?? 0);
+            if (st === "READY" || st === "COMPLETED" || pct >= 100) {
+              const m = JSON.parse(tr.metrics_json || tr.metricsJson || "{}");
+              const candId = m.modelId || `cloud-voice-${String(tr.job_id || tr.jobId || "").slice(-6)}`;
+              if (!modelsOut.some((x) => x.modelId === candId)) {
+                const nm = tr.model_version || tr.modelVersion || tr.voice_name || tr.voiceName || "Cloud Voice Custom Studio Build";
+                modelsOut.push(decorateModelItem({
+                  id: candId,
+                  modelId: candId,
+                  label: nm,
+                  name: nm,
+                  subtitle: m.goalSummary || "Fine-Tuned Studio Build",
+                  creditMultiplier: 1.0,
+                  default: false,
+                  customTrained: true,
+                  jobId: tr.job_id || tr.jobId,
+                  createdAt: tr.created_at || tr.createdAt || null
+                }));
+              }
+            }
+          }
+        } catch (_) {}
+        return modelsOut;
+      };
+
+      if (request.method === "GET") {
+        const rawToken = extractRawGuardToken(request);
+        let principal = null;
+        if (rawToken) {
+          const auth = await authenticateGuard(request, env, executeD1Query);
+          if (!auth.ok) return jsonRes({ ok: false, error: auth.error }, auth.status);
+          principal = auth.principal;
+        }
+        if (!principal) {
+          const pubModels = CLOUD_VOICE_MODELS.map((m) => decorateModelItem(m));
+          const pubProfile = {
+            ...buildNormalizedVoiceProfile({}, {
+              voiceId: "stock_aria",
+              voiceName: "Aria",
+              modelId: "cloud-voice-v3.0-master",
+              plsDomains: ["tech", "medical", "finance"]
+            }),
+            availableModels: pubModels
+          };
+          return jsonRes({
+            ok: true,
+            service: "VOICE",
+            authenticated: false,
+            ownerMode: false,
+            saved: false,
+            schema: "aaruni.voice.profile/v1",
+            profile: pubProfile,
+            profileConfig: pubProfile,
+            availableModels: pubModels,
+            models: pubModels
+          }, 200, { "X-Aaruni-Service": "VOICE" });
+        }
+
+        const user = await resolveOrCreateUserForPrincipal(env, executeD1Query, principal);
+        const ownerMode = isOwnerPrincipalOrUser(principal, user);
+        const stQ = await executeD1Query(
+          env,
+          "SELECT active_model_id, active_voice_id, enabled_pls_domains, profile_config_json, updated_at FROM cloud_voice_tenant_settings WHERE user_id = ? LIMIT 1",
+          [user.user_id]
+        );
+        const stRow = (stQ.results && stQ.results[0]) || null;
+        let enabledPlsDomains = ["tech", "medical", "finance"];
+        if (stRow && stRow.enabled_pls_domains) {
+          try {
+            const pDom = JSON.parse(stRow.enabled_pls_domains);
+            if (Array.isArray(pDom)) enabledPlsDomains = pDom;
+          } catch (_) {}
+        }
+        const defVoiceId = (stRow && stRow.active_voice_id) || (ownerMode ? "vox_rupesh_v30_master" : "stock_aria");
+        const defVoiceName = defVoiceId === "vox_rupesh_v30_master"
+          ? "Studio Master v3.0"
+          : (defVoiceId === "vox_rupesh_v4_ultra"
+            ? "Studio Master v2.0"
+            : ((STOCK_VOICES.find((v) => v.voiceId === defVoiceId) || {}).shortName || "Aria"));
+        let savedProfile = null;
+        if (stRow && stRow.profile_config_json) {
+          try {
+            const parsed = JSON.parse(stRow.profile_config_json);
+            if (parsed && typeof parsed === "object") {
+              savedProfile = buildNormalizedVoiceProfile({
+                ...parsed,
+                ...(stRow.active_model_id ? { modelId: stRow.active_model_id } : {}),
+                ...(stRow.active_voice_id ? { voiceId: stRow.active_voice_id, voiceName: defVoiceName } : {}),
+                ...(stRow.enabled_pls_domains ? { plsDomains: enabledPlsDomains } : {})
+              }, {
+                voiceId: defVoiceId,
+                voiceName: defVoiceName,
+                modelId: (stRow && stRow.active_model_id) || "cloud-voice-v3.0-master",
+                plsDomains: enabledPlsDomains
+              });
+            }
+          } catch (_) {}
+        }
+        const availableModels = await collectAvailableModels(user, ownerMode);
+        const profile = {
+          ...(savedProfile || buildNormalizedVoiceProfile({}, {
+            voiceId: defVoiceId,
+            voiceName: defVoiceName,
+            modelId: (stRow && stRow.active_model_id) || "cloud-voice-v3.0-master",
+            plsDomains: enabledPlsDomains
+          })),
+          availableModels
+        };
+
+        return jsonRes({
+          ok: true,
+          service: "VOICE",
+          authenticated: true,
+          ownerMode,
+          saved: Boolean(savedProfile),
+          schema: "aaruni.voice.profile/v1",
+          profile,
+          profileConfig: profile,
+          availableModels,
+          models: availableModels,
+          updatedAt: (stRow && stRow.updated_at) || null
+        }, 200, { "X-Aaruni-Service": "VOICE" });
+      }
+
+      // POST /v1/voice/profile-config
+      const auth = await authenticateGuard(request, env, executeD1Query);
+      if (!auth.ok) return jsonRes({ ok: false, error: auth.error }, auth.status);
+      const user = await resolveOrCreateUserForPrincipal(env, executeD1Query, auth.principal);
+      const ownerMode = isOwnerPrincipalOrUser(auth.principal, user);
+
+      const body = await request.json().catch(() => ({}));
+      const safe = assertSafeWorkloadPayload(body);
+      if (!safe.ok) return jsonRes({ ok: false, error: safe.error }, 400);
+
+      const candidate = (body && typeof body.profile === "object" && body.profile)
+        || (body && typeof body.config === "object" && body.config)
+        || (body && typeof body.profileConfig === "object" && body.profileConfig)
+        || body
+        || {};
+
+      const existingQ = await executeD1Query(
+        env,
+        "SELECT active_model_id, active_voice_id, enabled_pls_domains, profile_config_json FROM cloud_voice_tenant_settings WHERE user_id = ? LIMIT 1",
+        [user.user_id]
+      );
+      const prevRow = (existingQ.results && existingQ.results[0]) || null;
+      let prevDomains = ["tech", "medical", "finance"];
+      if (prevRow && prevRow.enabled_pls_domains) {
+        try {
+          const pd = JSON.parse(prevRow.enabled_pls_domains);
+          if (Array.isArray(pd)) prevDomains = pd;
+        } catch (_) {}
+      }
+
+      const normalized = buildNormalizedVoiceProfile(candidate, {
+        voiceId: (prevRow && prevRow.active_voice_id) || (ownerMode ? "vox_rupesh_v30_master" : "stock_aria"),
+        voiceName: ownerMode ? "Studio Master v3.0" : "Aria",
+        modelId: (prevRow && prevRow.active_model_id) || "cloud-voice-v3.0-master",
+        plsDomains: prevDomains
+      });
+
+      if (normalized.voiceId.startsWith("vox_rupesh_") && !ownerMode) {
+        return jsonRes({ ok: false, error: "Forbidden voice profile in workspace config." }, 403);
+      }
+
+      const nextDomainsJson = JSON.stringify(normalized.plsDomains);
+      const nextProfileJson = JSON.stringify(normalized);
+
+      await executeD1Query(
+        env,
+        `INSERT INTO cloud_voice_tenant_settings (user_id, active_model_id, active_voice_id, enabled_pls_domains, profile_config_json, updated_at)
+         VALUES (?, ?, ?, ?, ?, datetime('now'))
+         ON CONFLICT(user_id) DO UPDATE SET
+           active_model_id = excluded.active_model_id,
+           active_voice_id = excluded.active_voice_id,
+           enabled_pls_domains = excluded.enabled_pls_domains,
+           profile_config_json = excluded.profile_config_json,
+           updated_at = datetime('now')`,
+        [user.user_id, normalized.modelId, normalized.voiceId, nextDomainsJson, nextProfileJson]
+      );
+      await logAudit(env, executeD1Query, auth.principal.key_id, "VOICE", `save_profile_config:${normalized.preset}:${normalized.modelId}`);
+
+      const availableModels = await collectAvailableModels(user, ownerMode);
+      return jsonRes({
+        ok: true,
+        service: "VOICE",
+        saved: true,
+        schema: "aaruni.voice.profile/v1",
+        profile: normalized,
+        profileConfig: normalized,
+        availableModels,
+        models: availableModels,
+        message: "Studio Voice Config saved to Aaruni Cloud Voice for Syllovo Studio sync."
+      }, 200, { "X-Aaruni-Service": "VOICE" });
+    }
+
     if (path === "/v1/voice/pls" && (request.method === "GET" || request.method === "POST")) {
       await ensureCloudVoiceTables(env, executeD1Query);
       const auth = await authenticateGuard(request, env, executeD1Query);
@@ -2642,33 +2928,45 @@ async function handleCloudApiV1(request, env, executeD1Query) {
       const safe = assertSafeWorkloadPayload(body);
       if (!safe.ok) return jsonRes({ ok: false, error: safe.error }, 400);
 
-      const improveGoal = String(body.improveGoal || "clarity").slice(0, 40);
-      const trainingMode = String(body.trainingMode || "deep_parallel").slice(0, 40);
+      const improveGoal = String(body.improveGoal || body.goal || "ultra_stable_teaching").slice(0, 48);
+      const trainingMode = String(body.trainingMode || body.depth || "deep_parallel").slice(0, 48);
+      const targetNote = String(body.targetNote || body.note || "").slice(0, 400).trim();
       const goalLabels = {
+        ultra_stable_teaching: "Ultra-Stable Teaching Cadence",
+        crisp_pls_articulation: "Crisper Technical & .pls Articulation",
+        warmer_storytelling: "Warmer Storytelling Timbre",
+        de_echo_polish: "Open-Studio De-Echo Polish",
         clarity: "Boost Water-Clean Clarity",
         anti_glitch: "Eliminate Word Drops & Glitches",
         expression: "Expand Teaching Expression"
       };
       const goalSummary = goalLabels[improveGoal] || "Incremental Studio Fine-Tune";
       const isQuickPolish = trainingMode === "quick_polish";
+      const isOvernight = trainingMode === "continuous_overnight";
       const workersCount = isQuickPolish ? 1 : 3;
-      const voiceName = String(body.voiceName || body.name || `Cloud Voice v2.3 (${goalSummary})`).slice(0, 80).trim();
-      const modelVersion = String(body.modelVersion || `Cloud Voice v2.3 — ${goalSummary}`).slice(0, 80);
+      const depthSummaryLabel = isQuickPolish
+        ? "Quick Studio Polish • ~200 steps"
+        : (isOvernight ? "Continuous Overnight Stability • 3,600+ steps" : "Deep Studio Master • 1,200 steps");
+      const voiceName = String(body.voiceName || body.name || `Cloud Voice v3.1 (${goalSummary})`).slice(0, 80).trim();
+      const modelVersion = String(body.modelVersion || `Cloud Voice v3.1 — ${goalSummary}`).slice(0, 80);
       const jobId = makeId("trn_vox");
-      const generatedModelId = `cloud-voice-v2.3-${jobId.slice(-5)}`;
+      const generatedModelId = `cloud-voice-v3.1-${jobId.slice(-5)}`;
       const targetUid = user ? user.user_id : "usr_owner_sovereign";
       const metricsObj = {
         modelId: generatedModelId,
         improveGoal,
         trainingMode,
-        goalSummary: `${goalSummary} • ${isQuickPolish ? "Quick Calibration Polish (~2m)" : "3 Parallel Compute Workers"}`,
-        displayTitle: `${modelVersion} (${isQuickPolish ? "Quick Polish" : "3-Worker Parallel"})`,
-        durationLabel: isQuickPolish ? "Quick Calibration (~2 mins)" : "Incremental Fine-Tune (3 Workers)",
+        targetNote: targetNote || undefined,
+        goalSummary: `${goalSummary} • ${depthSummaryLabel}`,
+        displayTitle: `${modelVersion} (${isQuickPolish ? "~200 steps" : (isOvernight ? "3,600+ steps" : "1,200 steps")})`,
+        durationLabel: depthSummaryLabel,
         clarityGate: "Voice Clarity Check: Passed",
         clarityScore: "Voice Clarity Check: Passed",
         targetLoudness: "-20.5 LUFS",
         sampleRateHz: 24000,
-        parallelShards: workersCount
+        parallelShards: workersCount,
+        computeCostUsd: ownerMode ? 0.0 : undefined,
+        aiCreditsCharged: 0
       };
 
       await executeD1Query(
@@ -2719,7 +3017,7 @@ async function handleCloudApiV1(request, env, executeD1Query) {
       return jsonRes({ ok: true, service: "VOICE", deletedVoiceId: voiceId });
     }
 
-    const dropInTtsMatch = path.match(/^\/v1\/text-to-speech\/([a-zA-Z0-9_-]+)$/);
+    const dropInTtsMatch = path.match(/^\/v1\/text-to-speech\/([a-zA-Z0-9_-]+)(?:\/stream)?$/);
     if (
       (path === "/v1/voice/speak" || path === "/v1/voice/synthesize" || dropInTtsMatch) &&
       request.method === "POST"
@@ -5256,20 +5554,37 @@ async function executeEdgeMemQuery(sql, params = []) {
       const uid = params[0];
       const idx = db.cloud_voice_tenant_settings.findIndex((s) => s.user_id === uid);
       const prev = idx >= 0 ? db.cloud_voice_tenant_settings[idx] : null;
-      const isPlsUpdate = qLower.includes("enabled_pls_domains");
-      const row = {
-        user_id: uid,
-        active_model_id: isPlsUpdate
-          ? (prev && prev.active_model_id ? prev.active_model_id : "cloud-voice-v3.0-master")
-          : (params[1] || (prev && prev.active_model_id) || "cloud-voice-v3.0-master"),
-        active_voice_id: isPlsUpdate
-          ? (prev && prev.active_voice_id ? prev.active_voice_id : "")
-          : (params[2] !== undefined ? params[2] : (prev && prev.active_voice_id) || ""),
-        enabled_pls_domains: isPlsUpdate
-          ? (params[1] || '["tech","medical","finance"]')
-          : ((prev && prev.enabled_pls_domains) || '["tech","medical","finance"]'),
-        updated_at: nowIso
-      };
+      const isProfileConfigUpdate = qLower.includes("profile_config_json");
+      const isPlsUpdate = !isProfileConfigUpdate && qLower.includes("enabled_pls_domains");
+      let row;
+      if (isProfileConfigUpdate) {
+        row = {
+          user_id: uid,
+          active_model_id: params[1] || (prev && prev.active_model_id) || "cloud-voice-v3.0-master",
+          active_voice_id: params[2] !== undefined ? params[2] : ((prev && prev.active_voice_id) || ""),
+          enabled_pls_domains: params[3] || (prev && prev.enabled_pls_domains) || '["tech","medical","finance"]',
+          profile_config_json: params[4] !== undefined ? params[4] : ((prev && prev.profile_config_json) || ""),
+          updated_at: nowIso
+        };
+      } else if (isPlsUpdate) {
+        row = {
+          user_id: uid,
+          active_model_id: (prev && prev.active_model_id) || "cloud-voice-v3.0-master",
+          active_voice_id: (prev && prev.active_voice_id) || "",
+          enabled_pls_domains: params[1] || '["tech","medical","finance"]',
+          profile_config_json: (prev && prev.profile_config_json) || "",
+          updated_at: nowIso
+        };
+      } else {
+        row = {
+          user_id: uid,
+          active_model_id: params[1] || (prev && prev.active_model_id) || "cloud-voice-v3.0-master",
+          active_voice_id: params[2] !== undefined ? params[2] : ((prev && prev.active_voice_id) || ""),
+          enabled_pls_domains: (prev && prev.enabled_pls_domains) || '["tech","medical","finance"]',
+          profile_config_json: (prev && prev.profile_config_json) || "",
+          updated_at: nowIso
+        };
+      }
       if (idx >= 0) db.cloud_voice_tenant_settings[idx] = row;
       else db.cloud_voice_tenant_settings.push(row);
       return { success: true, results: [{ changes: 1 }], mode: "edge_mem_fallback" };
@@ -5676,6 +5991,21 @@ export default {
   async fetch(request, env) {
     const url = new URL(request.url);
     const host = (url.hostname || "").toLowerCase();
+
+    // Serve crisp Aaruni Dawn SVG Favicon at /favicon.svg and /favicon.ico with 24h edge caching
+    if (
+      (request.method === "GET" || request.method === "HEAD") &&
+      (url.pathname === "/favicon.svg" || url.pathname === "/favicon.ico")
+    ) {
+      return new Response(request.method === "HEAD" ? null : AARUNI_FAVICON_SVG, {
+        status: 200,
+        headers: {
+          "Content-Type": "image/svg+xml",
+          "Cache-Control": "public, max-age=86400",
+          "Access-Control-Allow-Origin": "*"
+        }
+      });
+    }
 
     // Aaruni Cloud v1 Production API Gateway (api.aarunicloud.com & /v1/* & /api/v1/*)
     if (
