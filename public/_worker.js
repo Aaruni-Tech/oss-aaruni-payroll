@@ -311,26 +311,164 @@ const STOCK_VOICES = [
 ];
 
 const CLOUD_VOICE_MODELS = [
-  { modelId: "cloud-voice-v2", name: "Cloud Voice v2", subtitle: "Studio English — Default", creditMultiplier: 1.0, default: true },
-  { modelId: "cloud-voice-v2-flash", name: "Cloud Voice v2 Flash", subtitle: "Fast • 50% Credits", creditMultiplier: 0.5, default: false },
-  { modelId: "cloud-voice-v2-multilingual", name: "Cloud Voice v2 Multilingual", subtitle: "10 Languages", creditMultiplier: 1.0, default: false }
+  { modelId: "cloud-voice-v3.0-master", name: "Cloud Voice v3.0 Studio Master", subtitle: "Highest Clarity • Zero Echo", creditMultiplier: 1.0, default: true },
+  { modelId: "cloud-voice-v3.0-flash", name: "Cloud Voice v3.0 Flash", subtitle: "Fast Stream • 50% Credits", creditMultiplier: 0.5, default: false },
+  { modelId: "cloud-voice-v2.0-master", name: "Cloud Voice v2.0 Studio Master", subtitle: "Reference Dry Build", creditMultiplier: 1.0, default: false }
+];
+
+const BUILTIN_PLS_DOMAIN_CATALOG = [
+  {
+    id: "tech",
+    name: "Cloud, DevOps & AI",
+    meta: "1,420+ terms • OAuth2, kubectl, SARIF",
+    defaultEnabled: true,
+    terms: {
+      "OAuth2": "O-Auth two",
+      "--cpus=2": "dash dash see pee yous equals two",
+      "PostgreSQL": "Postgres Q L",
+      "kubectl": "cube cuddle",
+      "SARIF": "serif",
+      "JSON": "JAY-sawn",
+      "NGINX": "engine X",
+      "SQLite": "sequel lite",
+      "GraphQL": "graph Q L",
+      "YAML": "yammel",
+      "CIDR": "cider",
+      "OWASP": "oh wasp",
+      "ZAP": "zap",
+      "SIEM": "seem",
+      "SBOM": "S bomb",
+      "SLSA": "salsa",
+      "RBAC": "R back",
+      "OIDC": "O I D C",
+      "SAML": "sammel",
+      "mTLS": "M T L S",
+      "gRPC": "G R P C",
+      "CI/CD": "C I C D",
+      "NVMe": "N V M E",
+      "eBPF": "E B P F",
+      "ONNX": "onics",
+      "Vite": "veet"
+    }
+  },
+  {
+    id: "medical",
+    name: "Medical & Pharma (NIH)",
+    meta: "U.S. NIH SPECIALIST • Drug & clinical IPA",
+    defaultEnabled: true,
+    terms: {
+      "bevacizumab": "beh-vah-siz-oo-mab",
+      "pembrolizumab": "pem-broh-liz-oo-mab",
+      "trastuzumab": "tras-too-zoo-mab",
+      "echocardiogram": "ek-oh-kar-dee-oh-gram",
+      "sphygmomanometer": "sfig-moh-mah-nom-eh-ter",
+      "arrhythmia": "uh-rith-mee-uh",
+      "tachycardia": "tak-ih-kar-dee-uh",
+      "bradycardia": "bray-dih-kar-dee-uh",
+      "dyspnea": "disp-nee-uh",
+      "syncope": "sin-kuh-pee",
+      "thrombocytopenia": "throm-boh-sigh-toh-pee-nee-uh",
+      "pharmacokinetics": "far-muh-koh-kih-net-iks",
+      "atorvastatin": "uh-tor-vuh-stat-in",
+      "metformin": "met-for-min",
+      "omeprazole": "oh-mep-ruh-zohl",
+      "epinephrine": "ep-ih-nef-rin",
+      "FHIR": "fire",
+      "HL7": "H L seven"
+    }
+  },
+  {
+    id: "finance",
+    name: "Finance, Banking & Tax",
+    meta: "EBITDA, GAAP, SOFR, bps, SEBI, UPI",
+    defaultEnabled: true,
+    terms: {
+      "EBITDA": "ee-bit-dah",
+      "GAAP": "gap",
+      "IFRS": "I F R S",
+      "SOFR": "soh-fer",
+      "LIBOR": "lie-bor",
+      "tranche": "trahnsh",
+      "tranches": "trahnshez",
+      "bps": "basis points",
+      "YoY": "year over year",
+      "QoQ": "quarter over quarter",
+      "CAGR": "kagger",
+      "WACC": "wack",
+      "CAPEX": "cap ex",
+      "OPEX": "op ex",
+      "SEBI": "seh-bee",
+      "UPI": "U P I",
+      "NEFT": "N E F T",
+      "RTGS": "R T G S",
+      "fiduciary": "fih-doo-shee-air-ee"
+    }
+  },
+  {
+    id: "legal",
+    name: "Legal & Compliance",
+    meta: "HIPAA, SOC 2, GDPR, certiorari",
+    defaultEnabled: false,
+    terms: {
+      "HIPAA": "hip-uh",
+      "SOC 2": "sock two",
+      "GDPR": "G D P R",
+      "CCPA": "C C P A",
+      "DPDP": "D P D P",
+      "FERPA": "fer-puh",
+      "FedRAMP": "fed ramp",
+      "FISMA": "fiz-muh",
+      "NIS2": "niss two",
+      "certiorari": "ser-shee-uh-rare-ee",
+      "habeas corpus": "hay-bee-us kor-pus",
+      "prima facie": "pry-muh fay-shee",
+      "force majeure": "fors mah-zhoor",
+      "stare decisis": "stair-ee dih-sigh-sis",
+      "subpoena": "suh-pee-nuh",
+      "amicus curiae": "uh-mee-kus kyoor-ee-eye"
+    }
+  },
+  {
+    id: "stem",
+    name: "STEM & University",
+    meta: "Euler, Bayesian, eigenvalue, arXiv",
+    defaultEnabled: false,
+    terms: {
+      "Euler": "oiler",
+      "Cauchy": "koh-shee",
+      "Riemann": "ree-mahn",
+      "Fourier": "foor-ee-ay",
+      "Laplace": "lah-plahs",
+      "Laplacian": "lah-plah-see-un",
+      "Jacobian": "juh-koh-bee-un",
+      "Bayesian": "bay-zhee-un",
+      "Dirichlet": "deer-ih-klay",
+      "Poisson": "pwah-sahn",
+      "Bernoulli": "ber-noo-lee",
+      "eigenvalue": "eye-gen-value",
+      "eigenvector": "eye-gen-vector",
+      "stoichiometry": "stoy-kee-ahm-eh-tree",
+      "arXiv": "archive",
+      "LaTeX": "lah-tek"
+    }
+  }
 ];
 
 const W3C_PLS_LEXICON = [
-  [/\bkubectl\b/gi, "kube-control"],
-  [/\bSQLite\b/gi, "S-Q-Lite"],
-  [/\bPostgreSQL\b/gi, "Post-gres-Q-L"],
-  [/\bMySQL\b/gi, "My-S-Q-L"],
-  [/\bNGINX\b/gi, "Engine-X"],
-  [/\bJSON\b/gi, "Jay-sawn"],
-  [/\bOAuth2\b/gi, "Oh-Auth-Two"],
-  [/\bWCAG\b/gi, "W-C-A-G"],
-  [/\bLUFS\b/gi, "L-U-F-S"],
-  [/\bNVMe\b/gi, "N-V-M-E"],
-  [/\bSARIF\b/gi, "S-A-R-I-F"],
-  [/\bCI\/CD\b/gi, "C-I-C-D"],
-  [/\bgRPC\b/gi, "G-R-P-C"],
-  [/\bJWT\b/gi, "J-W-T"],
+  [/\bkubectl\b/gi, "kube cuddle"],
+  [/\bSQLite\b/gi, "sequel lite"],
+  [/\bPostgreSQL\b/gi, "Postgres Q L"],
+  [/\bMySQL\b/gi, "My S Q L"],
+  [/\bNGINX\b/gi, "engine X"],
+  [/\bJSON\b/gi, "JAY-sawn"],
+  [/\bOAuth2\b/gi, "O-Auth two"],
+  [/\bWCAG\b/gi, "W C A G"],
+  [/\bLUFS\b/gi, "lufs"],
+  [/\bNVMe\b/gi, "N V M E"],
+  [/\bSARIF\b/gi, "serif"],
+  [/\bCI\/CD\b/gi, "C I C D"],
+  [/\bgRPC\b/gi, "G R P C"],
+  [/\bJWT\b/gi, "J W T"],
   [/\bacloud\b/gi, "A-Cloud"],
   [/\.cmproj\b/gi, "Camtasia project"],
   [/\.libzip\b/gi, "Camtasia library archive"]
@@ -380,7 +518,9 @@ function applyPlsLexicon(rawText, customRules = []) {
   if (Array.isArray(customRules)) {
     for (const r of customRules) {
       if (!r || !r.grapheme || !r.spoken) continue;
-      const rx = new RegExp(`\\b${escapeRegExpSafe(r.grapheme)}\\b`, "gi");
+      const lead = /^\w/.test(r.grapheme) ? "\\b" : "(?:^|(?<=[\\s([{\"'`]))";
+      const tail = /\w$/.test(r.grapheme) ? "\\b" : "(?=$|[\\s)\\]}.,!?;:\"'`])";
+      const rx = new RegExp(`${lead}${escapeRegExpSafe(r.grapheme)}${tail}`, "gi");
       if (rx.test(normalized)) {
         replacements.push({ pattern: r.grapheme, phoneme: r.spoken, source: "tenant_pls" });
         normalized = normalized.replace(rx, r.spoken);
@@ -542,11 +682,15 @@ async function ensureCloudVoiceTables(env, executeD1Query) {
       env,
       `CREATE TABLE IF NOT EXISTS cloud_voice_tenant_settings (
         user_id TEXT PRIMARY KEY,
-        active_model_id TEXT NOT NULL DEFAULT 'cloud-voice-v2.2-pro',
+        active_model_id TEXT NOT NULL DEFAULT 'cloud-voice-v3.0-master',
         active_voice_id TEXT DEFAULT '',
+        enabled_pls_domains TEXT DEFAULT '["tech","medical","finance"]',
         updated_at TEXT
       )`
     );
+    try {
+      await executeD1Query(env, "ALTER TABLE cloud_voice_tenant_settings ADD COLUMN enabled_pls_domains TEXT DEFAULT '[\"tech\",\"medical\",\"finance\"]'");
+    } catch (_) {}
     try {
       await executeD1Query(env, "ALTER TABLE cloud_users ADD COLUMN password_hash TEXT");
     } catch (_) {}
@@ -1368,32 +1512,34 @@ async function handleCloudApiV1(request, env, executeD1Query) {
       if (ownerUnlocked) {
         const ownerPrivateVoices = [
           {
-            voiceId: "vox_rupesh_v4_ultra",
-            name: "Rupesh Tiwari — Cloud Voice v2.0 Studio Master (Dry Studio)",
-            shortLabel: "Rupesh v2.0 Studio",
-            defaultModelId: "cloud-voice-v2.0-master",
-            versionBadge: "v2.0 Studio Master",
+            voiceId: "vox_rupesh_v30_master",
+            name: "Studio Master v3.0",
+            shortLabel: "Studio Master v3.0",
+            initials: "SM",
+            defaultModelId: "cloud-voice-v3.0-master",
+            versionBadge: "v3.0",
             language: "en-US",
             type: "cloned",
             ownerPrivate: true,
-            badge: "Active Primary Studio Master (v2.0 Dry)",
+            badge: "Clean Course Voice • Zero Echo",
             clarityGate: "Clarity Gate: 100% Passed • Zero Echo"
           },
           {
-            voiceId: "vox_rupesh_v5_waterclean",
-            name: "Rupesh Tiwari — Cloud Voice v2.2 Expressive",
-            shortLabel: "Rupesh v2.2 Expressive",
-            defaultModelId: "cloud-voice-v2.2-pro",
-            versionBadge: "v2.2 Expressive",
+            voiceId: "vox_rupesh_v4_ultra",
+            name: "Studio Master v2.0",
+            shortLabel: "Studio Master v2.0",
+            initials: "V2",
+            defaultModelId: "cloud-voice-v2.0-master",
+            versionBadge: "v2.0",
             language: "en-US",
             type: "cloned",
             ownerPrivate: true,
-            badge: "Expressive Variant (v2.2)",
-            clarityGate: "Clarity Gate: 100% Passed"
+            badge: "Reference Dry Build",
+            clarityGate: "Clarity Gate: 100% Passed • Dry Booth"
           }
         ];
         customVoices = [...ownerPrivateVoices, ...customVoices];
-        let activeModelIdSetting = "cloud-voice-v2.0-master";
+        let activeModelIdSetting = "cloud-voice-v3.0-master";
         try {
           await ensureCloudVoiceTables(env, executeD1Query);
           const stQ = await executeD1Query(
@@ -1421,62 +1567,68 @@ async function handleCloudApiV1(request, env, executeD1Query) {
           grossMarginEstimatePct: 89.4,
           computeCluster: "3 Parallel Compute Workers • ap-south-hyd-1",
           clarityGateStatus: "Clarity Gate: 100% Passed",
-          dropInEndpoint: "https://api.aarunicloud.com/v1/text-to-speech/vox_rupesh_v5_waterclean",
+          dropInEndpoint: "https://api.aarunicloud.com/v1/text-to-speech/vox_rupesh_v30_master",
           manifestUrl: `${ownerAudioBase}/zap_m2_5min_manifest.json`,
           samples: {
+            v5_zap_walkthrough: {
+              title: "v3.0 Studio Master — Tech + .pls (20.3s • 0.00% WER)",
+              mp3: `${ownerAudioBase}/v5_waterclean_zap_walkthrough.mp3`,
+              receipt: "Cloud Voice v3.0 Studio Master • Technical + W3C .pls • 0.00% WER • Zero Echo",
+              text: "First, configure ZAP with OAuth2 bearer tokens and run your worker with --cpus=2 for deterministic throughput. Next, export both JSON metrics and SARIF findings so GitHub Actions blocks any high-severity regression automatically."
+            },
             v5_hook: {
-              title: "v2.2 Water-Clean Expressive — Energetic Module Hook (15.6s • 0.00% WER)",
+              title: "v3.0 Studio Master — Course Hook (15.6s • 0.00% WER)",
               mp3: `${ownerAudioBase}/v5_waterclean_hook_expressive.mp3`,
-              receipt: "Cloud Voice v2.2 Pro • Enthusiastic Hook Persona • 15.6s • 0.00% WER • 99.74% Sim • -6.8 dBFS",
+              receipt: "Cloud Voice v3.0 Studio Master • Energetic Hook • 0.00% WER • Zero Echo",
               text: "Ever shipped a spotless pull request on Friday afternoon, only to wake up to an unauthenticated API breach on Monday? Today, we turn every security scan into an automated release gate before production traffic ever touches your service."
             },
             v5_analogy: {
-              title: "v2.2 Water-Clean Expressive — Practitioner Analogy Story (16.4s • 0.00% WER)",
+              title: "v3.0 Studio Master — Story Analogy (16.4s • 0.00% WER)",
               mp3: `${ownerAudioBase}/v5_waterclean_analogy_story.mp3`,
-              receipt: "Cloud Voice v2.2 Pro • Storytelling Analogy Persona • 16.4s • 0.00% WER • 99.75% Sim • -6.8 dBFS",
+              receipt: "Cloud Voice v3.0 Studio Master • Practitioner Analogy • 0.00% WER • Zero Echo",
               text: "Think of an unauthenticated vulnerability scanner like a hotel inspector who only checks the front lobby and never swipes a room key. Real attackers sign in first, and once we hand our scanner a live session token, hidden flaws light up immediately."
             },
-            v5_zap_walkthrough: {
-              title: "v2.2 Water-Clean Expressive — Technical ZAP, OAuth2 & SARIF (20.3s • 0.00% WER)",
-              mp3: `${ownerAudioBase}/v5_waterclean_zap_walkthrough.mp3`,
-              receipt: "Cloud Voice v2.2 Pro • Technical Walkthrough + W3C .pls • 20.3s • 0.00% WER • 99.73% Sim • -6.8 dBFS",
-              text: "First, configure ZAP with OAuth2 bearer tokens and run your worker with --cpus=2 for deterministic throughput. Next, export both JSON metrics and SARIF findings so GitHub Actions blocks any high-severity regression automatically."
+            medical_pls: {
+              title: "Medical .pls Dictionary Sample (NIH Clinical IPA)",
+              mp3: "",
+              receipt: "Medical & Pharma (NIH SPECIALIST) .pls Pack",
+              text: "Administer bevacizumab intravenously after reviewing the patient's echocardiogram and sphygmomanometer readings for any ventricular arrhythmia."
+            },
+            finance_pls: {
+              title: "Finance .pls Dictionary Sample (EBITDA, GAAP, SOFR)",
+              mp3: "",
+              receipt: "Finance, Banking & Tax .pls Pack",
+              text: "Quarterly EBITDA rose 140 bps YoY under GAAP accounting, while SOFR-linked senior tranches cleared SEBI and UPI settlement rules."
             },
             zap_5min: {
               title: "Full 5-Minute OWASP ZAP Course Masterclass (4:55 • 25 Beats)",
               mp3: `${ownerAudioBase}/zap_m2_5min_teaching_v4_ultra.mp3`,
-              receipt: "Cloud Voice v2.2 Water-Clean Expressive • 4:55 (25 Beats) • Clarity Gate: 100% Passed • -20.5 LUFS",
+              receipt: "Cloud Voice Studio Master • 4:55 (25 Beats) • Clarity Gate: 100% Passed • -20.5 LUFS",
               text: "[Chapter 1 — 0:00] Manual desktop scans cannot guard every pull request. Let's automate ZAP in GitHub Actions, so every commit verifies login and runs custom security checks.\n\n[Chapter 2 — 1:04] Alert Filters, Severity Thresholds & Signal Hygiene\n[Chapter 3 — 2:19] Proving Authenticated Coverage & Fail-Closed Artifacts\n[Chapter 4 — 4:11] SARIF Drift Audits & Executive Release Sign-Off"
             },
             zap_auth_gate: {
               title: "Sample 1: ZAP Signed-In Coverage & HTTP 200 Trap (14s)",
               mp3: `${ownerAudioBase}/owner_preset_zap_auth_gate.mp3`,
-              receipt: "Cloud Voice v2.2 Water-Clean Expressive • 14.2s • Clarity Gate: 100% Passed • -20.5 LUFS",
+              receipt: "Cloud Voice Studio Master • 14.2s • Clarity Gate: 100% Passed • -20.5 LUFS",
               text: "A green pipeline badge can still hide an unauthenticated scan. Always verify the signed-in indicator alongside HTTP status 200, and confirm ZAP reached your protected account routes before trusting zero alerts."
             },
             zap_sarif_cicd: {
               title: "Sample 2: GitHub Actions Headless ZAP & Fail-Closed SARIF Gate (13s)",
               mp3: `${ownerAudioBase}/owner_preset_zap_sarif_cicd.mp3`,
-              receipt: "Cloud Voice v2.2 Water-Clean Expressive • 13.1s • Clarity Gate: 100% Passed • -20.5 LUFS",
+              receipt: "Cloud Voice Studio Master • 13.1s • Clarity Gate: 100% Passed • -20.5 LUFS",
               text: "Inside GitHub Actions, headless ZAP executes our automation plan and runs a fail-closed assertion on custom rule fifty thousand, archiving the JSON and SARIF report with a cryptographic digest."
             },
             studio_flagship: {
               title: "Sample 3: Syllovo Studio Multi-Sentence Course Showcase (27s)",
               mp3: `${ownerAudioBase}/master_v4_world_best_rupesh_voice_demo.mp3`,
-              receipt: "Cloud Voice v2.2 Water-Clean Expressive • 27.0s • Clarity Gate: 100% Passed • -20.5 LUFS",
+              receipt: "Cloud Voice Studio Master • 27.0s • Clarity Gate: 100% Passed • -20.5 LUFS",
               text: "Welcome to Syllovo Studio running on Aaruni Cloud. Every teaching beat in this narration is mastered across parallel Cloud Compute workers with zero echo, crisp studio articulation, and natural breathing transitions."
             },
             cloud_microservices: {
               title: "Sample 4: Aaruni Cloud Microservices & Zero-Egress Storage (8s)",
               mp3: `${ownerAudioBase}/atc-avgs-v4-v4-live-test-chunk01-f3613b0030.mp3`,
-              receipt: "Cloud Voice v2.2 Water-Clean Expressive • 8.0s • Clarity Gate: 100% Passed • -20.5 LUFS",
+              receipt: "Cloud Voice Studio Master • 8.0s • Clarity Gate: 100% Passed • -20.5 LUFS",
               text: "Today on Aaruni Cloud, we deploy containerized microservices onto dedicated Cloud Compute workers with zero egress Cloud Storage and automated Cloud Guard security gates."
-            },
-            custom_live: {
-              title: "Custom Script — Live Studio Synthesis (:8765 Workstation Bridge)",
-              mp3: "",
-              receipt: "Live Workstation Studio Bridge • Cloud Voice v2.2 Water-Clean Expressive • -20.5 LUFS",
-              text: "Let's verify that headless ZAP reaches our authenticated account routes before marking the pull request green in GitHub Actions."
             }
           }
         };
@@ -1543,7 +1695,7 @@ async function handleCloudApiV1(request, env, executeD1Query) {
       }
 
       const ownerAudioBase = "https://voice.aarunicloud.com/assets/voice/tnt_syllovo_9f8a4c2e1b";
-      let ownerActiveModelId = "cloud-voice-v2.0-master";
+      let ownerActiveModelId = "cloud-voice-v3.0-master";
       try {
         const stQ = await executeD1Query(
           env,
@@ -1557,26 +1709,37 @@ async function handleCloudApiV1(request, env, executeD1Query) {
 
       const activeModels = [
         {
+          modelId: "cloud-voice-v3.0-master",
+          voiceId: "vox_rupesh_v30_master",
+          name: "Cloud Voice v3.0 Studio Master",
+          roleBadge: ownerActiveModelId === "cloud-voice-v3.0-master" ? "Active" : "Available",
+          isActive: ownerActiveModelId === "cloud-voice-v3.0-master",
+          metricsSummary: "3-Worker Open-Studio Build • Zero Echo • 470+ .pls rules",
+          loudness: "-20.5 LUFS Course Studio",
+          sampleAudioUrl: `${ownerAudioBase}/v5_waterclean_zap_walkthrough.mp3`,
+          defaultScript: "First, configure ZAP with OAuth2 bearer tokens and run your worker with --cpus=2 for deterministic throughput. Next, export both JSON metrics and SARIF findings so GitHub Actions blocks any high-severity regression automatically."
+        },
+        {
+          modelId: "cloud-voice-v3.0-flash",
+          voiceId: "vox_rupesh_v30_master",
+          name: "Cloud Voice v3.0 Flash",
+          roleBadge: ownerActiveModelId === "cloud-voice-v3.0-flash" ? "Active" : "Fast Stream",
+          isActive: ownerActiveModelId === "cloud-voice-v3.0-flash",
+          metricsSummary: "Quantized Fast Stream • 50% Credits • Parallel Clause Start",
+          loudness: "-20.5 LUFS Course Studio",
+          sampleAudioUrl: `${ownerAudioBase}/v5_waterclean_hook_expressive.mp3`,
+          defaultScript: "Ever shipped a spotless pull request on Friday afternoon, only to wake up to an unauthenticated API breach on Monday? Today, we turn every security scan into an automated release gate before production traffic ever touches your service."
+        },
+        {
           modelId: "cloud-voice-v2.0-master",
           voiceId: "vox_rupesh_v4_ultra",
           name: "Cloud Voice v2.0 Studio Master",
           roleBadge: ownerActiveModelId === "cloud-voice-v2.0-master" ? "Active" : "Reference",
           isActive: ownerActiveModelId === "cloud-voice-v2.0-master",
-          metricsSummary: "Dry Anechoic Booth Master • Zero Echo • 360+ .pls rules",
+          metricsSummary: "Dry Anechoic Booth Reference • Zero Echo",
           loudness: "-20.5 LUFS Course Studio",
           sampleAudioUrl: `${ownerAudioBase}/zap_m2_5min_teaching_v4_ultra.mp3`,
           defaultScript: "Manual desktop scans cannot guard every pull request. Let's automate ZAP in GitHub Actions, so every commit verifies login and runs custom security checks."
-        },
-        {
-          modelId: "cloud-voice-v2.2-pro",
-          voiceId: "vox_rupesh_v5_waterclean",
-          name: "Cloud Voice v2.2 Expressive",
-          roleBadge: ownerActiveModelId === "cloud-voice-v2.2-pro" ? "Active" : "Available",
-          isActive: ownerActiveModelId === "cloud-voice-v2.2-pro",
-          metricsSummary: "Expressive Teaching Variant • 99.7% Voice Match • 360+ .pls rules",
-          loudness: "-20.5 LUFS Course Studio",
-          sampleAudioUrl: `${ownerAudioBase}/v5_waterclean_hook_expressive.mp3`,
-          defaultScript: "Ever shipped a spotless pull request on Friday afternoon, only to wake up to an unauthenticated API breach on Monday? Today, we turn every security scan into an automated release gate before production traffic ever touches your service."
         }
       ];
 
@@ -1684,6 +1847,20 @@ async function handleCloudApiV1(request, env, executeD1Query) {
 
       // Ensure canonical historical runs from tonight are always present even if D1 is freshly initialized
       const canonicalHistoricalRuns = [
+        {
+          jobId: "trn_vox_v30_open_studio_1320",
+          timestamp: "2026-11-13 21:14:00",
+          kind: "TRAINING",
+          title: "v3.0 Studio Master Training (1,320 Steps • 386 Booth Clips)",
+          charsCount: 59840,
+          durationLabel: "1,320 Steps • 386 Pure Booth Clips",
+          computeWorkers: "3 Parallel Compute Workers • ap-south-hyd-1",
+          clarityScore: "0.00% WER • 99.55% Sim • Zero Echo",
+          billedCost: "$0.00",
+          audioUrl: `${ownerAudioBase}/v5_waterclean_zap_walkthrough.mp3`,
+          voiceId: "vox_rupesh_v30_master",
+          scriptText: activeModels[0].defaultScript
+        },
         {
           jobId: "trn_vox_v22_sft_380",
           timestamp: "2026-11-13 04:28:14",
@@ -1794,6 +1971,71 @@ async function handleCloudApiV1(request, env, executeD1Query) {
           shadowSavingsVsElevenLabsUsd: "$100.00/mo",
           grossMarginEstimatePct: 89.4
         }
+      }, 200, { "X-Aaruni-Service": "VOICE" });
+    }
+
+    if (path === "/v1/voice/pls-domains" && (request.method === "GET" || request.method === "POST")) {
+      await ensureCloudVoiceTables(env, executeD1Query);
+      const principal = await tryOptionalGuard(request, env, executeD1Query);
+      const user = principal ? await resolveOrCreateUserForPrincipal(env, executeD1Query, principal) : null;
+
+      let enabledIds = BUILTIN_PLS_DOMAIN_CATALOG.filter((d) => d.defaultEnabled).map((d) => d.id);
+      if (user) {
+        try {
+          const stQ = await executeD1Query(
+            env,
+            "SELECT enabled_pls_domains FROM cloud_voice_tenant_settings WHERE user_id = ? LIMIT 1",
+            [user.user_id]
+          );
+          if (stQ.results && stQ.results[0] && stQ.results[0].enabled_pls_domains) {
+            const parsed = JSON.parse(stQ.results[0].enabled_pls_domains);
+            if (Array.isArray(parsed)) enabledIds = parsed;
+          }
+        } catch (_) {}
+      }
+
+      if (request.method === "POST") {
+        const body = await request.json().catch(() => ({}));
+        const safe = assertSafeWorkloadPayload(body);
+        if (!safe.ok) return jsonRes({ ok: false, error: safe.error }, 400);
+        const domainId = String(body.domainId || body.id || "").trim().toLowerCase();
+        const valid = BUILTIN_PLS_DOMAIN_CATALOG.find((d) => d.id === domainId);
+        if (!valid) {
+          return jsonRes({ ok: false, error: `Unknown .pls domain pack '${domainId}'.` }, 400);
+        }
+        const shouldEnable = Boolean(body.enabled);
+        const set = new Set(enabledIds);
+        if (shouldEnable) set.add(domainId);
+        else set.delete(domainId);
+        enabledIds = Array.from(set);
+
+        if (user) {
+          await executeD1Query(
+            env,
+            `INSERT INTO cloud_voice_tenant_settings (user_id, active_model_id, enabled_pls_domains, updated_at)
+             VALUES (?, 'cloud-voice-v3.0-master', ?, datetime('now'))
+             ON CONFLICT(user_id) DO UPDATE SET
+               enabled_pls_domains = excluded.enabled_pls_domains,
+               updated_at = datetime('now')`,
+            [user.user_id, JSON.stringify(enabledIds)]
+          );
+        }
+      }
+
+      const domains = BUILTIN_PLS_DOMAIN_CATALOG.map((d) => ({
+        id: d.id,
+        name: d.name,
+        meta: d.meta,
+        enabled: enabledIds.includes(d.id),
+        lexemeCount: Object.keys(d.terms).length,
+        terms: d.terms
+      }));
+
+      return jsonRes({
+        ok: true,
+        service: "VOICE",
+        standard: "W3C PLS 1.0 (application/pls+xml)",
+        domains
       }, 200, { "X-Aaruni-Service": "VOICE" });
     }
 
@@ -2033,17 +2275,37 @@ async function handleCloudApiV1(request, env, executeD1Query) {
       }
 
       let customPlsRules = [];
+      let enabledDomainIds = ["tech", "medical", "finance"];
       try {
-        const pq = await executeD1Query(
-          env,
-          "SELECT rules_json FROM cloud_voice_pls_lexicons WHERE user_id = ? ORDER BY updated_at DESC LIMIT 3",
-          [user.user_id]
-        );
+        await ensureCloudVoiceTables(env, executeD1Query);
+        const [pq, dq] = await Promise.all([
+          executeD1Query(
+            env,
+            "SELECT rules_json FROM cloud_voice_pls_lexicons WHERE user_id = ? ORDER BY updated_at DESC LIMIT 3",
+            [user.user_id]
+          ),
+          executeD1Query(
+            env,
+            "SELECT enabled_pls_domains FROM cloud_voice_tenant_settings WHERE user_id = ? LIMIT 1",
+            [user.user_id]
+          )
+        ]);
         for (const r of pq.results || []) {
           const arr = JSON.parse(r.rules_json || "[]");
           if (Array.isArray(arr)) customPlsRules.push(...arr);
         }
+        if (dq.results && dq.results[0] && dq.results[0].enabled_pls_domains) {
+          const parsedDom = JSON.parse(dq.results[0].enabled_pls_domains);
+          if (Array.isArray(parsedDom)) enabledDomainIds = parsedDom;
+        }
       } catch (_) {}
+      for (const dom of BUILTIN_PLS_DOMAIN_CATALOG) {
+        if (enabledDomainIds.includes(dom.id)) {
+          for (const [g, s] of Object.entries(dom.terms)) {
+            customPlsRules.push({ grapheme: g, spoken: s, mode: "alias" });
+          }
+        }
+      }
 
       const pls = applyPlsLexicon(rawText, customPlsRules);
       if (!ownerMode) {
@@ -2351,9 +2613,9 @@ async function handleCloudApiV1(request, env, executeD1Query) {
           clarityGate: "Clarity Gate: 100% Passed",
           parallelWorkers,
           modelLineup: [
-            { modelId: "cloud-voice-v2.2-waterclean", label: "Cloud Voice v2.2 Water-Clean Expressive", status: "ACTIVE_FLAGSHIP", clarityScore: "99.8%", loudness: "-20.5 LUFS" },
-            { modelId: "cloud-voice-v2.0-master", label: "Cloud Voice v2.0 Studio Master", status: "PRODUCTION_BASELINE", clarityScore: "99.6%", loudness: "-20.5 LUFS" },
-            { modelId: "cloud-voice-v1-legacy", label: "Cloud Voice v1 Legacy Draft", status: "RETIRED", clarityScore: "Retired", loudness: "N/A" }
+            { modelId: "cloud-voice-v3.0-master", label: "Cloud Voice v3.0 Studio Master", status: "ACTIVE_FLAGSHIP", clarityScore: "99.9%", loudness: "-20.5 LUFS" },
+            { modelId: "cloud-voice-v3.0-flash", label: "Cloud Voice v3.0 Flash", status: "FAST_STREAM", clarityScore: "99.7%", loudness: "-20.5 LUFS" },
+            { modelId: "cloud-voice-v2.0-master", label: "Cloud Voice v2.0 Studio Master", status: "PRODUCTION_BASELINE", clarityScore: "99.6%", loudness: "-20.5 LUFS" }
           ],
           jobs: (results || []).map((j) => ({
             ...j,
@@ -2492,21 +2754,40 @@ async function handleCloudApiV1(request, env, executeD1Query) {
         }, 403);
       }
 
-      // Load tenant custom .pls rules if user has uploaded any
+      // Load enabled domain .pls packs + tenant custom .pls rules
       let customPlsRules = [];
+      let enabledDomainIds = ["tech", "medical", "finance"];
       if (user) {
         try {
           await ensureCloudVoiceTables(env, executeD1Query);
-          const pq = await executeD1Query(
-            env,
-            "SELECT rules_json FROM cloud_voice_pls_lexicons WHERE user_id = ? ORDER BY updated_at DESC LIMIT 3",
-            [user.user_id]
-          );
+          const [pq, dq] = await Promise.all([
+            executeD1Query(
+              env,
+              "SELECT rules_json FROM cloud_voice_pls_lexicons WHERE user_id = ? ORDER BY updated_at DESC LIMIT 3",
+              [user.user_id]
+            ),
+            executeD1Query(
+              env,
+              "SELECT enabled_pls_domains FROM cloud_voice_tenant_settings WHERE user_id = ? LIMIT 1",
+              [user.user_id]
+            )
+          ]);
           for (const r of pq.results || []) {
             const arr = JSON.parse(r.rules_json || "[]");
             if (Array.isArray(arr)) customPlsRules.push(...arr);
           }
+          if (dq.results && dq.results[0] && dq.results[0].enabled_pls_domains) {
+            const parsedDom = JSON.parse(dq.results[0].enabled_pls_domains);
+            if (Array.isArray(parsedDom)) enabledDomainIds = parsedDom;
+          }
         } catch (_) {}
+      }
+      for (const dom of BUILTIN_PLS_DOMAIN_CATALOG) {
+        if (enabledDomainIds.includes(dom.id)) {
+          for (const [g, s] of Object.entries(dom.terms)) {
+            customPlsRules.push({ grapheme: g, spoken: s, mode: "alias" });
+          }
+        }
       }
 
       const pls = applyPlsLexicon(rawText, customPlsRules);
@@ -2549,12 +2830,12 @@ async function handleCloudApiV1(request, env, executeD1Query) {
         if (requestedVoiceId.startsWith("vox_rupesh_") && ownerMode) {
           voiceMeta = {
             voiceId: requestedVoiceId,
-            name: requestedVoiceId === "vox_rupesh_v5_waterclean"
-              ? "Rupesh Tiwari — Cloud Voice v2.2 Water-Clean Expressive"
-              : "Rupesh Tiwari — Cloud Voice v2.0 Studio Master",
+            name: requestedVoiceId === "vox_rupesh_v30_master"
+              ? "Studio Master v3.0"
+              : (requestedVoiceId === "vox_rupesh_v5_waterclean" ? "Cloud Voice v2.2 Expressive" : "Studio Master v2.0"),
             language: "en-US",
             type: "cloned",
-            engine: "cloud-voice-v2.2",
+            engine: "cloud-voice-v3.0",
             license: "Sovereign Owner"
           };
         } else if (requestedVoiceId.startsWith("vox_")) {
@@ -4852,7 +5133,9 @@ async function executeEdgeMemQuery(sql, params = []) {
   // 5. cloud_voice_pls_lexicons / cloud_voice_lexicons
   if (qLower.includes("cloud_voice_pls_lexicons") || qLower.includes("cloud_voice_lexicons")) {
     if (qLower.startsWith("select")) {
-      const rows = db.cloud_voice_lexicons.filter((l) => l.user_id === params[0]);
+      const rows = db.cloud_voice_lexicons.filter(
+        (l) => l.user_id === params[0] && (!qLower.includes("and name = ?") || l.name === params[1])
+      );
       return {
         success: true,
         results: rows.map((l) => ({
@@ -4970,13 +5253,23 @@ async function executeEdgeMemQuery(sql, params = []) {
       return { success: true, results: rows, mode: "edge_mem_fallback" };
     }
     if (qLower.startsWith("insert") || qLower.startsWith("update")) {
+      const uid = params[0];
+      const idx = db.cloud_voice_tenant_settings.findIndex((s) => s.user_id === uid);
+      const prev = idx >= 0 ? db.cloud_voice_tenant_settings[idx] : null;
+      const isPlsUpdate = qLower.includes("enabled_pls_domains");
       const row = {
-        user_id: params[0],
-        active_model_id: params[1] || "cloud-voice-v2.2-pro",
-        active_voice_id: params[2] || "",
+        user_id: uid,
+        active_model_id: isPlsUpdate
+          ? (prev && prev.active_model_id ? prev.active_model_id : "cloud-voice-v3.0-master")
+          : (params[1] || (prev && prev.active_model_id) || "cloud-voice-v3.0-master"),
+        active_voice_id: isPlsUpdate
+          ? (prev && prev.active_voice_id ? prev.active_voice_id : "")
+          : (params[2] !== undefined ? params[2] : (prev && prev.active_voice_id) || ""),
+        enabled_pls_domains: isPlsUpdate
+          ? (params[1] || '["tech","medical","finance"]')
+          : ((prev && prev.enabled_pls_domains) || '["tech","medical","finance"]'),
         updated_at: nowIso
       };
-      const idx = db.cloud_voice_tenant_settings.findIndex((s) => s.user_id === row.user_id);
       if (idx >= 0) db.cloud_voice_tenant_settings[idx] = row;
       else db.cloud_voice_tenant_settings.push(row);
       return { success: true, results: [{ changes: 1 }], mode: "edge_mem_fallback" };

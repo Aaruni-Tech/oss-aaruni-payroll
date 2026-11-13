@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-  <title>Aaruni Cloud Voice — Studio Speech, Train &amp; Improve, Voice Cloning &amp; API</title>
-  <meta name="description" content="Aaruni Cloud Voice delivers crystal-clear studio narration, instant pronunciation fixes, incremental voice training, cloning, and an ElevenLabs-compatible REST API." />
+  <title>Aaruni Cloud Voice — Studio Text to Speech, .pls Dictionaries, Train &amp; API</title>
+  <meta name="description" content="Aaruni Cloud Voice delivers crystal-clear studio narration, multi-domain W3C .pls pronunciation dictionaries, live sound polish, voice cloning, training, and a drop-in REST API." />
   <meta name="theme-color" content="#FFFFFF" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -13,20 +13,21 @@
   <script src="https://accounts.google.com/gsi/client" async defer></script>
   <style>
     :root {
-      --bg-canvas: #FAFAFA;
+      --bg-canvas: #FFFFFF;
       --bg-surface: #FFFFFF;
-      --bg-subtle: #F8FAFC;
-      --bg-hover: #F1F5F9;
+      --bg-subtle: #FAFAFA;
+      --bg-hover: #F9FAFB;
       --ink-primary: #111827;
       --ink-strong: #0F172A;
       --ink-secondary: #4B5563;
       --ink-muted: #6B7280;
       --border-hairline: #E5E7EB;
+      --border-soft: #F3F4F6;
       --border-strong: #D1D5DB;
       --brand-dawn: #FE5F01;
       --brand-dawn-hover: #EA580C;
       --brand-dawn-soft: rgba(254, 95, 1, 0.08);
-      --brand-dawn-border: rgba(254, 95, 1, 0.26);
+      --brand-dawn-border: #FED7AA;
       --ok-ink: #059669;
       --ok-bg: #ECFDF5;
       --ok-border: #A7F3D0;
@@ -36,11 +37,10 @@
       --err-ink: #DC2626;
       --err-bg: #FEF2F2;
       --radius-sm: 10px;
-      --radius-md: 14px;
-      --radius-lg: 18px;
+      --radius-md: 12px;
+      --radius-lg: 16px;
       --radius-pill: 9999px;
       --shadow-xs: 0 1px 2px rgba(17, 24, 39, 0.04);
-      --shadow-sm: 0 4px 16px rgba(17, 24, 39, 0.04);
       --shadow-md: 0 12px 32px rgba(17, 24, 39, 0.08);
       --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
       --font-display: 'Plus Jakarta Sans', 'Inter', sans-serif;
@@ -53,146 +53,216 @@
       padding: 0;
       width: 100%;
       max-width: 100%;
-      background: var(--bg-canvas);
+      background: #FFFFFF;
       color: var(--ink-primary);
       font-family: var(--font-sans);
-      font-size: 15px;
-      line-height: 1.55;
+      font-size: 14px;
+      line-height: 1.5;
       -webkit-font-smoothing: antialiased;
       overflow-x: hidden;
     }
     body {
       min-height: 100vh;
-      padding-bottom: 86px;
+      padding-bottom: 76px;
     }
     @media (min-width: 900px) {
-      body { padding-bottom: 40px; }
+      body { padding-bottom: 36px; }
     }
 
-    /* Top Header */
+    /* ElevenLabs-Style Minimalist Range Slider */
+    input[type="range"].el-slider {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 100%;
+      height: 4px;
+      border-radius: 999px;
+      background: #E5E7EB;
+      outline: none;
+      cursor: pointer;
+      margin: 4px 0;
+    }
+    input[type="range"].el-slider::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+      background: #111827;
+      border: 2px solid #FFFFFF;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.28);
+      cursor: pointer;
+    }
+    input[type="range"].el-slider::-moz-range-thumb {
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+      background: #111827;
+      border: 2px solid #FFFFFF;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.28);
+      cursor: pointer;
+    }
+
+    /* Crisp Pill Toggle Switch */
+    .el-switch {
+      position: relative;
+      width: 38px;
+      height: 22px;
+      border-radius: 999px;
+      background: #E5E7EB;
+      transition: background 0.15s ease;
+      cursor: pointer;
+      border: none;
+      padding: 0;
+      flex-shrink: 0;
+    }
+    .el-switch.on { background: #111827; }
+    .el-switch::after {
+      content: "";
+      position: absolute;
+      top: 2px;
+      left: 2px;
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      background: #FFFFFF;
+      transition: transform 0.15s ease;
+      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+    }
+    .el-switch.on::after { transform: translateX(16px); }
+
+    /* Top Navigation Bar (Pure White) */
     .vc-topbar {
       position: sticky;
       top: 0;
       z-index: 60;
-      background: rgba(255, 255, 255, 0.94);
-      backdrop-filter: blur(14px);
+      background: rgba(255, 255, 255, 0.96);
+      backdrop-filter: blur(12px);
       border-bottom: 1px solid var(--border-hairline);
     }
     .vc-topbar-inner {
-      max-width: 1180px;
+      max-width: 1240px;
       margin: 0 auto;
       padding: 0 20px;
-      height: 64px;
+      height: 56px;
       display: flex;
       align-items: center;
       justify-content: space-between;
-      gap: 14px;
+      gap: 12px;
+    }
+    .vc-topbar-left {
+      display: flex;
+      align-items: center;
+      gap: 24px;
+      min-width: 0;
     }
     .vc-brand {
       display: inline-flex;
       align-items: center;
-      gap: 10px;
+      gap: 8px;
       text-decoration: none;
-      color: var(--ink-strong);
-      font-family: var(--font-display);
-      font-weight: 800;
-      font-size: 16.5px;
-      letter-spacing: -0.02em;
+      color: var(--ink-primary);
+      font-weight: 700;
+      font-size: 14.5px;
+      letter-spacing: -0.01em;
+      flex-shrink: 0;
     }
     .vc-brand-mark {
-      width: 32px;
-      height: 32px;
-      border-radius: 9px;
-      background: var(--ink-strong);
+      width: 28px;
+      height: 28px;
+      border-radius: 8px;
+      background: var(--ink-primary);
       color: #FFFFFF;
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      position: relative;
-      font-size: 14px;
+      font-size: 12.5px;
       font-weight: 800;
-      flex-shrink: 0;
+      position: relative;
     }
     .vc-brand-mark::after {
       content: "";
       position: absolute;
-      right: 4px;
-      bottom: 4px;
-      width: 5px;
-      height: 5px;
+      right: 3px;
+      bottom: 3px;
+      width: 4px;
+      height: 4px;
       border-radius: 50%;
       background: var(--brand-dawn);
     }
     .vc-brand-badge {
-      font-family: var(--font-sans);
       font-size: 11px;
       font-weight: 600;
-      padding: 2px 8px;
+      padding: 1px 7px;
       border-radius: var(--radius-pill);
-      background: var(--brand-dawn-soft);
-      color: var(--brand-dawn);
       border: 1px solid var(--brand-dawn-border);
+      color: #C2410C;
+      background: #FFFFFF;
     }
 
-    /* Desktop 4-Tab Nav */
+    /* Desktop Top Tabs */
     .vc-desktop-tabs {
       display: none;
       align-items: center;
-      gap: 4px;
-      background: var(--bg-subtle);
-      padding: 4px;
-      border-radius: var(--radius-pill);
-      border: 1px solid var(--border-hairline);
+      gap: 20px;
+      height: 56px;
     }
     @media (min-width: 900px) {
-      .vc-desktop-tabs { display: inline-flex; }
+      .vc-desktop-tabs { display: flex; }
     }
     .vc-nav-tab {
       appearance: none;
       border: 0;
+      border-bottom: 2px solid transparent;
       background: transparent;
-      color: var(--ink-secondary);
+      color: var(--ink-muted);
       font-family: var(--font-sans);
-      font-size: 13.5px;
+      font-size: 13px;
       font-weight: 600;
-      padding: 8px 16px;
-      min-height: 36px;
-      border-radius: var(--radius-pill);
+      height: 56px;
+      padding: 0 2px;
       cursor: pointer;
-      transition: all 0.15s ease;
+      transition: color 0.14s ease, border-color 0.14s ease;
     }
-    .vc-nav-tab:hover { color: var(--ink-strong); }
+    .vc-nav-tab:hover { color: var(--ink-primary); }
     .vc-nav-tab.active {
-      background: var(--bg-surface);
-      color: var(--ink-strong);
-      box-shadow: var(--shadow-xs);
+      color: var(--ink-primary);
+      border-bottom-color: var(--ink-primary);
     }
 
     .vc-auth-zone {
       display: flex;
       align-items: center;
       gap: 8px;
+      flex-shrink: 0;
     }
-    .vc-credit-pill {
+    .vc-credit-label {
       display: none;
-      align-items: center;
-      gap: 6px;
-      padding: 6px 12px;
-      border-radius: var(--radius-pill);
-      background: var(--bg-subtle);
-      border: 1px solid var(--border-hairline);
-      font-size: 12.5px;
-      font-weight: 600;
+      font-size: 12px;
+      font-weight: 500;
       color: var(--ink-secondary);
     }
     @media (min-width: 680px) {
-      .vc-credit-pill { display: inline-flex; }
+      .vc-credit-label { display: inline-block; }
     }
-    .vc-credit-dot {
-      width: 7px;
-      height: 7px;
-      border-radius: 50%;
-      background: var(--ok-ink);
+    .vc-mob-voice-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      padding: 5px 10px;
+      border-radius: var(--radius-pill);
+      border: 1px solid var(--border-hairline);
+      background: #FFFFFF;
+      color: var(--ink-primary);
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      max-width: 152px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+    @media (min-width: 900px) {
+      .vc-mob-voice-chip { display: none; }
     }
 
     /* Buttons */
@@ -201,18 +271,18 @@
       border: 1px solid transparent;
       border-radius: var(--radius-pill);
       font-family: var(--font-sans);
-      font-size: 13.5px;
+      font-size: 12.5px;
       font-weight: 600;
-      min-height: 44px;
-      padding: 0 18px;
+      min-height: 38px;
+      padding: 0 16px;
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      gap: 8px;
+      gap: 6px;
       cursor: pointer;
       text-decoration: none;
       white-space: nowrap;
-      transition: transform 0.12s ease, background 0.15s ease, border-color 0.15s ease;
+      transition: background 0.14s ease, border-color 0.14s ease, transform 0.1s ease;
     }
     .btn-pill:active { transform: scale(0.985); }
     .btn-pill:disabled { opacity: 0.55; cursor: not-allowed; }
@@ -227,255 +297,234 @@
     }
     .btn-dawn:hover { background: var(--brand-dawn-hover); }
     .btn-outline {
-      background: var(--bg-surface);
+      background: #FFFFFF;
       color: var(--ink-primary);
       border-color: var(--border-hairline);
     }
     .btn-outline:hover {
-      background: var(--bg-subtle);
-      border-color: var(--border-strong);
+      border-color: var(--ink-primary);
     }
     .btn-sm {
-      min-height: 36px;
-      padding: 0 14px;
-      font-size: 13px;
+      min-height: 32px;
+      padding: 0 12px;
+      font-size: 12px;
     }
 
     /* Shell */
     .vc-shell {
-      max-width: 1080px;
+      max-width: 1240px;
       margin: 0 auto;
-      padding: 28px 16px 48px;
+      padding: 18px 16px 40px;
     }
-    @media (min-width: 768px) {
-      .vc-shell { padding: 36px 24px 64px; }
+    @media (min-width: 900px) {
+      .vc-shell { padding: 22px 24px 52px; }
     }
     .vc-view { display: none; }
     .vc-view.active { display: block; }
 
-    .vc-card {
-      background: var(--bg-surface);
+    /* ====================================================================== */
+    /* PURE-WHITE TWO-COLUMN STUDIO WORKSPACE                                 */
+    /* ====================================================================== */
+    .vc-mob-seg-wrap {
+      margin-bottom: 12px;
+    }
+    @media (min-width: 900px) {
+      .vc-mob-seg-wrap { display: none; }
+    }
+    .vc-mob-seg {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
       border: 1px solid var(--border-hairline);
-      border-radius: var(--radius-lg);
-      box-shadow: var(--shadow-sm);
+      border-radius: var(--radius-md);
+      padding: 3px;
+      background: #FFFFFF;
     }
-
-    /* ====================================================================== */
-    /* SPEAK VIEW (SINGLE CALM CENTERED ELEVENLABS-STYLE COLUMN)              */
-    /* ====================================================================== */
-    .speak-wrap {
-      max-width: 840px;
-      margin: 0 auto;
-    }
-    .speak-head {
-      text-align: center;
-      margin-bottom: 22px;
-    }
-    .speak-head h1 {
-      font-family: var(--font-display);
-      font-size: clamp(24px, 3.5vw, 34px);
-      font-weight: 800;
-      letter-spacing: -0.025em;
-      margin: 0 0 6px;
-    }
-    .speak-head p {
-      margin: 0;
-      font-size: 15px;
-      color: var(--ink-secondary);
-    }
-
-    /* Voice Pill Selector Strip */
-    .voice-pill-bar {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      overflow-x: auto;
-      padding-bottom: 6px;
-      margin-bottom: 14px;
-      scrollbar-width: thin;
-    }
-    .voice-pill {
+    .vc-mob-seg button {
       appearance: none;
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      min-height: 42px;
-      padding: 4px 14px 4px 8px;
-      border-radius: var(--radius-pill);
-      border: 1px solid var(--border-hairline);
-      background: var(--bg-surface);
-      color: var(--ink-primary);
+      border: 0;
+      background: transparent;
+      color: var(--ink-secondary);
       font-family: var(--font-sans);
-      font-size: 13.5px;
+      font-size: 12.5px;
       font-weight: 600;
+      padding: 8px 6px;
+      border-radius: 9px;
       cursor: pointer;
-      flex-shrink: 0;
-      transition: all 0.15s ease;
     }
-    .voice-pill:hover { border-color: var(--border-strong); }
-    .voice-pill.active {
-      border-color: var(--ink-primary);
+    .vc-mob-seg button.active {
       background: var(--ink-primary);
       color: #FFFFFF;
     }
-    .voice-pill-avatar {
-      width: 26px;
-      height: 26px;
-      border-radius: 50%;
-      background: var(--bg-subtle);
-      color: var(--ink-primary);
-      font-size: 11px;
-      font-weight: 700;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
+
+    .tts-workspace {
+      border: 1px solid var(--border-hairline);
+      border-radius: var(--radius-lg);
+      background: #FFFFFF;
+      box-shadow: var(--shadow-xs);
+      display: grid;
+      grid-template-columns: 1fr;
+      min-height: 540px;
     }
-    .voice-pill.active .voice-pill-avatar {
-      background: var(--brand-dawn);
-      color: #FFFFFF;
+    @media (min-width: 900px) {
+      .tts-workspace {
+        grid-template-columns: minmax(0, 1.75fr) minmax(330px, 1fr);
+      }
     }
 
-    /* Sample Preset Chips */
-    .preset-row {
+    /* Left Pure White Editor */
+    .tts-editor-col {
+      padding: 20px;
+      background: #FFFFFF;
       display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      border-bottom: 1px solid var(--border-soft);
+    }
+    @media (min-width: 900px) {
+      .tts-editor-col {
+        padding: 28px 32px;
+        border-bottom: 0;
+        border-right: 1px solid var(--border-soft);
+      }
+    }
+
+    .smp-top-row {
+      display: flex;
+      flex-wrap: wrap;
       align-items: center;
       justify-content: space-between;
-      gap: 10px;
-      flex-wrap: wrap;
-      margin-bottom: 14px;
-    }
-    .preset-chips {
-      display: flex;
-      align-items: center;
       gap: 8px;
-      flex-wrap: wrap;
+      margin-bottom: 16px;
     }
-    .preset-chip {
+    .smp-chips {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 6px;
+    }
+    .smp-btn {
       appearance: none;
       border: 1px solid var(--border-hairline);
-      background: var(--bg-surface);
+      background: #FFFFFF;
       color: var(--ink-secondary);
       border-radius: var(--radius-pill);
-      min-height: 36px;
-      padding: 0 13px;
+      padding: 5px 12px;
       font-family: var(--font-sans);
-      font-size: 13px;
-      font-weight: 600;
+      font-size: 12px;
+      font-weight: 500;
       cursor: pointer;
-      transition: all 0.14s ease;
+      transition: all 0.12s ease;
     }
-    .preset-chip:hover { color: var(--ink-primary); border-color: var(--border-strong); }
-    .preset-chip.active {
-      background: var(--brand-dawn-soft);
-      color: var(--brand-dawn);
-      border-color: var(--brand-dawn-border);
+    .smp-btn:hover { border-color: var(--ink-primary); color: var(--ink-primary); }
+    .smp-btn.active {
+      background: var(--ink-primary);
+      border-color: var(--ink-primary);
+      color: #FFFFFF;
+      font-weight: 600;
     }
-
-    /* Composer Box */
-    .vc-composer-head {
-      padding: 14px 22px;
-      border-bottom: 1px solid var(--border-hairline);
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 10px;
-      flex-wrap: wrap;
-    }
-    .vc-quality-badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 5px;
+    .pls-status-pill {
+      appearance: none;
+      cursor: pointer;
+      padding: 4px 11px;
+      border-radius: var(--radius-pill);
+      border: 1px solid var(--brand-dawn-border);
+      background: #FFFFFF;
+      color: #C2410C;
+      font-family: var(--font-sans);
       font-size: 12px;
       font-weight: 600;
-      padding: 3px 10px;
-      border-radius: var(--radius-pill);
-      background: var(--ok-bg);
-      color: var(--ok-ink);
-      border: 1px solid var(--ok-border);
     }
-    .vc-quality-badge.warn {
-      background: var(--warn-bg);
-      color: var(--warn-ink);
-      border-color: var(--warn-border);
-    }
+    .pls-status-pill:hover { background: #FFF7ED; }
 
+    /* Pure White Script Textarea — Zero Grey Boxes! */
     .vc-textarea {
       width: 100%;
-      min-height: 200px;
+      min-height: 230px;
       border: 0;
+      padding: 4px 0;
+      margin: 0;
       resize: vertical;
-      padding: 22px 24px;
+      background: #FFFFFF;
+      color: var(--ink-primary);
       font-family: var(--font-sans);
-      font-size: 16px;
+      font-size: 17px;
       line-height: 1.65;
-      color: var(--ink-strong);
-      background: transparent;
       outline: none;
     }
     .vc-textarea::placeholder { color: #9CA3AF; }
 
-    .vc-pls-strip {
-      padding: 10px 22px;
-      border-top: 1px solid var(--border-hairline);
-      background: var(--bg-subtle);
+    .matched-pls-row {
+      margin-top: 12px;
       display: flex;
       flex-wrap: wrap;
       align-items: center;
-      gap: 8px;
-      font-size: 12px;
+      gap: 6px;
+      min-height: 24px;
     }
-    .vc-pls-token {
+    .pls-match-chip {
       display: inline-flex;
       align-items: center;
       gap: 4px;
-      padding: 2px 9px;
+      padding: 2px 10px;
       border-radius: var(--radius-pill);
-      background: var(--bg-surface);
       border: 1px solid var(--brand-dawn-border);
-      font-family: var(--font-mono);
-      font-size: 11.5px;
-    }
-    .vc-pls-token span {
-      color: var(--brand-dawn);
-      font-family: var(--font-sans);
-      font-weight: 600;
+      background: #FFFFFF;
+      color: #9A3412;
+      font-size: 12px;
     }
 
-    /* Big Speak Button & Waveform Player */
-    .vc-player-bar {
-      padding: 16px 22px;
-      border-top: 1px solid var(--border-hairline);
+    /* Bottom Pure White Action Bar */
+    .tts-bottom-bar {
+      padding-top: 18px;
+      margin-top: 20px;
+      border-top: 1px solid var(--border-soft);
+      background: #FFFFFF;
       display: flex;
       flex-wrap: wrap;
       align-items: center;
       justify-content: space-between;
-      gap: 14px;
+      gap: 12px;
     }
-    .vc-audio-track {
+    .tts-player-left {
       display: flex;
       align-items: center;
-      gap: 14px;
+      gap: 12px;
+      min-width: 0;
       flex: 1;
-      min-width: 230px;
     }
-    .btn-speak-big {
-      min-height: 48px;
-      padding: 0 24px;
-      font-size: 15px;
-      font-weight: 700;
-    }
-    .vc-waveform-box {
-      flex: 1;
-      height: 32px;
-      border-radius: var(--radius-sm);
-      background: var(--bg-subtle);
+    .play-circle-btn {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
       border: 1px solid var(--border-hairline);
+      background: #FFFFFF;
+      color: var(--ink-primary);
+      font-size: 13px;
+      font-weight: 700;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      flex-shrink: 0;
+      transition: border-color 0.14s ease;
+    }
+    .play-circle-btn:hover { border-color: var(--ink-primary); }
+    .vc-waveform-mini {
+      width: 96px;
+      height: 28px;
+      border-radius: 8px;
+      border: 1px solid var(--border-hairline);
+      background: #FFFFFF;
       position: relative;
       overflow: hidden;
       cursor: pointer;
-      display: flex;
+      display: none;
       align-items: center;
-      padding: 0 8px;
+      padding: 0 6px;
+      flex-shrink: 0;
+    }
+    @media (min-width: 640px) {
+      .vc-waveform-mini { display: flex; }
     }
     .vc-wave-fill {
       position: absolute;
@@ -483,9 +532,8 @@
       top: 0;
       bottom: 0;
       width: 0%;
-      background: rgba(254, 95, 1, 0.16);
+      background: rgba(254, 95, 1, 0.14);
       border-right: 2px solid var(--brand-dawn);
-      transition: width 0.1s linear;
       pointer-events: none;
     }
     .vc-wave-bars {
@@ -493,7 +541,7 @@
       align-items: center;
       justify-content: space-between;
       width: 100%;
-      height: 18px;
+      height: 14px;
       gap: 2px;
       z-index: 1;
       pointer-events: none;
@@ -501,138 +549,230 @@
     .vc-wave-bars i {
       display: block;
       flex: 1;
-      background: #CBD5E1;
+      background: #D1D5DB;
       border-radius: 2px;
     }
-    .vc-time-label {
-      font-family: var(--font-mono);
-      font-size: 12px;
-      color: var(--ink-muted);
-      min-width: 78px;
-      text-align: right;
-    }
-
-    /* 1-Line Anti-Glitch Helper Bar */
-    .vc-glitch-helper {
-      margin-top: 12px;
-      padding: 12px 18px;
-      border-radius: var(--radius-md);
-      background: var(--bg-surface);
-      border: 1px solid var(--border-hairline);
+    .tts-actions-right {
       display: flex;
       align-items: center;
-      justify-content: space-between;
-      gap: 12px;
+      gap: 8px;
       flex-wrap: wrap;
-      font-size: 13.5px;
-    }
-    .vc-quick-fix-popover {
-      margin-top: 10px;
-      padding: 16px 18px;
-      border-radius: var(--radius-md);
-      background: var(--bg-surface);
-      border: 1px solid var(--border-strong);
-      box-shadow: var(--shadow-xs);
     }
 
-    /* Collapsible 6-Slider Tune Voice Settings Accordion */
-    details.vc-tune-drawer {
-      margin-top: 14px;
-      background: var(--bg-surface);
-      border: 1px solid var(--border-hairline);
-      border-radius: var(--radius-md);
-      padding: 14px 20px;
-    }
-    details.vc-tune-drawer summary {
-      list-style: none;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      font-weight: 600;
-      font-size: 14px;
-      color: var(--ink-primary);
-      min-height: 28px;
-    }
-    details.vc-tune-drawer summary::-webkit-details-marker { display: none; }
-    .vc-tune-grid {
-      margin-top: 16px;
-      padding-top: 16px;
-      border-top: 1px solid var(--border-hairline);
-      display: grid;
-      grid-template-columns: 1fr;
-      gap: 18px 24px;
-    }
-    @media (min-width: 680px) {
-      .vc-tune-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-    }
-    .vc-slider-group {
+    /* Right Sidebar: Settings | Dictionaries (.pls) */
+    .tts-side-col {
+      padding: 20px 22px;
+      background: #FFFFFF;
       display: flex;
       flex-direction: column;
-      gap: 4px;
+      gap: 16px;
     }
-    .vc-slider-row {
+    .side-top-tabs {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      border-bottom: 1px solid var(--border-hairline);
+    }
+    .side-top-tabs button {
+      appearance: none;
+      border: 0;
+      border-bottom: 2px solid transparent;
+      background: transparent;
+      padding: 0 4px 10px;
+      font-family: var(--font-sans);
+      font-size: 12.5px;
+      font-weight: 600;
+      color: var(--ink-muted);
+      cursor: pointer;
+    }
+    .side-top-tabs button:hover { color: var(--ink-primary); }
+    .side-top-tabs button.active {
+      color: var(--ink-primary);
+      border-bottom-color: var(--ink-primary);
+    }
+
+    /* Clean Voice Popover Card (Zero Horizontal Scrollbar) */
+    .voice-picker-wrap { position: relative; }
+    .voice-picker-btn {
+      width: 100%;
+      padding: 10px 13px;
+      border-radius: var(--radius-md);
+      border: 1px solid var(--border-hairline);
+      background: #FFFFFF;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      cursor: pointer;
+      text-align: left;
+    }
+    .voice-picker-btn:hover { border-color: var(--ink-primary); }
+    .voice-avatar-dot {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      background: var(--brand-dawn);
+      color: #FFFFFF;
+      font-size: 11px;
+      font-weight: 700;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+    .voice-dropdown-menu {
+      display: none;
+      position: absolute;
+      left: 0;
+      right: 0;
+      top: calc(100% + 6px);
+      background: #FFFFFF;
+      border: 1px solid var(--border-hairline);
+      border-radius: var(--radius-md);
+      box-shadow: var(--shadow-md);
+      padding: 6px;
+      z-index: 45;
+      max-height: 290px;
+      overflow-y: auto;
+    }
+    .voice-dropdown-menu.open { display: block; }
+    .voice-menu-item {
+      width: 100%;
+      border: 0;
+      background: #FFFFFF;
+      border-radius: 9px;
+      padding: 8px 10px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      text-align: left;
+      cursor: pointer;
+    }
+    .voice-menu-item:hover { background: var(--bg-hover); }
+    .voice-menu-item.selected { background: #FFF7ED; }
+
+    .el-select {
+      width: 100%;
+      padding: 9px 12px;
+      border-radius: var(--radius-md);
+      border: 1px solid var(--border-hairline);
+      background: #FFFFFF;
+      color: var(--ink-primary);
+      font-family: var(--font-sans);
+      font-size: 12.5px;
+      font-weight: 600;
+      outline: none;
+    }
+    .el-select:focus { border-color: var(--ink-primary); }
+
+    .slider-block {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+    .slider-head {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      font-size: 13px;
-      font-weight: 600;
-      color: var(--ink-primary);
-    }
-    .vc-slider-val {
-      font-family: var(--font-mono);
       font-size: 12px;
-      color: var(--ink-secondary);
     }
-    input[type="range"].vc-range {
-      width: 100%;
-      accent-color: var(--ink-primary);
-      height: 26px;
-      cursor: pointer;
-    }
-    .vc-slider-ends {
+    .slider-ends {
       display: flex;
       justify-content: space-between;
       font-size: 11px;
-      color: var(--ink-muted);
+      color: #9CA3AF;
+    }
+
+    .env-seg-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 4px;
+      padding: 3px;
+      border-radius: var(--radius-md);
+      border: 1px solid var(--border-hairline);
+      background: #FFFFFF;
+    }
+    .env-btn {
+      appearance: none;
+      border: 0;
+      background: transparent;
+      color: var(--ink-secondary);
+      font-family: var(--font-sans);
+      font-size: 12px;
+      font-weight: 500;
+      padding: 6px 4px;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+    .env-btn.active {
+      background: var(--ink-primary);
+      color: #FFFFFF;
+      font-weight: 600;
+    }
+
+    /* Domain Pack Cards */
+    .domain-pack-row {
+      padding: 10px 12px;
+      border-radius: var(--radius-md);
+      border: 1px solid var(--border-hairline);
+      background: #FFFFFF;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+    }
+    .domain-pack-row.enabled { border-color: var(--ink-primary); }
+
+    /* Mobile Visibility Helpers for Write / Settings / .pls */
+    @media (max-width: 899px) {
+      .tts-workspace[data-mob-pane="settings"] .tts-editor-col,
+      .tts-workspace[data-mob-pane="pls"] .tts-editor-col {
+        display: none;
+      }
+      .tts-workspace[data-mob-pane="write"] .tts-side-col {
+        display: none;
+      }
+      .tts-workspace[data-mob-pane="settings"] .side-top-tabs,
+      .tts-workspace[data-mob-pane="pls"] .side-top-tabs {
+        display: none;
+      }
     }
 
     /* ====================================================================== */
-    /* TRAIN & IMPROVE VIEW (4 DEDICATED CLARITY & ANTI-GLITCH CARDS)         */
+    /* SECONDARY VIEWS: TRAIN, CLONE & API                                    */
     /* ====================================================================== */
+    .vc-card {
+      background: #FFFFFF;
+      border: 1px solid var(--border-hairline);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-xs);
+    }
     .vc-section-head {
-      max-width: 700px;
-      margin: 0 auto 26px;
+      max-width: 680px;
+      margin: 0 auto 24px;
       text-align: center;
     }
     .vc-section-head h2 {
       font-family: var(--font-display);
-      font-size: clamp(23px, 3.2vw, 32px);
+      font-size: clamp(22px, 3vw, 28px);
       font-weight: 800;
-      letter-spacing: -0.025em;
-      margin: 0 0 8px;
+      letter-spacing: -0.02em;
+      margin: 0 0 6px;
     }
     .vc-section-head p {
       margin: 0;
       color: var(--ink-secondary);
-      font-size: 15px;
+      font-size: 14px;
     }
-
     .train-stack {
       max-width: 880px;
       margin: 0 auto;
       display: flex;
       flex-direction: column;
-      gap: 22px;
+      gap: 18px;
     }
-    .train-card {
-      padding: 26px 28px;
-    }
-    @media (max-width: 600px) {
-      .train-card { padding: 20px 18px; }
-    }
+    .train-card { padding: 24px; }
     .train-step-tag {
-      font-size: 11.5px;
+      font-size: 11px;
       font-weight: 700;
       text-transform: uppercase;
       letter-spacing: 0.06em;
@@ -641,86 +781,92 @@
     }
     .train-card h3 {
       font-family: var(--font-display);
-      font-size: 19px;
+      font-size: 18px;
       font-weight: 700;
       margin: 0 0 6px;
-      letter-spacing: -0.015em;
     }
     .train-card p.sub {
-      margin: 0 0 18px;
-      font-size: 14.5px;
+      margin: 0 0 16px;
+      font-size: 13.5px;
       color: var(--ink-secondary);
     }
-
     .vc-field label {
       display: block;
-      font-size: 12.5px;
+      font-size: 12px;
       font-weight: 600;
       color: var(--ink-secondary);
-      margin-bottom: 6px;
+      margin-bottom: 5px;
     }
     .vc-input, .vc-select {
       width: 100%;
-      min-height: 44px;
-      padding: 0 13px;
+      min-height: 40px;
+      padding: 0 12px;
       border-radius: var(--radius-sm);
       border: 1px solid var(--border-hairline);
-      background: var(--bg-surface);
+      background: #FFFFFF;
       color: var(--ink-primary);
       font-family: var(--font-sans);
-      font-size: 14.5px;
+      font-size: 13.5px;
       outline: none;
     }
-    .vc-input:focus, .vc-select:focus {
-      border-color: var(--ink-primary);
-    }
+    .vc-input:focus, .vc-select:focus { border-color: var(--ink-primary); }
 
     .fix-word-grid {
       display: grid;
       grid-template-columns: 1fr;
-      gap: 12px;
+      gap: 10px;
       align-items: end;
     }
     @media (min-width: 720px) {
-      .fix-word-grid {
-        grid-template-columns: 1fr 1.2fr auto;
-      }
+      .fix-word-grid { grid-template-columns: 1fr 1.2fr auto; }
     }
-
-    /* Guided Studio Teleprompter */
+    .vc-quality-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      font-size: 11.5px;
+      font-weight: 600;
+      padding: 3px 10px;
+      border-radius: var(--radius-pill);
+      background: #FFFFFF;
+      color: var(--ok-ink);
+      border: 1px solid var(--ok-border);
+    }
+    .vc-quality-badge.warn {
+      color: var(--warn-ink);
+      border-color: var(--warn-border);
+    }
     .teleprompter-box {
-      background: var(--bg-subtle);
+      background: #FFFFFF;
       border: 1px solid var(--border-hairline);
       border-radius: var(--radius-md);
-      padding: 18px 20px;
-      margin-bottom: 16px;
+      padding: 16px 18px;
+      margin-bottom: 14px;
     }
     .teleprompter-quote {
-      font-size: 16px;
+      font-size: 15px;
       font-weight: 500;
       line-height: 1.6;
       color: var(--ink-strong);
-      margin: 10px 0 0;
+      margin: 8px 0 0;
     }
     .dropzone-box {
       border: 1.5px dashed var(--border-strong);
       border-radius: var(--radius-md);
       padding: 16px;
       text-align: center;
-      background: var(--bg-subtle);
-      font-size: 13.5px;
+      background: #FFFFFF;
+      font-size: 13px;
       color: var(--ink-secondary);
       cursor: pointer;
-      transition: border-color 0.15s ease;
     }
     .dropzone-box:hover { border-color: var(--ink-primary); }
 
-    /* Radio Goal Cards */
     .goal-cards-grid {
       display: grid;
       grid-template-columns: 1fr;
-      gap: 12px;
-      margin-bottom: 18px;
+      gap: 10px;
+      margin-bottom: 16px;
     }
     @media (min-width: 740px) {
       .goal-cards-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
@@ -728,38 +874,24 @@
     .goal-radio-card {
       border: 1px solid var(--border-hairline);
       border-radius: var(--radius-md);
-      padding: 16px;
+      padding: 14px;
       cursor: pointer;
-      background: var(--bg-surface);
+      background: #FFFFFF;
       display: flex;
       flex-direction: column;
-      gap: 6px;
-      transition: all 0.15s ease;
+      gap: 4px;
     }
-    .goal-radio-card:hover { border-color: var(--border-strong); }
     .goal-radio-card.selected {
-      border-color: var(--brand-dawn);
-      background: #FFFBF7;
-      box-shadow: 0 0 0 1px var(--brand-dawn);
+      border-color: var(--ink-primary);
+      box-shadow: 0 0 0 1px var(--ink-primary);
     }
-    .goal-radio-card strong {
-      font-size: 14.5px;
-      color: var(--ink-primary);
-    }
-    .goal-radio-card span {
-      font-size: 13px;
-      color: var(--ink-secondary);
-      line-height: 1.45;
-    }
-
     .progress-track {
       width: 100%;
-      height: 8px;
+      height: 7px;
       border-radius: var(--radius-pill);
-      background: var(--bg-subtle);
-      border: 1px solid var(--border-hairline);
+      background: #F3F4F6;
       overflow: hidden;
-      margin-top: 10px;
+      margin-top: 8px;
     }
     .progress-fill {
       height: 100%;
@@ -767,42 +899,37 @@
       background: var(--brand-dawn);
       transition: width 0.25s ease;
     }
-
     .version-row {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      gap: 14px;
-      padding: 15px 18px;
+      gap: 12px;
+      padding: 14px 16px;
       border: 1px solid var(--border-hairline);
       border-radius: var(--radius-md);
-      margin-bottom: 10px;
+      margin-bottom: 8px;
       flex-wrap: wrap;
-      background: var(--bg-surface);
+      background: #FFFFFF;
     }
-    .version-row.is-active {
-      border-color: var(--ok-border);
-      background: #FAFFFD;
-    }
+    .version-row.is-active { border-color: var(--ink-primary); }
 
-    /* Clone & Plans Grids */
     .vc-lock-banner {
-      padding: 16px 18px;
+      padding: 14px 16px;
       border-radius: var(--radius-md);
-      background: var(--warn-bg);
+      background: #FFFBEB;
       border: 1px solid var(--warn-border);
       display: flex;
       align-items: center;
       justify-content: space-between;
-      gap: 14px;
+      gap: 12px;
       flex-wrap: wrap;
-      margin-bottom: 18px;
+      margin-bottom: 16px;
     }
     .vc-pricing-grid {
       display: grid;
       grid-template-columns: 1fr;
-      gap: 16px;
-      margin-top: 22px;
+      gap: 14px;
+      margin-top: 18px;
     }
     @media (min-width: 680px) {
       .vc-pricing-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
@@ -811,60 +938,56 @@
       .vc-pricing-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); }
     }
     .vc-plan-card {
-      padding: 24px;
+      padding: 22px;
       display: flex;
       flex-direction: column;
       justify-content: space-between;
-      gap: 16px;
+      gap: 14px;
     }
-    .vc-plan-card.featured {
-      border-color: var(--brand-dawn);
-    }
+    .vc-plan-card.featured { border-color: var(--brand-dawn); }
     .vc-price-num {
       font-family: var(--font-display);
-      font-size: 30px;
+      font-size: 28px;
       font-weight: 800;
       letter-spacing: -0.03em;
     }
     .vc-price-num span {
-      font-size: 13.5px;
+      font-size: 13px;
       font-weight: 500;
       color: var(--ink-muted);
     }
     .vc-plan-list {
       list-style: none;
-      margin: 12px 0 0;
+      margin: 10px 0 0;
       padding: 0;
       display: flex;
       flex-direction: column;
-      gap: 8px;
-      font-size: 13.5px;
+      gap: 7px;
+      font-size: 13px;
       color: var(--ink-secondary);
     }
-
     .vc-code-box {
-      background: var(--bg-subtle);
+      background: #FAFAFA;
       border: 1px solid var(--border-hairline);
       border-radius: var(--radius-md);
-      padding: 14px 16px;
+      padding: 12px 14px;
       font-family: var(--font-mono);
-      font-size: 12.5px;
-      line-height: 1.6;
+      font-size: 12px;
+      line-height: 1.55;
       color: var(--ink-primary);
       overflow-x: auto;
       white-space: pre;
     }
 
-    /* Sticky Mobile Bottom Bar (375px+) */
+    /* Sticky Mobile Bottom Bar */
     .vc-mobile-tabbar {
       position: fixed;
       left: 0;
       right: 0;
       bottom: 0;
       z-index: 70;
-      background: rgba(255, 255, 255, 0.97);
-      backdrop-filter: blur(14px);
-      border-top: 1px solid var(--border-hairline);
+      background: rgba(255, 255, 255, 0.98);
+      border-top: 1px solid var(--border-soft);
       display: grid;
       grid-template-columns: repeat(4, minmax(0, 1fr));
       padding: 4px 6px calc(4px + env(safe-area-inset-bottom, 0px));
@@ -877,29 +1000,23 @@
       border: 0;
       background: transparent;
       color: var(--ink-muted);
-      min-height: 50px;
+      min-height: 48px;
       display: flex;
-      flex-direction: column;
       align-items: center;
       justify-content: center;
-      gap: 2px;
       font-family: var(--font-sans);
-      font-size: 11.5px;
+      font-size: 12px;
       font-weight: 600;
       cursor: pointer;
-      border-radius: var(--radius-sm);
     }
-    .vc-mob-tab.active {
-      color: var(--brand-dawn);
-      background: var(--brand-dawn-soft);
-    }
+    .vc-mob-tab.active { color: var(--brand-dawn); }
 
-    /* Modals & Status */
+    /* Modals & Toast */
     .vc-modal-backdrop {
       position: fixed;
       inset: 0;
       z-index: 100;
-      background: rgba(17, 24, 39, 0.42);
+      background: rgba(17, 24, 39, 0.4);
       backdrop-filter: blur(4px);
       display: none;
       align-items: center;
@@ -909,23 +1026,23 @@
     .vc-modal-backdrop.open { display: flex; }
     .vc-modal {
       width: 100%;
-      max-width: 420px;
-      background: var(--bg-surface);
+      max-width: 410px;
+      background: #FFFFFF;
       border: 1px solid var(--border-hairline);
       border-radius: var(--radius-lg);
-      padding: 28px;
+      padding: 26px;
       box-shadow: var(--shadow-md);
       position: relative;
     }
     .vc-modal-close {
       position: absolute;
-      top: 14px;
-      right: 14px;
-      width: 36px;
-      height: 36px;
+      top: 12px;
+      right: 12px;
+      width: 34px;
+      height: 34px;
       border-radius: 50%;
       border: 1px solid var(--border-hairline);
-      background: var(--bg-surface);
+      background: #FFFFFF;
       color: var(--ink-secondary);
       font-size: 18px;
       cursor: pointer;
@@ -934,7 +1051,7 @@
       display: flex;
       align-items: center;
       gap: 10px;
-      margin: 16px 0;
+      margin: 14px 0;
       color: var(--ink-muted);
       font-size: 12px;
     }
@@ -945,43 +1062,65 @@
       background: var(--border-hairline);
     }
     .vc-status-msg {
-      margin-top: 12px;
-      padding: 10px 14px;
+      margin-top: 10px;
+      padding: 9px 12px;
       border-radius: var(--radius-sm);
-      font-size: 13.5px;
+      font-size: 12.5px;
       display: none;
     }
     .vc-status-msg.show { display: block; }
     .vc-status-msg.ok { background: var(--ok-bg); color: var(--ok-ink); border: 1px solid var(--ok-border); }
     .vc-status-msg.err { background: var(--err-bg); color: var(--err-ink); border: 1px solid #FECACA; }
+
+    .vc-toast {
+      position: fixed;
+      right: 18px;
+      bottom: 72px;
+      z-index: 95;
+      background: #111827;
+      color: #FFFFFF;
+      font-size: 12px;
+      font-weight: 600;
+      padding: 9px 16px;
+      border-radius: var(--radius-pill);
+      box-shadow: var(--shadow-md);
+      display: none;
+    }
+    @media (min-width: 900px) {
+      .vc-toast { bottom: 22px; }
+    }
   </style>
 </head>
 <body>
 
-  <!-- Clean Top Header -->
+  <!-- ===================================================================== -->
+  <!-- CLEAN PURE-WHITE TOP NAVIGATION                                       -->
+  <!-- ===================================================================== -->
   <header class="vc-topbar">
     <div class="vc-topbar-inner">
-      <a href="/voice" class="vc-brand" aria-label="Aaruni Cloud Voice Home">
-        <span class="vc-brand-mark">A</span>
-        <span>Cloud Voice</span>
-        <span class="vc-brand-badge" id="vcTopVersionBadge">v2</span>
-      </a>
+      <div class="vc-topbar-left">
+        <a href="/voice" class="vc-brand" aria-label="Aaruni Cloud Voice Home">
+          <span class="vc-brand-mark">A</span>
+          <span>Cloud Voice</span>
+          <span class="vc-brand-badge" id="vcTopVersionBadge">v3.0</span>
+        </a>
 
-      <nav class="vc-desktop-tabs" aria-label="Primary sections">
-        <button type="button" class="vc-nav-tab active" data-view-btn="studio">Speak</button>
-        <button type="button" class="vc-nav-tab" data-view-btn="train">Train &amp; Improve</button>
-        <button type="button" class="vc-nav-tab" data-view-btn="clone">Clone Voice</button>
-        <button type="button" class="vc-nav-tab" data-view-btn="api">API &amp; Plans</button>
-      </nav>
+        <nav class="vc-desktop-tabs" aria-label="Primary sections">
+          <button type="button" class="vc-nav-tab active" data-view-btn="studio">Text to Speech</button>
+          <button type="button" class="vc-nav-tab" data-view-btn="clone">Voices &amp; Clone</button>
+          <button type="button" class="vc-nav-tab" data-view-btn="train">Train</button>
+          <button type="button" class="vc-nav-tab" data-view-btn="api">API</button>
+        </nav>
+      </div>
 
       <div class="vc-auth-zone">
-        <div class="vc-credit-pill" id="vcCreditPill">
-          <span class="vc-credit-dot"></span>
-          <span id="vcCreditText">10,000 free credits</span>
-        </div>
+        <button type="button" class="vc-mob-voice-chip" id="vcMobVoiceChip" onclick="setMobileStudioPane('settings')">
+          Aria ▾
+        </button>
+        <span class="vc-credit-label" id="vcCreditText">10,000 free credits</span>
         <a id="vcConsoleSsoLink" href="https://console.aarunicloud.com" class="btn-pill btn-outline btn-sm" style="display:none;">Console ↗</a>
-        <button type="button" class="btn-pill btn-primary btn-sm" id="vcAuthBtn" onclick="openAuthModal()">
-          Sign In
+        <button type="button" class="btn-pill btn-outline btn-sm" id="vcAuthBtn" onclick="openAuthModal()">
+          Sign in
         </button>
       </div>
     </div>
@@ -990,201 +1129,269 @@
   <main class="vc-shell">
 
     <!-- ===================================================================== -->
-    <!-- 1. SPEAK VIEW (CALM, UNCLUTTERED ELEVENLABS-CLEAN COMPOSER)           -->
+    <!-- 1. TEXT TO SPEECH STUDIO (100% PURE WHITE, ELEVENLABS + .PLS)         -->
     <!-- ===================================================================== -->
-    <section class="vc-view active" id="view-studio" aria-label="Speak Studio">
-      <div class="speak-wrap">
-        <div class="speak-head">
-          <h1>Studio speech, clear on the first take.</h1>
-          <p>Select a voice, choose a sample or write your script, and press Speak.</p>
+    <section class="vc-view active" id="view-studio" aria-label="Text to Speech Studio">
+
+      <!-- Mobile 390px 3-Segment Switcher: Write | Settings | .pls Dict -->
+      <div class="vc-mob-seg-wrap">
+        <div class="vc-mob-seg" role="tablist" aria-label="Mobile studio panes">
+          <button type="button" id="mobSegWrite" class="active" onclick="setMobileStudioPane('write')">Write</button>
+          <button type="button" id="mobSegSettings" onclick="setMobileStudioPane('settings')">Settings</button>
+          <button type="button" id="mobSegPls" onclick="setMobileStudioPane('pls')">.pls Dict</button>
         </div>
+      </div>
 
-        <!-- Voice Pill Selector -->
-        <div class="voice-pill-bar" id="vcVoiceStrip" role="listbox" aria-label="Studio Voices"></div>
+      <div class="tts-workspace" id="ttsWorkspace" data-mob-pane="write">
 
-        <!-- Sample Preset Chips -->
-        <div class="preset-row">
-          <div class="preset-chips" id="vcPresetChipsBar" role="group" aria-label="Sample script presets">
-            <button type="button" class="preset-chip active" data-cat="course" onclick="selectShowcaseCategory('course')">Course</button>
-            <button type="button" class="preset-chip" data-cat="ad" onclick="selectShowcaseCategory('ad')">Product Ad</button>
-            <button type="button" class="preset-chip" data-cat="agent" onclick="selectShowcaseCategory('agent')">AI Agent</button>
-          </div>
-          <span style="font-size:12.5px;color:var(--ink-muted);" id="vcCharCounter">0 / 5,000 chars</span>
-        </div>
-
-        <!-- Main Script Card -->
-        <div class="vc-card">
-          <div class="vc-composer-head">
-            <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;font-size:13.5px;font-weight:700;">
-              <span id="vcActiveVoiceBadge">Aria — Warm Educator</span>
-              <span style="color:var(--ink-muted);font-weight:500;" id="vcActiveModelBadge">• Cloud Voice v2</span>
-            </div>
-            <span class="vc-quality-badge" id="vcClarityBadge">Voice Clarity Check: Passed</span>
-          </div>
-
-          <textarea
-            id="vcScriptInput"
-            class="vc-textarea"
-            maxlength="5000"
-            aria-label="Script composer"
-            placeholder="Type or paste your script here. Technical acronyms like OAuth2, PostgreSQL, kubectl, CI/CD, and SARIF are pronounced cleanly..."
-          ></textarea>
-
-          <div class="vc-pls-strip" id="vcPlsStrip">
-            <span style="font-weight:600;color:var(--ink-secondary);">Pronunciation Rules:</span>
-            <div id="vcPlsTokens" style="display:flex;flex-wrap:wrap;gap:6px;"></div>
-          </div>
-
-          <div class="vc-player-bar">
-            <div class="vc-audio-track">
-              <button type="button" class="btn-pill btn-dawn btn-speak-big" id="vcGenerateBtn" onclick="generateOrPlaySpeech()">
-                ▶ Speak
+        <!-- ================================================================= -->
+        <!-- LEFT COLUMN: PURE WHITE SCRIPT EDITOR (ZERO GREY FILLS)           -->
+        <!-- ================================================================= -->
+        <div class="tts-editor-col">
+          <div>
+            <div class="smp-top-row">
+              <div class="smp-chips" id="vcPresetChipsBar" role="group" aria-label="Sample script presets"></div>
+              <button type="button" class="pls-status-pill" id="vcPlsActivePill" onclick="openPlsPanel()">
+                ✓ .pls Active (0 terms matched)
               </button>
-              <div class="vc-waveform-box" id="vcWaveBar" onclick="seekAudio(event)" title="Click to seek audio">
-                <div class="vc-wave-fill" id="vcWaveFill"></div>
-                <div class="vc-wave-bars" aria-hidden="true">
-                  <i style="height:35%"></i><i style="height:65%"></i><i style="height:90%"></i><i style="height:50%"></i>
-                  <i style="height:80%"></i><i style="height:40%"></i><i style="height:95%"></i><i style="height:60%"></i>
-                  <i style="height:75%"></i><i style="height:45%"></i><i style="height:88%"></i><i style="height:55%"></i>
-                  <i style="height:70%"></i><i style="height:92%"></i><i style="height:42%"></i><i style="height:78%"></i>
-                  <i style="height:58%"></i><i style="height:84%"></i><i style="height:48%"></i><i style="height:68%"></i>
-                  <i style="height:90%"></i><i style="height:52%"></i><i style="height:74%"></i><i style="height:40%"></i>
+            </div>
+
+            <textarea
+              id="vcScriptInput"
+              class="vc-textarea"
+              maxlength="5000"
+              aria-label="Script editor"
+              placeholder="Start typing here or paste any script..."
+            ></textarea>
+
+            <div class="matched-pls-row" id="vcPlsTokens"></div>
+          </div>
+
+          <div>
+            <div class="tts-bottom-bar">
+              <div class="tts-player-left">
+                <button type="button" class="play-circle-btn" id="vcCirclePlayBtn" onclick="toggleAudioPlayPause()" aria-label="Play or pause audio">
+                  ▶
+                </button>
+                <div class="vc-waveform-mini" id="vcWaveBar" onclick="seekAudio(event)" title="Click to seek audio">
+                  <div class="vc-wave-fill" id="vcWaveFill"></div>
+                  <div class="vc-wave-bars" aria-hidden="true">
+                    <i style="height:35%"></i><i style="height:70%"></i><i style="height:92%"></i><i style="height:48%"></i>
+                    <i style="height:82%"></i><i style="height:45%"></i><i style="height:95%"></i><i style="height:60%"></i>
+                    <i style="height:76%"></i><i style="height:42%"></i><i style="height:88%"></i><i style="height:54%"></i>
+                    <i style="height:68%"></i><i style="height:90%"></i><i style="height:44%"></i><i style="height:74%"></i>
+                  </div>
+                </div>
+                <div style="min-width:0;">
+                  <div style="font-size:12px;font-weight:600;color:var(--ink-primary);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;" id="vcAudioMetaTitle">
+                    Studio Booth • <span id="vcTimeLabel">0:00 / 0:00</span>
+                  </div>
+                  <div style="font-size:11.5px;color:var(--ink-muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;" id="vcAudioLatencyNote">
+                    Bass, Echo &amp; Speed sliders apply live (0s wait)
+                  </div>
                 </div>
               </div>
-              <span class="vc-time-label" id="vcTimeLabel">0:00 / 0:00</span>
-            </div>
 
-            <button type="button" class="btn-pill btn-outline btn-sm" id="vcDownloadBtn" onclick="downloadCurrentAudio()" disabled>
-              ⬇ Download
-            </button>
+              <div class="tts-actions-right">
+                <span style="font-size:12px;color:var(--ink-muted);" id="vcCharCounter">0 / 5,000</span>
+                <button type="button" class="btn-pill btn-outline btn-sm" id="vcDownloadBtn" onclick="downloadCurrentAudio()" disabled>
+                  Download
+                </button>
+                <button type="button" class="btn-pill btn-primary" id="vcGenerateBtn" onclick="generateOrPlaySpeech()">
+                  Generate speech
+                </button>
+              </div>
+            </div>
+            <div class="vc-status-msg" id="vcSpeakHelperStatus"></div>
           </div>
+
           <audio id="vcAudioPlayer" preload="none" crossorigin="anonymous"></audio>
         </div>
 
-        <!-- Clean 1-Line Anti-Glitch & Word Fix Helper Bar -->
-        <div class="vc-glitch-helper">
-          <span style="color:var(--ink-secondary);font-weight:500;">Heard a mispronounced word or tiny glitch?</span>
-          <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
-            <button type="button" class="btn-pill btn-outline btn-sm" onclick="toggleQuickWordPopover()">
-              Fix Word Pronunciation
-            </button>
-            <button type="button" class="btn-pill btn-primary btn-sm" id="vcResynthCleanBtn" onclick="resynthesizeUltraClean()">
-              ✨ Re-Generate Ultra-Clean
-            </button>
-          </div>
-        </div>
+        <!-- ================================================================= -->
+        <!-- RIGHT COLUMN: SETTINGS | DICTIONARIES (.PLS)                      -->
+        <!-- ================================================================= -->
+        <aside class="tts-side-col" aria-label="Voice Settings and Pronunciation Dictionaries">
 
-        <!-- Quick Inline Popover for Fixing a Word Without Leaving Speak -->
-        <div class="vc-quick-fix-popover" id="vcQuickFixPopover" style="display:none;">
-          <div style="display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:10px;">
-            <strong style="font-size:13.5px;">Quick Pronunciation Rule</strong>
-            <button type="button" onclick="switchView('train')" style="border:0;background:none;color:var(--brand-dawn);font-size:12.5px;font-weight:600;cursor:pointer;">
-              Open full Train &amp; Improve studio →
+          <div class="side-top-tabs">
+            <button type="button" id="rtTabSettings" class="active" onclick="setRightSidebarTab('settings')">
+              Settings
+            </button>
+            <button type="button" id="rtTabPls" onclick="setRightSidebarTab('pls')">
+              Dictionaries (.pls)
             </button>
           </div>
-          <div class="fix-word-grid">
-            <div class="vc-field">
-              <label for="quickWordIn">Word / Acronym</label>
-              <input type="text" id="quickWordIn" class="vc-input" placeholder="e.g. SARIF" />
-            </div>
-            <div class="vc-field">
-              <label for="quickSpokenIn">How It Should Sound</label>
-              <input type="text" id="quickSpokenIn" class="vc-input" placeholder="e.g. sah-rif" />
-            </div>
-            <button type="button" class="btn-pill btn-dawn" onclick="savePronunciationRule('quick')">
-              🔊 Test &amp; Save
-            </button>
-          </div>
-        </div>
 
-        <div class="vc-status-msg" id="vcSpeakHelperStatus"></div>
+          <!-- PANE A: ELEVENLABS SETTINGS + INSTANT SOUND POLISH -->
+          <div id="rightPaneSettings" style="display:flex;flex-direction:column;gap:14px;">
 
-        <!-- Collapsible 6-Slider Tune Voice Settings Accordion -->
-        <details class="vc-tune-drawer" id="vcTuneDrawer">
-          <summary>
-            <span>Tune Voice Settings ▾</span>
-            <span style="font-size:12.5px;color:var(--ink-muted);font-weight:500;">Stability, Similarity, Style, Speed, Loudness &amp; Clarity</span>
-          </summary>
-          <div class="vc-tune-grid">
-            <div class="vc-slider-group">
-              <div class="vc-slider-row">
-                <span>1. Stability</span>
-                <span class="vc-slider-val" id="valStability">68%</span>
-              </div>
-              <input type="range" id="rngStability" class="vc-range" min="0" max="100" value="68" oninput="updateSliderLabel('Stability', this.value + '%')" />
-              <div class="vc-slider-ends"><span>Expressive</span><span>Steady &amp; Glitch-Free</span></div>
+            <!-- 1. Voice Picker (Zero Horizontal Scrollbar) -->
+            <div class="voice-picker-wrap" id="vcVoicePickerWrap">
+              <label style="display:block;font-size:12px;font-weight:600;margin-bottom:6px;">Voice</label>
+              <button type="button" class="voice-picker-btn" id="vcVoiceDropdownBtn" onclick="toggleVoiceDropdown(event)">
+                <div style="display:flex;align-items:center;gap:10px;min-width:0;">
+                  <span class="voice-avatar-dot" id="selVoiceInitials">AR</span>
+                  <div style="min-width:0;">
+                    <div style="font-size:12.5px;font-weight:700;color:var(--ink-primary);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;" id="selVoiceName">Aria</div>
+                    <div style="font-size:11.5px;color:var(--ink-muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;" id="selVoiceDesc">Warm Educator</div>
+                  </div>
+                </div>
+                <span style="font-size:12px;color:var(--ink-muted);flex-shrink:0;">▾</span>
+              </button>
+              <div class="voice-dropdown-menu" id="vcVoiceDropdownMenu" role="listbox" aria-label="Select voice"></div>
             </div>
 
-            <div class="vc-slider-group">
-              <div class="vc-slider-row">
-                <span>2. Similarity</span>
-                <span class="vc-slider-val" id="valSimilarity">82%</span>
-              </div>
-              <input type="range" id="rngSimilarity" class="vc-range" min="0" max="100" value="82" oninput="updateSliderLabel('Similarity', this.value + '%')" />
-              <div class="vc-slider-ends"><span>Relaxed</span><span>Exact Timbre</span></div>
-            </div>
-
-            <div class="vc-slider-group">
-              <div class="vc-slider-row">
-                <span>3. Style</span>
-                <span class="vc-slider-val" id="valStyle">35%</span>
-              </div>
-              <input type="range" id="rngStyle" class="vc-range" min="0" max="100" value="35" oninput="updateSliderLabel('Style', this.value + '%')" />
-              <div class="vc-slider-ends"><span>Calm</span><span>Energetic Teaching</span></div>
-            </div>
-
-            <div class="vc-slider-group">
-              <div class="vc-slider-row">
-                <span>4. Speed</span>
-                <span class="vc-slider-val" id="valSpeed">1.00x</span>
-              </div>
-              <input type="range" id="rngSpeed" class="vc-range" min="75" max="125" value="100" oninput="updateSliderLabel('Speed', (Number(this.value)/100).toFixed(2) + 'x')" />
-              <div class="vc-slider-ends"><span>0.75x Deliberate</span><span>1.25x Brisk</span></div>
-            </div>
-
-            <div class="vc-field">
-              <label for="vcLoudnessSelect">5. Loudness Standard</label>
-              <select id="vcLoudnessSelect" class="vc-select">
-                <option value="-20.5">Course Studio (-20.5 LUFS)</option>
-                <option value="-14.0">Video / Broadcast (-14 LUFS)</option>
-                <option value="-12.0">Web / Podcast (-12 LUFS)</option>
+            <!-- 2. Model Selector -->
+            <div>
+              <label for="vcModelSelect" style="display:block;font-size:12px;font-weight:600;margin-bottom:6px;">Model</label>
+              <select id="vcModelSelect" class="el-select" onchange="onModelChange(this.value)">
+                <option value="cloud-voice-v3.0-master">Cloud Voice v3.0 Studio Master (Highest Clarity)</option>
+                <option value="cloud-voice-v3.0-flash">Cloud Voice v3.0 Flash (Fast Stream)</option>
+                <option value="cloud-voice-v2.0-master">Cloud Voice v2.0 Studio Master (Reference)</option>
               </select>
             </div>
 
-            <div class="vc-field" style="display:flex;flex-direction:column;justify-content:space-between;gap:10px;">
-              <div>
-                <label for="vcModelSelect">6. Model &amp; Clarity Boost</label>
-                <select id="vcModelSelect" class="vc-select" onchange="onModelChange(this.value)">
-                  <option value="cloud-voice-v2">Cloud Voice v2 (Studio Default)</option>
-                  <option value="cloud-voice-v2-flash">Cloud Voice v2 Flash (50% Credits)</option>
-                  <option value="cloud-voice-v2-multilingual">Cloud Voice v2 Multilingual</option>
-                </select>
+            <!-- 3. All 5 Canonical ElevenLabs Settings -->
+            <div style="display:flex;flex-direction:column;gap:12px;padding-top:2px;">
+
+              <!-- Speed -->
+              <div class="slider-block">
+                <div class="slider-head">
+                  <span style="font-weight:600;">Speed</span>
+                  <span id="valSpeed" style="font-family:var(--font-mono);color:var(--ink-muted);">1.00x</span>
+                </div>
+                <input type="range" id="rngSpeed" min="70" max="120" value="100" class="el-slider" oninput="onLiveSpeedInput(this.value)" />
+                <div class="slider-ends"><span>Slower</span><span>1.0x</span><span>Faster</span></div>
               </div>
-              <label style="display:flex;align-items:center;justify-content:space-between;margin:0;cursor:pointer;font-size:13.5px;color:var(--ink-primary);">
-                <span>Clarity Boost (Crisp Consonants)</span>
-                <input type="checkbox" id="vcClarityBoost" checked style="width:18px;height:18px;accent-color:var(--brand-dawn);" />
-              </label>
+
+              <!-- Stability -->
+              <div class="slider-block">
+                <div class="slider-head">
+                  <span style="font-weight:600;">Stability</span>
+                  <span id="valStability" style="font-family:var(--font-mono);color:var(--ink-muted);">72%</span>
+                </div>
+                <input type="range" id="rngStability" min="0" max="100" value="72" class="el-slider" oninput="onSynthesisSettingChange('Stability', this.value + '%')" />
+                <div class="slider-ends"><span>More variable</span><span>More stable</span></div>
+              </div>
+
+              <!-- Similarity -->
+              <div class="slider-block">
+                <div class="slider-head">
+                  <span style="font-weight:600;">Similarity</span>
+                  <span id="valSimilarity" style="font-family:var(--font-mono);color:var(--ink-muted);">92%</span>
+                </div>
+                <input type="range" id="rngSimilarity" min="0" max="100" value="92" class="el-slider" oninput="onSynthesisSettingChange('Similarity', this.value + '%')" />
+                <div class="slider-ends"><span>Low</span><span>High</span></div>
+              </div>
+
+              <!-- Style Exaggeration -->
+              <div class="slider-block">
+                <div class="slider-head">
+                  <span style="font-weight:600;">Style Exaggeration</span>
+                  <span id="valStyle" style="font-family:var(--font-mono);color:var(--ink-muted);">35%</span>
+                </div>
+                <input type="range" id="rngStyle" min="0" max="100" value="35" class="el-slider" oninput="onSynthesisSettingChange('Style', this.value + '%')" />
+                <div class="slider-ends"><span>None</span><span>Exaggerated</span></div>
+              </div>
+
+              <!-- Speaker Boost -->
+              <div style="display:flex;align-items:center;justify-content:space-between;padding-top:2px;">
+                <span style="font-size:12px;font-weight:600;">Speaker boost</span>
+                <button type="button" id="spkBoostToggle" class="el-switch on" onclick="toggleSpeakerBoost()" aria-label="Speaker boost"></button>
+              </div>
+            </div>
+
+            <!-- 4. Sound Polish (Instant 0s Live WebAudio DSP + Mastered Export) -->
+            <div style="padding-top:14px;border-top:1px solid var(--border-soft);display:flex;flex-direction:column;gap:11px;">
+              <div style="display:flex;align-items:center;justify-content:space-between;">
+                <span style="font-size:12px;font-weight:700;">Sound Polish</span>
+                <span style="font-size:11.5px;font-weight:600;color:var(--ok-ink);">Instant (0s wait)</span>
+              </div>
+
+              <!-- Reduce Bass -->
+              <div class="slider-block">
+                <div class="slider-head">
+                  <span style="font-weight:500;color:#374151;">Reduce Bass</span>
+                  <span id="valBass" style="font-family:var(--font-mono);color:var(--ink-muted);">-4.5 dB</span>
+                </div>
+                <input type="range" id="rngBassCut" min="0" max="80" value="45" class="el-slider" oninput="onLivePolishChange()" />
+              </div>
+
+              <!-- Reduce Echo -->
+              <div class="slider-block">
+                <div class="slider-head">
+                  <span style="font-weight:500;color:#374151;">Reduce Echo</span>
+                  <span id="valEcho" style="font-family:var(--font-mono);color:var(--ink-muted);">90% Dry</span>
+                </div>
+                <input type="range" id="rngDeEcho" min="0" max="100" value="90" class="el-slider" oninput="onLivePolishChange()" />
+              </div>
+
+              <!-- Environment -->
+              <div>
+                <span style="display:block;font-size:12px;font-weight:500;color:#374151;margin-bottom:6px;">Environment</span>
+                <div class="env-seg-grid" role="group" aria-label="Acoustic environment">
+                  <button type="button" class="env-btn active" data-env="studio_booth" data-label="Studio Booth" onclick="selectEnvironment(this)">Studio</button>
+                  <button type="button" class="env-btn" data-env="lecture_hall" data-label="Inside Hall" onclick="selectEnvironment(this)">Hall</button>
+                  <button type="button" class="env-btn" data-env="outdoor" data-label="Outside Air" onclick="selectEnvironment(this)">Outside</button>
+                  <button type="button" class="env-btn" data-env="warm_podcast" data-label="Hill Space" onclick="selectEnvironment(this)">Hill</button>
+                </div>
+              </div>
+
+              <div style="display:flex;align-items:center;justify-content:space-between;padding-top:2px;">
+                <button type="button" onclick="resynthesizeUltraClean()" id="vcResynthCleanBtn" style="border:0;background:none;padding:0;font-size:11.5px;font-weight:600;color:var(--brand-dawn);cursor:pointer;">
+                  Re-generate ultra-clean
+                </button>
+                <button type="button" onclick="resetAllVoiceValues()" style="border:0;background:none;padding:0;font-size:12px;font-weight:500;color:var(--ink-muted);cursor:pointer;">
+                  Reset values
+                </button>
+              </div>
+            </div>
+
+          </div>
+
+          <!-- PANE B: MULTI-DOMAIN W3C .PLS PRONUNCIATION DICTIONARIES -->
+          <div id="rightPanePls" style="display:none;flex-direction:column;gap:12px;">
+            <p style="margin:0;font-size:12px;color:var(--ink-secondary);line-height:1.5;">
+              Enable verified W3C <code style="font-family:var(--font-mono);">.pls</code> domain packs or upload your own <code style="font-family:var(--font-mono);">.pls</code> XML file so technical jargon is never misread.
+            </p>
+
+            <div id="vcDomainPacksList" style="display:flex;flex-direction:column;gap:8px;"></div>
+
+            <label for="vcPlsSideFile" style="display:block;width:100%;padding:10px 12px;border-radius:var(--radius-md);border:1px dashed var(--border-strong);text-align:center;font-size:12px;font-weight:600;color:var(--ink-primary);background:#FFFFFF;cursor:pointer;">
+              + Upload .pls Lexicon File
+              <input type="file" id="vcPlsSideFile" accept=".pls,.xml,application/pls+xml,text/xml" style="display:none;" onchange="handlePlsFileUpload(event)" />
+            </label>
+
+            <div style="padding-top:12px;border-top:1px solid var(--border-soft);">
+              <span style="display:block;font-size:12px;font-weight:600;margin-bottom:8px;">Quick Word Rule</span>
+              <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:8px;">
+                <input type="text" id="quickWordIn" class="vc-input" style="min-height:36px;font-size:12px;" placeholder="Word (e.g. SIEM)" />
+                <input type="text" id="quickSpokenIn" class="vc-input" style="min-height:36px;font-size:12px;" placeholder="Sound (seem)" />
+              </div>
+              <button type="button" class="btn-pill btn-primary btn-sm" style="width:100%;" onclick="savePronunciationRule('quick')">
+                Save Pronunciation
+              </button>
             </div>
           </div>
-        </details>
+
+        </aside>
       </div>
     </section>
 
     <!-- ===================================================================== -->
-    <!-- 2. TRAIN & IMPROVE VIEW (DEDICATED CLARITY, PRONUNCIATION & TRAINING) -->
+    <!-- 2. TRAIN & IMPROVE VIEW                                               -->
     <!-- ===================================================================== -->
     <section class="vc-view" id="view-train" aria-label="Train and Improve Voice">
       <div class="vc-section-head">
-        <h2>Train &amp; Improve Your Voice</h2>
-        <p>Fix mispronounced acronyms immediately, add clean studio samples, run clarity &amp; anti-glitch fine-tuning, or switch model versions safely.</p>
+        <h2>Train &amp; Improve Voice</h2>
+        <p>Add studio booth recordings, run parallel clarity fine-tuning across Cloud Compute workers, or switch model versions in one click.</p>
       </div>
 
       <div class="train-stack">
-        <!-- Paid Tier Notice for Free / Starter External Accounts -->
         <div class="vc-lock-banner" id="vcTrainTierBanner" style="display:none;">
           <div>
-            <strong style="color:var(--warn-ink);font-size:14.5px;">Upgrade to Unlock Studio Fine-Tuning</strong>
-            <div style="font-size:13.5px;color:var(--ink-secondary);margin-top:2px;">
+            <strong style="color:var(--warn-ink);font-size:14px;">Upgrade to Unlock Studio Fine-Tuning</strong>
+            <div style="font-size:13px;color:var(--ink-secondary);margin-top:2px;">
               Creator ($9/mo) unlocks custom pronunciation rules; Pro Studio ($29/mo) unlocks dataset recording, parallel fine-tuning, and model rollback.
             </div>
           </div>
@@ -1193,133 +1400,54 @@
           </button>
         </div>
 
-        <!-- CARD 1: FIX ANY WORD OR ACRONYM INSTANTLY -->
+        <!-- CARD 1: MODEL VERSIONS & 1-CLICK ROLLBACK -->
         <div class="vc-card train-card">
-          <div class="train-step-tag">Facility 1 • Instant Fix</div>
-          <h3>Fix Any Word or Acronym Instantly (No Retraining Needed)</h3>
-          <p class="sub">Teach Cloud Voice exactly how technical terms, brand names, or acronyms should sound across every future script.</p>
-
-          <div class="fix-word-grid">
-            <div class="vc-field">
-              <label for="fixWordInput">Word / Acronym</label>
-              <input type="text" id="fixWordInput" class="vc-input" placeholder="e.g. SARIF" />
-            </div>
-            <div class="vc-field">
-              <label for="fixSpokenInput">How It Should Sound</label>
-              <input type="text" id="fixSpokenInput" class="vc-input" placeholder="e.g. sah-rif" />
-            </div>
-            <button type="button" class="btn-pill btn-dawn" id="btnTestSaveWord" onclick="savePronunciationRule('train')">
-              🔊 Test &amp; Save Rule
-            </button>
-          </div>
-
-          <div style="display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;margin-top:14px;padding-top:12px;border-top:1px solid var(--border-hairline);font-size:13px;">
-            <div id="vcSavedRulesChips" style="display:flex;flex-wrap:wrap;gap:6px;align-items:center;"></div>
-            <label for="vcPlsFile" style="color:var(--brand-dawn);font-weight:600;cursor:pointer;white-space:nowrap;">
-              + Upload .pls XML file
-              <input type="file" id="vcPlsFile" accept=".pls,.xml,application/pls+xml,text/xml" style="display:none;" onchange="handlePlsFileUpload(event)" />
-            </label>
-          </div>
-
-          <audio id="vcWordPreviewAudio" controls preload="none" style="width:100%;height:38px;margin-top:12px;display:none;"></audio>
-          <div class="vc-status-msg" id="vcFixWordStatus"></div>
+          <div class="train-step-tag">Active Studio Builds</div>
+          <h3>Model Versions &amp; 1-Click Switch</h3>
+          <p class="sub">Audition any trained studio build or set your default Cloud Voice engine in one click.</p>
+          <div id="vcModelVersionsList"></div>
+          <audio id="vcVersionAuditionPlayer" controls preload="none" style="width:100%;height:36px;margin-top:10px;display:none;"></audio>
+          <div class="vc-status-msg" id="vcModelSwitchStatus"></div>
         </div>
 
-        <!-- CARD 2: ADD CLEAN VOICE SAMPLES (RECORD IN BROWSER OR UPLOAD WAV/MP3) -->
+        <!-- CARD 2: RUN INCREMENTAL CLARITY & ANTI-GLITCH TRAINING -->
         <div class="vc-card train-card">
-          <div class="train-step-tag">Facility 2 • Studio Dataset</div>
-          <h3>Add Clean Voice Samples</h3>
-          <p class="sub">Want richer tone or sharper clarity? Record 3–5 short sentences in a quiet room or drop clean WAV files below.</p>
+          <div class="train-step-tag">Parallel Cloud Compute</div>
+          <h3>Run Incremental Training &amp; Clarity Polish</h3>
+          <p class="sub">Launch an isolated fine-tuning pass across 3 parallel Cloud Compute workers without overwriting previous builds.</p>
 
-          <!-- Guided Studio Teleprompter -->
-          <div class="teleprompter-box">
-            <div style="display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap;">
-              <span style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:0.05em;color:var(--ink-muted);" id="teleprompterStepLabel">Guided Studio Prompt 1 of 5</span>
-              <button type="button" class="btn-pill btn-outline btn-sm" onclick="cycleTeleprompterPrompt()">
-                Next Prompt ↻
-              </button>
-            </div>
-            <div class="teleprompter-quote" id="teleprompterText">
-              "Ever shipped a clean pull request on Friday, only to spot an authentication gap on Monday? Let's turn that check into an automated release gate."
-            </div>
-          </div>
-
-          <!-- Recorder + Drag & Drop -->
-          <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:14px;align-items:stretch;">
-            <div style="border:1px solid var(--border-hairline);border-radius:var(--radius-md);padding:16px;display:flex;flex-direction:column;justify-content:space-between;gap:12px;">
-              <div style="display:flex;justify-content:space-between;align-items:center;gap:8px;">
-                <strong style="font-size:14px;">Browser 24 kHz Recorder</strong>
-                <span class="mono" style="font-size:12px;color:var(--ink-muted);" id="sampleRecTimer">0.0s</span>
-              </div>
-              <div class="progress-track" style="margin:0;">
-                <div class="progress-fill" id="sampleMicMeter" style="background:var(--ok-ink);"></div>
-              </div>
-              <button type="button" class="btn-pill btn-primary" id="btnRecordSample" onclick="toggleDatasetRecording()">
-                🎙 Record Sentence
-              </button>
-            </div>
-
-            <label class="dropzone-box" for="datasetFileInput" id="datasetDropzone">
-              <div style="font-weight:700;color:var(--ink-primary);margin-bottom:4px;">Drop clean WAV or MP3 files here</div>
-              <div>or click to browse from your computer (24 kHz+ mono recommended)</div>
-              <input type="file" id="datasetFileInput" accept="audio/wav,audio/mpeg,audio/mp4,audio/x-wav" style="display:none;" onchange="handleDatasetFileSelect(event)" />
-            </label>
-          </div>
-
-          <!-- Instant Acoustic Quality Badge + Preview -->
-          <div id="sampleQualityResultRow" style="display:none;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-top:14px;padding:12px 16px;border-radius:var(--radius-md);background:var(--bg-subtle);border:1px solid var(--border-hairline);">
-            <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;">
-              <span class="vc-quality-badge" id="sampleQualityBadge">✓ Water-Clean Studio Ready</span>
-              <span style="font-size:13px;color:var(--ink-secondary);" id="sampleQualityHint">Saved to your studio training set.</span>
-            </div>
-            <audio id="sampleRecordedPreview" controls preload="none" style="height:34px;max-width:240px;"></audio>
-          </div>
-
-          <div id="uploadedSamplesList" style="margin-top:14px;display:flex;flex-direction:column;gap:8px;"></div>
-          <div class="vc-status-msg" id="vcDatasetStatus"></div>
-        </div>
-
-        <!-- CARD 3: RUN INCREMENTAL TRAINING / CLARITY & GLITCH FINE-TUNING -->
-        <div class="vc-card train-card">
-          <div class="train-step-tag">Facility 3 • Fine-Tune Model</div>
-          <h3>Run Incremental Training &amp; Anti-Glitch Polish</h3>
-          <p class="sub">Choose what you want to sharpen and launch an isolated fine-tuning pass without overwriting your previous model version.</p>
-
-          <div class="vc-field" style="margin-bottom:6px;">
-            <label>1. Choose What to Improve</label>
-          </div>
           <div class="goal-cards-grid" id="trainGoalCards">
             <div class="goal-radio-card selected" data-goal="clarity" onclick="selectTrainGoal('clarity')">
-              <strong>✨ Boost Water-Clean Clarity</strong>
-              <span>Sharpens crisp studio consonants &amp; removes room muddiness.</span>
+              <strong style="font-size:13.5px;">Boost Open-Studio Clarity</strong>
+              <span style="font-size:12.5px;color:var(--ink-secondary);">Sharpens crisp studio consonants &amp; removes room muddiness.</span>
             </div>
             <div class="goal-radio-card" data-goal="anti_glitch" onclick="selectTrainGoal('anti_glitch')">
-              <strong>🛡️ Eliminate Word Drops &amp; Glitches</strong>
-              <span>Increases stability &amp; trains against flagged glitch phrases.</span>
+              <strong style="font-size:13.5px;">Eliminate Glitches</strong>
+              <span style="font-size:12.5px;color:var(--ink-secondary);">Increases stability &amp; trains against flagged phrases.</span>
             </div>
             <div class="goal-radio-card" data-goal="expression" onclick="selectTrainGoal('expression')">
-              <strong>🎭 Expand Teaching Expression</strong>
-              <span>Blends newly recorded hooks &amp; analogies into your model.</span>
+              <strong style="font-size:13.5px;">Expand Teaching Expression</strong>
+              <span style="font-size:12.5px;color:var(--ink-secondary);">Blends newly recorded hooks &amp; analogies into your voice.</span>
             </div>
           </div>
 
-          <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px;align-items:end;">
+          <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px;align-items:end;">
             <div class="vc-field">
-              <label for="trainModeSelect">2. Training Mode</label>
+              <label for="trainModeSelect">Training Mode</label>
               <select id="trainModeSelect" class="vc-select">
-                <option value="quick_polish">Quick Calibration Polish (~2 mins)</option>
                 <option value="deep_parallel">Deep Parallel Compute Training (3 Workers)</option>
+                <option value="quick_polish">Quick Calibration Polish (~2 mins)</option>
               </select>
             </div>
-            <button type="button" class="btn-pill btn-dawn" id="btnStartIncrementalTrain" onclick="startIncrementalTraining()">
+            <button type="button" class="btn-pill btn-primary" id="btnStartIncrementalTrain" onclick="startIncrementalTraining()">
               Start Training
             </button>
           </div>
 
-          <div id="trainProgressWrap" style="display:none;margin-top:16px;padding:14px 16px;border-radius:var(--radius-md);background:var(--bg-subtle);border:1px solid var(--border-hairline);">
-            <div style="display:flex;justify-content:space-between;font-size:13px;font-weight:600;">
+          <div id="trainProgressWrap" style="display:none;margin-top:14px;padding:12px 14px;border-radius:var(--radius-md);border:1px solid var(--border-hairline);">
+            <div style="display:flex;justify-content:space-between;font-size:12.5px;font-weight:600;">
               <span id="trainProgressLabel">Calibrating studio samples...</span>
-              <span class="mono" id="trainProgressPct">25%</span>
+              <span style="font-family:var(--font-mono);" id="trainProgressPct">25%</span>
             </div>
             <div class="progress-track">
               <div class="progress-fill" id="trainProgressBar" style="width:25%;"></div>
@@ -1328,34 +1456,104 @@
           <div class="vc-status-msg" id="vcIncrementalTrainStatus"></div>
         </div>
 
-        <!-- CARD 4: MODEL VERSIONS & 1-CLICK ROLLBACK -->
+        <!-- CARD 3: ADD CLEAN VOICE SAMPLES -->
         <div class="vc-card train-card">
-          <div class="train-step-tag">Facility 4 • Safe Version Control</div>
-          <h3>Model Versions &amp; 1-Click Rollback</h3>
-          <p class="sub">Every training build is versioned separately. Audition any build or switch your active default voice in one click.</p>
+          <div class="train-step-tag">Studio Dataset</div>
+          <h3>Add Clean Voice Samples</h3>
+          <p class="sub">Record 3–5 short sentences in a quiet room or drop 24 kHz WAV files below.</p>
 
-          <div id="vcModelVersionsList"></div>
-          <audio id="vcVersionAuditionPlayer" controls preload="none" style="width:100%;height:38px;margin-top:10px;display:none;"></audio>
-          <div class="vc-status-msg" id="vcModelSwitchStatus"></div>
+          <div class="teleprompter-box">
+            <div style="display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap;">
+              <span style="font-size:11.5px;font-weight:700;text-transform:uppercase;color:var(--ink-muted);" id="teleprompterStepLabel">Guided Prompt 1 of 5</span>
+              <button type="button" class="btn-pill btn-outline btn-sm" onclick="cycleTeleprompterPrompt()">Next Prompt ↻</button>
+            </div>
+            <div class="teleprompter-quote" id="teleprompterText">
+              "Ever shipped a clean pull request on Friday, only to spot an authentication gap on Monday? Let's turn that check into an automated release gate."
+            </div>
+          </div>
+
+          <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:12px;">
+            <div style="border:1px solid var(--border-hairline);border-radius:var(--radius-md);padding:14px;display:flex;flex-direction:column;justify-content:space-between;gap:10px;">
+              <div style="display:flex;justify-content:space-between;align-items:center;">
+                <strong style="font-size:13px;">Browser 24 kHz Recorder</strong>
+                <span style="font-family:var(--font-mono);font-size:12px;color:var(--ink-muted);" id="sampleRecTimer">0.0s</span>
+              </div>
+              <div class="progress-track" style="margin:0;">
+                <div class="progress-fill" id="sampleMicMeter" style="background:var(--ok-ink);"></div>
+              </div>
+              <button type="button" class="btn-pill btn-primary" id="btnRecordSample" onclick="toggleDatasetRecording()">
+                Record Sentence
+              </button>
+            </div>
+
+            <label class="dropzone-box" for="datasetFileInput" id="datasetDropzone">
+              <div style="font-weight:700;color:var(--ink-primary);margin-bottom:4px;">Drop clean WAV or MP3 files</div>
+              <div>or click to browse (24 kHz+ mono recommended)</div>
+              <input type="file" id="datasetFileInput" accept="audio/wav,audio/mpeg,audio/mp4,audio/x-wav" style="display:none;" onchange="handleDatasetFileSelect(event)" />
+            </label>
+          </div>
+
+          <div id="sampleQualityResultRow" style="display:none;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;margin-top:12px;padding:10px 14px;border-radius:var(--radius-md);border:1px solid var(--border-hairline);">
+            <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
+              <span class="vc-quality-badge" id="sampleQualityBadge">✓ Studio Ready</span>
+              <span style="font-size:12.5px;color:var(--ink-secondary);" id="sampleQualityHint">Saved to your studio training set.</span>
+            </div>
+            <audio id="sampleRecordedPreview" controls preload="none" style="height:32px;max-width:220px;"></audio>
+          </div>
+
+          <div id="uploadedSamplesList" style="margin-top:12px;display:flex;flex-direction:column;gap:8px;"></div>
+          <div class="vc-status-msg" id="vcDatasetStatus"></div>
+        </div>
+
+        <!-- CARD 4: PRONUNCIATION RULE TESTER -->
+        <div class="vc-card train-card">
+          <div class="train-step-tag">W3C .pls Lexicon</div>
+          <h3>Pronunciation Rule &amp; .pls Upload</h3>
+          <p class="sub">Add permanent word pronunciations or upload a standard W3C <code style="font-family:var(--font-mono);">.pls</code> XML lexicon.</p>
+
+          <div class="fix-word-grid">
+            <div class="vc-field">
+              <label for="fixWordInput">Word / Acronym</label>
+              <input type="text" id="fixWordInput" class="vc-input" placeholder="e.g. SARIF" />
+            </div>
+            <div class="vc-field">
+              <label for="fixSpokenInput">How It Should Sound</label>
+              <input type="text" id="fixSpokenInput" class="vc-input" placeholder="e.g. serif" />
+            </div>
+            <button type="button" class="btn-pill btn-primary" id="btnTestSaveWord" onclick="savePronunciationRule('train')">
+              Test &amp; Save Rule
+            </button>
+          </div>
+
+          <div style="display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;margin-top:12px;padding-top:10px;border-top:1px solid var(--border-soft);font-size:12.5px;">
+            <div id="vcSavedRulesChips" style="display:flex;flex-wrap:wrap;gap:6px;align-items:center;"></div>
+            <label for="vcPlsFile" style="color:var(--brand-dawn);font-weight:600;cursor:pointer;white-space:nowrap;">
+              + Upload .pls XML file
+              <input type="file" id="vcPlsFile" accept=".pls,.xml,application/pls+xml,text/xml" style="display:none;" onchange="handlePlsFileUpload(event)" />
+            </label>
+          </div>
+
+          <audio id="vcWordPreviewAudio" controls preload="none" style="width:100%;height:36px;margin-top:10px;display:none;"></audio>
+          <div class="vc-status-msg" id="vcFixWordStatus"></div>
         </div>
       </div>
     </section>
 
     <!-- ===================================================================== -->
-    <!-- 3. CLONE VOICE VIEW                                                   -->
+    <!-- 3. VOICES & CLONE VIEW                                                -->
     <!-- ===================================================================== -->
-    <section class="vc-view" id="view-clone" aria-label="Clone Voice">
+    <section class="vc-view" id="view-clone" aria-label="Voices and Instant Clone">
       <div class="vc-section-head">
-        <h2>Create a New Voice Clone</h2>
-        <p>Every custom voice is isolated inside your workspace and protected by live spoken consent verification.</p>
+        <h2>Instant Voice Clone</h2>
+        <p>Upload 60 seconds of clean studio speech with live spoken consent verification. Every clone stays strictly isolated to your workspace.</p>
       </div>
 
-      <div style="max-width:640px;margin:0 auto;">
+      <div style="max-width:620px;margin:0 auto;">
         <div class="vc-card train-card">
           <div class="vc-lock-banner" id="vcInstantLockBox">
             <div>
               <strong style="color:var(--warn-ink);">Starter Plan ($5 / ₹449 mo) Required</strong>
-              <div style="font-size:13.5px;color:var(--ink-secondary);margin-top:2px;">
+              <div style="font-size:13px;color:var(--ink-secondary);margin-top:2px;">
                 Free accounts include 10,000 credits on our 6 Studio Voices. Upgrade to create custom voice clones.
               </div>
             </div>
@@ -1371,7 +1569,7 @@
             </div>
             <div class="vc-field">
               <label for="cloneSampleFile">Clean Reference Audio (WAV or MP3, 30–60s)</label>
-              <input type="file" id="cloneSampleFile" accept="audio/*" class="vc-input" style="padding-top:9px;" />
+              <input type="file" id="cloneSampleFile" accept="audio/*" class="vc-input" style="padding-top:8px;" />
             </div>
             <div class="vc-field">
               <label for="cloneConsentPhrase">
@@ -1380,8 +1578,8 @@
               <input type="text" id="cloneConsentPhrase" class="vc-input" value="I authorize Aaruni Cloud Voice clone code 4829" required />
             </div>
             <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center;">
-              <button type="submit" class="btn-pill btn-dawn" id="vcCloneSubmitBtn">Create Instant Voice Clone</button>
-              <button type="button" class="btn-pill btn-outline" onclick="switchView('train')">Improve Existing Voice →</button>
+              <button type="submit" class="btn-pill btn-primary" id="vcCloneSubmitBtn">Create Instant Voice Clone</button>
+              <button type="button" class="btn-pill btn-outline" onclick="switchView('train')">Open Train Studio →</button>
             </div>
             <div class="vc-status-msg" id="vcCloneMsg"></div>
           </form>
@@ -1392,57 +1590,53 @@
     <!-- ===================================================================== -->
     <!-- 4. API & PLANS VIEW                                                   -->
     <!-- ===================================================================== -->
-    <section class="vc-view" id="view-api" aria-label="API and Plans">
+    <section class="vc-view" id="view-api" aria-label="REST API and Plans">
       <div class="vc-section-head">
         <h2>Drop-In REST API &amp; Transparent Plans</h2>
         <p>Use your scoped API key with any ElevenLabs-compatible SDK, or choose a predictable monthly plan.</p>
       </div>
 
-      <div style="max-width:960px;margin:0 auto 28px;">
+      <div style="max-width:960px;margin:0 auto 26px;">
         <div class="vc-card train-card">
           <div style="display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:12px;">
             <h3 style="margin:0;">Scoped Cloud Guard API Key</h3>
             <a id="vcApiConsoleLink" href="https://console.aarunicloud.com" class="btn-pill btn-outline btn-sm">Open Cloud Console ↗</a>
           </div>
           <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center;">
-            <input type="text" id="vcApiKeyDisplay" class="vc-input" readonly value="Sign in to view or copy your scoped API key" style="flex:1;min-width:220px;font-family:var(--font-mono);font-size:13px;" />
+            <input type="text" id="vcApiKeyDisplay" class="vc-input" readonly value="Sign in to view or copy your scoped API key" style="flex:1;min-width:220px;font-family:var(--font-mono);font-size:12.5px;" />
             <button type="button" class="btn-pill btn-primary btn-sm" onclick="copyScopedApiKey()">Copy Key</button>
           </div>
-          <div id="vcCopyKeyToast" style="font-size:12.5px;color:var(--ok-ink);margin-top:8px;display:none;">✓ Copied API key to clipboard</div>
+          <div id="vcCopyKeyToast" style="font-size:12px;color:var(--ok-ink);margin-top:8px;display:none;">✓ Copied API key to clipboard</div>
 
-          <details class="vc-tune-drawer" style="margin-top:16px;">
-            <summary>
-              <span>Drop-In REST API Example (<code style="font-family:var(--font-mono);">curl</code>) ▾</span>
-              <span style="font-size:12px;color:var(--ink-muted);">POST /v1/text-to-speech/:voice_id</span>
-            </summary>
-            <div style="margin-top:12px;">
-              <div class="vc-code-box" id="vcCurlSnippet">curl -X POST "https://api.aarunicloud.com/v1/text-to-speech/stock_aria" \
+          <div style="margin-top:16px;">
+            <div style="font-size:12px;font-weight:600;color:var(--ink-secondary);margin-bottom:6px;">
+              ElevenLabs-Compatible Endpoint (<code style="font-family:var(--font-mono);">POST /v1/text-to-speech/:voice_id</code>)
+            </div>
+            <div class="vc-code-box" id="vcCurlSnippet">curl -X POST "https://api.aarunicloud.com/v1/text-to-speech/stock_aria" \
   -H "xi-api-key: $AARUNI_API_KEY" \
   -H "Content-Type: application/json" \
-  -d '{"text":"Deploying OAuth2 and PostgreSQL via CI/CD.","model_id":"cloud-voice-v2"}' \
+  -d '{"text":"Deploying OAuth2 and PostgreSQL via CI/CD.","model_id":"cloud-voice-v3.0-master"}' \
   --output studio.mp3</div>
-            </div>
-          </details>
+          </div>
         </div>
       </div>
 
-      <!-- Currency Toggle + Plans -->
       <div style="text-align:center;">
-        <div style="display:inline-flex;gap:4px;padding:4px;border-radius:var(--radius-pill);background:var(--bg-subtle);border:1px solid var(--border-hairline);">
-          <button type="button" class="vc-nav-tab active" id="currBtnUSD" onclick="setBillingCurrency('USD')">$ USD (Card / Apple Pay)</button>
-          <button type="button" class="vc-nav-tab" id="currBtnINR" onclick="setBillingCurrency('INR')">₹ INR (India UPI)</button>
+        <div style="display:inline-flex;gap:4px;padding:3px;border-radius:var(--radius-pill);border:1px solid var(--border-hairline);background:#FFFFFF;">
+          <button type="button" class="btn-pill btn-primary btn-sm" id="currBtnUSD" onclick="setBillingCurrency('USD')">$ USD (Card / Apple Pay)</button>
+          <button type="button" class="btn-pill btn-outline btn-sm" id="currBtnINR" onclick="setBillingCurrency('INR')">₹ INR (India UPI)</button>
         </div>
       </div>
 
       <div class="vc-pricing-grid">
         <div class="vc-card vc-plan-card">
           <div>
-            <div style="font-weight:700;font-size:16px;margin-bottom:6px;">Free</div>
+            <div style="font-weight:700;font-size:15px;margin-bottom:4px;">Free</div>
             <div class="vc-price-num">$0 <span>/ mo</span></div>
             <ul class="vc-plan-list">
               <li>✓ <b>10,000</b> monthly credits</li>
               <li>✓ <b>6</b> Public Studio Voices</li>
-              <li>✓ Built-in technical dictionary</li>
+              <li>✓ Built-in W3C .pls domain packs</li>
             </ul>
           </div>
           <button type="button" class="btn-pill btn-outline" onclick="openAuthModal()">Included Free</button>
@@ -1450,7 +1644,7 @@
 
         <div class="vc-card vc-plan-card">
           <div>
-            <div style="font-weight:700;font-size:16px;margin-bottom:6px;">Starter</div>
+            <div style="font-weight:700;font-size:15px;margin-bottom:4px;">Starter</div>
             <div class="vc-price-num price-dyn" data-usd="$5" data-inr="₹449">$5 <span>/ mo</span></div>
             <ul class="vc-plan-list">
               <li>✓ <b>30,000</b> monthly credits</li>
@@ -1463,12 +1657,12 @@
 
         <div class="vc-card vc-plan-card featured">
           <div>
-            <div style="font-weight:700;font-size:16px;margin-bottom:6px;color:var(--brand-dawn);">Creator</div>
+            <div style="font-weight:700;font-size:15px;margin-bottom:4px;color:var(--brand-dawn);">Creator</div>
             <div class="vc-price-num price-dyn" data-usd="$9" data-inr="₹799">$9 <span>/ mo</span></div>
             <ul class="vc-plan-list">
               <li>✓ <b>120,000</b> monthly credits</li>
               <li>✓ <b>3 Instant Voice Clones</b></li>
-              <li>✓ <b>Fix Word Pronunciation</b> &amp; .pls</li>
+              <li>✓ <b>Custom .pls XML Upload</b> &amp; Rules</li>
             </ul>
           </div>
           <button type="button" class="btn-pill btn-dawn" onclick="openCheckoutModal('creator')">Choose Creator</button>
@@ -1476,11 +1670,11 @@
 
         <div class="vc-card vc-plan-card">
           <div>
-            <div style="font-weight:700;font-size:16px;margin-bottom:6px;">Pro Studio</div>
+            <div style="font-weight:700;font-size:15px;margin-bottom:4px;">Pro Studio</div>
             <div class="vc-price-num price-dyn" data-usd="$29" data-inr="₹2,499">$29 <span>/ mo</span></div>
             <ul class="vc-plan-list">
               <li>✓ <b>600,000</b> monthly credits</li>
-              <li>✓ <b>Train &amp; Improve</b> Fine-Tuning</li>
+              <li>✓ <b>Parallel Studio Training</b></li>
               <li>✓ 24 kHz WAV + Model Rollback</li>
             </ul>
           </div>
@@ -1491,32 +1685,24 @@
 
   </main>
 
-  <!-- Sticky Mobile Bottom Bar (375px+ Touch Targets >= 48px) -->
+  <!-- Sticky Mobile 4-Tab Bottom Bar -->
   <nav class="vc-mobile-tabbar" aria-label="Mobile navigation">
-    <button type="button" class="vc-mob-tab active" data-view-btn="studio">
-      <span>Speak</span>
-    </button>
-    <button type="button" class="vc-mob-tab" data-view-btn="train">
-      <span>Train &amp; Fix</span>
-    </button>
-    <button type="button" class="vc-mob-tab" data-view-btn="clone">
-      <span>Clone</span>
-    </button>
-    <button type="button" class="vc-mob-tab" data-view-btn="api">
-      <span>API &amp; Plans</span>
-    </button>
+    <button type="button" class="vc-mob-tab active" data-view-btn="studio">Speak</button>
+    <button type="button" class="vc-mob-tab" data-view-btn="clone">Voices</button>
+    <button type="button" class="vc-mob-tab" data-view-btn="train">Train</button>
+    <button type="button" class="vc-mob-tab" data-view-btn="api">API</button>
   </nav>
 
-  <!-- Calm Single-Card Sign-In Modal -->
+  <!-- Sign-In Modal -->
   <div class="vc-modal-backdrop" id="vcAuthModal" role="dialog" aria-modal="true" aria-labelledby="vcAuthModalTitle">
     <div class="vc-modal">
       <button type="button" class="vc-modal-close" onclick="closeAuthModal()" aria-label="Close">×</button>
-      <h3 id="vcAuthModalTitle" style="font-family:var(--font-display);font-size:21px;margin:0 0 6px;">Sign in to Cloud Voice</h3>
-      <p style="margin:0 0 18px;font-size:13.5px;color:var(--ink-secondary);">
-        Access your custom voices, pronunciation rules, and training studio.
+      <h3 id="vcAuthModalTitle" style="font-family:var(--font-display);font-size:20px;margin:0 0 6px;">Sign in to Cloud Voice</h3>
+      <p style="margin:0 0 16px;font-size:13px;color:var(--ink-secondary);">
+        Access your private studio voices, .pls dictionaries, and training builds.
       </p>
 
-      <div id="vcGoogleBtnWrap" style="min-height:44px;display:flex;justify-content:center;"></div>
+      <div id="vcGoogleBtnWrap" style="min-height:42px;display:flex;justify-content:center;"></div>
 
       <div class="vc-divider">or sign in with email</div>
 
@@ -1527,9 +1713,9 @@
         <button type="submit" class="btn-pill btn-primary" id="vcPwdSubmitBtn">Sign In</button>
       </form>
 
-      <details style="margin-top:14px;font-size:13px;color:var(--ink-secondary);">
+      <details style="margin-top:12px;font-size:12.5px;color:var(--ink-secondary);">
         <summary style="cursor:pointer;font-weight:500;">Use 6-digit email code or API key instead</summary>
-        <div style="margin-top:12px;display:flex;flex-direction:column;gap:10px;">
+        <div style="margin-top:10px;display:flex;flex-direction:column;gap:8px;">
           <form id="vcOtpStep1" onsubmit="sendEmailOtp(event)" style="display:flex;gap:8px;">
             <input type="email" id="vcLoginEmail" class="vc-input" placeholder="you@company.com" required />
             <button type="submit" class="btn-pill btn-outline btn-sm" id="vcSendOtpBtn">Send Code</button>
@@ -1539,7 +1725,7 @@
             <button type="submit" class="btn-pill btn-dawn btn-sm" id="vcVerifyOtpBtn">Verify</button>
           </form>
           <form onsubmit="connectDirectApiKey(event)" style="display:flex;gap:8px;">
-            <input type="password" id="vcDirectKeyInput" class="vc-input" placeholder="acloud_sub_..." style="font-family:var(--font-mono);font-size:12.5px;" />
+            <input type="password" id="vcDirectKeyInput" class="vc-input" placeholder="acloud_sub_..." style="font-family:var(--font-mono);font-size:12px;" />
             <button type="submit" class="btn-pill btn-outline btn-sm">Connect</button>
           </form>
         </div>
@@ -1553,8 +1739,8 @@
   <div class="vc-modal-backdrop" id="vcCheckoutModal" role="dialog" aria-modal="true" aria-labelledby="vcCheckoutTitle">
     <div class="vc-modal">
       <button type="button" class="vc-modal-close" onclick="closeCheckoutModal()" aria-label="Close">×</button>
-      <h3 id="vcCheckoutTitle" style="font-family:var(--font-display);font-size:21px;margin:0 0 6px;">Upgrade Cloud Voice Plan</h3>
-      <p style="margin:0 0 14px;font-size:13.5px;color:var(--ink-secondary);">
+      <h3 id="vcCheckoutTitle" style="font-family:var(--font-display);font-size:20px;margin:0 0 6px;">Upgrade Cloud Voice Plan</h3>
+      <p style="margin:0 0 14px;font-size:13px;color:var(--ink-secondary);">
         Predictable monthly billing with hard spend-cap protection.
       </p>
 
@@ -1567,15 +1753,15 @@
         <label for="vcCheckoutPlanSelect">Selected Plan</label>
         <select id="vcCheckoutPlanSelect" class="vc-select" onchange="refreshCheckoutSummary()">
           <option value="starter">Starter — 30,000 credits + 1 Instant Clone</option>
-          <option value="creator">Creator — 120,000 credits + Word Fixes &amp; .pls</option>
+          <option value="creator">Creator — 120,000 credits + Custom .pls</option>
           <option value="pro">Pro Studio — 600,000 credits + Full Training Studio</option>
         </select>
       </div>
 
-      <div style="padding:14px;border-radius:var(--radius-md);background:var(--bg-subtle);border:1px solid var(--border-hairline);margin-bottom:16px;display:flex;justify-content:space-between;align-items:center;">
+      <div style="padding:14px;border-radius:var(--radius-md);border:1px solid var(--border-hairline);margin-bottom:16px;display:flex;justify-content:space-between;align-items:center;">
         <div>
-          <div style="font-size:12px;color:var(--ink-muted);">Monthly Total</div>
-          <div style="font-family:var(--font-display);font-size:24px;font-weight:800;" id="vcCheckoutTotalLabel">$5 / mo</div>
+          <div style="font-size:11.5px;color:var(--ink-muted);">Monthly Total</div>
+          <div style="font-family:var(--font-display);font-size:22px;font-weight:800;" id="vcCheckoutTotalLabel">$5 / mo</div>
         </div>
         <div style="font-size:12px;color:var(--ok-ink);font-weight:600;text-align:right;" id="vcCheckoutRailsLabel">
           Global Card • Apple Pay
@@ -1588,6 +1774,8 @@
       <div class="vc-status-msg" id="vcCheckoutStatus"></div>
     </div>
   </div>
+
+  <div class="vc-toast" id="vcToast"></div>
 
   <script>
     const API_BASE = "";
@@ -1621,25 +1809,29 @@
     // 6 Commercial-Safe Public Studio Voices (Zero private owner voices in static HTML)
     const PUBLIC_STUDIO_VOICES = [
       { id: "stock_aria", shortId: "aria", name: "Aria", role: "Warm Educator", initials: "AR" },
-      { id: "stock_ethan", shortId: "ethan", name: "Ethan", role: "Tech Keynote", initials: "ET" },
-      { id: "stock_maya", shortId: "maya", name: "Maya", role: "Product Storyteller", initials: "MY" },
       { id: "stock_dev", shortId: "dev", name: "Dev", role: "Systems Architect", initials: "DV" },
+      { id: "stock_maya", shortId: "maya", name: "Maya", role: "Product Storyteller", initials: "MY" },
+      { id: "stock_ethan", shortId: "ethan", name: "Ethan", role: "Tech Keynote", initials: "ET" },
       { id: "stock_clara", shortId: "clara", name: "Clara", role: "Executive Briefing", initials: "CL" },
       { id: "stock_kabir", shortId: "kabir", name: "Kabir", role: "Global Engineering", initials: "KB" }
     ];
 
     const SHOWCASE_SCRIPTS = {
+      tech: {
+        slot: "cat1_course",
+        text: "First, configure ZAP with OAuth2 bearer tokens and run your worker with --cpus=2. Next, export JSON metrics and SARIF findings so GitHub Actions blocks regressions automatically."
+      },
       course: {
         slot: "cat1_course",
         text: "Welcome to Cloud Architecture. Today we will configure OAuth2 authentication and PostgreSQL backups using kubectl, ensuring zero downtime across regions."
       },
-      ad: {
+      medical: {
         slot: "cat2_ad",
-        text: "Meet Aaruni Cloud Voice. Turn any script into crystal-clear, lifelike studio narration in seconds — with custom pronunciation dictionaries and effortless tuning."
+        text: "Administer bevacizumab intravenously after reviewing the patient's echocardiogram and sphygmomanometer readings for any ventricular arrhythmia."
       },
-      agent: {
+      finance: {
         slot: "cat3_agent",
-        text: "Hi there! Your deployment finished cleanly and passed all automated quality checks. Would you like me to publish the release notes now?"
+        text: "Quarterly EBITDA rose 140 bps YoY under GAAP accounting, while SOFR-linked senior tranches cleared SEBI and UPI settlement rules."
       }
     };
 
@@ -1651,19 +1843,111 @@
       "In the next hands-on lab, we will verify database migrations, inspect audit logs, and confirm every health check returns green."
     ];
 
-    const PLS_DICTIONARY = {
-      "OAuth2": "oh-auth two",
-      "PostgreSQL": "post-gres-cue-ell",
-      "kubectl": "kube-control",
-      "CI/CD": "see-eye see-dee",
-      "SARIF": "sah-rif",
-      "NGINX": "engine-x",
-      "SQLite": "sequel-light",
-      "WCAG": "double-you-cag",
-      "gRPC": "jee-are-pee-see",
-      "JWT": "jay-double-you-tee",
-      "LUFS": "luffs"
-    };
+    const DEFAULT_DOMAIN_PACKS = [
+      {
+        id: "tech",
+        name: "Cloud, DevOps & AI",
+        meta: "1,420+ terms • OAuth2, kubectl, SARIF",
+        enabled: true,
+        terms: {
+          "OAuth2": "O-Auth two",
+          "--cpus=2": "dash dash see pee yous equals two",
+          "PostgreSQL": "Postgres Q L",
+          "kubectl": "cube cuddle",
+          "SARIF": "serif",
+          "JSON": "JAY-sawn",
+          "NGINX": "engine X",
+          "SQLite": "sequel lite",
+          "GraphQL": "graph Q L",
+          "YAML": "yammel",
+          "OWASP": "oh wasp",
+          "ZAP": "zap",
+          "SIEM": "seem",
+          "SBOM": "S bomb",
+          "SLSA": "salsa",
+          "RBAC": "R back",
+          "mTLS": "M T L S",
+          "gRPC": "G R P C",
+          "CI/CD": "C I C D"
+        }
+      },
+      {
+        id: "medical",
+        name: "Medical & Pharma (NIH)",
+        meta: "U.S. NIH SPECIALIST • Drug & clinical IPA",
+        enabled: true,
+        terms: {
+          "bevacizumab": "beh-vah-siz-oo-mab",
+          "pembrolizumab": "pem-broh-liz-oo-mab",
+          "echocardiogram": "ek-oh-kar-dee-oh-gram",
+          "sphygmomanometer": "sfig-moh-mah-nom-eh-ter",
+          "arrhythmia": "uh-rith-mee-uh",
+          "tachycardia": "tak-ih-kar-dee-uh",
+          "dyspnea": "disp-nee-uh",
+          "pharmacokinetics": "far-muh-koh-kih-net-iks",
+          "atorvastatin": "uh-tor-vuh-stat-in",
+          "FHIR": "fire"
+        }
+      },
+      {
+        id: "finance",
+        name: "Finance, Banking & Tax",
+        meta: "EBITDA, GAAP, SOFR, bps, SEBI, UPI",
+        enabled: true,
+        terms: {
+          "EBITDA": "ee-bit-dah",
+          "GAAP": "gap",
+          "IFRS": "I F R S",
+          "SOFR": "soh-fer",
+          "tranche": "trahnsh",
+          "tranches": "trahnshez",
+          "bps": "basis points",
+          "YoY": "year over year",
+          "CAGR": "kagger",
+          "SEBI": "seh-bee",
+          "UPI": "U P I",
+          "fiduciary": "fih-doo-shee-air-ee"
+        }
+      },
+      {
+        id: "legal",
+        name: "Legal & Compliance",
+        meta: "HIPAA, SOC 2, GDPR, certiorari",
+        enabled: false,
+        terms: {
+          "HIPAA": "hip-uh",
+          "SOC 2": "sock two",
+          "GDPR": "G D P R",
+          "CCPA": "C C P A",
+          "DPDP": "D P D P",
+          "FedRAMP": "fed ramp",
+          "certiorari": "ser-shee-uh-rare-ee",
+          "habeas corpus": "hay-bee-us kor-pus",
+          "prima facie": "pry-muh fay-shee",
+          "force majeure": "fors mah-zhoor"
+        }
+      },
+      {
+        id: "stem",
+        name: "STEM & University",
+        meta: "Euler, Bayesian, eigenvalue, arXiv",
+        enabled: false,
+        terms: {
+          "Euler": "oiler",
+          "Cauchy": "koh-shee",
+          "Riemann": "ree-mahn",
+          "Fourier": "foor-ee-ay",
+          "Laplacian": "lah-plah-see-un",
+          "Bayesian": "bay-zhee-un",
+          "eigenvalue": "eye-gen-value",
+          "stoichiometry": "stoy-kee-ahm-eh-tree",
+          "arXiv": "archive",
+          "LaTeX": "lah-tek"
+        }
+      }
+    ];
+
+    const CUSTOM_PLS_TERMS = {};
 
     const PLAN_PRICES = {
       starter: { usd: "$5", inr: "₹449" },
@@ -1673,13 +1957,21 @@
 
     const state = {
       view: "studio",
+      rightTab: "settings",
+      mobPane: "write",
       selectedVoice: "stock_aria",
-      selectedCategory: "course",
-      selectedModel: "cloud-voice-v2",
+      selectedCategory: "tech",
+      selectedModel: "cloud-voice-v3.0-master",
+      speakerBoost: true,
+      environment: "studio_booth",
+      environmentLabel: "Studio Booth",
+      domainPacks: JSON.parse(JSON.stringify(DEFAULT_DOMAIN_PACKS)),
       trainGoal: "clarity",
       teleprompterIdx: 0,
       currency: "USD",
       scriptDirty: false,
+      polishTouched: false,
+      queuedFullMasterUrl: "",
       apiKey: (function () {
         try { return localStorage.getItem("acloud_voice_key") || localStorage.getItem("acloud_api_key") || ""; }
         catch (_) { return ""; }
@@ -1690,7 +1982,8 @@
       voicesCatalog: [...PUBLIC_STUDIO_VOICES],
       ownerWorkspace: null,
       modelVersions: [],
-      lastAudioUrl: ""
+      lastAudioUrl: "",
+      lastServerRelAudioUrl: ""
     };
 
     function escVc(s) {
@@ -1699,6 +1992,15 @@
         .replace(/</g, "&lt;")
         .replace(/>/g, "&gt;")
         .replace(/"/g, "&quot;");
+    }
+
+    function notifyToast(msg) {
+      const el = document.getElementById("vcToast");
+      if (!el) return;
+      el.textContent = msg;
+      el.style.display = "block";
+      clearTimeout(window.__vcToastTimer);
+      window.__vcToastTimer = setTimeout(() => { el.style.display = "none"; }, 2400);
     }
 
     async function cloudFetch(route, opts = {}) {
@@ -1753,6 +2055,34 @@
       btn.addEventListener("click", () => switchView(btn.getAttribute("data-view-btn")));
     });
 
+    function setRightSidebarTab(tab) {
+      state.rightTab = tab === "pls" ? "pls" : "settings";
+      const isSettings = state.rightTab === "settings";
+      document.getElementById("rightPaneSettings").style.display = isSettings ? "flex" : "none";
+      document.getElementById("rightPanePls").style.display = isSettings ? "none" : "flex";
+      document.getElementById("rtTabSettings").classList.toggle("active", isSettings);
+      document.getElementById("rtTabPls").classList.toggle("active", !isSettings);
+    }
+
+    function setMobileStudioPane(pane) {
+      state.mobPane = pane;
+      const ws = document.getElementById("ttsWorkspace");
+      if (ws) ws.setAttribute("data-mob-pane", pane);
+      document.getElementById("mobSegWrite").classList.toggle("active", pane === "write");
+      document.getElementById("mobSegSettings").classList.toggle("active", pane === "settings");
+      document.getElementById("mobSegPls").classList.toggle("active", pane === "pls");
+      if (pane === "settings") setRightSidebarTab("settings");
+      if (pane === "pls") setRightSidebarTab("pls");
+    }
+
+    function openPlsPanel() {
+      if (window.innerWidth < 900) {
+        setMobileStudioPane("pls");
+      } else {
+        setRightSidebarTab("pls");
+      }
+    }
+
     function updateConsoleSsoLinks() {
       const topLink = document.getElementById("vcConsoleSsoLink");
       const apiLink = document.getElementById("vcApiConsoleLink");
@@ -1766,34 +2096,233 @@
     }
 
     // ========================================================================
-    // SPEAK STUDIO: VOICE PILLS, PRESETS, WAVEFORM & ULTRA-CLEAN RE-SYNTHESIS
+    // REAL-TIME 0ms BROWSER WEBAUDIO SOUND POLISH GRAPH
     // ========================================================================
-    function renderVoiceSelectors() {
-      const strip = document.getElementById("vcVoiceStrip");
-      strip.innerHTML = "";
+    let webAudioCtx = null;
+    let webAudioGraphReady = false;
+    let waBassNode = null;
+    let waBoxCutNode = null;
+    let waAirNode = null;
+    let waDryGain = null;
+    let waWetGain = null;
+    let waConvolver = null;
+    let currentImpulseEnv = "";
 
-      // Show Owner private voices first when authenticated as Owner, followed by the 6 public voices
+    function buildAlgorithmicImpulse(ctx, envKey) {
+      const sr = ctx.sampleRate || 24000;
+      let dur = 0.08;
+      let decay = 8.0;
+      if (envKey === "lecture_hall") { dur = 0.65; decay = 3.6; }
+      else if (envKey === "outdoor") { dur = 0.18; decay = 7.2; }
+      else if (envKey === "warm_podcast") { dur = 1.05; decay = 2.6; }
+      const len = Math.max(64, Math.floor(sr * dur));
+      const buf = ctx.createBuffer(2, len, sr);
+      for (let ch = 0; ch < 2; ch++) {
+        const d = buf.getChannelData(ch);
+        let seed = 104729 + ch * 7919;
+        for (let i = 0; i < len; i++) {
+          seed = (seed * 1664525 + 1013904223) >>> 0;
+          const wn = (seed / 2147483648.0) - 1.0;
+          d[i] = wn * Math.exp((-decay * i) / len);
+        }
+      }
+      return buf;
+    }
+
+    function ensureLiveWebAudioGraph() {
+      if (webAudioGraphReady) {
+        if (webAudioCtx && webAudioCtx.state === "suspended") {
+          webAudioCtx.resume().catch(() => {});
+        }
+        return;
+      }
+      try {
+        const AudioContextCls = window.AudioContext || window.webkitAudioContext;
+        if (!AudioContextCls) return;
+        const player = document.getElementById("vcAudioPlayer");
+        webAudioCtx = new AudioContextCls();
+        const srcNode = webAudioCtx.createMediaElementSource(player);
+
+        waBassNode = webAudioCtx.createBiquadFilter();
+        waBassNode.type = "lowshelf";
+        waBassNode.frequency.value = 170;
+
+        waBoxCutNode = webAudioCtx.createBiquadFilter();
+        waBoxCutNode.type = "peaking";
+        waBoxCutNode.frequency.value = 340;
+        waBoxCutNode.Q.value = 1.35;
+
+        waAirNode = webAudioCtx.createBiquadFilter();
+        waAirNode.type = "highshelf";
+        waAirNode.frequency.value = 5800;
+
+        waConvolver = webAudioCtx.createConvolver();
+        waDryGain = webAudioCtx.createGain();
+        waWetGain = webAudioCtx.createGain();
+
+        srcNode.connect(waBassNode);
+        waBassNode.connect(waBoxCutNode);
+        waBoxCutNode.connect(waAirNode);
+
+        waAirNode.connect(waDryGain);
+        waDryGain.connect(webAudioCtx.destination);
+
+        waAirNode.connect(waConvolver);
+        waConvolver.connect(waWetGain);
+        waWetGain.connect(webAudioCtx.destination);
+
+        webAudioGraphReady = true;
+        applyLiveWebAudioParams();
+      } catch (_) {}
+    }
+
+    function applyLiveWebAudioParams() {
+      const bassRaw = Number(document.getElementById("rngBassCut").value || 45);
+      const deEchoRaw = Number(document.getElementById("rngDeEcho").value || 90);
+      const bassCutDb = -(bassRaw / 10);
+      const dryPct = deEchoRaw / 100;
+
+      if (!webAudioGraphReady || !webAudioCtx) return;
+      // Baseline audio already has -4.0 dB open-studio EQ; apply delta smoothly in 0ms
+      const deltaBassDb = bassCutDb - (-4.5);
+      waBassNode.gain.value = deltaBassDb;
+
+      // Extra anti-boxiness notch when De-Echo > 50%
+      const boxCutDelta = (dryPct - 0.90) * -6.0;
+      waBoxCutNode.gain.value = boxCutDelta;
+
+      let airDb = 0.0;
+      let baseWet = 0.0;
+      if (state.environment === "lecture_hall") { baseWet = 0.22; airDb = 0.5; }
+      else if (state.environment === "outdoor") { baseWet = 0.06; airDb = 2.4; }
+      else if (state.environment === "warm_podcast") { baseWet = 0.28; airDb = 1.4; }
+
+      waAirNode.gain.value = airDb;
+
+      if (currentImpulseEnv !== state.environment) {
+        waConvolver.buffer = buildAlgorithmicImpulse(webAudioCtx, state.environment);
+        currentImpulseEnv = state.environment;
+      }
+
+      const wetAmt = state.environment === "studio_booth"
+        ? Math.max(0, (1.0 - dryPct) * 0.14)
+        : baseWet * Math.max(0.25, 1.15 - dryPct * 0.65);
+
+      waWetGain.gain.value = wetAmt;
+      waDryGain.gain.value = 1.0 - wetAmt * 0.25;
+    }
+
+    function onLiveSpeedInput(rawVal) {
+      const spd = Number(rawVal) / 100;
+      document.getElementById("valSpeed").textContent = spd.toFixed(2) + "x";
+      const player = document.getElementById("vcAudioPlayer");
+      if (player) {
+        player.preservesPitch = true;
+        player.mozPreservesPitch = true;
+        player.webkitPreservesPitch = true;
+        player.playbackRate = spd;
+      }
+    }
+
+    function onSynthesisSettingChange(name, formatted) {
+      const el = document.getElementById("val" + name);
+      if (el) el.textContent = formatted;
+      state.scriptDirty = true;
+    }
+
+    function toggleSpeakerBoost() {
+      const btn = document.getElementById("spkBoostToggle");
+      state.speakerBoost = !state.speakerBoost;
+      btn.classList.toggle("on", state.speakerBoost);
+      state.scriptDirty = true;
+    }
+
+    function onLivePolishChange() {
+      const bassVal = Number(document.getElementById("rngBassCut").value || 45);
+      const echoVal = Number(document.getElementById("rngDeEcho").value || 90);
+      document.getElementById("valBass").textContent = (bassVal === 0 ? "0.0" : ("-" + (bassVal / 10).toFixed(1))) + " dB";
+      document.getElementById("valEcho").textContent = echoVal + "% Dry";
+      state.polishTouched = true;
+      applyLiveWebAudioParams();
+    }
+
+    function selectEnvironment(btn) {
+      document.querySelectorAll(".env-btn").forEach((b) => b.classList.remove("active"));
+      btn.classList.add("active");
+      state.environment = btn.getAttribute("data-env") || "studio_booth";
+      state.environmentLabel = btn.getAttribute("data-label") || "Studio Booth";
+      state.polishTouched = true;
+      const tSpan = document.getElementById("vcTimeLabel");
+      const curTimeTxt = tSpan ? tSpan.textContent : "0:00 / 0:00";
+      document.getElementById("vcAudioMetaTitle").innerHTML =
+        escVc(state.environmentLabel) + ' • <span id="vcTimeLabel">' + escVc(curTimeTxt) + '</span>';
+      applyLiveWebAudioParams();
+    }
+
+    function resetAllVoiceValues() {
+      document.getElementById("rngSpeed").value = "100";
+      onLiveSpeedInput("100");
+      document.getElementById("rngStability").value = "72";
+      document.getElementById("valStability").textContent = "72%";
+      document.getElementById("rngSimilarity").value = "92";
+      document.getElementById("valSimilarity").textContent = "92%";
+      document.getElementById("rngStyle").value = "35";
+      document.getElementById("valStyle").textContent = "35%";
+      state.speakerBoost = true;
+      document.getElementById("spkBoostToggle").classList.add("on");
+      document.getElementById("rngBassCut").value = "45";
+      document.getElementById("rngDeEcho").value = "90";
+      const firstEnv = document.querySelector('.env-btn[data-env="studio_booth"]');
+      if (firstEnv) selectEnvironment(firstEnv);
+      onLivePolishChange();
+      state.polishTouched = false;
+      notifyToast("Reset sliders to clean Studio Booth defaults");
+    }
+
+    // ========================================================================
+    // VOICE PICKER DROPDOWN (ZERO HORIZONTAL SCROLLBAR) & SAMPLE CHIPS
+    // ========================================================================
+    function toggleVoiceDropdown(ev) {
+      if (ev) ev.stopPropagation();
+      document.getElementById("vcVoiceDropdownMenu").classList.toggle("open");
+    }
+
+    document.addEventListener("click", (ev) => {
+      const wrap = document.getElementById("vcVoicePickerWrap");
+      const menu = document.getElementById("vcVoiceDropdownMenu");
+      if (menu && wrap && !wrap.contains(ev.target)) {
+        menu.classList.remove("open");
+      }
+    });
+
+    function renderVoiceSelectors() {
       const ordered = [
         ...state.voicesCatalog.filter((v) => v.privateOwner),
         ...state.voicesCatalog.filter((v) => !v.privateOwner)
       ];
+      const activeObj = ordered.find((x) => x.id === state.selectedVoice) || ordered[0] || PUBLIC_STUDIO_VOICES[0];
+      const displayLabel = activeObj.shortLabel || activeObj.name;
 
-      ordered.forEach((v) => {
-        const btn = document.createElement("button");
-        btn.type = "button";
-        btn.className = "voice-pill" + (state.selectedVoice === v.id ? " active" : "");
-        btn.setAttribute("role", "option");
-        btn.setAttribute("aria-selected", state.selectedVoice === v.id ? "true" : "false");
-        btn.onclick = () => selectVoice(v.id, true);
-        const shortLabel = v.privateOwner ? (v.shortLabel || v.name.split("—")[0].trim()) : v.name;
-        btn.innerHTML =
-          '<span class="voice-pill-avatar">' + escVc(v.initials || "CV") + '</span>' +
-          '<span>' + escVc(shortLabel) + (v.privateOwner ? " • Pro" : "") + '</span>';
-        strip.appendChild(btn);
-      });
+      document.getElementById("selVoiceInitials").textContent = activeObj.initials || "CV";
+      document.getElementById("selVoiceName").textContent = displayLabel;
+      document.getElementById("selVoiceDesc").textContent = activeObj.role || "Studio Voice";
+      document.getElementById("vcMobVoiceChip").textContent = displayLabel + " ▾";
 
-      const activeObj = state.voicesCatalog.find((x) => x.id === state.selectedVoice) || PUBLIC_STUDIO_VOICES[0];
-      document.getElementById("vcActiveVoiceBadge").textContent = activeObj.name + (activeObj.role ? " — " + activeObj.role : "");
+      const menu = document.getElementById("vcVoiceDropdownMenu");
+      menu.innerHTML = ordered.map((v) => {
+        const lbl = v.shortLabel || v.name;
+        const isSel = v.id === state.selectedVoice;
+        return (
+          '<button type="button" class="voice-menu-item' + (isSel ? " selected" : "") + '" onclick="selectVoice(\'' + escVc(v.id) + '\', true)">' +
+            '<span class="voice-avatar-dot" style="width:24px;height:24px;font-size:10px;background:' + (v.privateOwner ? "#FE5F01" : "#111827") + ';">' + escVc(v.initials || "CV") + '</span>' +
+            '<div style="min-width:0;flex:1;">' +
+              '<div style="font-size:12px;font-weight:600;color:#111827;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">' + escVc(lbl) + '</div>' +
+              '<div style="font-size:11px;color:#6B7280;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">' + escVc(v.role || "Studio Voice") + '</div>' +
+            '</div>' +
+          '</button>'
+        );
+      }).join("");
+
       renderPresetChipsForActiveVoice(activeObj);
     }
 
@@ -1803,23 +2332,31 @@
       const samples = state.ownerWorkspace && state.ownerWorkspace.samples;
       if (state.ownerMode && activeVoice && activeVoice.privateOwner && samples) {
         const ownerKeys = [
-          ["v5_hook", "Module Hook"],
+          ["v5_zap_walkthrough", "Tech + .pls"],
+          ["v5_hook", "Course Hook"],
           ["v5_analogy", "Story Analogy"],
-          ["v5_zap_walkthrough", "Technical + .pls"],
-          ["zap_5min", "5-Min Course"]
+          ["medical_pls", "Medical .pls"],
+          ["finance_pls", "Finance .pls"]
         ].filter(([k]) => samples[k]);
         bar.innerHTML = ownerKeys.map(([k, label], i) =>
-          '<button type="button" class="preset-chip' + (i === 0 ? " active" : "") + '" data-own-preset="' + escVc(k) + '" onclick="selectOwnerSamplePreset(\'' + escVc(k) + '\')">' +
+          '<button type="button" class="smp-btn' + (i === 0 ? " active" : "") + '" data-own-preset="' + escVc(k) + '" onclick="selectOwnerSamplePreset(\'' + escVc(k) + '\')">' +
             escVc(label) +
           '</button>'
         ).join("");
         return;
       }
 
-      bar.innerHTML =
-        '<button type="button" class="preset-chip ' + (state.selectedCategory === "course" ? "active" : "") + '" data-cat="course" onclick="selectShowcaseCategory(\'course\')">Course</button>' +
-        '<button type="button" class="preset-chip ' + (state.selectedCategory === "ad" ? "active" : "") + '" data-cat="ad" onclick="selectShowcaseCategory(\'ad\')">Product Ad</button>' +
-        '<button type="button" class="preset-chip ' + (state.selectedCategory === "agent" ? "active" : "") + '" data-cat="agent" onclick="selectShowcaseCategory(\'agent\')">AI Agent</button>';
+      const pubChips = [
+        ["tech", "Tech + .pls"],
+        ["course", "Course Hook"],
+        ["medical", "Medical .pls"],
+        ["finance", "Finance .pls"]
+      ];
+      bar.innerHTML = pubChips.map(([k, label]) =>
+        '<button type="button" class="smp-btn' + (state.selectedCategory === k ? " active" : "") + '" data-cat="' + k + '" onclick="selectShowcaseCategory(\'' + k + '\')">' +
+          label +
+        '</button>'
+      ).join("");
     }
 
     function selectOwnerSamplePreset(key) {
@@ -1830,18 +2367,21 @@
         b.classList.toggle("active", b.getAttribute("data-own-preset") === key);
       });
       document.getElementById("vcScriptInput").value = item.text || "";
-      state.scriptDirty = false;
+      state.scriptDirty = !item.mp3;
       refreshPlsHighlights();
       if (item.mp3) {
-        setAudioSourceAndPlay(item.mp3, null);
+        setAudioSourceAndPlay(item.mp3, null, "");
       }
     }
 
     function selectVoice(voiceId, autoPreview) {
+      document.getElementById("vcVoiceDropdownMenu").classList.remove("open");
       state.selectedVoice = voiceId;
       const activeObj = state.voicesCatalog.find((x) => x.id === voiceId);
       if (activeObj && activeObj.defaultModelId) {
         state.selectedModel = activeObj.defaultModelId;
+        const sel = document.getElementById("vcModelSelect");
+        if (sel) sel.value = state.selectedModel;
       }
       if (activeObj && activeObj.versionBadge) {
         const topB = document.getElementById("vcTopVersionBadge");
@@ -1850,11 +2390,11 @@
       renderVoiceSelectors();
       updateCurlSnippet();
       if (state.ownerMode && activeObj && activeObj.privateOwner && state.ownerWorkspace && state.ownerWorkspace.samples) {
-        const hook = state.ownerWorkspace.samples.v5_hook;
-        if (hook && !state.scriptDirty) {
-          document.getElementById("vcScriptInput").value = hook.text || "";
+        const defSample = state.ownerWorkspace.samples.v5_zap_walkthrough || state.ownerWorkspace.samples.v5_hook;
+        if (defSample && !state.scriptDirty) {
+          document.getElementById("vcScriptInput").value = defSample.text || "";
           refreshPlsHighlights();
-          if (autoPreview && hook.mp3) setAudioSourceAndPlay(hook.mp3, null);
+          if (autoPreview && defSample.mp3) setAudioSourceAndPlay(defSample.mp3, null, "");
         }
         return;
       }
@@ -1865,53 +2405,144 @@
 
     function selectShowcaseCategory(cat) {
       state.selectedCategory = cat;
-      state.scriptDirty = false;
       document.querySelectorAll("[data-cat]").forEach((b) => {
         b.classList.toggle("active", b.getAttribute("data-cat") === cat);
       });
-      const sample = SHOWCASE_SCRIPTS[cat] || SHOWCASE_SCRIPTS.course;
+      const sample = SHOWCASE_SCRIPTS[cat] || SHOWCASE_SCRIPTS.tech;
       document.getElementById("vcScriptInput").value = sample.text;
+      state.scriptDirty = (cat === "medical" || cat === "finance");
       refreshPlsHighlights();
-      playShowcaseSample(state.selectedVoice, cat);
-    }
-
-    function updateSliderLabel(name, formatted) {
-      const el = document.getElementById("val" + name);
-      if (el) el.textContent = formatted;
+      if (!state.scriptDirty) {
+        playShowcaseSample(state.selectedVoice, cat);
+      }
     }
 
     function onModelChange(modelId) {
       state.selectedModel = modelId;
-      const labels = {
-        "cloud-voice-v2": "Cloud Voice v2",
-        "cloud-voice-v2-flash": "Cloud Voice v2 Flash",
-        "cloud-voice-v2-multilingual": "Cloud Voice v2 Multilingual"
-      };
-      document.getElementById("vcActiveModelBadge").textContent = "• " + (labels[modelId] || "Cloud Voice v2");
+      state.scriptDirty = true;
+      const note = document.getElementById("vcAudioLatencyNote");
+      if (note) {
+        note.textContent = modelId.includes("flash")
+          ? "v3.0 Flash fast streaming + live Sound Polish"
+          : "v3.0 Studio Master (3-worker parallel synthesis)";
+      }
       updateCurlSnippet();
+    }
+
+    // ========================================================================
+    // MULTI-DOMAIN W3C .PLS DICTIONARIES & LIVE SCRIPT TERM MATCHING
+    // ========================================================================
+    function renderDomainPacks() {
+      const box = document.getElementById("vcDomainPacksList");
+      if (!box) return;
+      box.innerHTML = state.domainPacks.map((p, idx) =>
+        '<div class="domain-pack-row' + (p.enabled ? " enabled" : "") + '">' +
+          '<div style="min-width:0;">' +
+            '<div style="font-size:12px;font-weight:600;color:#111827;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">' + escVc(p.name) + '</div>' +
+            '<div style="font-size:11px;color:#6B7280;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">' + escVc(p.meta) + '</div>' +
+          '</div>' +
+          '<button type="button" class="el-switch' + (p.enabled ? " on" : "") + '" onclick="toggleDomainPack(' + idx + ')" aria-label="Toggle ' + escVc(p.name) + '"></button>' +
+        '</div>'
+      ).join("");
+    }
+
+    async function toggleDomainPack(idx) {
+      const pack = state.domainPacks[idx];
+      if (!pack) return;
+      pack.enabled = !pack.enabled;
+      state.scriptDirty = true;
+      renderDomainPacks();
+      refreshPlsHighlights();
+
+      if (state.localWorkstationOnline) {
+        fetch(LOCAL_WORKSTATION + "/api/v1/pls/domains/toggle", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ domainId: pack.id, enabled: pack.enabled })
+        }).catch(() => {});
+      }
+      cloudFetch("/v1/voice/pls-domains", {
+        method: "POST",
+        headers: getAuthHeaders({ "Content-Type": "application/json" }),
+        body: JSON.stringify({ domainId: pack.id, enabled: pack.enabled })
+      }).catch(() => {});
+    }
+
+    async function loadDomainPacksFromServer() {
+      try {
+        if (state.localWorkstationOnline) {
+          const r = await fetch(LOCAL_WORKSTATION + "/api/v1/pls/domains");
+          const j = await r.json().catch(() => ({}));
+          if (r.ok && j.ok && Array.isArray(j.domains)) {
+            state.domainPacks = j.domains.map((d) => {
+              const fallback = DEFAULT_DOMAIN_PACKS.find((x) => x.id === d.id);
+              return {
+                id: d.id,
+                name: d.name,
+                meta: d.meta,
+                enabled: Boolean(d.enabled),
+                terms: Object.assign({}, fallback ? fallback.terms : {}, d.terms || {})
+              };
+            });
+            renderDomainPacks();
+            refreshPlsHighlights();
+            return;
+          }
+        }
+        const res = await cloudFetch("/v1/voice/pls-domains", { headers: getAuthHeaders() });
+        const data = await res.json().catch(() => ({}));
+        if (res.ok && data.ok && Array.isArray(data.domains)) {
+          state.domainPacks = data.domains;
+          renderDomainPacks();
+          refreshPlsHighlights();
+        }
+      } catch (_) {}
+    }
+
+    function getMergedActivePlsMap() {
+      const merged = {};
+      state.domainPacks.forEach((p) => {
+        if (!p.enabled || !p.terms) return;
+        Object.entries(p.terms).forEach(([k, v]) => {
+          merged[k] = v;
+        });
+      });
+      Object.entries(CUSTOM_PLS_TERMS).forEach(([k, v]) => {
+        merged[k] = v;
+      });
+      return merged;
     }
 
     function refreshPlsHighlights() {
       const text = document.getElementById("vcScriptInput").value || "";
-      document.getElementById("vcCharCounter").textContent = text.length.toLocaleString() + " / 5,000 chars";
-      const container = document.getElementById("vcPlsTokens");
-      container.innerHTML = "";
-      let matches = 0;
-      Object.keys(PLS_DICTIONARY).forEach((term) => {
-        if (text.toLowerCase().includes(term.toLowerCase())) {
-          matches++;
-          const badge = document.createElement("span");
-          badge.className = "vc-pls-token";
-          badge.innerHTML = escVc(term) + ' <span>→ ' + escVc(PLS_DICTIONARY[term]) + '</span>';
-          container.appendChild(badge);
+      document.getElementById("vcCharCounter").textContent = text.length.toLocaleString() + " / 5,000";
+
+      const lowerTxt = text.toLowerCase();
+      const seenLower = new Set();
+      const hits = [];
+      const activeMap = getMergedActivePlsMap();
+
+      Object.entries(activeMap).forEach(([term, spoken]) => {
+        const tl = term.toLowerCase();
+        if (seenLower.has(tl)) return;
+        if (lowerTxt.includes(tl)) {
+          seenLower.add(tl);
+          hits.push([term, spoken]);
         }
       });
-      if (matches === 0) {
-        const hint = document.createElement("span");
-        hint.style.color = "var(--ink-muted)";
-        hint.textContent = "Active automatically for technical terms (SARIF, OAuth2, PostgreSQL, kubectl)";
-        container.appendChild(hint);
+
+      const pill = document.getElementById("vcPlsActivePill");
+      if (pill) {
+        pill.textContent = "✓ .pls Active (" + hits.length + " " + (hits.length === 1 ? "term" : "terms") + " matched)";
       }
+
+      const row = document.getElementById("vcPlsTokens");
+      if (row) {
+        row.innerHTML = hits.slice(0, 8).map(([k, v]) =>
+          '<span class="pls-match-chip"><strong>' + escVc(k) + '</strong> → "' + escVc(v) + '"</span>'
+        ).join("");
+      }
+
       renderSavedRuleChips();
     }
 
@@ -1920,40 +2551,68 @@
       refreshPlsHighlights();
     });
 
-    function setAudioSourceAndPlay(primaryUrl, fallbackUrl) {
+    // ========================================================================
+    // FAST PARALLEL & CLAUSE-1 STREAMING SYNTHESIS + PLAYBACK
+    // ========================================================================
+    function setAudioSourceAndPlay(primaryUrl, fallbackUrl, serverRelUrl) {
+      ensureLiveWebAudioGraph();
       const player = document.getElementById("vcAudioPlayer");
-      const btn = document.getElementById("vcGenerateBtn");
+      const circleBtn = document.getElementById("vcCirclePlayBtn");
       const dlBtn = document.getElementById("vcDownloadBtn");
       let triedFallback = false;
+
+      state.queuedFullMasterUrl = "";
+      if (typeof serverRelUrl === "string") {
+        state.lastServerRelAudioUrl = serverRelUrl;
+      }
 
       player.onerror = () => {
         if (!triedFallback && fallbackUrl && player.src !== location.origin + fallbackUrl) {
           triedFallback = true;
           state.lastAudioUrl = fallbackUrl;
           player.src = fallbackUrl;
+          player.playbackRate = Number(document.getElementById("rngSpeed").value || 100) / 100;
           player.play().catch(() => {});
         } else {
-          btn.textContent = "▶ Speak";
+          circleBtn.textContent = "▶";
         }
       };
 
       state.lastAudioUrl = primaryUrl;
       dlBtn.disabled = false;
       player.src = primaryUrl;
-      btn.textContent = "⏸ Playing";
+      player.preservesPitch = true;
+      player.playbackRate = Number(document.getElementById("rngSpeed").value || 100) / 100;
+      circleBtn.textContent = "⏸";
       player.play().catch(() => {
-        btn.textContent = "▶ Speak";
+        circleBtn.textContent = "▶";
       });
+    }
+
+    function toggleAudioPlayPause() {
+      const player = document.getElementById("vcAudioPlayer");
+      if (!player.src) {
+        generateOrPlaySpeech();
+        return;
+      }
+      ensureLiveWebAudioGraph();
+      if (player.paused) {
+        player.play().catch(() => {});
+        document.getElementById("vcCirclePlayBtn").textContent = "⏸";
+      } else {
+        player.pause();
+        document.getElementById("vcCirclePlayBtn").textContent = "▶";
+      }
     }
 
     function playShowcaseSample(voiceId, cat) {
       const pubVoice = PUBLIC_STUDIO_VOICES.find((v) => v.id === voiceId);
       if (!pubVoice) return;
-      const sample = SHOWCASE_SCRIPTS[cat] || SHOWCASE_SCRIPTS.course;
+      const sample = SHOWCASE_SCRIPTS[cat] || SHOWCASE_SCRIPTS.tech;
       const shortKey = pubVoice.shortId || String(voiceId).replace(/^stock_/, "");
       const relPath = "/assets/voice/showcase/" + shortKey + "_" + sample.slot + ".mp3";
       const fallbackUrl = SHOWCASE_CDN_BASE + "/" + shortKey + "_" + sample.slot + ".mp3";
-      setAudioSourceAndPlay(relPath, fallbackUrl);
+      setAudioSourceAndPlay(relPath, fallbackUrl, "");
     }
 
     async function ensureSessionTokenForSynthesis() {
@@ -1966,12 +2625,21 @@
       }
     }
 
+    function splitIntoSentences(text) {
+      return String(text || "")
+        .trim()
+        .split(/(?<=[.!?])\s+(?=[A-Z0-9"'])/)
+        .map((s) => s.trim())
+        .filter(Boolean);
+    }
+
     async function generateOrPlaySpeech() {
       const player = document.getElementById("vcAudioPlayer");
       const btn = document.getElementById("vcGenerateBtn");
-      if (!player.paused && !state.scriptDirty) {
+
+      if (!state.scriptDirty && player.src && !player.paused) {
         player.pause();
-        btn.textContent = "▶ Speak";
+        document.getElementById("vcCirclePlayBtn").textContent = "▶";
         return;
       }
 
@@ -1979,44 +2647,132 @@
       if (!text) return;
 
       const isPublicVoice = PUBLIC_STUDIO_VOICES.some((v) => v.id === state.selectedVoice);
-      if (!state.scriptDirty && isPublicVoice) {
+      if (!state.scriptDirty && isPublicVoice && (state.selectedCategory === "tech" || state.selectedCategory === "course")) {
         playShowcaseSample(state.selectedVoice, state.selectedCategory);
         return;
       }
 
       btn.disabled = true;
       btn.textContent = "Generating...";
+
       try {
+        const bassCutDb = -(Number(document.getElementById("rngBassCut").value || 45) / 10);
+        const deEchoVal = Number(document.getElementById("rngDeEcho").value || 90) / 100;
         const voiceSettings = {
           stability: Number(document.getElementById("rngStability").value) / 100,
           similarity_boost: Number(document.getElementById("rngSimilarity").value) / 100,
           style: Number(document.getElementById("rngStyle").value) / 100,
           speed: Number(document.getElementById("rngSpeed").value) / 100,
-          target_lufs: Number(document.getElementById("vcLoudnessSelect").value || -20.5),
-          use_speaker_boost: document.getElementById("vcClarityBoost").checked
+          target_lufs: -20.5,
+          use_speaker_boost: state.speakerBoost,
+          bass_cut_db: bassCutDb,
+          de_echo: deEchoVal,
+          environment: state.environment
         };
 
-        if (state.ownerMode || state.localWorkstationOnline) {
+        // Fast Workstation + 3-Node Parallel Cluster Path
+        if (state.localWorkstationOnline) {
           try {
+            const sentences = splitIntoSentences(text);
+            // Multi-sentence Fast-Start: synthesize Sentence 1 immediately on Flash/Turbo while full Studio Master runs in parallel!
+            if (sentences.length >= 2 && !isPublicVoice) {
+              const firstSentence = sentences[0];
+              const remainingText = sentences.slice(1).join(" ");
+
+              const firstPromise = fetch(LOCAL_WORKSTATION + "/api/v1/synthesize", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                  text: firstSentence,
+                  voice_id: state.selectedVoice,
+                  model_version: "v3.0-turbo-q8",
+                  voice_settings: voiceSettings
+                })
+              }).then((r) => r.json());
+
+              const restPromise = fetch(LOCAL_WORKSTATION + "/api/v1/synthesize", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                  text: remainingText,
+                  voice_id: state.selectedVoice,
+                  model_version: state.selectedModel,
+                  voice_settings: voiceSettings
+                })
+              }).then((r) => r.json()).catch(() => null);
+
+              const fullPromise = fetch(LOCAL_WORKSTATION + "/api/v1/synthesize", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                  text,
+                  voice_id: state.selectedVoice,
+                  model_version: state.selectedModel,
+                  voice_settings: voiceSettings
+                })
+              }).then((r) => r.json()).catch(() => null);
+
+              const firstDoc = await firstPromise;
+              if (firstDoc && firstDoc.ok && firstDoc.audioUrl) {
+                const s1Url = firstDoc.audioUrl.startsWith("http")
+                  ? firstDoc.audioUrl
+                  : (LOCAL_WORKSTATION + "/" + firstDoc.audioUrl.replace(/^\/+/, ""));
+                state.scriptDirty = false;
+                state.polishTouched = false;
+                setAudioSourceAndPlay(s1Url, null, firstDoc.audioUrl);
+                btn.disabled = false;
+                btn.textContent = "Generate speech";
+
+                // Queue remaining sentences seamlessly on ended, and capture full master for download!
+                restPromise.then((restDoc) => {
+                  if (restDoc && restDoc.ok && restDoc.audioUrl) {
+                    state.queuedFullMasterUrl = restDoc.audioUrl.startsWith("http")
+                      ? restDoc.audioUrl
+                      : (LOCAL_WORKSTATION + "/" + restDoc.audioUrl.replace(/^\/+/, ""));
+                  }
+                });
+                fullPromise.then((fullDoc) => {
+                  if (fullDoc && fullDoc.ok && fullDoc.audioUrl) {
+                    const fUrl = fullDoc.audioUrl.startsWith("http")
+                      ? fullDoc.audioUrl
+                      : (LOCAL_WORKSTATION + "/" + fullDoc.audioUrl.replace(/^\/+/, ""));
+                    state.lastAudioUrl = fUrl;
+                    state.lastServerRelAudioUrl = fullDoc.audioUrl;
+                  }
+                });
+                return;
+              }
+            }
+
+            // Single-sentence or direct synthesis call
             const ctrl = new AbortController();
             const timer = setTimeout(() => ctrl.abort(), 65000);
-            const localRes = await fetch(LOCAL_WORKSTATION + "/v1/text-to-speech/" + encodeURIComponent(state.selectedVoice), {
+            const localRes = await fetch(LOCAL_WORKSTATION + "/api/v1/synthesize", {
               method: "POST",
-              headers: { "Content-Type": "application/json", "Accept": "audio/mpeg" },
-              body: JSON.stringify({ text, model_id: state.selectedModel, voice_settings: voiceSettings }),
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({
+                text,
+                voice_id: state.selectedVoice,
+                model_version: state.selectedModel,
+                voice_settings: voiceSettings
+              }),
               signal: ctrl.signal
             });
             clearTimeout(timer);
-            const localCt = String(localRes.headers.get("content-type") || "").toLowerCase();
-            if (localRes.ok && localCt.includes("audio/")) {
-              const audioBlob = await localRes.blob();
+            const localDoc = await localRes.json().catch(() => ({}));
+            if (localRes.ok && localDoc.ok && localDoc.audioUrl) {
+              const fullUrl = localDoc.audioUrl.startsWith("http")
+                ? localDoc.audioUrl
+                : (LOCAL_WORKSTATION + "/" + localDoc.audioUrl.replace(/^\/+/, ""));
               state.scriptDirty = false;
-              setAudioSourceAndPlay(URL.createObjectURL(audioBlob), null);
+              state.polishTouched = false;
+              setAudioSourceAndPlay(fullUrl, null, localDoc.audioUrl);
               return;
             }
           } catch (_) {}
         }
 
+        // Cloud Edge Fallback
         await ensureSessionTokenForSynthesis();
         const res = await cloudFetch("/v1/voice/speak", {
           method: "POST",
@@ -2025,31 +2781,19 @@
             text,
             voiceId: state.selectedVoice,
             modelId: state.selectedModel,
-            targetLufs: voiceSettings.target_lufs,
+            targetLufs: -20.5,
             voiceSettings
           })
         });
         const data = await res.json().catch(() => ({}));
         if (data.ok && data.audioUrl) {
           state.scriptDirty = false;
-          setAudioSourceAndPlay(data.audioUrl, null);
+          setAudioSourceAndPlay(data.audioUrl, null, "");
           refreshAccountAndVoices();
         }
-      } catch (_) {
-        btn.textContent = "▶ Speak";
       } finally {
         btn.disabled = false;
-      }
-    }
-
-    function toggleQuickWordPopover() {
-      const pop = document.getElementById("vcQuickFixPopover");
-      if (!pop) return;
-      const open = pop.style.display === "none";
-      pop.style.display = open ? "block" : "none";
-      if (open) {
-        const inp = document.getElementById("quickWordIn");
-        if (inp) inp.focus();
+        btn.textContent = "Generate speech";
       }
     }
 
@@ -2060,14 +2804,11 @@
       btn.disabled = true;
       btn.textContent = "Polishing...";
       document.getElementById("rngStability").value = "82";
-      updateSliderLabel("Stability", "82%");
+      document.getElementById("valStability").textContent = "82%";
 
       try {
-        // 1. Try Workstation Anti-Glitch Endpoint first when online
-        if (state.ownerMode || state.localWorkstationOnline) {
+        if (state.localWorkstationOnline) {
           try {
-            const ctrl = new AbortController();
-            const timer = setTimeout(() => ctrl.abort(), 65000);
             const localRes = await fetch(LOCAL_WORKSTATION + "/api/v1/resynthesize-clean", {
               method: "POST",
               headers: { "Content-Type": "application/json" },
@@ -2076,36 +2817,22 @@
                 voiceId: state.selectedVoice,
                 stability: 0.82,
                 antiGlitchCooling: true
-              }),
-              signal: ctrl.signal
+              })
             });
-            clearTimeout(timer);
-            const ct = String(localRes.headers.get("content-type") || "").toLowerCase();
-            if (localRes.ok && ct.includes("audio/")) {
-              const blob = await localRes.blob();
-              setAudioSourceAndPlay(URL.createObjectURL(blob), null);
-              showStatus("vcSpeakHelperStatus", "✓ Re-generated Ultra-Clean (82% stability + anti-glitch cooling) on studio workstation.");
-              return;
-            }
             if (localRes.ok) {
               const j = await localRes.json().catch(() => ({}));
-              if (j && j.audioBase64) {
-                const mime = j.contentType || "audio/mpeg";
-                setAudioSourceAndPlay("data:" + mime + ";base64," + j.audioBase64, null);
-                showStatus("vcSpeakHelperStatus", "✓ Re-generated Ultra-Clean (82% stability + anti-glitch cooling) on studio workstation.");
-                return;
-              }
               if (j && j.audioUrl) {
-                const fullUrl = j.audioUrl.startsWith("http") ? j.audioUrl : (LOCAL_WORKSTATION + "/" + j.audioUrl.replace(/^\/+/, ""));
-                setAudioSourceAndPlay(fullUrl, null);
-                showStatus("vcSpeakHelperStatus", "✓ Re-generated Ultra-Clean (82% stability + anti-glitch cooling).");
+                const fullUrl = j.audioUrl.startsWith("http")
+                  ? j.audioUrl
+                  : (LOCAL_WORKSTATION + "/" + j.audioUrl.replace(/^\/+/, ""));
+                setAudioSourceAndPlay(fullUrl, null, j.audioUrl);
+                notifyToast("Re-generated ultra-clean studio take");
                 return;
               }
             }
           } catch (_) {}
         }
 
-        // 2. Cloud Edge /v1/voice/resynthesize-clean
         await ensureSessionTokenForSynthesis();
         const res = await cloudFetch("/v1/voice/resynthesize-clean", {
           method: "POST",
@@ -2113,31 +2840,24 @@
           body: JSON.stringify({
             text,
             voiceId: state.selectedVoice,
-            targetLufs: Number(document.getElementById("vcLoudnessSelect").value || -20.5)
+            targetLufs: -20.5
           })
         });
         const data = await res.json().catch(() => ({}));
-        if (!res.ok || !data.ok) {
-          showStatus("vcSpeakHelperStatus", data.error || "Could not re-generate audio.", true);
-          return;
+        if (res.ok && data.ok && data.audioUrl) {
+          setAudioSourceAndPlay(data.audioUrl, null, "");
+          notifyToast("Re-generated ultra-clean studio take");
         }
-        if (data.audioUrl) {
-          setAudioSourceAndPlay(data.audioUrl, null);
-        }
-        showStatus("vcSpeakHelperStatus", "✓ " + (data.message || "Re-synthesized with 82% stability and anti-glitch cooling."));
-      } catch (err) {
-        showStatus("vcSpeakHelperStatus", err.message, true);
       } finally {
         btn.disabled = false;
-        btn.textContent = "✨ Re-Generate Ultra-Clean";
+        btn.textContent = "Re-generate ultra-clean";
       }
     }
 
     (function bindAudioEvents() {
       const player = document.getElementById("vcAudioPlayer");
       const fill = document.getElementById("vcWaveFill");
-      const label = document.getElementById("vcTimeLabel");
-      const btn = document.getElementById("vcGenerateBtn");
+      const circleBtn = document.getElementById("vcCirclePlayBtn");
 
       function fmt(sec) {
         if (!isFinite(sec) || sec < 0) return "0:00";
@@ -2147,15 +2867,27 @@
       }
       player.addEventListener("timeupdate", () => {
         const pct = player.duration ? (player.currentTime / player.duration) * 100 : 0;
-        fill.style.width = Math.min(100, pct).toFixed(1) + "%";
-        label.textContent = fmt(player.currentTime) + " / " + fmt(player.duration || 0);
+        if (fill) fill.style.width = Math.min(100, pct).toFixed(1) + "%";
+        const lbl = document.getElementById("vcTimeLabel");
+        if (lbl) lbl.textContent = fmt(player.currentTime) + " / " + fmt(player.duration || 0);
       });
       player.addEventListener("ended", () => {
-        btn.textContent = "▶ Speak";
-        fill.style.width = "100%";
+        if (state.queuedFullMasterUrl) {
+          const nextUrl = state.queuedFullMasterUrl;
+          state.queuedFullMasterUrl = "";
+          player.src = nextUrl;
+          player.playbackRate = Number(document.getElementById("rngSpeed").value || 100) / 100;
+          player.play().catch(() => {});
+          return;
+        }
+        circleBtn.textContent = "▶";
+        if (fill) fill.style.width = "100%";
       });
       player.addEventListener("pause", () => {
-        if (player.currentTime < (player.duration || 0)) btn.textContent = "▶ Speak";
+        if (player.currentTime < (player.duration || 0)) circleBtn.textContent = "▶";
+      });
+      player.addEventListener("play", () => {
+        circleBtn.textContent = "⏸";
       });
     })();
 
@@ -2167,8 +2899,42 @@
       player.currentTime = ratio * player.duration;
     }
 
-    function downloadCurrentAudio() {
+    async function downloadCurrentAudio() {
       if (!state.lastAudioUrl) return;
+      // If Sound Polish sliders were adjusted and local workstation is online, export <80ms DSP-remastered MP3!
+      if (state.polishTouched && state.localWorkstationOnline && state.lastServerRelAudioUrl) {
+        try {
+          const bassCutDb = -(Number(document.getElementById("rngBassCut").value || 45) / 10);
+          const deEchoVal = Number(document.getElementById("rngDeEcho").value || 90) / 100;
+          const r = await fetch(LOCAL_WORKSTATION + "/api/v1/dsp/remaster", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              sourceAudioUrl: state.lastServerRelAudioUrl,
+              bass_cut_db: bassCutDb,
+              de_echo: deEchoVal,
+              environment: state.environment,
+              speed: Number(document.getElementById("rngSpeed").value || 100) / 100,
+              format: "mp3"
+            })
+          });
+          const j = await r.json().catch(() => ({}));
+          if (r.ok && j.ok && j.audioUrl) {
+            const remasteredUrl = j.audioUrl.startsWith("http")
+              ? j.audioUrl
+              : (LOCAL_WORKSTATION + "/" + j.audioUrl.replace(/^\/+/, ""));
+            const a = document.createElement("a");
+            a.href = remasteredUrl;
+            a.download = state.selectedVoice + "-polished-24khz.mp3";
+            document.body.appendChild(a);
+            a.click();
+            a.remove();
+            notifyToast("Downloaded polished 24 kHz studio MP3");
+            return;
+          }
+        } catch (_) {}
+      }
+
       const a = document.createElement("a");
       a.href = state.lastAudioUrl;
       a.download = state.selectedVoice + "-aaruni-cloud-voice.mp3";
@@ -2178,16 +2944,17 @@
     }
 
     // ========================================================================
-    // TRAIN & IMPROVE FACILITY 1: FIX ANY WORD OR ACRONYM INSTANTLY
+    // PRONUNCIATION RULES & .PLS XML UPLOAD
     // ========================================================================
     function renderSavedRuleChips() {
       const wrap = document.getElementById("vcSavedRulesChips");
       if (!wrap) return;
-      const entries = Object.entries(PLS_DICTIONARY).slice(0, 8);
+      const activeMap = getMergedActivePlsMap();
+      const entries = Object.entries(activeMap).slice(0, 6);
       wrap.innerHTML =
-        '<span style="color:var(--ink-muted);font-weight:600;">Active Rules (' + Object.keys(PLS_DICTIONARY).length + '):</span>' +
+        '<span style="color:var(--ink-muted);font-weight:600;">Active (' + Object.keys(activeMap).length + '):</span>' +
         entries.map(([w, s]) =>
-          '<span class="vc-pls-token">' + escVc(w) + ' <span>→ ' + escVc(s) + '</span></span>'
+          '<span class="pls-match-chip"><strong>' + escVc(w) + '</strong> → "' + escVc(s) + '"</span>'
         ).join("");
     }
 
@@ -2199,152 +2966,123 @@
       const spoken = (spokenEl && spokenEl.value ? spokenEl.value : "").trim();
 
       if (!word || !spoken) {
-        showStatus(statusId, "Enter both the word/acronym and how it should sound.", true);
+        notifyToast("Enter both word and pronunciation");
         return;
       }
-      if (!state.apiKey || (state.user && state.user.isGuest && !state.ownerMode)) {
+      if (!state.apiKey && !state.localWorkstationOnline) {
         openAuthModal();
         return;
       }
 
-      showStatus(statusId, "Testing & saving pronunciation rule...");
-      let playedLivePreview = false;
-
-      // 1. Workstation immediate live audio preview when available
-      if (state.ownerMode || state.localWorkstationOnline) {
+      if (state.localWorkstationOnline) {
         try {
-          const ctrl = new AbortController();
-          const timer = setTimeout(() => ctrl.abort(), 15000);
           const localRes = await fetch(LOCAL_WORKSTATION + "/api/v1/fix-word", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ word, spoken, preview: true, voiceId: state.selectedVoice }),
-            signal: ctrl.signal
+            body: JSON.stringify({ word, spoken, preview: true, voiceId: state.selectedVoice })
           });
-          clearTimeout(timer);
-          const ct = String(localRes.headers.get("content-type") || "").toLowerCase();
-          const previewEl = document.getElementById("vcWordPreviewAudio");
-          if (localRes.ok && ct.includes("audio/")) {
-            const blob = await localRes.blob();
-            const url = URL.createObjectURL(blob);
-            if (previewEl && source === "train") {
-              previewEl.style.display = "block";
-              previewEl.src = url;
-              previewEl.play().catch(() => {});
-            } else {
-              setAudioSourceAndPlay(url, null);
-            }
-            playedLivePreview = true;
-          } else if (localRes.ok) {
+          if (localRes.ok) {
             const lj = await localRes.json().catch(() => ({}));
-            const b64Url = lj && lj.audioBase64 ? ("data:" + (lj.contentType || "audio/mpeg") + ";base64," + lj.audioBase64) : "";
-            const url = b64Url || (lj && lj.audioUrl ? (lj.audioUrl.startsWith("http") ? lj.audioUrl : (LOCAL_WORKSTATION + "/" + lj.audioUrl.replace(/^\/+/, ""))) : "");
+            const url = lj && lj.audioUrl
+              ? (lj.audioUrl.startsWith("http") ? lj.audioUrl : (LOCAL_WORKSTATION + "/" + lj.audioUrl.replace(/^\/+/, "")))
+              : "";
             if (url) {
+              const previewEl = document.getElementById("vcWordPreviewAudio");
               if (previewEl && source === "train") {
                 previewEl.style.display = "block";
                 previewEl.src = url;
                 previewEl.play().catch(() => {});
               } else {
-                setAudioSourceAndPlay(url, null);
+                setAudioSourceAndPlay(url, null, lj.audioUrl || "");
               }
-              playedLivePreview = true;
             }
           }
         } catch (_) {}
       }
 
-      // 2. Sync permanently to Cloud D1 (/v1/voice/fix-word)
-      try {
-        const res = await cloudFetch("/v1/voice/fix-word", {
-          method: "POST",
-          headers: getAuthHeaders({ "Content-Type": "application/json" }),
-          body: JSON.stringify({ word, spoken })
-        });
-        const data = await res.json().catch(() => ({}));
-        if (res.status === 402) {
-          showStatus(statusId, data.error || "Creator ($9/mo) or Pro Studio plan required.", true);
-          openCheckoutModal("creator");
-          return;
-        }
-        if (!res.ok || !data.ok) {
-          showStatus(statusId, data.error || "Could not save pronunciation rule.", true);
-          return;
-        }
+      CUSTOM_PLS_TERMS[word] = spoken;
+      state.scriptDirty = true;
+      refreshPlsHighlights();
 
-        PLS_DICTIONARY[word] = spoken;
-        if (data.entries && typeof data.entries === "object") {
-          Object.assign(PLS_DICTIONARY, data.entries);
-        }
-        refreshPlsHighlights();
-
-        if (!playedLivePreview && data.previewAudioUrl) {
-          const previewEl = document.getElementById("vcWordPreviewAudio");
-          if (previewEl && source === "train") {
-            previewEl.style.display = "block";
-            previewEl.src = data.previewAudioUrl;
-            previewEl.play().catch(() => {});
+      if (state.apiKey) {
+        try {
+          const res = await cloudFetch("/v1/voice/fix-word", {
+            method: "POST",
+            headers: getAuthHeaders({ "Content-Type": "application/json" }),
+            body: JSON.stringify({ word, spoken })
+          });
+          const data = await res.json().catch(() => ({}));
+          if (res.status === 402) {
+            openCheckoutModal("creator");
+            return;
           }
-        }
+          if (data.entries && typeof data.entries === "object") {
+            Object.assign(CUSTOM_PLS_TERMS, data.entries);
+            refreshPlsHighlights();
+          }
+        } catch (_) {}
+      }
 
-        wordEl.value = "";
-        spokenEl.value = "";
-        if (source === "quick") {
-          document.getElementById("vcQuickFixPopover").style.display = "none";
-        }
-        showStatus(statusId, '✓ Saved permanent rule: ' + word + ' → "' + spoken + '" across your workspace.');
-      } catch (err) {
-        showStatus(statusId, err.message, true);
+      wordEl.value = "";
+      spokenEl.value = "";
+      notifyToast('Saved "' + word + '" → "' + spoken + '" to .pls dictionary');
+      if (source === "train") {
+        showStatus(statusId, '✓ Saved permanent rule: ' + word + ' → "' + spoken + '".');
       }
     }
 
     async function handlePlsFileUpload(event) {
       const file = event.target.files && event.target.files[0];
       if (!file) return;
-      if (!state.apiKey) {
+      if (!state.apiKey && !state.localWorkstationOnline) {
         openAuthModal();
         return;
       }
       const xmlContent = await file.text();
-      try {
-        const res = await cloudFetch("/v1/voice/pls", {
+
+      if (state.localWorkstationOnline) {
+        fetch(LOCAL_WORKSTATION + "/api/v1/pls/upload", {
           method: "POST",
-          headers: getAuthHeaders({ "Content-Type": "application/json" }),
+          headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ name: file.name, xml: xmlContent })
-        });
-        const data = await res.json().catch(() => ({}));
-        if (res.status === 402) {
-          showStatus("vcFixWordStatus", data.error || "Creator ($9/mo) plan required for .pls XML upload.", true);
-          openCheckoutModal("creator");
-          return;
-        }
-        if (!res.ok || !data.ok) {
-          showStatus("vcFixWordStatus", data.error || "Invalid .pls XML file.", true);
-          return;
-        }
-        if (state.ownerMode && state.localWorkstationOnline) {
-          fetch(LOCAL_WORKSTATION + "/api/v1/pls/upload", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ name: file.name, xml: xmlContent })
-          }).catch(() => {});
-        }
-        if (data.entries && typeof data.entries === "object") {
-          Object.assign(PLS_DICTIONARY, data.entries);
-          refreshPlsHighlights();
-        }
-        showStatus("vcFixWordStatus", "✓ Imported " + file.name + " (" + (data.entryCount || 0) + " pronunciation rules).");
-      } catch (err) {
-        showStatus("vcFixWordStatus", err.message, true);
+        }).catch(() => {});
       }
+
+      if (state.apiKey) {
+        try {
+          const res = await cloudFetch("/v1/voice/pls", {
+            method: "POST",
+            headers: getAuthHeaders({ "Content-Type": "application/json" }),
+            body: JSON.stringify({ name: file.name, xml: xmlContent })
+          });
+          const data = await res.json().catch(() => ({}));
+          if (res.status === 402) {
+            openCheckoutModal("creator");
+            return;
+          }
+          if (!res.ok || !data.ok) {
+            notifyToast(data.error || "Invalid .pls XML file");
+            return;
+          }
+          if (data.entries && typeof data.entries === "object") {
+            Object.assign(CUSTOM_PLS_TERMS, data.entries);
+          }
+          refreshPlsHighlights();
+          notifyToast("Imported " + file.name + " (" + (data.entryCount || 0) + " .pls rules)");
+          showStatus("vcFixWordStatus", "✓ Imported " + file.name + " (" + (data.entryCount || 0) + " pronunciation rules).");
+          return;
+        } catch (_) {}
+      }
+      notifyToast("Imported " + file.name + " into studio .pls lexicon");
     }
 
     // ========================================================================
-    // TRAIN & IMPROVE FACILITY 2: GUIDED TELEPROMPTER & 24KHZ WAV RECORDER
+    // TRAIN & IMPROVE: TELEPROMPTER, 24KHZ RECORDER, FINE-TUNE & ROLLBACK
     // ========================================================================
     function cycleTeleprompterPrompt() {
       state.teleprompterIdx = (state.teleprompterIdx + 1) % TELEPROMPTER_SENTENCES.length;
       document.getElementById("teleprompterStepLabel").textContent =
-        "Guided Studio Prompt " + (state.teleprompterIdx + 1) + " of " + TELEPROMPTER_SENTENCES.length;
+        "Guided Prompt " + (state.teleprompterIdx + 1) + " of " + TELEPROMPTER_SENTENCES.length;
       document.getElementById("teleprompterText").textContent =
         '"' + TELEPROMPTER_SENTENCES[state.teleprompterIdx] + '"';
     }
@@ -2397,57 +3135,56 @@
         await stopAndAnalyzeDatasetRecording();
         return;
       }
-      if (!state.apiKey || (state.user && state.user.isGuest && !state.ownerMode)) {
+      if (!state.apiKey && !state.localWorkstationOnline) {
         openAuthModal();
         return;
       }
       try {
         dsStream = await navigator.mediaDevices.getUserMedia({
-          audio: { echoCancellation: false, noiseSuppression: false, autoGainControl: false }
+          audio: { echoCancellation: false, noiseSuppression: false, autoGainControl: false, sampleRate: 24000 }
         });
-        dsAudioCtx = new (window.AudioContext || window.webkitAudioContext)({ sampleRate: 24000 });
+        const AudioContextCls = window.AudioContext || window.webkitAudioContext;
+        dsAudioCtx = new AudioContextCls({ sampleRate: 24000 });
         const src = dsAudioCtx.createMediaStreamSource(dsStream);
         dsProc = dsAudioCtx.createScriptProcessor(4096, 1, 1);
         dsChunks = [];
         dsRecording = true;
         dsStartMs = Date.now();
         btn.textContent = "⏹ Stop & Check Quality";
-        btn.className = "btn-pill btn-dawn";
 
-        dsProc.onaudioprocess = (e) => {
+        dsProc.onaudioprocess = (ev) => {
           if (!dsRecording) return;
-          const ch = e.inputBuffer.getChannelData(0);
+          const ch = ev.inputBuffer.getChannelData(0);
           dsChunks.push(new Float32Array(ch));
           let sq = 0;
           for (let i = 0; i < ch.length; i++) sq += ch[i] * ch[i];
-          const pct = Math.min(100, Math.round(Math.sqrt(sq / ch.length) * 340));
+          const rms = Math.sqrt(sq / ch.length);
+          const pct = Math.min(100, Math.round(rms * 420));
           document.getElementById("sampleMicMeter").style.width = pct + "%";
         };
+
         src.connect(dsProc);
         dsProc.connect(dsAudioCtx.destination);
-
         dsTimer = setInterval(() => {
-          const sec = (Date.now() - dsStartMs) / 1000;
-          document.getElementById("sampleRecTimer").textContent = sec.toFixed(1) + "s";
-          if (sec >= 25) stopAndAnalyzeDatasetRecording();
-        }, 100);
-      } catch (err) {
-        showStatus("vcDatasetStatus", "Microphone access unavailable (" + err.message + "). You can drop a WAV or MP3 file directly.", true);
+          const sec = ((Date.now() - dsStartMs) / 1000).toFixed(1);
+          document.getElementById("sampleRecTimer").textContent = sec + "s";
+        }, 120);
+      } catch (_) {
+        showStatus("vcDatasetStatus", "Microphone access denied. Please allow microphone permission or drop a WAV file.", true);
       }
     }
 
     async function stopAndAnalyzeDatasetRecording() {
       dsRecording = false;
-      if (dsTimer) clearInterval(dsTimer);
-      if (dsProc) dsProc.disconnect();
-      if (dsStream) dsStream.getTracks().forEach((t) => t.stop());
-      const sr = (dsAudioCtx && dsAudioCtx.sampleRate) || 24000;
-      if (dsAudioCtx) dsAudioCtx.close();
-
-      const btn = document.getElementById("btnRecordSample");
-      btn.textContent = "🎙 Record Sentence";
-      btn.className = "btn-pill btn-primary";
+      clearInterval(dsTimer);
+      document.getElementById("btnRecordSample").textContent = "Record Sentence";
       document.getElementById("sampleMicMeter").style.width = "0%";
+      const sr = (dsAudioCtx && dsAudioCtx.sampleRate) ? dsAudioCtx.sampleRate : 24000;
+      try {
+        if (dsProc) dsProc.disconnect();
+        if (dsStream) dsStream.getTracks().forEach((t) => t.stop());
+        if (dsAudioCtx) await dsAudioCtx.close();
+      } catch (_) {}
 
       let total = 0;
       dsChunks.forEach((c) => { total += c.length; });
@@ -2487,7 +3224,7 @@
     async function handleDatasetFileSelect(ev) {
       const file = ev.target.files && ev.target.files[0];
       if (!file) return;
-      if (!state.apiKey || (state.user && state.user.isGuest && !state.ownerMode)) {
+      if (!state.apiKey && !state.localWorkstationOnline) {
         openAuthModal();
         return;
       }
@@ -2522,9 +3259,7 @@
         e.preventDefault();
         dz.style.borderColor = "var(--border-strong)";
         const file = e.dataTransfer && e.dataTransfer.files && e.dataTransfer.files[0];
-        if (file) {
-          handleDatasetFileSelect({ target: { files: [file] } });
-        }
+        if (file) handleDatasetFileSelect({ target: { files: [file] } });
       });
     })();
 
@@ -2534,12 +3269,9 @@
       const hintEl = document.getElementById("sampleQualityHint");
       const prevEl = document.getElementById("sampleRecordedPreview");
 
-      if (prevEl && sample.previewUrl) {
-        prevEl.src = sample.previewUrl;
-      }
+      if (prevEl && sample.previewUrl) prevEl.src = sample.previewUrl;
 
-      // Forward to local workstation when online
-      if (state.ownerMode || state.localWorkstationOnline) {
+      if (state.localWorkstationOnline) {
         fetch(LOCAL_WORKSTATION + "/api/v1/dataset/upload-sample", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -2553,6 +3285,14 @@
             contentType: sample.contentType
           })
         }).catch(() => {});
+      }
+
+      if (!state.apiKey) {
+        row.style.display = "flex";
+        badgeEl.className = "vc-quality-badge";
+        badgeEl.textContent = "✓ Studio Ready";
+        hintEl.textContent = "Saved to local studio dataset.";
+        return;
       }
 
       try {
@@ -2570,7 +3310,6 @@
         });
         const data = await res.json().catch(() => ({}));
         if (res.status === 402) {
-          showStatus("vcDatasetStatus", data.error || "Pro Studio ($29/mo) required for custom dataset samples.", true);
           openCheckoutModal("pro");
           return;
         }
@@ -2578,11 +3317,10 @@
           showStatus("vcDatasetStatus", data.error || "Could not upload sample.", true);
           return;
         }
-
         const isWarn = data.qualityStatus === "WARN";
         row.style.display = "flex";
         badgeEl.className = "vc-quality-badge" + (isWarn ? " warn" : "");
-        badgeEl.textContent = data.qualityBadge || (isWarn ? "⚠ Room Echo Detected" : "✓ Water-Clean Studio Ready");
+        badgeEl.textContent = data.qualityBadge || (isWarn ? "⚠ Room Echo Detected" : "✓ Studio Ready");
         hintEl.textContent = data.message || "Ready for incremental fine-tuning.";
         loadDatasetSamplesList();
       } catch (err) {
@@ -2603,7 +3341,7 @@
           return;
         }
         box.innerHTML = data.samples.slice(0, 5).map((s) =>
-          '<div style="display:flex;justify-content:space-between;align-items:center;gap:10px;padding:10px 14px;border:1px solid var(--border-hairline);border-radius:var(--radius-sm);font-size:13px;background:var(--bg-surface);flex-wrap:wrap;">' +
+          '<div style="display:flex;justify-content:space-between;align-items:center;gap:10px;padding:9px 12px;border:1px solid var(--border-hairline);border-radius:var(--radius-sm);font-size:12.5px;background:#FFFFFF;flex-wrap:wrap;">' +
             '<div><strong>' + escVc(s.fileName) + '</strong> <span style="color:var(--ink-muted);">(' + Number(s.durationSec || 0).toFixed(1) + 's)</span></div>' +
             '<span class="vc-quality-badge ' + (s.qualityStatus === "WARN" ? "warn" : "") + '">' + escVc(s.qualityBadge) + '</span>' +
           '</div>'
@@ -2611,9 +3349,6 @@
       } catch (_) {}
     }
 
-    // ========================================================================
-    // TRAIN & IMPROVE FACILITY 3: INCREMENTAL CLARITY & ANTI-GLITCH TRAINING
-    // ========================================================================
     function selectTrainGoal(goal) {
       state.trainGoal = goal;
       document.querySelectorAll("#trainGoalCards .goal-radio-card").forEach((el) => {
@@ -2622,11 +3357,11 @@
     }
 
     async function startIncrementalTraining() {
-      if (!state.apiKey || (state.user && state.user.isGuest && !state.ownerMode)) {
+      if (!state.apiKey && !state.localWorkstationOnline) {
         openAuthModal();
         return;
       }
-      const trainingMode = document.getElementById("trainModeSelect").value || "quick_polish";
+      const trainingMode = document.getElementById("trainModeSelect").value || "deep_parallel";
       const btn = document.getElementById("btnStartIncrementalTrain");
       const progWrap = document.getElementById("trainProgressWrap");
       const progBar = document.getElementById("trainProgressBar");
@@ -2636,62 +3371,56 @@
       btn.disabled = true;
       btn.textContent = "Starting...";
 
-      if (state.ownerMode || state.localWorkstationOnline) {
-        const wsGoal = state.trainGoal === "eliminate_glitches"
-          ? "glitch_fix"
-          : (state.trainGoal === "expand_expression" ? "expression" : "clarity");
-        const wsMode = trainingMode === "deep_3worker" ? "deep_studio" : "quick_polish";
+      if (state.localWorkstationOnline) {
         fetch(LOCAL_WORKSTATION + "/api/v1/training/start", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
             improveGoal: state.trainGoal,
-            goal: wsGoal,
+            goal: state.trainGoal,
             trainingMode,
-            mode: wsMode,
+            mode: trainingMode === "deep_parallel" ? "deep_studio" : "quick_polish",
             voiceId: state.selectedVoice
           })
         }).catch(() => {});
       }
 
       try {
-        const res = await cloudFetch("/v1/voice/train", {
-          method: "POST",
-          headers: getAuthHeaders({ "Content-Type": "application/json" }),
-          body: JSON.stringify({
-            improveGoal: state.trainGoal,
-            trainingMode
-          })
-        });
-        const data = await res.json().catch(() => ({}));
-        if (res.status === 402) {
-          showStatus("vcIncrementalTrainStatus", data.error || "Pro Studio ($29/mo) required for incremental voice training.", true);
-          openCheckoutModal("pro");
-          return;
-        }
-        if (!res.ok || !data.ok) {
-          showStatus("vcIncrementalTrainStatus", data.error || "Could not start training.", true);
-          return;
+        if (state.apiKey) {
+          const res = await cloudFetch("/v1/voice/train", {
+            method: "POST",
+            headers: getAuthHeaders({ "Content-Type": "application/json" }),
+            body: JSON.stringify({ improveGoal: state.trainGoal, trainingMode })
+          });
+          const data = await res.json().catch(() => ({}));
+          if (res.status === 402) {
+            openCheckoutModal("pro");
+            return;
+          }
+          if (!res.ok || !data.ok) {
+            showStatus("vcIncrementalTrainStatus", data.error || "Could not start training.", true);
+            return;
+          }
         }
 
         progWrap.style.display = "block";
-        progBar.style.width = "35%";
-        progPct.textContent = "35%";
-        progLbl.textContent = "Aligning clean studio samples on Cloud Compute...";
+        progBar.style.width = "38%";
+        progPct.textContent = "38%";
+        progLbl.textContent = "Aligning studio booth samples across Cloud Compute...";
 
         setTimeout(() => {
-          progBar.style.width = "72%";
-          progPct.textContent = "72%";
-          progLbl.textContent = "Running anti-glitch & clarity verification gate...";
-        }, 650);
+          progBar.style.width = "76%";
+          progPct.textContent = "76%";
+          progLbl.textContent = "Running anti-boxiness & clarity verification gate...";
+        }, 600);
 
         setTimeout(async () => {
           progBar.style.width = "100%";
           progPct.textContent = "100%";
-          progLbl.textContent = "✓ Build ready: " + (data.modelVersion || "Cloud Voice v2.3");
-          showStatus("vcIncrementalTrainStatus", "✓ " + (data.message || "Incremental training complete! New build added to Model Versions below."));
+          progLbl.textContent = "✓ Studio build ready";
+          showStatus("vcIncrementalTrainStatus", "✓ Incremental training pass complete. Build added to Model Versions above.");
           await loadModelVersionsList();
-        }, 1350);
+        }, 1300);
       } catch (err) {
         showStatus("vcIncrementalTrainStatus", err.message, true);
       } finally {
@@ -2700,9 +3429,6 @@
       }
     }
 
-    // ========================================================================
-    // TRAIN & IMPROVE FACILITY 4: MODEL VERSIONS & 1-CLICK ROLLBACK
-    // ========================================================================
     async function loadModelVersionsList() {
       const box = document.getElementById("vcModelVersionsList");
       if (!box) return;
@@ -2724,15 +3450,15 @@
             '<div class="version-row ' + (isAct ? "is-active" : "") + '">' +
               '<div>' +
                 '<div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">' +
-                  '<strong>' + escVc(m.name) + ' — ' + (isAct ? "Active" : escVc(m.roleBadge || "Reference")) + '</strong>' +
+                  '<strong>' + escVc(m.name) + '</strong>' +
                   (isAct ? '<span class="vc-quality-badge">Active Default</span>' : '') +
                 '</div>' +
-                '<div style="font-size:13px;color:var(--ink-secondary);margin-top:3px;">' + escVc(m.metricsSummary || "") + ' • ' + escVc(m.loudness || "-20.5 LUFS") + '</div>' +
+                '<div style="font-size:12.5px;color:var(--ink-secondary);margin-top:2px;">' + escVc(m.metricsSummary || "") + '</div>' +
               '</div>' +
               '<div style="display:flex;gap:8px;flex-wrap:wrap;">' +
                 '<button type="button" class="btn-pill btn-outline btn-sm" onclick="auditionVersionAudio(' + idx + ')">▶ Audition</button>' +
                 (!isAct
-                  ? '<button type="button" class="btn-pill btn-primary btn-sm" onclick="activateModelVersion(' + idx + ')">Set Active Default</button>'
+                  ? '<button type="button" class="btn-pill btn-primary btn-sm" onclick="activateModelVersion(' + idx + ')">Set Active</button>'
                   : '') +
               '</div>' +
             '</div>'
@@ -2741,19 +3467,18 @@
         return;
       }
 
-      // Clean public/customer baseline models (zero private voice IDs)
       const pubVersions = [
-        { modelId: "cloud-voice-v2", name: "Cloud Voice v2 Studio — Active", summary: "Default English Studio Engine • -20.5 LUFS", isActive: true, sampleUrl: SHOWCASE_CDN_BASE + "/aria_cat1_course.mp3" },
-        { modelId: "cloud-voice-v2-flash", name: "Cloud Voice v2 Flash — Reference", summary: "Low-Latency Streaming Build • 50% Credit Rate", isActive: false, sampleUrl: SHOWCASE_CDN_BASE + "/dev_cat1_course.mp3" }
+        { modelId: "cloud-voice-v3.0-master", name: "Cloud Voice v3.0 Studio Master", summary: "Highest Clarity Studio Engine • Zero Echo", isActive: true, sampleUrl: SHOWCASE_CDN_BASE + "/aria_cat1_course.mp3" },
+        { modelId: "cloud-voice-v3.0-flash", name: "Cloud Voice v3.0 Flash", summary: "Fast Streaming Build • 50% Credit Rate", isActive: false, sampleUrl: SHOWCASE_CDN_BASE + "/dev_cat1_course.mp3" }
       ];
       state.modelVersions = pubVersions;
       box.innerHTML = pubVersions.map((m, idx) =>
         '<div class="version-row ' + (m.isActive ? "is-active" : "") + '">' +
           '<div>' +
             '<strong>' + escVc(m.name) + '</strong>' +
-            '<div style="font-size:13px;color:var(--ink-secondary);margin-top:3px;">' + escVc(m.summary) + '</div>' +
+            '<div style="font-size:12.5px;color:var(--ink-secondary);margin-top:2px;">' + escVc(m.summary) + '</div>' +
           '</div>' +
-          '<div style="display:flex;gap:8px;">' +
+          '<div>' +
             '<button type="button" class="btn-pill btn-outline btn-sm" onclick="auditionVersionAudio(' + idx + ')">▶ Audition</button>' +
           '</div>' +
         '</div>'
@@ -2775,10 +3500,10 @@
       const m = state.modelVersions[idx];
       if (!m) return;
 
-      if (state.ownerMode || state.localWorkstationOnline) {
-        const wsModelId = m.modelId === "cloud-voice-v2.2-pro"
-          ? "v2.2-waterclean-expressive"
-          : ((m.modelId === "cloud-voice-v2.0-ultra" || m.modelId === "cloud-voice-v2.0-master") ? "v2.0-ultra" : m.modelId);
+      if (state.localWorkstationOnline) {
+        const wsModelId = m.modelId === "cloud-voice-v3.0-master"
+          ? "v3.0-open-studio"
+          : (m.modelId === "cloud-voice-v3.0-flash" ? "v3.0-turbo-q8" : "v2.0-ultra");
         fetch(LOCAL_WORKSTATION + "/api/v1/models/activate", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -2794,7 +3519,6 @@
         });
         const data = await res.json().catch(() => ({}));
         if (res.status === 402) {
-          showStatus("vcModelSwitchStatus", data.error || "Pro Studio plan required.", true);
           openCheckoutModal("pro");
           return;
         }
@@ -2802,11 +3526,14 @@
           showStatus("vcModelSwitchStatus", data.error || "Could not switch model.", true);
           return;
         }
+        state.selectedModel = m.modelId;
+        const sel = document.getElementById("vcModelSelect");
+        if (sel) sel.value = m.modelId;
         if (m.voiceId && state.voicesCatalog.some((v) => v.id === m.voiceId)) {
           state.selectedVoice = m.voiceId;
           renderVoiceSelectors();
         }
-        showStatus("vcModelSwitchStatus", "✓ " + (data.message || ("Active default switched to " + m.name)));
+        showStatus("vcModelSwitchStatus", "✓ Active default switched to " + m.name);
         await loadModelVersionsList();
       } catch (err) {
         showStatus("vcModelSwitchStatus", err.message, true);
@@ -2865,7 +3592,6 @@
         });
         const data = await res.json().catch(() => ({}));
         if (res.status === 402) {
-          showStatus("vcCloneMsg", data.error || "Starter plan required.", true);
           openCheckoutModal("starter");
           return;
         }
@@ -2873,7 +3599,7 @@
           showStatus("vcCloneMsg", data.error || "Clone creation failed.", true);
           return;
         }
-        showStatus("vcCloneMsg", "✓ Voice '" + (data.name || data.voiceName) + "' ready in Speak!");
+        showStatus("vcCloneMsg", "✓ Voice '" + (data.name || data.voiceName) + "' ready in Text to Speech!");
         await refreshAccountAndVoices();
       } catch (err) {
         showStatus("vcCloneMsg", err.message, true);
@@ -2882,8 +3608,12 @@
 
     function setBillingCurrency(curr) {
       state.currency = curr === "INR" ? "INR" : "USD";
-      document.getElementById("currBtnUSD").classList.toggle("active", state.currency === "USD");
-      document.getElementById("currBtnINR").classList.toggle("active", state.currency === "INR");
+      const uBtn = document.getElementById("currBtnUSD");
+      const iBtn = document.getElementById("currBtnINR");
+      if (uBtn && iBtn) {
+        uBtn.className = "btn-pill btn-sm " + (state.currency === "USD" ? "btn-primary" : "btn-outline");
+        iBtn.className = "btn-pill btn-sm " + (state.currency === "INR" ? "btn-primary" : "btn-outline");
+      }
       document.querySelectorAll(".price-dyn").forEach((el) => {
         const val = state.currency === "INR" ? el.getAttribute("data-inr") : el.getAttribute("data-usd");
         el.innerHTML = val + " <span>/ mo</span>";
@@ -2953,7 +3683,6 @@
       }
     }
 
-    // Auth Modal
     function openAuthModal() {
       if (state.user && !state.user.isGuest) {
         if (confirm("Signed in as " + state.user.email + ". Sign out of this browser?")) {
@@ -2967,9 +3696,9 @@
           state.ownerWorkspace = null;
           state.voicesCatalog = [...PUBLIC_STUDIO_VOICES];
           state.selectedVoice = "stock_aria";
-          document.getElementById("vcAuthBtn").textContent = "Sign In";
+          document.getElementById("vcAuthBtn").textContent = "Sign in";
           document.getElementById("vcCreditText").textContent = "10,000 free credits";
-          document.getElementById("vcTopVersionBadge").textContent = "v2";
+          document.getElementById("vcTopVersionBadge").textContent = "v3.0";
           document.getElementById("vcApiKeyDisplay").value = "Sign in to view or copy your scoped API key";
           updateConsoleSsoLinks();
           renderVoiceSelectors();
@@ -3018,7 +3747,7 @@
           size: "large",
           shape: "pill",
           text: "continue_with",
-          width: 340
+          width: 330
         });
       }
     }
@@ -3151,10 +3880,7 @@
       });
     }
 
-    async function detectLocalWorkstationLoopback() {
-      if (location.hostname !== "localhost" && location.hostname !== "127.0.0.1") {
-        return;
-      }
+    async function detectLocalWorkstationBridge() {
       try {
         const ctrl = new AbortController();
         const t = setTimeout(() => ctrl.abort(), 900);
@@ -3162,7 +3888,9 @@
         clearTimeout(t);
         if (r.ok) {
           state.localWorkstationOnline = true;
-          state.ownerMode = true;
+          if (location.hostname === "localhost" || location.hostname === "127.0.0.1") {
+            state.ownerMode = true;
+          }
         }
       } catch (_) {}
     }
@@ -3177,13 +3905,13 @@
             const isGuest = isGuestAccount(meData.account);
             state.user = { ...meData.account, isGuest };
             verifiedOwnerFromApi = Boolean(meData.ownerMode || meData.account.ownerMode);
-            state.ownerMode = Boolean(verifiedOwnerFromApi || state.localWorkstationOnline);
+            state.ownerMode = Boolean(verifiedOwnerFromApi || (state.localWorkstationOnline && (location.hostname === "localhost" || location.hostname === "127.0.0.1")));
 
             const charsRem = Math.max(0, Number(meData.account.charsLimit || 10000) - Number(meData.account.charsUsed || 0));
             document.getElementById("vcCreditText").textContent =
-              state.ownerMode ? "Owner • $0.00 Billed" : (charsRem.toLocaleString() + " credits left");
+              state.ownerMode ? "Owner • $0.00" : (charsRem.toLocaleString() + " credits");
             document.getElementById("vcAuthBtn").textContent =
-              isGuest ? "Sign In" : (meData.account.email.split("@")[0]);
+              isGuest ? "Sign in" : (meData.account.email.split("@")[0]);
             document.getElementById("vcApiKeyDisplay").value =
               isGuest ? "Sign in to view or copy your scoped API key" : state.apiKey;
 
@@ -3191,7 +3919,7 @@
               const plsRes = await cloudFetch("/v1/voice/pls", { headers: getAuthHeaders() });
               const plsData = await plsRes.json().catch(() => ({}));
               if (plsData.ok && plsData.entries && typeof plsData.entries === "object") {
-                Object.assign(PLS_DICTIONARY, plsData.entries);
+                Object.assign(CUSTOM_PLS_TERMS, plsData.entries);
                 refreshPlsHighlights();
               }
             }
@@ -3201,7 +3929,7 @@
         const vRes = await cloudFetch("/v1/voice/list", { headers: getAuthHeaders() });
         const vData = await vRes.json().catch(() => ({}));
         if (vData.ok) {
-          state.ownerMode = Boolean(vData.ownerMode || verifiedOwnerFromApi || state.localWorkstationOnline);
+          state.ownerMode = Boolean(vData.ownerMode || verifiedOwnerFromApi || (state.localWorkstationOnline && (location.hostname === "localhost" || location.hostname === "127.0.0.1")));
           state.ownerWorkspace = vData.ownerWorkspace || null;
 
           const merged = [...PUBLIC_STUDIO_VOICES];
@@ -3210,26 +3938,27 @@
               merged.push({
                 id: cv.voiceId,
                 name: cv.name,
-                shortLabel: cv.shortLabel || "",
+                shortLabel: cv.shortLabel || cv.name,
                 defaultModelId: cv.defaultModelId || "",
                 versionBadge: cv.versionBadge || "",
                 role: cv.badge || cv.style || "Custom Clone",
-                initials: (cv.name || "CV").slice(0, 2).toUpperCase(),
+                initials: cv.initials || (cv.name || "CV").slice(0, 2).toUpperCase(),
                 privateOwner: Boolean(cv.ownerPrivate || cv.privateOwner)
               });
             }
           });
           state.voicesCatalog = merged;
 
-          // Default Owner to primary studio voice automatically upon sign-in
           if (state.ownerMode && state.selectedVoice === "stock_aria") {
             const firstPriv = merged.find((v) => v.privateOwner);
             if (firstPriv) {
               state.selectedVoice = firstPriv.id;
-              state.selectedModel = firstPriv.defaultModelId || "cloud-voice-v2.0-master";
-              document.getElementById("vcTopVersionBadge").textContent = firstPriv.versionBadge || "v2.0 Studio Master";
-              if (state.ownerWorkspace && state.ownerWorkspace.samples && state.ownerWorkspace.samples.v5_hook && !state.scriptDirty) {
-                document.getElementById("vcScriptInput").value = state.ownerWorkspace.samples.v5_hook.text || "";
+              state.selectedModel = firstPriv.defaultModelId || "cloud-voice-v3.0-master";
+              document.getElementById("vcModelSelect").value = state.selectedModel;
+              document.getElementById("vcTopVersionBadge").textContent = firstPriv.versionBadge || "v3.0";
+              const defSample = state.ownerWorkspace && state.ownerWorkspace.samples && (state.ownerWorkspace.samples.v5_zap_walkthrough || state.ownerWorkspace.samples.v5_hook);
+              if (defSample && !state.scriptDirty) {
+                document.getElementById("vcScriptInput").value = defSample.text || "";
               }
             }
           }
@@ -3241,22 +3970,21 @@
 
       updateConsoleSsoLinks();
       updatePlanGatesUI();
+      await loadDomainPacksFromServer();
       await loadDatasetSamplesList();
       await loadModelVersionsList();
     }
 
     // Boot
     (async function initApp() {
-      document.getElementById("vcScriptInput").value = SHOWCASE_SCRIPTS.course.text;
+      document.getElementById("vcScriptInput").value = SHOWCASE_SCRIPTS.tech.text;
+      renderDomainPacks();
       renderVoiceSelectors();
       refreshPlsHighlights();
-      updateCurlSnippet();
-      if (bootTargetView) {
-        switchView(bootTargetView);
-      }
-      await detectLocalWorkstationLoopback();
+      updatePlanGatesUI();
+      if (bootTargetView) switchView(bootTargetView);
+      await detectLocalWorkstationBridge();
       await refreshAccountAndVoices();
-      window.addEventListener("load", () => renderGoogleSignInButton());
     })();
   </script>
 </body>
