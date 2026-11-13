@@ -1136,9 +1136,9 @@
             <div class="vc-slider-group">
               <div class="vc-slider-row">
                 <span>4. Speed</span>
-                <span class="vc-slider-val" id="valSpeed">0.95x</span>
+                <span class="vc-slider-val" id="valSpeed">1.00x</span>
               </div>
-              <input type="range" id="rngSpeed" class="vc-range" min="75" max="125" value="95" oninput="updateSliderLabel('Speed', (Number(this.value)/100).toFixed(2) + 'x')" />
+              <input type="range" id="rngSpeed" class="vc-range" min="75" max="125" value="100" oninput="updateSliderLabel('Speed', (Number(this.value)/100).toFixed(2) + 'x')" />
               <div class="vc-slider-ends"><span>0.75x Deliberate</span><span>1.25x Brisk</span></div>
             </div>
 
@@ -1839,9 +1839,16 @@
 
     function selectVoice(voiceId, autoPreview) {
       state.selectedVoice = voiceId;
+      const activeObj = state.voicesCatalog.find((x) => x.id === voiceId);
+      if (activeObj && activeObj.defaultModelId) {
+        state.selectedModel = activeObj.defaultModelId;
+      }
+      if (activeObj && activeObj.versionBadge) {
+        const topB = document.getElementById("vcTopVersionBadge");
+        if (topB) topB.textContent = activeObj.versionBadge;
+      }
       renderVoiceSelectors();
       updateCurlSnippet();
-      const activeObj = state.voicesCatalog.find((x) => x.id === voiceId);
       if (state.ownerMode && activeObj && activeObj.privateOwner && state.ownerWorkspace && state.ownerWorkspace.samples) {
         const hook = state.ownerWorkspace.samples.v5_hook;
         if (hook && !state.scriptDirty) {
@@ -1992,7 +1999,7 @@
         if (state.ownerMode || state.localWorkstationOnline) {
           try {
             const ctrl = new AbortController();
-            const timer = setTimeout(() => ctrl.abort(), 28000);
+            const timer = setTimeout(() => ctrl.abort(), 65000);
             const localRes = await fetch(LOCAL_WORKSTATION + "/v1/text-to-speech/" + encodeURIComponent(state.selectedVoice), {
               method: "POST",
               headers: { "Content-Type": "application/json", "Accept": "audio/mpeg" },
@@ -2060,7 +2067,7 @@
         if (state.ownerMode || state.localWorkstationOnline) {
           try {
             const ctrl = new AbortController();
-            const timer = setTimeout(() => ctrl.abort(), 25000);
+            const timer = setTimeout(() => ctrl.abort(), 65000);
             const localRes = await fetch(LOCAL_WORKSTATION + "/api/v1/resynthesize-clean", {
               method: "POST",
               headers: { "Content-Type": "application/json" },
@@ -2771,7 +2778,7 @@
       if (state.ownerMode || state.localWorkstationOnline) {
         const wsModelId = m.modelId === "cloud-voice-v2.2-pro"
           ? "v2.2-waterclean-expressive"
-          : (m.modelId === "cloud-voice-v2.0-ultra" ? "v2.0-ultra" : m.modelId);
+          : ((m.modelId === "cloud-voice-v2.0-ultra" || m.modelId === "cloud-voice-v2.0-master") ? "v2.0-ultra" : m.modelId);
         fetch(LOCAL_WORKSTATION + "/api/v1/models/activate", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -3203,6 +3210,9 @@
               merged.push({
                 id: cv.voiceId,
                 name: cv.name,
+                shortLabel: cv.shortLabel || "",
+                defaultModelId: cv.defaultModelId || "",
+                versionBadge: cv.versionBadge || "",
                 role: cv.badge || cv.style || "Custom Clone",
                 initials: (cv.name || "CV").slice(0, 2).toUpperCase(),
                 privateOwner: Boolean(cv.ownerPrivate || cv.privateOwner)
@@ -3211,12 +3221,13 @@
           });
           state.voicesCatalog = merged;
 
-          // Default Owner to his primary v2.2 Pro voice automatically upon sign-in
+          // Default Owner to primary studio voice automatically upon sign-in
           if (state.ownerMode && state.selectedVoice === "stock_aria") {
             const firstPriv = merged.find((v) => v.privateOwner);
             if (firstPriv) {
               state.selectedVoice = firstPriv.id;
-              document.getElementById("vcTopVersionBadge").textContent = "v2.2 Pro";
+              state.selectedModel = firstPriv.defaultModelId || "cloud-voice-v2.0-master";
+              document.getElementById("vcTopVersionBadge").textContent = firstPriv.versionBadge || "v2.0 Studio Master";
               if (state.ownerWorkspace && state.ownerWorkspace.samples && state.ownerWorkspace.samples.v5_hook && !state.scriptDirty) {
                 document.getElementById("vcScriptInput").value = state.ownerWorkspace.samples.v5_hook.text || "";
               }

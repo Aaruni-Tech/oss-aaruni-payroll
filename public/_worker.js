@@ -1368,26 +1368,32 @@ async function handleCloudApiV1(request, env, executeD1Query) {
       if (ownerUnlocked) {
         const ownerPrivateVoices = [
           {
-            voiceId: "vox_rupesh_v5_waterclean",
-            name: "Rupesh Tiwari — Cloud Voice v2.2 Water-Clean Expressive",
+            voiceId: "vox_rupesh_v4_ultra",
+            name: "Rupesh Tiwari — Cloud Voice v2.0 Studio Master (Dry Studio)",
+            shortLabel: "Rupesh v2.0 Studio",
+            defaultModelId: "cloud-voice-v2.0-master",
+            versionBadge: "v2.0 Studio Master",
             language: "en-US",
             type: "cloned",
             ownerPrivate: true,
-            badge: "Private Owner Studio Master (v2.2)",
-            clarityGate: "Clarity Gate: 100% Passed"
+            badge: "Active Primary Studio Master (v2.0 Dry)",
+            clarityGate: "Clarity Gate: 100% Passed • Zero Echo"
           },
           {
-            voiceId: "vox_rupesh_v4_ultra",
-            name: "Rupesh Tiwari — Cloud Voice v2.0 Studio Master",
+            voiceId: "vox_rupesh_v5_waterclean",
+            name: "Rupesh Tiwari — Cloud Voice v2.2 Expressive",
+            shortLabel: "Rupesh v2.2 Expressive",
+            defaultModelId: "cloud-voice-v2.2-pro",
+            versionBadge: "v2.2 Expressive",
             language: "en-US",
             type: "cloned",
             ownerPrivate: true,
-            badge: "Private Owner Baseline (v2.0)",
+            badge: "Expressive Variant (v2.2)",
             clarityGate: "Clarity Gate: 100% Passed"
           }
         ];
         customVoices = [...ownerPrivateVoices, ...customVoices];
-        let activeModelIdSetting = "cloud-voice-v2.2-pro";
+        let activeModelIdSetting = "cloud-voice-v2.0-master";
         try {
           await ensureCloudVoiceTables(env, executeD1Query);
           const stQ = await executeD1Query(
@@ -1537,7 +1543,7 @@ async function handleCloudApiV1(request, env, executeD1Query) {
       }
 
       const ownerAudioBase = "https://voice.aarunicloud.com/assets/voice/tnt_syllovo_9f8a4c2e1b";
-      let ownerActiveModelId = "cloud-voice-v2.2-pro";
+      let ownerActiveModelId = "cloud-voice-v2.0-master";
       try {
         const stQ = await executeD1Query(
           env,
@@ -1551,26 +1557,26 @@ async function handleCloudApiV1(request, env, executeD1Query) {
 
       const activeModels = [
         {
-          modelId: "cloud-voice-v2.2-pro",
-          voiceId: "vox_rupesh_v5_waterclean",
-          name: "Cloud Voice v2.2 Pro",
-          roleBadge: ownerActiveModelId === "cloud-voice-v2.2-pro" ? "Active" : "Available",
-          isActive: ownerActiveModelId === "cloud-voice-v2.2-pro",
-          metricsSummary: "Water-Clean Expressive • 99.7% Voice Match • 360 .pls rules",
-          loudness: "-20.5 LUFS Course Studio",
-          sampleAudioUrl: `${ownerAudioBase}/v5_waterclean_hook_expressive.mp3`,
-          defaultScript: "Ever shipped a spotless pull request on Friday afternoon, only to wake up to an unauthenticated API breach on Monday? Today, we turn every security scan into an automated release gate before production traffic ever touches your service."
-        },
-        {
           modelId: "cloud-voice-v2.0-master",
           voiceId: "vox_rupesh_v4_ultra",
           name: "Cloud Voice v2.0 Studio Master",
           roleBadge: ownerActiveModelId === "cloud-voice-v2.0-master" ? "Active" : "Reference",
           isActive: ownerActiveModelId === "cloud-voice-v2.0-master",
-          metricsSummary: "4:55 OWASP ZAP Course Masterclass • 25 Teaching Beats",
+          metricsSummary: "Dry Anechoic Booth Master • Zero Echo • 360+ .pls rules",
           loudness: "-20.5 LUFS Course Studio",
           sampleAudioUrl: `${ownerAudioBase}/zap_m2_5min_teaching_v4_ultra.mp3`,
           defaultScript: "Manual desktop scans cannot guard every pull request. Let's automate ZAP in GitHub Actions, so every commit verifies login and runs custom security checks."
+        },
+        {
+          modelId: "cloud-voice-v2.2-pro",
+          voiceId: "vox_rupesh_v5_waterclean",
+          name: "Cloud Voice v2.2 Expressive",
+          roleBadge: ownerActiveModelId === "cloud-voice-v2.2-pro" ? "Active" : "Available",
+          isActive: ownerActiveModelId === "cloud-voice-v2.2-pro",
+          metricsSummary: "Expressive Teaching Variant • 99.7% Voice Match • 360+ .pls rules",
+          loudness: "-20.5 LUFS Course Studio",
+          sampleAudioUrl: `${ownerAudioBase}/v5_waterclean_hook_expressive.mp3`,
+          defaultScript: "Ever shipped a spotless pull request on Friday afternoon, only to wake up to an unauthenticated API breach on Monday? Today, we turn every security scan into an automated release gate before production traffic ever touches your service."
         }
       ];
 
