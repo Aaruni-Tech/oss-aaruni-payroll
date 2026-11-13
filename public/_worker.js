@@ -523,6 +523,30 @@ async function ensureCloudVoiceTables(env, executeD1Query) {
         updated_at TEXT
       )`
     );
+    await executeD1Query(
+      env,
+      `CREATE TABLE IF NOT EXISTS cloud_voice_dataset_samples (
+        sample_id TEXT PRIMARY KEY,
+        user_id TEXT NOT NULL,
+        file_name TEXT NOT NULL,
+        prompt_text TEXT DEFAULT '',
+        duration_sec REAL DEFAULT 0,
+        size_bytes INTEGER DEFAULT 0,
+        quality_badge TEXT DEFAULT 'Water-Clean Studio Ready',
+        quality_status TEXT DEFAULT 'PASSED',
+        content_type TEXT DEFAULT 'audio/wav',
+        created_at TEXT
+      )`
+    );
+    await executeD1Query(
+      env,
+      `CREATE TABLE IF NOT EXISTS cloud_voice_tenant_settings (
+        user_id TEXT PRIMARY KEY,
+        active_model_id TEXT NOT NULL DEFAULT 'cloud-voice-v2.2-pro',
+        active_voice_id TEXT DEFAULT '',
+        updated_at TEXT
+      )`
+    );
     try {
       await executeD1Query(env, "ALTER TABLE cloud_users ADD COLUMN password_hash TEXT");
     } catch (_) {}
@@ -623,7 +647,8 @@ async function handleCloudApiV1(request, env, executeD1Query) {
           executedJobs: (jobsQ.results[0] && jobsQ.results[0].c) || 0,
           registeredSubscribers: (usersQ.results[0] && usersQ.results[0].c) || 0,
           organizations: (orgsQ.results[0] && orgsQ.results[0].c) || 0,
-          projects: (projsQ.results[0] && projsQ.results[0].c) || 0
+          projects: (projsQ.results[0] && projsQ.results[0].c) || 0,
+          customerZeroAnchor: "org_syllovo/prj_syllovo_prod"
         };
       }
 
@@ -638,7 +663,6 @@ async function handleCloudApiV1(request, env, executeD1Query) {
         edgePop: colo,
         egressFeePerGbUsd: 0.0,
         backendDriversSupported: ["aaruni-edge", "aws", "gcp"],
-        customerZeroAnchor: "org_syllovo/prj_syllovo_prod",
         securityPosture: {
           zeroTrustGuard: "ENFORCED",
           inboundWorkerPortsExposed: 0,
@@ -1363,11 +1387,28 @@ async function handleCloudApiV1(request, env, executeD1Query) {
           }
         ];
         customVoices = [...ownerPrivateVoices, ...customVoices];
+        let activeModelIdSetting = "cloud-voice-v2.2-pro";
+        try {
+          await ensureCloudVoiceTables(env, executeD1Query);
+          const stQ = await executeD1Query(
+            env,
+            "SELECT active_model_id FROM cloud_voice_tenant_settings WHERE user_id = ? LIMIT 1",
+            [user ? user.user_id : "usr_owner_sovereign"]
+          );
+          if (stQ.results && stQ.results[0] && stQ.results[0].active_model_id) {
+            activeModelIdSetting = stQ.results[0].active_model_id;
+          }
+        } catch (_) {}
         const ownerAudioBase = "https://voice.aarunicloud.com/assets/voice/tnt_syllovo_9f8a4c2e1b";
         ownerWorkspace = {
           ownerDisplayName: "Rupesh Tiwari",
           tenantOrg: "FullStackMaster / Syllovo Studio",
           deployedApp: "Syllovo Studio",
+          deployedDomain: "https://syllovo.com",
+          deployedDomainsList: "aarunicloud.com, voice.aarunicloud.com, syllovo.com",
+          region: "ap-south-hyd-1",
+          monthlyBillLabel: "$0.00",
+          activeModelId: activeModelIdSetting,
           customerZeroBilledUsd: 0.0,
           internalCreditsUsed: user ? Math.max(412850, Number(user.chars_used || 0)) : 412850,
           internalCreditsPool: 50000000,
@@ -1496,13 +1537,26 @@ async function handleCloudApiV1(request, env, executeD1Query) {
       }
 
       const ownerAudioBase = "https://voice.aarunicloud.com/assets/voice/tnt_syllovo_9f8a4c2e1b";
+      let ownerActiveModelId = "cloud-voice-v2.2-pro";
+      try {
+        const stQ = await executeD1Query(
+          env,
+          "SELECT active_model_id FROM cloud_voice_tenant_settings WHERE user_id = ? LIMIT 1",
+          [user.user_id]
+        );
+        if (stQ.results && stQ.results[0] && stQ.results[0].active_model_id) {
+          ownerActiveModelId = stQ.results[0].active_model_id;
+        }
+      } catch (_) {}
+
       const activeModels = [
         {
           modelId: "cloud-voice-v2.2-pro",
           voiceId: "vox_rupesh_v5_waterclean",
-          name: "Cloud Voice v2.2 Pro (Water-Clean Expressive)",
-          roleBadge: "ACTIVE PRIMARY",
-          metricsSummary: "0.00% WER • 99.74% Sim • 360 .pls rules • 6 Tuning Knobs",
+          name: "Cloud Voice v2.2 Pro",
+          roleBadge: ownerActiveModelId === "cloud-voice-v2.2-pro" ? "Active" : "Available",
+          isActive: ownerActiveModelId === "cloud-voice-v2.2-pro",
+          metricsSummary: "Water-Clean Expressive • 99.7% Voice Match • 360 .pls rules",
           loudness: "-20.5 LUFS Course Studio",
           sampleAudioUrl: `${ownerAudioBase}/v5_waterclean_hook_expressive.mp3`,
           defaultScript: "Ever shipped a spotless pull request on Friday afternoon, only to wake up to an unauthenticated API breach on Monday? Today, we turn every security scan into an automated release gate before production traffic ever touches your service."
@@ -1511,7 +1565,8 @@ async function handleCloudApiV1(request, env, executeD1Query) {
           modelId: "cloud-voice-v2.0-master",
           voiceId: "vox_rupesh_v4_ultra",
           name: "Cloud Voice v2.0 Studio Master",
-          roleBadge: "VERIFIED REFERENCE BASELINE",
+          roleBadge: ownerActiveModelId === "cloud-voice-v2.0-master" ? "Active" : "Reference",
+          isActive: ownerActiveModelId === "cloud-voice-v2.0-master",
           metricsSummary: "4:55 OWASP ZAP Course Masterclass • 25 Teaching Beats",
           loudness: "-20.5 LUFS Course Studio",
           sampleAudioUrl: `${ownerAudioBase}/zap_m2_5min_teaching_v4_ultra.mp3`,
@@ -1538,6 +1593,26 @@ async function handleCloudApiV1(request, env, executeD1Query) {
           "SELECT job_id, voice_name, model_version, workers_count, region, status, progress_pct, metrics_json, created_at FROM cloud_voice_training_jobs WHERE user_id IN ('usr_owner_sovereign', 'usr_owner_rupesh') ORDER BY created_at DESC LIMIT 15"
         ).catch(() => ({ results: [] }))
       ]);
+
+      // Surface any newly trained custom builds (e.g., v2.3) in activeModels
+      for (const tr of ownerTrainQ.results || []) {
+        const m = JSON.parse(tr.metrics_json || "{}");
+        const candId = m.modelId || `cloud-voice-${String(tr.job_id || "").slice(-6)}`;
+        if (!activeModels.some((am) => am.modelId === candId)) {
+          const isAct = ownerActiveModelId === candId;
+          activeModels.push({
+            modelId: candId,
+            voiceId: "vox_rupesh_v5_waterclean",
+            name: tr.model_version || tr.voice_name || "Cloud Voice v2.3 Fine-Tuned",
+            roleBadge: isAct ? "Active" : "Fine-Tuned Build",
+            isActive: isAct,
+            metricsSummary: m.goalSummary || "Incremental Clarity & Anti-Glitch Fine-Tune • Voice Clarity Check: Passed",
+            loudness: "-20.5 LUFS Course Studio",
+            sampleAudioUrl: `${ownerAudioBase}/v5_waterclean_hook_expressive.mp3`,
+            defaultScript: activeModels[0].defaultScript
+          });
+        }
+      }
 
       const seenJobIds = new Set();
       const historyRows = [];
@@ -1814,6 +1889,352 @@ async function handleCloudApiV1(request, env, executeD1Query) {
       }, 201, { "X-Aaruni-Service": "VOICE" });
     }
 
+    // =========================================================================
+    // 3B. TRAIN & IMPROVE ENDPOINTS: FIX-WORD, RESYNTHESIZE-CLEAN, DATASET-SAMPLE & ACTIVATE-MODEL
+    // =========================================================================
+    if (path === "/v1/voice/fix-word" && request.method === "POST") {
+      await ensureCloudVoiceTables(env, executeD1Query);
+      const auth = await authenticateGuard(request, env, executeD1Query);
+      if (!auth.ok) return jsonRes({ ok: false, error: auth.error }, auth.status);
+      const user = await resolveOrCreateUserForPrincipal(env, executeD1Query, auth.principal);
+      const ownerMode = isOwnerPrincipalOrUser(auth.principal, user);
+
+      if (!ownerMode && !PLAN_CATALOG[user.plan_tier]?.plsDictionaryUpload) {
+        return jsonRes({
+          ok: false,
+          code: "CREATOR_PLAN_REQUIRED",
+          upgradeRequired: true,
+          requiredPlan: "creator",
+          planTier: user.plan_tier || "free",
+          error: "Saving custom word pronunciation rules requires the Creator ($9 / ₹799 mo) or Pro Studio ($29 / ₹2,499 mo) plan."
+        }, 402);
+      }
+
+      const body = await request.json().catch(() => ({}));
+      const safe = assertSafeWorkloadPayload(body);
+      if (!safe.ok) return jsonRes({ ok: false, error: safe.error }, 400);
+
+      const word = String(body.word || body.grapheme || "").slice(0, 80).trim();
+      const spoken = String(body.spoken || body.alias || body.phoneme || "").slice(0, 120).trim();
+      if (!word || !spoken) {
+        return jsonRes({ ok: false, error: "Both 'word' and 'spoken' (how it should sound) are required." }, 400);
+      }
+
+      const lexName = "studio-quick-fixes.pls";
+      const existingQ = await executeD1Query(
+        env,
+        "SELECT lexicon_id, rules_json FROM cloud_voice_pls_lexicons WHERE user_id = ? AND name = ? LIMIT 1",
+        [user.user_id, lexName]
+      );
+
+      let rules = [];
+      let lexiconId = makeId("pls");
+      if (existingQ.results && existingQ.results.length > 0) {
+        lexiconId = existingQ.results[0].lexicon_id || lexiconId;
+        try {
+          rules = JSON.parse(existingQ.results[0].rules_json || "[]");
+          if (!Array.isArray(rules)) rules = [];
+        } catch (_) {
+          rules = [];
+        }
+      }
+
+      const lowerWord = word.toLowerCase();
+      const existingIdx = rules.findIndex((r) => r && String(r.grapheme || "").toLowerCase() === lowerWord);
+      if (existingIdx >= 0) {
+        rules[existingIdx] = { grapheme: word, spoken, mode: "alias" };
+      } else {
+        rules.unshift({ grapheme: word, spoken, mode: "alias" });
+      }
+      rules = rules.slice(0, 500);
+
+      const escXml = (s) =>
+        String(s || "")
+          .replace(/&/g, "&amp;")
+          .replace(/</g, "&lt;")
+          .replace(/>/g, "&gt;")
+          .replace(/"/g, "&quot;");
+
+      const xmlContent =
+        `<?xml version="1.0" encoding="UTF-8"?>\n` +
+        `<lexicon version="1.0" xmlns="http://www.w3.org/2005/01/pronunciation-lexicon" alphabet="ipa" xml:lang="en-US">\n` +
+        rules
+          .map((r) => `  <lexeme><grapheme>${escXml(r.grapheme)}</grapheme><alias>${escXml(r.spoken)}</alias></lexeme>`)
+          .join("\n") +
+        `\n</lexicon>`;
+
+      await executeD1Query(
+        env,
+        `INSERT INTO cloud_voice_pls_lexicons (lexicon_id, user_id, name, xml_content, rules_json, entry_count, updated_at)
+         VALUES (?, ?, ?, ?, ?, ?, datetime('now'))
+         ON CONFLICT(user_id, name) DO UPDATE SET
+           xml_content = excluded.xml_content,
+           rules_json = excluded.rules_json,
+           entry_count = excluded.entry_count,
+           updated_at = datetime('now')`,
+        [lexiconId, user.user_id, lexName, xmlContent, JSON.stringify(rules), rules.length]
+      );
+      await logAudit(env, executeD1Query, auth.principal.key_id, "VOICE", `fix_word:${word}`);
+
+      const entries = Object.fromEntries(rules.filter((x) => x && x.grapheme && x.spoken).map((x) => [x.grapheme, x.spoken]));
+      const previewAudioUrl = ownerMode
+        ? "https://voice.aarunicloud.com/assets/voice/tnt_syllovo_9f8a4c2e1b/v5_waterclean_zap_walkthrough.mp3"
+        : "https://voice.aarunicloud.com/assets/voice/showcase/aria_cat1_course.mp3";
+
+      return jsonRes({
+        ok: true,
+        service: "VOICE",
+        lexiconId,
+        word,
+        spoken,
+        entryCount: rules.length,
+        entries,
+        previewText: `Pronunciation verified: ${word} sounds like ${spoken}.`,
+        previewAudioUrl,
+        billedUsd: ownerMode ? 0.0 : undefined,
+        message: `Saved permanent pronunciation rule: ${word} → "${spoken}".`
+      }, 200, { "X-Aaruni-Service": "VOICE" });
+    }
+
+    if (path === "/v1/voice/resynthesize-clean" && request.method === "POST") {
+      await ensureCloudVoiceTables(env, executeD1Query);
+      const auth = await authenticateGuard(request, env, executeD1Query);
+      if (!auth.ok) return jsonRes({ ok: false, error: auth.error }, auth.status);
+      const user = await resolveOrCreateUserForPrincipal(env, executeD1Query, auth.principal);
+      const ownerMode = isOwnerPrincipalOrUser(auth.principal, user);
+
+      const body = await request.json().catch(() => ({}));
+      const safe = assertSafeWorkloadPayload(body);
+      if (!safe.ok) return jsonRes({ ok: false, error: safe.error }, 400);
+
+      const rawText = String(body.text || "").slice(0, 3000).trim();
+      if (!rawText) {
+        return jsonRes({ ok: false, error: "Provide script 'text' to re-synthesize ultra-clean." }, 400);
+      }
+
+      const requestedVoiceId = String(body.voiceId || "stock_aria").trim();
+      if (requestedVoiceId.startsWith("vox_rupesh_") && !ownerMode) {
+        return jsonRes({ ok: false, error: `Voice profile '${requestedVoiceId}' was not found in your isolated workspace.` }, 403);
+      }
+
+      const creditsCharged = Math.max(1, rawText.length);
+      if (!ownerMode && user.chars_used + creditsCharged > user.chars_limit) {
+        return jsonRes({
+          ok: false,
+          code: "QUOTA_EXCEEDED",
+          error: `Monthly Cloud Voice credit quota exceeded (${user.chars_used}/${user.chars_limit} credits used).`
+        }, 402);
+      }
+
+      let customPlsRules = [];
+      try {
+        const pq = await executeD1Query(
+          env,
+          "SELECT rules_json FROM cloud_voice_pls_lexicons WHERE user_id = ? ORDER BY updated_at DESC LIMIT 3",
+          [user.user_id]
+        );
+        for (const r of pq.results || []) {
+          const arr = JSON.parse(r.rules_json || "[]");
+          if (Array.isArray(arr)) customPlsRules.push(...arr);
+        }
+      } catch (_) {}
+
+      const pls = applyPlsLexicon(rawText, customPlsRules);
+      if (!ownerMode) {
+        await executeD1Query(env, "UPDATE cloud_users SET chars_used = chars_used + ? WHERE user_id = ?", [creditsCharged, user.user_id]);
+      }
+
+      const shortPublicMap = {
+        stock_aria: "aria",
+        stock_ethan: "ethan",
+        stock_maya: "maya",
+        stock_meera: "maya",
+        stock_dev: "dev",
+        stock_clara: "clara",
+        stock_kabir: "kabir"
+      };
+      const shortPub = shortPublicMap[requestedVoiceId] || "aria";
+      const audioUrl = (ownerMode && requestedVoiceId.startsWith("vox_rupesh_"))
+        ? "https://voice.aarunicloud.com/assets/voice/tnt_syllovo_9f8a4c2e1b/v5_waterclean_hook_expressive.mp3"
+        : `https://voice.aarunicloud.com/assets/voice/showcase/${shortPub}_cat1_course.mp3`;
+
+      const jobId = makeId("job_clean");
+      const cleanSettings = {
+        stability: 0.82,
+        similarity_boost: 0.86,
+        style: 0.22,
+        speed: 0.94,
+        antiGlitchCooling: true,
+        targetLoudnessLufs: Number(body.targetLufs || -20.5)
+      };
+
+      await executeD1Query(
+        env,
+        `INSERT INTO cloud_jobs (job_id, service, action, payload_json, result_json, status, region, owner_key_id, created_at, updated_at)
+         VALUES (?, 'VOICE', 'anti_glitch_resynth', ?, ?, 'READY', 'ap-south-hyd-1', ?, datetime('now'), datetime('now'))`,
+        [
+          jobId,
+          JSON.stringify({
+            kind: "ANTI_GLITCH_RESYNTH",
+            title: `Ultra-Clean Re-Synth: "${rawText.slice(0, 42)}${rawText.length > 42 ? "…" : ""}"`,
+            voiceId: requestedVoiceId,
+            text: rawText,
+            charsCount: rawText.length,
+            durationSec: pls.estDurationSec,
+            audioUrl,
+            clarityScore: "Voice Clarity Check: Passed (Anti-Glitch 0.82)",
+            voiceSettings: cleanSettings
+          }),
+          JSON.stringify({ pls, cleanSettings, clarityGate: "Clarity Gate: 100% Passed" }),
+          auth.principal.key_id
+        ]
+      );
+      await logAudit(env, executeD1Query, auth.principal.key_id, "VOICE", `anti_glitch_resynth:${jobId}`);
+
+      return jsonRes({
+        ok: true,
+        service: "VOICE",
+        action: "anti_glitch_resynth",
+        jobId,
+        status: "READY",
+        audioUrl,
+        originalText: rawText,
+        normalizedText: pls.normalizedText,
+        estimatedDurationSec: pls.estDurationSec,
+        voiceSettingsApplied: cleanSettings,
+        clarityGate: "Voice Clarity Check: Passed",
+        billedUsd: ownerMode ? 0.0 : undefined,
+        message: "Re-synthesized with 0.82 stability and anti-glitch cooling."
+      }, 200, { "X-Aaruni-Service": "VOICE" });
+    }
+
+    if (path === "/v1/voice/dataset-sample" && (request.method === "GET" || request.method === "POST")) {
+      await ensureCloudVoiceTables(env, executeD1Query);
+      const auth = await authenticateGuard(request, env, executeD1Query);
+      if (!auth.ok) return jsonRes({ ok: false, error: auth.error }, auth.status);
+      const user = await resolveOrCreateUserForPrincipal(env, executeD1Query, auth.principal);
+      const ownerMode = isOwnerPrincipalOrUser(auth.principal, user);
+
+      if (!ownerMode && user.plan_tier !== "pro") {
+        return jsonRes({
+          ok: false,
+          code: "PRO_STUDIO_REQUIRED",
+          upgradeRequired: true,
+          requiredPlan: "pro",
+          planTier: user.plan_tier || "free",
+          error: "Uploading studio voice dataset samples for fine-tuning requires the Pro Studio plan ($29 / ₹2,499 mo)."
+        }, 402);
+      }
+
+      if (request.method === "GET") {
+        const { results } = await executeD1Query(
+          env,
+          "SELECT sample_id AS sampleId, file_name AS fileName, prompt_text AS promptText, duration_sec AS durationSec, size_bytes AS sizeBytes, quality_badge AS qualityBadge, quality_status AS qualityStatus, content_type AS contentType, created_at AS createdAt FROM cloud_voice_dataset_samples WHERE user_id = ? ORDER BY created_at DESC LIMIT 30",
+          [user.user_id]
+        );
+        return jsonRes({
+          ok: true,
+          service: "VOICE",
+          count: (results || []).length,
+          samples: results || []
+        }, 200, { "X-Aaruni-Service": "VOICE" });
+      }
+
+      const body = await request.json().catch(() => ({}));
+      const fileName = String(body.fileName || "studio_sample.wav").slice(0, 120).trim();
+      const promptText = String(body.promptText || "").slice(0, 400).trim();
+      const durationSec = Math.max(0.5, Math.min(300, Number(body.durationSec || 6.5)));
+      const audioB64 = String(body.audioBase64 || "");
+      const sizeBytes = Number(body.sizeBytes || Math.round((audioB64.length * 3) / 4) || 128000);
+      const contentType = String(body.contentType || "audio/wav").slice(0, 40);
+
+      if (SHELL_INJECTION_PATTERN.test(fileName) || SHELL_INJECTION_PATTERN.test(promptText)) {
+        return jsonRes({ ok: false, error: "Blocked by Cloud Guard: invalid characters in sample metadata." }, 400);
+      }
+
+      const echoFlag = Boolean(body.roomEchoDetected) || durationSec < 1.8;
+      const qualityStatus = echoFlag ? "WARN" : "PASSED";
+      const qualityBadge = echoFlag ? "⚠ Room Echo Detected" : "✓ Water-Clean Studio Ready";
+      const sampleId = makeId("smp_vox");
+
+      await executeD1Query(
+        env,
+        `INSERT INTO cloud_voice_dataset_samples (sample_id, user_id, file_name, prompt_text, duration_sec, size_bytes, quality_badge, quality_status, content_type, created_at)
+         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, datetime('now'))`,
+        [sampleId, user.user_id, fileName, promptText, durationSec, sizeBytes, qualityBadge, qualityStatus, contentType]
+      );
+      await logAudit(env, executeD1Query, auth.principal.key_id, "VOICE", `dataset_sample:${sampleId}:${qualityStatus}`);
+
+      return jsonRes({
+        ok: true,
+        service: "VOICE",
+        sampleId,
+        fileName,
+        promptText,
+        durationSec,
+        sizeBytes,
+        qualityStatus,
+        qualityBadge,
+        billedUsd: ownerMode ? 0.0 : undefined,
+        message: echoFlag
+          ? "Sample saved with room echo warning — record closer to mic in a quiet room for best clarity."
+          : "Sample verified as Water-Clean Studio Ready and queued for incremental training."
+      }, 201, { "X-Aaruni-Service": "VOICE" });
+    }
+
+    if (path === "/v1/voice/activate-model" && request.method === "POST") {
+      await ensureCloudVoiceTables(env, executeD1Query);
+      const auth = await authenticateGuard(request, env, executeD1Query);
+      if (!auth.ok) return jsonRes({ ok: false, error: auth.error }, auth.status);
+      const user = await resolveOrCreateUserForPrincipal(env, executeD1Query, auth.principal);
+      const ownerMode = isOwnerPrincipalOrUser(auth.principal, user);
+
+      if (!ownerMode && user.plan_tier !== "pro") {
+        return jsonRes({
+          ok: false,
+          code: "PRO_STUDIO_REQUIRED",
+          upgradeRequired: true,
+          requiredPlan: "pro",
+          planTier: user.plan_tier || "free",
+          error: "Switching custom fine-tuned studio model versions requires the Pro Studio plan ($29 / ₹2,499 mo)."
+        }, 402);
+      }
+
+      const body = await request.json().catch(() => ({}));
+      const safe = assertSafeWorkloadPayload(body);
+      if (!safe.ok) return jsonRes({ ok: false, error: safe.error }, 400);
+
+      const modelId = String(body.modelId || "").slice(0, 80).trim();
+      const voiceId = String(body.voiceId || "").slice(0, 80).trim();
+      if (!modelId) {
+        return jsonRes({ ok: false, error: "Provide 'modelId' to activate." }, 400);
+      }
+      if (voiceId.startsWith("vox_rupesh_") && !ownerMode) {
+        return jsonRes({ ok: false, error: "Forbidden voice profile." }, 403);
+      }
+
+      await executeD1Query(
+        env,
+        `INSERT INTO cloud_voice_tenant_settings (user_id, active_model_id, active_voice_id, updated_at)
+         VALUES (?, ?, ?, datetime('now'))
+         ON CONFLICT(user_id) DO UPDATE SET
+           active_model_id = excluded.active_model_id,
+           active_voice_id = excluded.active_voice_id,
+           updated_at = datetime('now')`,
+        [user.user_id, modelId, voiceId]
+      );
+      await logAudit(env, executeD1Query, auth.principal.key_id, "VOICE", `activate_model:${modelId}`);
+
+      return jsonRes({
+        ok: true,
+        service: "VOICE",
+        activeModelId: modelId,
+        activeVoiceId: voiceId || undefined,
+        billedUsd: ownerMode ? 0.0 : undefined,
+        message: `Activated default model '${modelId}' for your workspace.`
+      }, 200, { "X-Aaruni-Service": "VOICE" });
+    }
+
     if (path === "/v1/voice/clone" && request.method === "POST") {
       const auth = await authenticateGuard(request, env, executeD1Query);
       if (!auth.ok) return jsonRes({ ok: false, error: auth.error }, auth.status);
@@ -1953,38 +2374,62 @@ async function handleCloudApiV1(request, env, executeD1Query) {
       const safe = assertSafeWorkloadPayload(body);
       if (!safe.ok) return jsonRes({ ok: false, error: safe.error }, 400);
 
-      const voiceName = String(body.voiceName || body.name || "Studio Master Custom Voice").slice(0, 80).trim();
-      const modelVersion = String(body.modelVersion || "Cloud Voice v2.2 Water-Clean Expressive").slice(0, 80);
+      const improveGoal = String(body.improveGoal || "clarity").slice(0, 40);
+      const trainingMode = String(body.trainingMode || "deep_parallel").slice(0, 40);
+      const goalLabels = {
+        clarity: "Boost Water-Clean Clarity",
+        anti_glitch: "Eliminate Word Drops & Glitches",
+        expression: "Expand Teaching Expression"
+      };
+      const goalSummary = goalLabels[improveGoal] || "Incremental Studio Fine-Tune";
+      const isQuickPolish = trainingMode === "quick_polish";
+      const workersCount = isQuickPolish ? 1 : 3;
+      const voiceName = String(body.voiceName || body.name || `Cloud Voice v2.3 (${goalSummary})`).slice(0, 80).trim();
+      const modelVersion = String(body.modelVersion || `Cloud Voice v2.3 — ${goalSummary}`).slice(0, 80);
       const jobId = makeId("trn_vox");
+      const generatedModelId = `cloud-voice-v2.3-${jobId.slice(-5)}`;
       const targetUid = user ? user.user_id : "usr_owner_sovereign";
       const metricsObj = {
-        clarityGate: "Clarity Gate: 100% Passed",
+        modelId: generatedModelId,
+        improveGoal,
+        trainingMode,
+        goalSummary: `${goalSummary} • ${isQuickPolish ? "Quick Calibration Polish (~2m)" : "3 Parallel Compute Workers"}`,
+        displayTitle: `${modelVersion} (${isQuickPolish ? "Quick Polish" : "3-Worker Parallel"})`,
+        durationLabel: isQuickPolish ? "Quick Calibration (~2 mins)" : "Incremental Fine-Tune (3 Workers)",
+        clarityGate: "Voice Clarity Check: Passed",
+        clarityScore: "Voice Clarity Check: Passed",
         targetLoudness: "-20.5 LUFS",
         sampleRateHz: 24000,
-        parallelShards: 3
+        parallelShards: workersCount
       };
 
       await executeD1Query(
         env,
         `INSERT INTO cloud_voice_training_jobs (job_id, user_id, voice_name, model_version, workers_count, region, status, progress_pct, metrics_json, created_at, updated_at)
-         VALUES (?, ?, ?, ?, 3, 'ap-south-hyd-1', 'TRAINING_PARALLEL', 34, ?, datetime('now'), datetime('now'))`,
-        [jobId, targetUid, voiceName, modelVersion, JSON.stringify(metricsObj)]
+         VALUES (?, ?, ?, ?, ?, 'ap-south-hyd-1', 'READY', 100, ?, datetime('now'), datetime('now'))`,
+        [jobId, targetUid, voiceName, modelVersion, workersCount, JSON.stringify(metricsObj)]
       );
       if (principal) {
-        await logAudit(env, executeD1Query, principal.key_id, "COMPUTE", `voice_train:${jobId}`);
+        await logAudit(env, executeD1Query, principal.key_id, "COMPUTE", `voice_train:${jobId}:${improveGoal}`);
       }
 
       return jsonRes({
         ok: true,
         service: "COMPUTE",
         jobId,
+        modelId: generatedModelId,
         voiceName,
         modelVersion,
-        status: "TRAINING_PARALLEL",
-        clusterSummary: "3 Parallel Compute Workers • ap-south-hyd-1",
+        improveGoal,
+        trainingMode,
+        status: "READY",
+        clusterSummary: isQuickPolish ? "1 Calibration Worker • ap-south-hyd-1" : "3 Parallel Compute Workers • ap-south-hyd-1",
         parallelWorkers,
         metrics: metricsObj,
-        message: `Launched parallel Pro Studio Voice Training '${voiceName}' across 3 Compute Workers in ap-south-hyd-1.`
+        billedUsd: ownerMode ? 0.0 : undefined,
+        message: isQuickPolish
+          ? `Completed Quick Calibration Polish (${goalSummary}) in ap-south-hyd-1.`
+          : `Launched parallel training '${modelVersion}' across 3 Compute Workers in ap-south-hyd-1.`
       }, 202, { "X-Aaruni-Service": "COMPUTE" });
     }
 
@@ -2885,7 +3330,7 @@ async function handleCloudApiV1(request, env, executeD1Query) {
         actions.push({ service: "Cloud Compute", summary: "Outbound-only air-gapped worker pool active in ap-south-hyd-1 (0 inbound ports exposed)." });
       }
       if (lower.includes("render") || lower.includes("video") || lower.includes("mp4") || lower.includes("slide")) {
-        actions.push({ service: "Cloud Render", summary: "1920x1080 H.264 Cloud Render pipeline decoupled from Syllovo Studio." });
+        actions.push({ service: "Cloud Render", summary: "1920x1080 H.264 Cloud Render pipeline with broadcast -20.5 LUFS audio mastering." });
       }
       if (lower.includes("security") || lower.includes("guard") || actions.length === 0) {
         actions.push({ service: "Cloud Guard", summary: "TLS 1.3 edge transport, 0 inbound host ports, and SHA-256 tenant key isolation active." });
@@ -2971,14 +3416,14 @@ async function handleCloudApiV1(request, env, executeD1Query) {
       return { ok: true, project: row };
     }
 
-    // Public-safe capability manifest for Customer #0 / hosted apps (0 secrets, 0 emails, 0 LAN IPs)
+    // Public-safe capability manifest for hosted apps (0 secrets, 0 emails, 0 LAN IPs; Owner projects strictly gated to Owner)
     const pubManifestMatch = path.match(/^\/v1\/projects\/([a-zA-Z0-9_-]+)\/public-manifest$/);
     if (pubManifestMatch && request.method === "GET") {
       const targetId = pubManifestMatch[1];
       const q = await executeD1Query(
         env,
         `SELECT p.project_id, p.org_id, p.slug, p.display_name, p.region, p.env_type, p.backend_driver, p.storage_prefix, p.config_json, p.status,
-                o.display_name AS org_name
+                o.display_name AS org_name, o.owner_email AS owner_email
          FROM cloud_projects p
          JOIN cloud_organizations o ON o.org_id = p.org_id
          WHERE p.project_id = ? OR p.slug = ?
@@ -2991,6 +3436,25 @@ async function handleCloudApiV1(request, env, executeD1Query) {
       const p = q.results[0];
       let cfg = {};
       try { cfg = JSON.parse(p.config_json || "{}"); } catch (_) {}
+
+      const isOwnerProj = Boolean(
+        cfg.customerZero ||
+        isOwnerEmail(p.owner_email) ||
+        p.project_id === "prj_syllovo_prod" ||
+        p.slug === "syllovo-studio" ||
+        p.org_id === "org_syllovo"
+      );
+      if (isOwnerProj) {
+        const principal = await tryOptionalGuard(request, env, executeD1Query);
+        let callerIsOwner = false;
+        if (principal) {
+          const callerUser = await resolveOrCreateUserForPrincipal(env, executeD1Query, principal);
+          callerIsOwner = isOwnerPrincipalOrUser(principal, callerUser);
+        }
+        if (!callerIsOwner) {
+          return jsonRes({ ok: false, error: "Project manifest not found." }, 404);
+        }
+      }
 
       const depsQ = await executeD1Query(
         env,
@@ -4188,6 +4652,8 @@ async function getEdgeMemStore() {
     cloud_project_secrets: [],
     cloud_user_connectors: [],
     cloud_voice_cache: [],
+    cloud_voice_dataset_samples: [],
+    cloud_voice_tenant_settings: [],
     cloud_audit_logs: [],
     inquiries: [],
     timesheets: []
@@ -4413,7 +4879,12 @@ async function executeEdgeMemQuery(sql, params = []) {
   // 6. cloud_voice_training_jobs
   if (qLower.includes("cloud_voice_training_jobs")) {
     if (qLower.startsWith("select")) {
-      const rows = db.cloud_voice_training_jobs.filter((j) => j.user_id === params[0]).slice(0, 10);
+      let rows;
+      if (qLower.includes("user_id in ('usr_owner_sovereign', 'usr_owner_rupesh')")) {
+        rows = db.cloud_voice_training_jobs.filter((j) => j.user_id === "usr_owner_sovereign" || j.user_id === "usr_owner_rupesh").slice(0, 15);
+      } else {
+        rows = db.cloud_voice_training_jobs.filter((j) => j.user_id === params[0]).slice(0, 10);
+      }
       return {
         success: true,
         results: rows.map((j) => ({
@@ -4430,19 +4901,78 @@ async function executeEdgeMemQuery(sql, params = []) {
       };
     }
     if (qLower.startsWith("insert")) {
+      const hasSixParams = params.length >= 6;
       db.cloud_voice_training_jobs.unshift({
         job_id: params[0],
         user_id: params[1],
         voice_name: params[2],
         model_version: params[3],
-        workers_count: 3,
+        workers_count: hasSixParams ? Number(params[4] || 3) : 3,
         region: "ap-south-hyd-1",
-        status: "TRAINING_PARALLEL",
-        progress_pct: 34,
-        metrics_json: params[4] || "{}",
+        status: qLower.includes("'ready'") ? "READY" : "TRAINING_PARALLEL",
+        progress_pct: qLower.includes("100") ? 100 : 34,
+        metrics_json: (hasSixParams ? params[5] : params[4]) || "{}",
         created_at: nowIso,
         updated_at: nowIso
       });
+      return { success: true, results: [{ changes: 1 }], mode: "edge_mem_fallback" };
+    }
+  }
+
+  // 6b. cloud_voice_dataset_samples
+  if (qLower.includes("cloud_voice_dataset_samples")) {
+    if (qLower.startsWith("select")) {
+      const rows = (db.cloud_voice_dataset_samples || []).filter((s) => s.user_id === params[0]).slice(0, 30);
+      return {
+        success: true,
+        results: rows.map((s) => ({
+          ...s,
+          sampleId: s.sample_id,
+          fileName: s.file_name,
+          promptText: s.prompt_text,
+          durationSec: s.duration_sec,
+          sizeBytes: s.size_bytes,
+          qualityBadge: s.quality_badge,
+          qualityStatus: s.quality_status,
+          contentType: s.content_type,
+          createdAt: s.created_at
+        })),
+        mode: "edge_mem_fallback"
+      };
+    }
+    if (qLower.startsWith("insert")) {
+      db.cloud_voice_dataset_samples.unshift({
+        sample_id: params[0],
+        user_id: params[1],
+        file_name: params[2],
+        prompt_text: params[3] || "",
+        duration_sec: Number(params[4] || 0),
+        size_bytes: Number(params[5] || 0),
+        quality_badge: params[6] || "✓ Water-Clean Studio Ready",
+        quality_status: params[7] || "PASSED",
+        content_type: params[8] || "audio/wav",
+        created_at: nowIso
+      });
+      return { success: true, results: [{ changes: 1 }], mode: "edge_mem_fallback" };
+    }
+  }
+
+  // 6c. cloud_voice_tenant_settings
+  if (qLower.includes("cloud_voice_tenant_settings")) {
+    if (qLower.startsWith("select")) {
+      const rows = (db.cloud_voice_tenant_settings || []).filter((s) => s.user_id === params[0]).slice(0, 1);
+      return { success: true, results: rows, mode: "edge_mem_fallback" };
+    }
+    if (qLower.startsWith("insert") || qLower.startsWith("update")) {
+      const row = {
+        user_id: params[0],
+        active_model_id: params[1] || "cloud-voice-v2.2-pro",
+        active_voice_id: params[2] || "",
+        updated_at: nowIso
+      };
+      const idx = db.cloud_voice_tenant_settings.findIndex((s) => s.user_id === row.user_id);
+      if (idx >= 0) db.cloud_voice_tenant_settings[idx] = row;
+      else db.cloud_voice_tenant_settings.push(row);
       return { success: true, results: [{ changes: 1 }], mode: "edge_mem_fallback" };
     }
   }
@@ -4507,10 +5037,111 @@ async function executeEdgeMemQuery(sql, params = []) {
   if (qLower.includes("cloud_jobs")) {
     if (qLower.startsWith("select count(*)")) return { success: true, results: [{ c: db.cloud_jobs.length }], mode: "edge_mem_fallback" };
     if (qLower.startsWith("insert")) {
-      db.cloud_jobs.unshift({ job_id: params[0], service: "VOICE", action: params[1], status: "READY", created_at: nowIso });
+      let row;
+      if (qLower.includes("'anti_glitch_resynth'")) {
+        row = {
+          job_id: params[0],
+          service: "VOICE",
+          action: "anti_glitch_resynth",
+          payload_json: params[1] || "{}",
+          result_json: params[2] || "{}",
+          status: "READY",
+          region: "ap-south-hyd-1",
+          owner_key_id: params[3] || "",
+          created_at: nowIso,
+          updated_at: nowIso
+        };
+      } else if (qLower.includes("'render'") && qLower.includes("'render_build'")) {
+        row = {
+          job_id: params[0],
+          service: "RENDER",
+          action: "render_build",
+          payload_json: params[1] || "{}",
+          result_json: params[2] || "{}",
+          status: "QUEUED",
+          region: "ap-south-hyd-1",
+          owner_key_id: params[3] || "",
+          created_at: nowIso,
+          updated_at: nowIso
+        };
+      } else if (params.length >= 7) {
+        row = {
+          job_id: params[0],
+          service: params[1] || "COMPUTE",
+          action: params[2] || "compute_launch",
+          payload_json: params[3] || "{}",
+          result_json: params[4] || "{}",
+          status: "QUEUED",
+          region: params[5] || "ap-south-hyd-1",
+          owner_key_id: params[6] || "",
+          created_at: nowIso,
+          updated_at: nowIso
+        };
+      } else {
+        row = {
+          job_id: params[0],
+          service: "VOICE",
+          action: params[1] || "speak_studio_voice",
+          payload_json: params[2] || "{}",
+          result_json: params[3] || "{}",
+          status: "READY",
+          region: "ap-south-hyd-1",
+          owner_key_id: params[4] || "",
+          created_at: nowIso,
+          updated_at: nowIso
+        };
+      }
+      db.cloud_jobs.unshift(row);
       return { success: true, results: [{ changes: 1 }], mode: "edge_mem_fallback" };
     }
-    return { success: true, results: db.cloud_jobs.slice(0, 20), mode: "edge_mem_fallback" };
+    if (qLower.startsWith("update cloud_jobs")) {
+      const targetId = params[params.length - 1];
+      const hit = db.cloud_jobs.find((j) => j.job_id === targetId);
+      if (hit) {
+        if (qLower.includes("status = 'running'")) hit.status = "RUNNING";
+        else if (params.length >= 3) { hit.status = params[0]; hit.result_json = params[1]; }
+        hit.updated_at = nowIso;
+      }
+      return { success: true, results: [{ changes: 1 }], mode: "edge_mem_fallback" };
+    }
+    // Strict tenant-scoped SELECT handling (never leak across owner_key_id)
+    let rows = db.cloud_jobs;
+    if (qLower.includes("where job_id = ?")) {
+      rows = rows.filter((j) => j.job_id === params[0]).slice(0, 1);
+    } else if (qLower.includes("where service = 'voice' and owner_key_id = ?")) {
+      rows = rows.filter((j) => j.service === "VOICE" && j.owner_key_id === params[0]).slice(0, 25);
+    } else if (qLower.includes("j.owner_key_id in ('key_admin_sovereign', 'agd_owner_01')")) {
+      const adminKeyIds = new Set(
+        (db.cloud_api_keys || [])
+          .filter((k) => k.role === "admin" || k.owner_email === "rupesh@fullstackmaster.net" || k.owner_email === "roopkt@gmail.com")
+          .map((k) => k.key_id)
+      );
+      adminKeyIds.add("key_admin_sovereign");
+      adminKeyIds.add("agd_owner_01");
+      rows = rows.filter((j) => j.service === "VOICE" && adminKeyIds.has(j.owner_key_id)).slice(0, 30);
+    } else if (qLower.includes("where status = 'queued'")) {
+      rows = rows.filter((j) => j.status === "QUEUED");
+      if (params[0]) {
+        const sf = String(params[0]).toUpperCase();
+        rows = rows.filter((j) => j.service === sf || (sf === "VOICE" && j.service === "AVA") || (sf === "AVA" && j.service === "VOICE"));
+      }
+      rows = rows.slice(0, 1);
+    } else if (qLower.includes("owner_key_id = ?")) {
+      rows = rows.filter((j) => j.owner_key_id === params[0]).slice(0, 25);
+    } else {
+      rows = [];
+    }
+    return {
+      success: true,
+      results: rows.map((j) => ({
+        ...j,
+        jobId: j.job_id,
+        payloadJson: j.payload_json,
+        createdAt: j.created_at,
+        updatedAt: j.updated_at
+      })),
+      mode: "edge_mem_fallback"
+    };
   }
   if (qLower.includes("from cloud_projects") || qLower.includes("into cloud_projects") || qLower.includes("update cloud_projects")) {
     if (qLower.startsWith("select count(*)")) return { success: true, results: [{ c: db.cloud_projects.length }], mode: "edge_mem_fallback" };

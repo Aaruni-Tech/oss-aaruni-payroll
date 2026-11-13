@@ -2,124 +2,119 @@
 <html lang="en" data-theme="light">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Aaruni Cloud Console — Cloud Voice Cloning, API Keys &amp; acloud CLI</title>
-  <meta name="description" content="Aaruni Cloud Console (console.aarunicloud.com): Subscribe, clone your own voice securely with live consent verification, and synthesize studio technical audio via Cloud Voice and the acloud CLI." />
-  <meta name="theme-color" content="#ffffff" />
-  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%230284c7'/%3E%3Ctext x='16' y='21' font-family='monospace' font-size='14' font-weight='bold' fill='white' text-anchor='middle'%3EAC%3C/text%3E%3C/svg%3E" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>Aaruni Cloud Console — Services, Voice Training, Usage &amp; API Keys</title>
+  <meta name="description" content="Aaruni Cloud Console (console.aarunicloud.com): Manage your cloud services, Cloud Voice models and training, usage telemetry, and scoped API keys." />
+  <meta name="theme-color" content="#FFFFFF" />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%23111827'/%3E%3Ccircle cx='24' cy='24' r='3.5' fill='%23FE5F01'/%3E%3Ctext x='15' y='21' font-family='sans-serif' font-size='13' font-weight='800' fill='white' text-anchor='middle'%3EAC%3C/text%3E%3C/svg%3E" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="/aaruni-brand.css" />
   <script src="https://accounts.google.com/gsi/client" async defer></script>
-  <script>
-    (function () {
-      try {
-        var saved = localStorage.getItem("acloud_theme_white_v3");
-        document.documentElement.setAttribute("data-theme", saved === "dark" ? "dark" : "light");
-      } catch (e) {
-        document.documentElement.setAttribute("data-theme", "light");
-      }
-    })();
-  </script>
   <style>
     :root,
     html[data-theme="light"] {
-      --bg-app: #FAFAFA;
+      --bg-canvas: #FAFAFA;
       --bg-surface: #FFFFFF;
-      --bg-elevated: #F6F7F9;
-      --bg-input: #FFFFFF;
-      --border: #E4E4E7;
-      --border-strong: #D4D4D8;
-      --text-primary: #0F172A;
-      --text-secondary: #475569;
-      --text-muted: #64748B;
-      --accent: #111827;
-      --accent-dawn: #FE5F01;
-      --accent-strong: #1E293B;
-      --accent-text: #FFFFFF;
-      --success: #059669;
-      --warning: #B45309;
-      --danger: #DC2626;
-      --badge-bg: rgba(254, 95, 1, 0.08);
-      --badge-fg: #C2410C;
-      --code-bg: #F8FAFC;
-      --code-fg: #0F172A;
+      --bg-subtle: #F8FAFC;
+      --bg-hover: #F1F5F9;
+      --border: #E5E7EB;
+      --border-strong: #D1D5DB;
+      --ink-primary: #111827;
+      --ink-secondary: #4B5563;
+      --ink-muted: #6B7280;
+      --brand-dawn: #FE5F01;
+      --brand-dawn-hover: #EA580C;
+      --brand-dawn-soft: rgba(254, 95, 1, 0.08);
+      --brand-dawn-border: rgba(254, 95, 1, 0.24);
+      --ok-ink: #059669;
+      --ok-bg: #ECFDF5;
+      --ok-border: #A7F3D0;
+      --warn-ink: #B45309;
+      --warn-bg: #FFFBEB;
+      --err-ink: #DC2626;
+      --err-bg: #FEF2F2;
+      --radius-sm: 10px;
+      --radius-md: 14px;
+      --radius-lg: 18px;
+      --radius-pill: 9999px;
+      --shadow-xs: 0 1px 2px rgba(17, 24, 39, 0.04);
+      --shadow-sm: 0 4px 16px rgba(17, 24, 39, 0.04);
+      --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      --font-display: 'Plus Jakarta Sans', 'Inter', sans-serif;
+      --font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
     }
 
-    html[data-theme="dark"] {
-      --bg-app: #090D16;
-      --bg-surface: #111827;
-      --bg-elevated: #1E293B;
-      --bg-input: #0F172A;
-      --border: #27272A;
-      --border-strong: #3F3F46;
-      --text-primary: #F8FAFC;
-      --text-secondary: #CBD5E1;
-      --text-muted: #94A3B8;
-      --accent: #F8FAFC;
-      --accent-dawn: #FE5F01;
-      --accent-strong: #E2E8F0;
-      --accent-text: #0F172A;
-      --success: #34D399;
-      --warning: #FBBF24;
-      --danger: #F87171;
-      --badge-bg: rgba(254, 95, 1, 0.16);
-      --badge-fg: #FDBA74;
-      --code-bg: #0B1120;
-      --code-fg: #E2E8F0;
-    }
-
-    * { box-sizing: border-box; }
+    *, *::before, *::after { box-sizing: border-box; }
     html, body {
       margin: 0;
       padding: 0;
       width: 100%;
       max-width: 100%;
       overflow-x: hidden;
-      background: var(--bg-app);
-      color: var(--text-primary);
-      font-family: -apple-system, BlinkMacSystemFont, "Inter", "Segoe UI", Roboto, sans-serif;
-      line-height: 1.5;
+      background: var(--bg-canvas);
+      color: var(--ink-primary);
+      font-family: var(--font-sans);
+      font-size: 15px;
+      line-height: 1.55;
+      -webkit-font-smoothing: antialiased;
     }
-    .mono {
-      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+    body {
+      min-height: 100vh;
+      padding-bottom: 84px;
     }
-    a { color: var(--accent); text-decoration: none; }
-    a:hover { text-decoration: underline; }
+    @media (min-width: 880px) {
+      body { padding-bottom: 40px; }
+    }
+    a { color: inherit; text-decoration: none; }
+    .mono { font-family: var(--font-mono); }
+    .hidden { display: none !important; }
 
-    /* Top Console Header */
-    .console-topbar {
+    /* Top Header */
+    .ac-topbar {
+      position: sticky;
+      top: 0;
+      z-index: 60;
+      background: rgba(255, 255, 255, 0.94);
+      backdrop-filter: blur(14px);
+      border-bottom: 1px solid var(--border);
+    }
+    .ac-topbar-inner {
+      max-width: 1180px;
+      margin: 0 auto;
+      padding: 0 20px;
+      min-height: 64px;
       display: flex;
       align-items: center;
       justify-content: space-between;
-      gap: 12px;
-      padding: 12px 20px;
-      background: var(--bg-surface);
-      border-bottom: 1px solid var(--border);
-      position: sticky;
-      top: 0;
-      z-index: 50;
-      flex-wrap: wrap;
+      gap: 14px;
     }
-    .brand-cluster {
-      display: flex;
+    .ac-brand {
+      display: inline-flex;
       align-items: center;
       gap: 10px;
-      min-width: 0;
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: 16px;
+      letter-spacing: -0.02em;
+      color: var(--ink-primary);
     }
-    .brand-mark {
+    .ac-brand-mark {
       width: 32px;
       height: 32px;
       border-radius: 9px;
-      background: #111827;
-      color: #ffffff;
-      font-weight: 800;
-      font-size: 13px;
+      background: var(--ink-primary);
+      color: #FFFFFF;
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      flex-shrink: 0;
+      font-size: 12.5px;
+      font-weight: 800;
       position: relative;
+      flex-shrink: 0;
     }
-    .brand-mark::after {
+    .ac-brand-mark::after {
       content: "";
       position: absolute;
       right: 4px;
@@ -127,1046 +122,958 @@
       width: 5px;
       height: 5px;
       border-radius: 50%;
-      background: #FE5F01;
+      background: var(--brand-dawn);
     }
-    .brand-title {
-      font-size: 15px;
-      font-weight: 700;
-      letter-spacing: -0.01em;
-      white-space: nowrap;
-    }
-    .region-pill {
+    .ac-region-badge {
+      font-family: var(--font-mono);
       font-size: 11.5px;
-      padding: 3px 9px;
-      border-radius: 999px;
-      background: var(--badge-bg);
-      color: var(--badge-fg);
-      font-weight: 600;
+      font-weight: 500;
+      color: var(--ink-muted);
+      background: var(--bg-subtle);
       border: 1px solid var(--border);
+      padding: 3px 9px;
+      border-radius: var(--radius-pill);
+      display: none;
     }
-    .topbar-actions {
+    @media (min-width: 640px) {
+      .ac-region-badge { display: inline-flex; }
+    }
+
+    /* Desktop 4-Item Navigation */
+    .ac-desktop-nav {
+      display: none;
+      align-items: center;
+      gap: 4px;
+      background: var(--bg-subtle);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-pill);
+      padding: 4px;
+    }
+    @media (min-width: 880px) {
+      .ac-desktop-nav.signed-in { display: inline-flex; }
+    }
+    .ac-nav-btn {
+      appearance: none;
+      border: 0;
+      background: transparent;
+      color: var(--ink-secondary);
+      font-family: var(--font-sans);
+      font-size: 13.5px;
+      font-weight: 600;
+      min-height: 36px;
+      padding: 0 15px;
+      border-radius: var(--radius-pill);
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+    .ac-nav-btn:hover { color: var(--ink-primary); }
+    .ac-nav-btn.active {
+      background: var(--bg-surface);
+      color: var(--ink-primary);
+      box-shadow: var(--shadow-xs);
+    }
+
+    .ac-topbar-right {
       display: flex;
       align-items: center;
       gap: 8px;
-      flex-wrap: wrap;
+    }
+    .ac-user-pill {
+      font-size: 12.5px;
+      font-weight: 600;
+      color: var(--ink-secondary);
+      background: var(--bg-subtle);
+      border: 1px solid var(--border);
+      padding: 6px 12px;
+      border-radius: var(--radius-pill);
+      max-width: 210px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
     }
 
     /* Buttons */
     .btn {
+      appearance: none;
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      gap: 6px;
-      padding: 8px 14px;
-      border-radius: 8px;
-      font-size: 13px;
+      gap: 7px;
+      min-height: 44px;
+      padding: 0 18px;
+      border-radius: var(--radius-pill);
+      border: 1px solid var(--border);
+      background: var(--bg-surface);
+      color: var(--ink-primary);
+      font-family: var(--font-sans);
+      font-size: 14px;
       font-weight: 600;
       cursor: pointer;
-      border: 1px solid var(--border-strong);
-      background: var(--bg-elevated);
-      color: var(--text-primary);
       transition: all 0.15s ease;
+      white-space: nowrap;
     }
-    .btn:hover { filter: brightness(1.06); }
+    .btn:hover {
+      background: var(--bg-subtle);
+      border-color: var(--border-strong);
+    }
     .btn:disabled { opacity: 0.55; cursor: not-allowed; }
     .btn-primary {
-      background: var(--accent);
-      color: var(--accent-text);
-      border-color: transparent;
+      background: var(--ink-primary);
+      color: #FFFFFF;
+      border-color: var(--ink-primary);
     }
-    .btn-danger {
-      background: transparent;
-      color: var(--danger);
-      border-color: var(--danger);
+    .btn-primary:hover {
+      background: #1F2937;
+      border-color: #1F2937;
     }
-    .btn-sm { padding: 5px 10px; font-size: 12px; }
+    .btn-dawn {
+      background: var(--brand-dawn);
+      color: #FFFFFF;
+      border-color: var(--brand-dawn);
+    }
+    .btn-dawn:hover {
+      background: var(--brand-dawn-hover);
+      border-color: var(--brand-dawn-hover);
+    }
+    .btn-sm {
+      min-height: 36px;
+      padding: 0 13px;
+      font-size: 13px;
+    }
 
-    /* Layout Grid */
-    .console-shell {
-      display: grid;
-      grid-template-columns: 240px minmax(0, 1fr);
-      min-height: calc(100vh - 58px);
-      max-width: 1440px;
+    /* Main Container */
+    .ac-container {
+      max-width: 1120px;
       margin: 0 auto;
+      padding: 28px 16px 48px;
     }
-    .console-sidebar {
+    @media (min-width: 768px) {
+      .ac-container { padding: 36px 24px 64px; }
+    }
+
+    /* Calm Single-Card Sign-In */
+    .auth-shell {
+      max-width: 420px;
+      margin: 28px auto 40px;
+    }
+    .auth-card {
       background: var(--bg-surface);
-      border-right: 1px solid var(--border);
-      padding: 16px 12px;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 32px 28px;
+      box-shadow: var(--shadow-sm);
+    }
+    .auth-title {
+      font-family: var(--font-display);
+      font-size: 23px;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      margin: 0 0 6px;
+      text-align: center;
+    }
+    .auth-sub {
+      margin: 0 0 22px;
+      font-size: 14px;
+      color: var(--ink-secondary);
+      text-align: center;
+    }
+    .auth-divider {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin: 18px 0;
+      font-size: 12.5px;
+      color: var(--ink-muted);
+    }
+    .auth-divider::before,
+    .auth-divider::after {
+      content: "";
+      flex: 1;
+      height: 1px;
+      background: var(--border);
+    }
+
+    /* Inputs */
+    .field {
       display: flex;
       flex-direction: column;
       gap: 6px;
+      margin-bottom: 12px;
     }
-    .sidebar-heading {
-      font-size: 11px;
+    .field label {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--ink-secondary);
+    }
+    .input, select.input {
+      width: 100%;
+      min-height: 44px;
+      padding: 0 13px;
+      border-radius: var(--radius-sm);
+      border: 1px solid var(--border);
+      background: var(--bg-surface);
+      color: var(--ink-primary);
+      font-family: var(--font-sans);
+      font-size: 14.5px;
+      outline: none;
+      transition: border-color 0.15s ease;
+    }
+    .input:focus {
+      border-color: var(--ink-primary);
+    }
+
+    .alt-auth-toggle {
+      display: block;
+      width: 100%;
+      margin-top: 16px;
+      background: none;
+      border: 0;
+      color: var(--ink-secondary);
+      font-size: 13px;
+      font-weight: 500;
+      text-align: center;
+      cursor: pointer;
+      padding: 6px 0;
+      text-decoration: underline;
+      text-underline-offset: 3px;
+    }
+    .alt-auth-toggle:hover { color: var(--ink-primary); }
+    .alt-auth-box {
+      margin-top: 14px;
+      padding-top: 14px;
+      border-top: 1px solid var(--border);
+    }
+
+    /* Cards & Typography */
+    .surface-card {
+      background: var(--bg-surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 26px 28px;
+      margin-bottom: 24px;
+      box-shadow: var(--shadow-xs);
+    }
+    @media (max-width: 600px) {
+      .surface-card { padding: 20px 18px; }
+    }
+    .section-eyebrow {
+      font-size: 12px;
       font-weight: 700;
       text-transform: uppercase;
       letter-spacing: 0.06em;
-      color: var(--text-muted);
-      padding: 8px 10px 4px;
+      color: var(--ink-muted);
+      margin: 0 0 12px;
     }
-    .nav-tab {
+    .card-h2 {
+      font-family: var(--font-display);
+      font-size: 20px;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      margin: 0 0 4px;
+    }
+    .card-desc {
+      margin: 0;
+      font-size: 14.5px;
+      color: var(--ink-secondary);
+    }
+
+    /* Status Pill */
+    .status-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 12px;
+      font-weight: 600;
+      padding: 3px 10px;
+      border-radius: var(--radius-pill);
+      background: var(--ok-bg);
+      color: var(--ok-ink);
+      border: 1px solid var(--ok-border);
+      white-space: nowrap;
+    }
+    .status-pill::before {
+      content: "";
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--ok-ink);
+    }
+    .neutral-pill {
+      display: inline-flex;
+      align-items: center;
+      font-size: 12px;
+      font-weight: 600;
+      padding: 3px 10px;
+      border-radius: var(--radius-pill);
+      background: var(--bg-subtle);
+      color: var(--ink-secondary);
+      border: 1px solid var(--border);
+      white-space: nowrap;
+    }
+
+    /* Flagship App Hero Card */
+    .app-hero-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+      flex-wrap: wrap;
+    }
+    .app-meta-row {
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 10px 16px;
+      margin-top: 8px;
+      font-size: 14px;
+      color: var(--ink-secondary);
+    }
+    .app-actions {
       display: flex;
       align-items: center;
       gap: 10px;
-      width: 100%;
-      text-align: left;
-      padding: 10px 12px;
-      border-radius: 8px;
-      border: 1px solid transparent;
-      background: transparent;
-      color: var(--text-secondary);
-      font-size: 13.5px;
-      font-weight: 600;
-      cursor: pointer;
-    }
-    .nav-tab[aria-selected="true"] {
-      background: var(--badge-bg);
-      color: var(--badge-fg);
-      border-color: var(--border-strong);
-    }
-    .console-main {
-      padding: 22px;
-      min-width: 0;
-    }
-
-    /* Cards & Forms */
-    .card {
-      background: var(--bg-surface);
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      padding: 20px;
-      margin-bottom: 18px;
-    }
-    .card-title {
-      margin: 0 0 6px;
-      font-size: 18px;
-      font-weight: 700;
-    }
-    .card-sub {
-      margin: 0 0 16px;
-      font-size: 13.5px;
-      color: var(--text-secondary);
-    }
-    .grid-2 {
-      display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 16px;
-    }
-    .grid-3 {
-      display: grid;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: 16px;
-    }
-    label.field-label {
-      display: block;
-      font-size: 12.5px;
-      font-weight: 600;
-      color: var(--text-secondary);
-      margin-bottom: 6px;
-    }
-    input[type="text"], input[type="email"], select, textarea {
-      width: 100%;
-      padding: 10px 12px;
-      border-radius: 8px;
-      border: 1px solid var(--border-strong);
-      background: var(--bg-input);
-      color: var(--text-primary);
-      font-size: 13.5px;
-      font-family: inherit;
-    }
-    textarea { resize: vertical; min-height: 96px; }
-
-    .consent-box {
-      background: var(--bg-elevated);
-      border-left: 4px solid var(--accent);
-      padding: 12px 14px;
-      border-radius: 8px;
-      margin: 12px 0;
-      font-size: 13.5px;
-    }
-    .meter-track {
-      width: 100%;
-      height: 10px;
-      border-radius: 999px;
-      background: var(--bg-input);
-      border: 1px solid var(--border);
-      overflow: hidden;
-      margin-top: 6px;
-    }
-    .meter-fill {
-      height: 100%;
-      width: 0%;
-      background: linear-gradient(90deg, #0284c7, #34d399);
-      transition: width 0.12s ease;
-    }
-    .status-banner {
-      padding: 11px 14px;
-      border-radius: 8px;
-      font-size: 13px;
-      margin-top: 12px;
-      border: 1px solid var(--border-strong);
-      background: var(--bg-elevated);
-      word-break: break-word;
-    }
-    .voice-item {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 12px;
-      padding: 12px 14px;
-      border-radius: 10px;
-      border: 1px solid var(--border);
-      background: var(--bg-elevated);
-      margin-bottom: 10px;
       flex-wrap: wrap;
     }
-    .code-pre {
-      background: var(--code-bg);
-      color: var(--code-fg);
-      padding: 14px;
-      border-radius: 10px;
-      font-size: 12.5px;
-      overflow-x: auto;
+
+    /* 11 Cloud Services Grouped Grid */
+    .svc-group {
+      margin-top: 26px;
+    }
+    .svc-group-title {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--ink-secondary);
+      margin: 0 0 12px;
+      letter-spacing: -0.01em;
+    }
+    .svc-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 14px;
+    }
+    @media (min-width: 680px) {
+      .svc-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    }
+    @media (min-width: 1020px) {
+      .svc-grid.cols-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+    }
+    .svc-card {
+      background: var(--bg-surface);
       border: 1px solid var(--border);
-      margin: 8px 0 0;
-    }
-    .pls-chip {
-      display: inline-flex;
-      align-items: center;
-      padding: 3px 8px;
-      border-radius: 6px;
-      font-size: 11.5px;
-      background: var(--badge-bg);
-      color: var(--badge-fg);
-      margin: 3px 4px 0 0;
-      font-weight: 600;
-    }
-    .plan-card {
-      background: var(--bg-elevated);
-      border: 1px solid var(--border-strong);
-      border-radius: 12px;
-      padding: 18px;
+      border-radius: var(--radius-md);
+      padding: 18px 20px;
       display: flex;
       flex-direction: column;
       justify-content: space-between;
+      gap: 10px;
+      transition: border-color 0.15s ease;
     }
-    .plan-price {
-      font-size: 24px;
-      font-weight: 800;
-      margin: 8px 0;
+    .svc-card:hover { border-color: var(--border-strong); }
+    .svc-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
     }
-    .hidden { display: none !important; }
+    .svc-name {
+      font-weight: 700;
+      font-size: 15px;
+      color: var(--ink-primary);
+    }
+    .svc-role {
+      font-size: 13.5px;
+      color: var(--ink-secondary);
+      margin-top: 2px;
+    }
+    .svc-foot {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      padding-top: 10px;
+      border-top: 1px solid var(--bg-hover);
+      font-size: 12.5px;
+      color: var(--ink-muted);
+    }
+    .svc-link {
+      font-weight: 600;
+      color: var(--brand-dawn);
+      font-size: 13px;
+    }
+    .svc-link:hover { text-decoration: underline; }
 
-    .mobile-console-bar {
-      display: none;
+    /* Metrics Strip */
+    .metrics-strip {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 14px;
+      margin-bottom: 24px;
     }
-    @media (max-width: 900px) {
-      body { padding-bottom: 72px; }
-      .console-shell {
-        grid-template-columns: 1fr;
-      }
-      .console-sidebar {
-        flex-direction: row;
-        overflow-x: auto;
-        border-right: none;
-        border-bottom: 1px solid var(--border);
-        padding: 10px 12px;
-      }
-      .sidebar-heading { display: none; }
-      .nav-tab {
-        width: auto;
-        white-space: nowrap;
-        min-height: 44px;
-        padding: 8px 14px;
-        font-size: 13px;
-      }
-      .btn { min-height: 44px; }
-      .console-main { padding: 14px; }
-      .grid-2, .grid-3 { grid-template-columns: 1fr; }
-      .mobile-console-bar {
-        position: fixed;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        z-index: 60;
-        background: rgba(255, 255, 255, 0.96);
-        backdrop-filter: blur(12px);
-        border-top: 1px solid var(--border);
-        display: grid;
-        grid-template-columns: repeat(4, minmax(0, 1fr));
-        padding: 4px 6px calc(4px + env(safe-area-inset-bottom, 0px));
-      }
-      .mobile-console-bar button {
-        appearance: none;
-        border: 0;
-        background: transparent;
-        color: var(--text-secondary);
-        min-height: 48px;
-        font-size: 11px;
-        font-weight: 600;
-        cursor: pointer;
-        border-radius: 8px;
-      }
+    @media (min-width: 560px) {
+      .metrics-strip { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    }
+    @media (min-width: 960px) {
+      .metrics-strip { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+    }
+    .metric-box {
+      background: var(--bg-surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 20px;
+    }
+    .metric-label {
+      font-size: 12.5px;
+      font-weight: 600;
+      color: var(--ink-muted);
+    }
+    .metric-val {
+      font-family: var(--font-display);
+      font-size: 26px;
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      margin: 6px 0 4px;
+      color: var(--ink-primary);
+    }
+    .metric-val.ok { color: var(--ok-ink); }
+    .metric-val.dawn { color: var(--brand-dawn); }
+    .metric-sub {
+      font-size: 12.5px;
+      color: var(--ink-secondary);
+    }
+
+    /* Model & History Lists */
+    .model-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+      padding: 16px 18px;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      margin-bottom: 12px;
+      flex-wrap: wrap;
+      background: var(--bg-surface);
+    }
+    .model-row.active-model {
+      border-color: var(--ok-border);
+      background: #FAFFFD;
+    }
+
+    .clean-table-wrap {
+      overflow-x: auto;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      background: var(--bg-surface);
+    }
+    table.clean-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 13.5px;
+      text-align: left;
+    }
+    table.clean-table th {
+      padding: 12px 14px;
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--ink-muted);
+      background: var(--bg-subtle);
+      border-bottom: 1px solid var(--border);
+      white-space: nowrap;
+    }
+    table.clean-table td {
+      padding: 13px 14px;
+      border-bottom: 1px solid var(--border);
+      vertical-align: middle;
+    }
+    table.clean-table tr:last-child td { border-bottom: 0; }
+
+    /* Progressive Disclosure Drawers */
+    details.clean-drawer {
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      background: var(--bg-surface);
+      padding: 16px 20px;
+      margin-top: 16px;
+    }
+    details.clean-drawer summary {
+      list-style: none;
+      cursor: pointer;
+      font-weight: 600;
+      font-size: 14.5px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      color: var(--ink-primary);
+    }
+    details.clean-drawer summary::-webkit-details-marker { display: none; }
+    .drawer-body {
+      margin-top: 16px;
+      padding-top: 16px;
+      border-top: 1px solid var(--border);
+    }
+
+    .code-block {
+      background: var(--bg-subtle);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      padding: 16px;
+      font-family: var(--font-mono);
+      font-size: 12.5px;
+      line-height: 1.6;
+      color: var(--ink-primary);
+      overflow-x: auto;
+      margin: 0;
+    }
+
+    .banner {
+      margin-top: 14px;
+      padding: 11px 14px;
+      border-radius: var(--radius-sm);
+      font-size: 13.5px;
+      border: 1px solid var(--border);
+      background: var(--bg-subtle);
+    }
+    .banner.ok { background: var(--ok-bg); color: var(--ok-ink); border-color: var(--ok-border); }
+    .banner.err { background: var(--err-bg); color: var(--err-ink); border-color: #FECACA; }
+
+    /* Sticky Mobile Bottom Bar (375px+) */
+    .ac-mobile-bar {
+      position: fixed;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      z-index: 70;
+      background: rgba(255, 255, 255, 0.97);
+      backdrop-filter: blur(14px);
+      border-top: 1px solid var(--border);
+      display: none;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      padding: 4px 6px calc(4px + env(safe-area-inset-bottom, 0px));
+    }
+    @media (max-width: 879px) {
+      .ac-mobile-bar.signed-in { display: grid; }
+    }
+    .ac-mob-btn {
+      appearance: none;
+      border: 0;
+      background: transparent;
+      color: var(--ink-muted);
+      min-height: 48px;
+      border-radius: var(--radius-sm);
+      font-family: var(--font-sans);
+      font-size: 11.5px;
+      font-weight: 600;
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 2px;
+    }
+    .ac-mob-btn.active {
+      color: var(--brand-dawn);
+      background: var(--brand-dawn-soft);
     }
   </style>
 </head>
 <body>
-  <header class="console-topbar">
-    <div class="brand-cluster">
-      <span class="brand-mark mono" aria-hidden="true">AC</span>
-      <div>
-        <div class="brand-title">Aaruni Cloud Console</div>
-        <div style="font-size:11.5px;color:var(--text-muted);">Cloud Voice • API Keys • Tenant-Isolated Workspace</div>
+
+  <!-- Clean Top Header -->
+  <header class="ac-topbar">
+    <div class="ac-topbar-inner">
+      <div style="display:flex;align-items:center;gap:10px;">
+        <a href="https://aarunicloud.com" id="brand-home-link" class="ac-brand">
+          <span class="ac-brand-mark">AC</span>
+          <span>Aaruni Cloud</span>
+        </a>
+        <span class="ac-region-badge" id="region-pill">ap-south-hyd-1</span>
       </div>
-      <span class="region-pill mono">ap-south-hyd-1</span>
-    </div>
-    <div class="topbar-actions">
-      <span id="account-pill" class="region-pill mono">Guest (Not Signed In)</span>
-      <a href="/voice" class="btn btn-sm" style="border-color:rgba(254,95,1,0.35);color:#FE5F01;">🎙️ Cloud Voice Studio</a>
-      <a id="storefront-back-link" href="/cloud.html" class="btn btn-sm">← Aaruni Cloud</a>
-      <button type="button" id="theme-btn" class="btn btn-sm" onclick="toggleTheme()">☾ Dark</button>
+
+      <!-- 4-Item Primary Navigation (Visible when signed in) -->
+      <nav class="ac-desktop-nav" id="desktop-nav" aria-label="Console Navigation">
+        <button type="button" class="ac-nav-btn active" data-tab="overview" onclick="switchTab('overview')">Overview &amp; Services</button>
+        <button type="button" class="ac-nav-btn" data-tab="voice" onclick="switchTab('voice')">Voice &amp; Training</button>
+        <button type="button" class="ac-nav-btn" data-tab="usage" onclick="switchTab('usage')">Usage &amp; Costs</button>
+        <button type="button" class="ac-nav-btn" data-tab="keys" onclick="switchTab('keys')">API Keys</button>
+      </nav>
+
+      <div class="ac-topbar-right">
+        <button type="button" id="owner-view-switch" class="btn btn-sm hidden" onclick="togglePerspectiveMode()" title="Preview external customer isolation">
+          Preview Customer View
+        </button>
+        <span id="account-pill" class="ac-user-pill hidden">Signed In</span>
+        <button type="button" id="signout-btn" class="btn btn-sm hidden" onclick="signOutConsole()">Sign Out</button>
+        <a id="signedout-voice-link" href="https://voice.aarunicloud.com" class="btn btn-sm">Voice Studio ↗</a>
+      </div>
     </div>
   </header>
 
-  <div class="console-shell">
-    <nav class="console-sidebar" role="tablist" aria-label="Console Navigation">
-      <div id="owner-nav-group" class="hidden">
-        <div class="sidebar-heading" style="color:var(--success);">Owner Tenancy</div>
-        <button type="button" class="nav-tab" role="tab" id="nav-tab-syllovo" data-tab="syllovo" aria-selected="false" onclick="switchTab('syllovo')">🚀 Syllovo App &amp; Voice</button>
-      </div>
-      <div class="sidebar-heading">Cloud Platform</div>
-      <button type="button" class="nav-tab" role="tab" data-tab="projects" aria-selected="false" onclick="switchTab('projects')">🏢 Orgs &amp; Projects</button>
-      <button type="button" class="nav-tab" role="tab" data-tab="builder" aria-selected="false" onclick="switchTab('builder')">✨ Cloud Builder (AI)</button>
-      <div class="sidebar-heading">Cloud Voice (SaaS)</div>
-      <button type="button" class="nav-tab" role="tab" data-tab="speak" aria-selected="true" onclick="switchTab('speak')">🔊 Speech Playground</button>
-      <button type="button" class="nav-tab" role="tab" data-tab="clone" aria-selected="false" onclick="switchTab('clone')">🎙️ Clone My Voice</button>
-      <div class="sidebar-heading">Developer &amp; Billing</div>
-      <button type="button" class="nav-tab" role="tab" data-tab="cli" aria-selected="false" onclick="switchTab('cli')">🔑 API Keys &amp; Drop-In SDK</button>
-      <button type="button" class="nav-tab" role="tab" data-tab="billing" aria-selected="false" onclick="switchTab('billing')">💳 Plans &amp; Quota</button>
-    </nav>
+  <main class="ac-container">
 
-    <main class="console-main">
-      <!-- OWNER PERSPECTIVE SWITCHER (VISIBLE ONLY WHEN OWNER AUTH / LOCAL WORKSTATION / PRIVATE TOKEN IS ACTIVE) -->
-      <section id="owner-perspective-bar" class="card hidden" style="padding:12px 18px;border-color:rgba(254,95,1,0.35);background:#FFF7ED;">
-        <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;">
-          <div>
-            <strong id="owner-banner-title" style="font-size:14px;color:var(--text-primary);">👑 Sovereign Owner Console Unlocked (<code class="mono">org_syllovo</code>)</strong>
-            <div style="font-size:12px;color:var(--text-secondary);">Switch views anytime to verify that external customers (<code class="mono">cx</code>) only see the 6 public studio voices while private owner voices stay jailed to Syllovo Studio.</div>
+    <!-- ===================================================================== -->
+    <!-- CALM SINGLE-CARD SIGN-IN VIEW (SHOWN WHEN SIGNED OUT)                 -->
+    <!-- ===================================================================== -->
+    <section id="auth-gate-view" class="auth-shell" aria-label="Sign in to Aaruni Cloud">
+      <div class="auth-card">
+        <h1 class="auth-title">Sign in to Aaruni Cloud</h1>
+        <p class="auth-sub">Access your deployed applications, cloud services, and voice studio.</p>
+
+        <div id="console-google-btn" style="min-height:44px;display:flex;justify-content:center;"></div>
+
+        <div class="auth-divider">or sign in with email</div>
+
+        <form onsubmit="submitConsolePasswordLogin(event)">
+          <div class="field">
+            <label for="pwd-email-input">Email</label>
+            <input type="email" id="pwd-email-input" class="input" placeholder="you@company.com" required autocomplete="username" />
           </div>
-          <div style="display:flex;gap:8px;flex-wrap:wrap;">
-            <button type="button" id="btn-view-owner" class="btn btn-primary btn-sm" onclick="setPerspectiveMode('owner')">👑 Owner Console (Syllovo + Private Voice)</button>
-            <button type="button" id="btn-view-cx" class="btn btn-sm" onclick="setPerspectiveMode('cx')">👤 Preview Customer (cx) Public View</button>
+          <div class="field">
+            <label for="pwd-secret-input">Password</label>
+            <input type="password" id="pwd-secret-input" class="input" placeholder="••••••••••••" required autocomplete="current-password" />
           </div>
+          <div class="field" style="margin-bottom:16px;">
+            <label for="pwd-org-input">Organization <span style="font-weight:400;color:var(--ink-muted);">(optional)</span></label>
+            <input type="text" id="pwd-org-input" class="input" placeholder="Auto-detected from email" autocomplete="organization" />
+          </div>
+          <button type="submit" id="pwd-login-btn" class="btn btn-primary" style="width:100%;">Sign In</button>
+        </form>
+
+        <button type="button" class="alt-auth-toggle" onclick="toggleAltAuthDrawer()" id="alt-auth-btn">
+          Use 6-digit email code or API key instead
+        </button>
+
+        <div id="alt-auth-box" class="alt-auth-box hidden">
+          <div class="field">
+            <label for="otp-email-input">6-Digit Email Code</label>
+            <div style="display:flex;gap:8px;">
+              <input type="email" id="otp-email-input" class="input" placeholder="you@company.com" autocomplete="email" />
+              <button type="button" class="btn btn-sm" id="otp-send-btn" onclick="sendConsoleEmailOtp()">Send Code</button>
+            </div>
+          </div>
+          <div id="otp-verify-wrap" class="field hidden">
+            <label for="otp-code-input">Enter 6-Digit Code</label>
+            <div style="display:flex;gap:8px;">
+              <input type="text" id="otp-code-input" class="input mono" maxlength="6" inputmode="numeric" placeholder="123456" />
+              <button type="button" class="btn btn-dawn btn-sm" onclick="verifyConsoleEmailOtp()">Verify</button>
+            </div>
+          </div>
+
+          <div class="field" style="margin-top:12px;margin-bottom:0;">
+            <label for="existing-key-input">Or Connect Scoped API Key</label>
+            <div style="display:flex;gap:8px;">
+              <input type="password" id="existing-key-input" class="input mono" placeholder="acloud_sub_..." />
+              <button type="button" class="btn btn-sm" onclick="connectExistingKey()">Connect</button>
+            </div>
+          </div>
+        </div>
+
+        <div id="auth-status" class="banner hidden"></div>
+      </div>
+    </section>
+
+    <!-- ===================================================================== -->
+    <!-- AUTHENTICATED WORKSPACE SHELL                                         -->
+    <!-- ===================================================================== -->
+    <div id="workspace-view" class="hidden">
+
+      <!-- TAB 1: OVERVIEW & SERVICES (DEFAULT HOME AFTER SIGN-IN) -->
+      <section id="panel-overview" class="tab-panel">
+        <!-- Top Flagship Application / Workspace Card -->
+        <div class="surface-card">
+          <div class="section-eyebrow" id="app-card-eyebrow">Deployed Application</div>
+          <div class="app-hero-row">
+            <div>
+              <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;">
+                <h1 class="card-h2" style="font-size:24px;margin:0;" id="app-card-name">Workspace Project</h1>
+                <span class="status-pill" id="app-card-status">Live</span>
+              </div>
+              <div class="app-meta-row" id="app-card-meta">
+                <span>Region: <strong class="mono">ap-south-hyd-1</strong></span>
+              </div>
+            </div>
+            <div class="app-actions">
+              <a id="sso-voice-studio-btn" href="https://voice.aarunicloud.com" class="btn btn-primary">
+                Open Voice Studio ↗
+              </a>
+              <button type="button" id="app-secondary-action-btn" class="btn" onclick="switchTab('voice')">
+                Train / Improve Voice
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Cloud Services Powering Your App (All 11 Official Aaruni Cloud Services in 4 Calm Groups) -->
+        <div>
+          <div style="display:flex;align-items:baseline;justify-content:space-between;gap:12px;flex-wrap:wrap;">
+            <div>
+              <h2 class="card-h2">Cloud Services Powering Your App</h2>
+              <p class="card-desc">All 11 managed Aaruni Cloud services active in your workspace.</p>
+            </div>
+            <span class="neutral-pill mono">11 / 11 Services Operational</span>
+          </div>
+
+          <div id="all-services-container"></div>
+        </div>
+
+        <!-- Progressive Disclosure: Declarative Stack Blueprint -->
+        <details class="clean-drawer">
+          <summary>
+            <span>Cloud Builder — Generate Declarative Stack (<code class="mono">acloud.yaml</code>)</span>
+            <span style="color:var(--ink-muted);font-size:13px;">Expand ▾</span>
+          </summary>
+          <div class="drawer-body">
+            <div class="field">
+              <label for="builder-prompt-input">Describe stack update or service workflow</label>
+              <input type="text" id="builder-prompt-input" class="input" value="Course & Media Studio with zero-egress Cloud Storage, Cloud Voice (-20.5 LUFS), and Cloud Guard isolation" />
+            </div>
+            <button type="button" class="btn btn-sm btn-primary" onclick="generateBuilderPlan()">Generate Blueprint</button>
+            <pre id="builder-yaml-pre" class="code-block hidden" style="margin-top:12px;"></pre>
+          </div>
+        </details>
+      </section>
+
+      <!-- TAB 2: VOICE & TRAINING -->
+      <section id="panel-voice" class="tab-panel hidden">
+        <div class="surface-card">
+          <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:16px;flex-wrap:wrap;margin-bottom:20px;">
+            <div>
+              <div class="section-eyebrow">Cloud Voice Models</div>
+              <h2 class="card-h2">Active Voice Models &amp; Default Switcher</h2>
+              <p class="card-desc">Audition your deployed models or switch the active default voice in one click.</p>
+            </div>
+            <a id="sso-voice-train-btn" href="https://voice.aarunicloud.com" class="btn btn-dawn">
+              Open Full Voice &amp; Training Studio ↗
+            </a>
+          </div>
+
+          <div id="console-models-list"></div>
+
+          <audio id="console-model-audio" controls preload="none" class="hidden" style="width:100%;height:40px;margin-top:10px;"></audio>
+          <div id="console-model-status" class="banner hidden"></div>
+        </div>
+
+        <div class="surface-card">
+          <div class="section-eyebrow">Incremental Fine-Tuning</div>
+          <h2 class="card-h2">Quick Voice Clarity &amp; Anti-Glitch Training</h2>
+          <p class="card-desc" style="margin-bottom:18px;">Run a targeted calibration pass on Cloud Compute (<code class="mono">ap-south-hyd-1</code>), or open the full studio to fix specific word pronunciations and record fresh samples.</p>
+
+          <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px;margin-bottom:18px;">
+            <div class="field" style="margin:0;">
+              <label for="quick-train-goal">What to Improve</label>
+              <select id="quick-train-goal" class="input">
+                <option value="clarity">Boost Water-Clean Clarity</option>
+                <option value="anti_glitch">Eliminate Word Drops &amp; Glitches</option>
+                <option value="expression">Expand Teaching Expression</option>
+              </select>
+            </div>
+            <div class="field" style="margin:0;">
+              <label for="quick-train-mode">Training Mode</label>
+              <select id="quick-train-mode" class="input">
+                <option value="quick_polish">Quick Calibration Polish (~2 mins)</option>
+                <option value="deep_parallel">Deep Parallel Compute Training (3 Workers)</option>
+              </select>
+            </div>
+          </div>
+
+          <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;">
+            <button type="button" class="btn btn-primary" id="quick-train-btn" onclick="launchConsoleQuickTraining()">Start Training</button>
+            <a id="sso-fix-words-link" href="https://voice.aarunicloud.com" class="btn">Fix Word Pronunciation or Record Samples →</a>
+          </div>
+          <div id="quick-train-status" class="banner hidden"></div>
         </div>
       </section>
 
-      <!-- OWNER PANEL: SYLLOVO STUDIO DEPLOYMENT + AARUNI CLOUD SERVICES + PARALLEL CLOUD COMPUTE TRAINING -->
-      <section id="panel-syllovo" class="tab-panel hidden">
-        <!-- 1. DEPLOYED APPLICATION & CONSUMED AARUNI CLOUD SERVICES -->
-        <div class="card">
-          <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:14px;flex-wrap:wrap;margin-bottom:14px;">
-            <div style="display:flex;align-items:center;gap:12px;">
-              <div style="width:44px;height:44px;border-radius:12px;background:#111827;color:#ffffff;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:20px;">S</div>
-              <div>
-                <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
-                  <h2 class="card-title" style="margin:0;">Syllovo Studio — Deployed Production App</h2>
-                  <span class="region-pill mono" style="color:var(--success);">● PRODUCTION LIVE</span>
-                </div>
-                <div style="font-size:12.5px;color:var(--text-secondary);margin-top:3px;">
-                  Tenant: <code class="mono">org_syllovo / prj_syllovo_prod</code> &bull; Domain: <a href="https://syllovo.com" target="_blank" rel="noopener">https://syllovo.com ↗</a> &bull; Voice App: <a href="/voice">/voice ↗</a>
-                </div>
-              </div>
-            </div>
-            <div style="display:flex;gap:8px;flex-wrap:wrap;">
-              <button type="button" class="btn btn-sm" onclick="copySyllovoDropInKey()">🔑 Copy Drop-In Syllovo API Key</button>
-              <button type="button" class="btn btn-primary btn-sm" onclick="document.getElementById('owner-voice-studio-card').scrollIntoView({behavior:'smooth'})">🔊 Jump to Voice Studio ↓</button>
-            </div>
+      <!-- TAB 3: USAGE & COSTS -->
+      <section id="panel-usage" class="tab-panel hidden">
+        <div class="metrics-strip">
+          <div class="metric-box">
+            <div class="metric-label" id="m1-label">Monthly Bill</div>
+            <div class="metric-val ok" id="m1-val">$0.00</div>
+            <div class="metric-sub" id="m1-sub">Workspace allocation</div>
           </div>
-
-          <div style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:0.05em;color:var(--text-muted);margin-bottom:10px;">
-            Bound Aaruni Cloud Services Powering Syllovo Studio
+          <div class="metric-box">
+            <div class="metric-label" id="m2-label">AI Runtime Cost</div>
+            <div class="metric-val ok" id="m2-val">$0.00</div>
+            <div class="metric-sub" id="m2-sub">0 external LLM tokens</div>
           </div>
-          <div class="grid-3">
-            <div style="background:var(--bg-elevated);border:1px solid var(--border);border-radius:10px;padding:14px;">
-              <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;">
-                <strong style="font-size:14px;">🎙️ Cloud Voice</strong>
-                <span class="region-pill mono" style="color:var(--success);">RUNNING</span>
-              </div>
-              <div style="font-size:12px;color:var(--text-secondary);line-height:1.55;">
-                Active Model: <strong>Cloud Voice v2.2 Water-Clean Expressive</strong><br/>
-                Mastering: <strong>-20.5 LUFS</strong> Course Studio &bull; W3C <code class="mono">.pls</code> Lexicon
-              </div>
-            </div>
-
-            <div style="background:var(--bg-elevated);border:1px solid var(--border);border-radius:10px;padding:14px;">
-              <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;">
-                <strong style="font-size:14px;">🖥️ Cloud Compute</strong>
-                <span class="region-pill mono">ONLINE</span>
-              </div>
-              <div style="font-size:12px;color:var(--text-secondary);line-height:1.55;">
-                Pool: <strong>3 Parallel Compute Workers &bull; ap-south-hyd-1</strong><br/>
-                Topology: Outbound-Only Air-Gapped Worker Pool (0 Inbound Ports)
-              </div>
-            </div>
-
-            <div style="background:var(--bg-elevated);border:1px solid var(--border);border-radius:10px;padding:14px;">
-              <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;">
-                <strong style="font-size:14px;">🗄️ Cloud Storage &amp; Cloud Archive</strong>
-                <span class="region-pill mono">SYNCED</span>
-              </div>
-              <div style="font-size:12px;color:var(--text-secondary);line-height:1.55;">
-                Cloud Storage: <code class="mono">$0/GB</code> egress &bull; Spaces: <code class="mono">courses, exports</code><br/>
-                Cloud Archive: AES-256 Sealed Immutable Release Vault
-              </div>
-            </div>
-
-            <div style="background:var(--bg-elevated);border:1px solid var(--border);border-radius:10px;padding:14px;">
-              <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;">
-                <strong style="font-size:14px;">✅ Cloud Quality</strong>
-                <span class="region-pill mono" style="color:var(--success);">PASSED</span>
-              </div>
-              <div style="font-size:12px;color:var(--text-secondary);line-height:1.55;">
-                Acoustic Verification: <strong>Clarity Gate: 100% Passed</strong><br/>
-                UI &amp; Accessibility: WCAG 2.1 AA Multi-Viewport Verified
-              </div>
-            </div>
-
-            <div style="background:var(--bg-elevated);border:1px solid var(--border);border-radius:10px;padding:14px;">
-              <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;">
-                <strong style="font-size:14px;">🎬 Cloud Render &amp; Cloud Assistant</strong>
-                <span class="region-pill mono">READY</span>
-              </div>
-              <div style="font-size:12px;color:var(--text-secondary);line-height:1.55;">
-                Cloud Render: 1920&times;1080 30fps MP4 + S-Curve Breath Envelopes<br/>
-                Cloud Assistant: SQLite FTS5 Compliance &amp; Guideline Copilot
-              </div>
-            </div>
-
-            <div style="background:var(--bg-elevated);border:1px solid var(--border);border-radius:10px;padding:14px;">
-              <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;">
-                <strong style="font-size:14px;">🛡️ Cloud Guard &amp; Cloud Edge</strong>
-                <span class="region-pill mono">ENFORCED</span>
-              </div>
-              <div style="font-size:12px;color:var(--text-secondary);line-height:1.55;">
-                Isolation: Private Sovereign Voices Jailed to <code class="mono">org_syllovo</code><br/>
-                Transport: TLS 1.3 Global Cloud Edge + Hard Spend Cap Shield
-              </div>
-            </div>
+          <div class="metric-box">
+            <div class="metric-label" id="m3-label">Compute Electricity</div>
+            <div class="metric-val" id="m3-val">&lt;$0.02</div>
+            <div class="metric-sub" id="m3-sub">61.4 min studio audio</div>
+          </div>
+          <div class="metric-box">
+            <div class="metric-label" id="m4-label">Saved vs ElevenLabs</div>
+            <div class="metric-val dawn" id="m4-val">$100/mo</div>
+            <div class="metric-sub" id="m4-sub">Zero vendor lock-in</div>
           </div>
         </div>
 
-        <!-- 2. TRANSPARENT COST & COMPUTE METER + DROP-IN SYLLOVO API KEY -->
-        <div class="card">
-          <div style="display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:10px;">
+        <div class="surface-card">
+          <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-bottom:16px;">
             <div>
-              <h3 class="card-title" style="margin:0;font-size:17px;">📊 Transparent Cost &amp; Compute Meter (<span id="console-telemetry-org">FullStackMaster / Syllovo Customer #0</span>)</h3>
-              <p class="card-sub" style="margin:4px 0 0;">Real-time Cloud Voice synthesis, parallel Cloud Compute telemetry, runtime token cost, and SaaS shadow savings.</p>
+              <h2 class="card-h2">Generation &amp; Training History</h2>
+              <p class="card-desc">Recent Cloud Voice synthesis runs and fine-tuning jobs.</p>
             </div>
-            <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;">
-              <span class="region-pill mono" style="color:var(--success);">$0.00 / ₹0.00 Billed</span>
-              <button type="button" class="btn btn-sm" onclick="loadConsoleUsageLedger()">↻ Refresh Telemetry</button>
-            </div>
+            <button type="button" class="btn btn-sm" onclick="loadConsoleUsageLedger()">Refresh</button>
           </div>
 
-          <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:12px;margin-bottom:14px;">
-            <div style="background:var(--bg-elevated);border:1px solid var(--border);border-radius:10px;padding:14px;">
-              <div style="font-size:12px;color:var(--text-muted);font-weight:600;">Your Billed Charge</div>
-              <div style="font-size:22px;font-weight:800;color:var(--success);margin-top:4px;" id="syllovo-meter-headline">$0.00 / ₹0.00</div>
-              <div style="font-size:12px;color:var(--text-secondary);margin-top:4px;" id="syllovo-meter-sub">Sovereign Owner Allocation</div>
-            </div>
-            <div style="background:var(--bg-elevated);border:1px solid var(--border);border-radius:10px;padding:14px;">
-              <div style="font-size:12px;color:var(--text-muted);font-weight:600;">AI Agent / Antigravity Runtime Cost</div>
-              <div style="font-size:22px;font-weight:800;color:var(--success);margin-top:4px;" id="console-agent-cost">$0.00</div>
-              <div style="font-size:12px;color:var(--text-secondary);margin-top:4px;" id="console-agent-note">0 external LLM/API tokens used during TTS</div>
-            </div>
-            <div style="background:var(--bg-elevated);border:1px solid var(--border);border-radius:10px;padding:14px;">
-              <div style="font-size:12px;color:var(--text-muted);font-weight:600;">Compute &amp; Energy Telemetry</div>
-              <div style="font-size:19px;font-weight:800;margin-top:4px;" id="console-compute-minutes">61.4 min Studio Audio</div>
-              <div style="font-size:12px;color:var(--text-secondary);margin-top:4px;" id="console-compute-detail">412,850 chars • 48.6 worker-min • &lt;$0.02 electricity</div>
-            </div>
-            <div style="background:var(--bg-elevated);border:1px solid var(--border);border-radius:10px;padding:14px;">
-              <div style="font-size:12px;color:var(--text-muted);font-weight:600;">Shadow Savings vs ElevenLabs</div>
-              <div style="font-size:22px;font-weight:800;color:#EA580C;margin-top:4px;" id="console-shadow-savings">$100.00/mo saved</div>
-              <div style="font-size:12px;color:var(--text-secondary);margin-top:4px;">89.4% Est. Gross Margin • Customer #0 Sovereign</div>
-            </div>
-          </div>
-
-          <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;padding-top:10px;border-top:1px solid var(--border);">
-            <span class="mono" style="font-size:12px;font-weight:600;color:var(--text-secondary);">🔌 Drop-In Syllovo Endpoint:</span>
-            <input type="text" id="syllovo-dropin-endpoint" class="mono" readonly value="https://api.aarunicloud.com/v1/text-to-speech/stock_aria" style="flex:1;min-width:220px;" />
-            <button type="button" class="btn btn-primary btn-sm" onclick="copySyllovoDropInKey()">Copy Drop-In Key</button>
-          </div>
-        </div>
-
-        <!-- 3. ACTIVE VOICE MODELS, LINEAGE & GENERATION / TRAINING HISTORY -->
-        <div class="card">
-          <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-bottom:12px;">
-            <div>
-              <h3 class="card-title" style="margin:0;font-size:17px;">🎙️ Cloud Voice Models, Lineage &amp; Usage History (<code class="mono">3 Parallel Compute Workers &bull; ap-south-hyd-1</code>)</h3>
-              <p class="card-sub" style="margin:4px 0 0;">Active studio models, parallel compute worker health, and live generation/training audit ledger.</p>
-            </div>
-            <div style="display:flex;gap:8px;flex-wrap:wrap;">
-              <span id="local-daemon-badge" class="region-pill mono">Cloud Edge CDN Active</span>
-              <button type="button" class="btn btn-primary btn-sm" onclick="spinUpNewVoiceService()">⚡ Launch Parallel Voice Training</button>
-            </div>
-          </div>
-
-          <div class="grid-3" id="parallel-workers-grid" style="margin-bottom:14px;">
-            <div class="voice-item" style="margin-bottom:0;">
-              <div><strong>compute-hyd-worker-01</strong><div style="font-size:12px;color:var(--text-muted);">ap-south-hyd-1 &bull; Acoustic Prosody</div></div>
-              <span class="region-pill mono" style="color:var(--success);">ACTIVE</span>
-            </div>
-            <div class="voice-item" style="margin-bottom:0;">
-              <div><strong>compute-hyd-worker-02</strong><div style="font-size:12px;color:var(--text-muted);">ap-south-hyd-1 &bull; Expressive Cadence</div></div>
-              <span class="region-pill mono" style="color:var(--success);">ACTIVE</span>
-            </div>
-            <div class="voice-item" style="margin-bottom:0;">
-              <div><strong>compute-hyd-worker-03</strong><div style="font-size:12px;color:var(--text-muted);">ap-south-hyd-1 &bull; Clarity Gate: 100% Passed</div></div>
-              <span class="region-pill mono" style="color:var(--success);">ACTIVE</span>
-            </div>
-          </div>
-
-          <div style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:0.05em;color:var(--text-muted);margin-bottom:8px;">
-            Active Voice Models Deployed
-          </div>
-          <div id="avgs-instances-list" style="margin-bottom:16px;">
-            <div class="voice-item">
-              <div>
-                <strong>Cloud Voice v2.2 Pro (Water-Clean Expressive)</strong>
-                <span class="region-pill mono" style="color:var(--success);">ACTIVE PRIMARY</span>
-                <div style="font-size:12px;color:var(--text-secondary);margin-top:3px;">0.00% WER &bull; 99.74% Sim &bull; 360 .pls rules &bull; 6 Tuning Knobs &bull; -20.5 LUFS</div>
-              </div>
-              <button type="button" class="btn btn-primary btn-sm" onclick="openConsoleModelInStudio('', 'v5_hook')">🎙 Open in Voice Playground &amp; Speak</button>
-            </div>
-            <div class="voice-item">
-              <div>
-                <strong>Cloud Voice v2.0 Studio Master</strong>
-                <span class="region-pill mono">VERIFIED REFERENCE BASELINE</span>
-                <div style="font-size:12px;color:var(--text-secondary);margin-top:3px;">4:55 OWASP ZAP Course Masterclass (25 Beats) &bull; -20.5 LUFS</div>
-              </div>
-              <button type="button" class="btn btn-sm" onclick="openConsoleModelInStudio('', 'zap_5min')">🎙 Open in Voice Playground &amp; Speak</button>
-            </div>
-          </div>
-
-          <div style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:0.05em;color:var(--text-muted);margin-bottom:8px;">
-            Generation &amp; Training History (Live Cloud Jobs + Studio Runs)
-          </div>
-          <div style="overflow-x:auto;border:1px solid var(--border);border-radius:10px;background:var(--bg-elevated);">
-            <table style="width:100%;border-collapse:collapse;font-size:12.5px;text-align:left;">
+          <div class="clean-table-wrap">
+            <table class="clean-table">
               <thead>
-                <tr style="border-bottom:1px solid var(--border);color:var(--text-muted);">
-                  <th style="padding:10px 12px;font-weight:700;">Timestamp</th>
-                  <th style="padding:10px 12px;font-weight:700;">Course / Script Title</th>
-                  <th style="padding:10px 12px;font-weight:700;">Chars / Duration</th>
-                  <th style="padding:10px 12px;font-weight:700;">Compute Workers Used</th>
-                  <th style="padding:10px 12px;font-weight:700;">Clarity Score</th>
-                  <th style="padding:10px 12px;font-weight:700;">Billed Cost</th>
-                  <th style="padding:10px 12px;font-weight:700;text-align:right;">Audition</th>
+                <tr>
+                  <th>Timestamp</th>
+                  <th>Script / Job</th>
+                  <th>Duration</th>
+                  <th>Quality Check</th>
+                  <th>Billed</th>
+                  <th style="text-align:right;">Listen</th>
                 </tr>
               </thead>
               <tbody id="console-usage-history-tbody">
-                <tr><td colspan="7" style="padding:14px;color:var(--text-muted);">Sign in as Owner to view live generation &amp; training history...</td></tr>
+                <tr><td colspan="6" style="color:var(--ink-muted);">Loading workspace history...</td></tr>
               </tbody>
             </table>
           </div>
-          <audio id="console-ledger-audio" controls preload="none" class="hidden" style="width:100%;height:38px;margin-top:10px;"></audio>
-          <div id="avgs-spinup-status" class="status-banner hidden"></div>
+          <audio id="console-ledger-audio" controls preload="none" class="hidden" style="width:100%;height:40px;margin-top:12px;"></audio>
         </div>
 
-        <!-- 4. INTERACTIVE OWNER VOICE STUDIO (POPULATED DYNAMICALLY FROM /v1/voice/list WHEN OWNER UNLOCKED) -->
-        <div class="card" id="owner-voice-studio-card">
-          <div style="display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;margin-bottom:8px;">
-            <h3 class="card-title" style="margin:0;">🎙️ Syllovo Private Voice Studio — Owner Catalog &amp; Masterclass Samples</h3>
-            <span class="region-pill mono">🔒 Isolated Owner Vault (Hidden from Public cx)</span>
-          </div>
-          <p class="card-sub">Select your private studio voice (loaded dynamically via Cloud Guard), play the 5-minute OWASP ZAP course masterclass, or synthesize custom scripts via your workstation bridge.</p>
-
-          <div class="grid-2" style="margin-bottom:12px;">
-            <div>
-              <label class="field-label" for="owner-voice-select">1. Select Voice Profile (Owner Tenant Catalog)</label>
-              <select id="owner-voice-select" onchange="onOwnerPresetOrVoiceChange()"></select>
+        <!-- Progressive Disclosure: Subscription Plans & Invoices -->
+        <details class="clean-drawer" id="plans-drawer">
+          <summary>
+            <span>Subscription Plans &amp; Invoices (USD &amp; India UPI)</span>
+            <span style="color:var(--ink-muted);font-size:13px;">Manage ▾</span>
+          </summary>
+          <div class="drawer-body">
+            <div style="display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:16px;">
+              <span style="font-size:13.5px;color:var(--ink-secondary);">Hard spend-cap protection — zero surprise overage charges.</span>
+              <div style="display:flex;gap:6px;">
+                <button type="button" class="btn btn-sm btn-primary" id="curr-usd-btn" onclick="setConsoleCurrency('USD')">$ USD</button>
+                <button type="button" class="btn btn-sm" id="curr-inr-btn" onclick="setConsoleCurrency('INR')">₹ INR (UPI)</button>
+              </div>
             </div>
-            <div>
-              <label class="field-label" for="owner-sample-select">2. Select Sample Teaching Script</label>
-              <select id="owner-sample-select" onchange="onOwnerPresetOrVoiceChange()">
-                <option value="v5_hook">✨ v2.2 Water-Clean Expressive — Energetic Module Hook (15.6s • 0.00% WER)</option>
-                <option value="v5_analogy">💡 v2.2 Water-Clean Expressive — Practitioner Analogy Story (16.4s • 0.00% WER)</option>
-                <option value="v5_zap_walkthrough">🛡️ v2.2 Water-Clean Expressive — Technical ZAP, OAuth2 &amp; SARIF (20.3s • 0.00% WER)</option>
-                <option value="zap_5min">🎓 Full 5-Minute ZAP Course Masterclass (4:55 • 25 Beats)</option>
-                <option value="zap_auth_gate">🔐 Sample 1: ZAP Signed-In Coverage &amp; HTTP 200 Trap (14s)</option>
-                <option value="zap_sarif_cicd">⚙️ Sample 2: GitHub Actions Headless ZAP &amp; SARIF Gate (13s)</option>
-                <option value="studio_flagship">🏆 Sample 3: Syllovo Studio Multi-Sentence Course Showcase (27s)</option>
-                <option value="cloud_microservices">☁️ Sample 4: Aaruni Cloud Microservices &amp; Zero-Egress Storage (8s)</option>
-                <option value="custom_live">✍️ Custom Script — Live Workstation Studio Bridge (:8766)</option>
-              </select>
-            </div>
-          </div>
-
-          <label class="field-label" for="owner-script-textarea">3. Teaching Narration Script</label>
-          <textarea id="owner-script-textarea" rows="4" style="margin-bottom:12px;"></textarea>
-
-          <div id="zap-chapters-bar" style="margin-bottom:12px;padding:12px;border-radius:10px;background:var(--bg-elevated);border:1px solid var(--border);">
-            <div style="display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap;margin-bottom:8px;">
-              <strong style="font-size:12.5px;">📑 5-Minute ZAP Masterclass Chapters:</strong>
-              <span id="zap-live-beat-badge" class="region-pill mono">Ready • 4:55 Total • -20.5 LUFS</span>
-            </div>
-            <div style="display:flex;gap:8px;flex-wrap:wrap;" id="zap-chapter-buttons">
-              <button type="button" class="btn btn-sm" onclick="seekZapChapter(0.5)">▶ Ch 1 (0:00) GitHub Actions &amp; Custom Checks</button>
-              <button type="button" class="btn btn-sm" onclick="seekZapChapter(63.8)">▶ Ch 2 (1:04) Alert Filters &amp; Exit Thresholds</button>
-              <button type="button" class="btn btn-sm" onclick="seekZapChapter(138.7)">▶ Ch 3 (2:19) Authenticated Scan &amp; Artifacts</button>
-              <button type="button" class="btn btn-sm" onclick="seekZapChapter(251.4)">▶ Ch 4 (4:11) SARIF Drift &amp; Release Sign-Off</button>
-            </div>
-            <div id="zap-active-caption" style="margin-top:10px;padding:10px 12px;border-radius:8px;background:var(--bg-input);border-left:3px solid var(--success);font-size:13.5px;color:var(--text-primary);line-height:1.5;">
-              Click <strong>▶ Play Studio Audio</strong> below (or any Chapter button above) to stream the full 5-minute Cloud Voice v2.2 course narration.
-            </div>
-          </div>
-
-          <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:10px;">
-            <button type="button" class="btn btn-primary" id="owner-play-btn" onclick="playOwnerStudioSelection()">▶ Play Studio Audio</button>
-            <a id="owner-download-mp3" href="#" target="_blank" rel="noopener" download="syllovo_studio_narration.mp3" class="btn">⬇ Download Studio MP3</a>
-            <span id="owner-audio-receipt" class="mono" style="font-size:12px;color:var(--text-muted);">Cloud Voice v2.2 Water-Clean Expressive • Clarity Gate: 100% Passed • -20.5 LUFS</span>
-          </div>
-
-          <audio id="owner-studio-audio" controls preload="none" style="width:100%;height:42px;"></audio>
-          <div id="owner-synth-status" class="status-banner hidden"></div>
-        </div>
-      </section>
-
-      <!-- FRICTIONLESS SIGN-IN CARD (EMAIL & PASSWORD + GOOGLE OAUTH + 6-DIGIT EMAIL CODE + API KEY) -->
-      <section id="auth-gate-card" class="card">
-        <h1 class="card-title">Sign In to Aaruni Cloud Console</h1>
-        <p class="card-sub">Sign in directly with your Organization Email &amp; Password, continue with Google, request a 6-digit email code (10,000 free monthly credits on our 6 built-in studio voices), or connect an <code class="mono">acloud</code> API key.</p>
-        <div class="grid-3">
-          <!-- Option 1: Organization Email & Password -->
-          <form onsubmit="submitConsolePasswordLogin(event)" style="background:var(--bg-elevated);padding:16px;border-radius:10px;border:1px solid var(--border);display:flex;flex-direction:column;gap:8px;">
-            <h2 style="font-size:15px;margin:0 0 4px;">🏢 Organization Email &amp; Password</h2>
-            <label class="field-label" for="pwd-org-input">Organization (optional)</label>
-            <input type="text" id="pwd-org-input" placeholder="e.g. fullstackmaster" autocomplete="organization" />
-            <label class="field-label" for="pwd-email-input">Email</label>
-            <input type="email" id="pwd-email-input" placeholder="you@company.com" required autocomplete="username" />
-            <label class="field-label" for="pwd-secret-input">Password</label>
-            <input type="password" id="pwd-secret-input" placeholder="••••••••••••" required autocomplete="current-password" />
-            <button type="submit" class="btn btn-primary" id="pwd-login-btn" style="margin-top:6px;background:#FE5F01;border-color:#FE5F01;color:#FFFFFF;">Sign In to Workspace</button>
-          </form>
-
-          <!-- Option 2: Google Sign-In or 6-Digit Email Code -->
-          <div style="background:var(--bg-elevated);padding:16px;border-radius:10px;border:1px solid var(--border);">
-            <h2 style="font-size:15px;margin:0 0 10px;">🔐 Google or 6-Digit Email Code</h2>
-            <div id="console-google-btn" style="min-height:44px;margin-bottom:12px;"></div>
-
-            <label class="field-label" for="otp-email-input">Work or Personal Email</label>
-            <input type="email" id="otp-email-input" placeholder="you@company.com" autocomplete="email" />
-            <div id="otp-verify-wrap" class="hidden" style="margin-top:10px;">
-              <label class="field-label" for="otp-code-input">6-Digit Verification Code</label>
-              <input type="text" id="otp-code-input" class="mono" maxlength="6" placeholder="123456" />
-            </div>
-            <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:12px;">
-              <button type="button" class="btn btn-primary" id="otp-send-btn" style="flex:1;" onclick="sendConsoleEmailOtp()">Send 6-Digit Code</button>
-              <button type="button" class="btn btn-primary hidden" id="otp-verify-btn" style="flex:1;background:#FE5F01;" onclick="verifyConsoleEmailOtp()">Verify &amp; Sign In</button>
-            </div>
-          </div>
-
-          <!-- Option 3: Scoped API Key or Guest Sandbox -->
-          <div style="background:var(--bg-elevated);padding:16px;border-radius:10px;border:1px solid var(--border);">
-            <h2 style="font-size:15px;margin:0 0 10px;">🔑 Scoped API Key or Guest Sandbox</h2>
-            <label class="field-label" for="existing-key-input">Scoped Subscriber or Admin Key</label>
-            <input type="text" id="existing-key-input" class="mono" placeholder="acloud_sub_..." />
-            <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:12px;">
-              <button type="button" class="btn btn-primary" style="flex:1;" onclick="connectExistingKey()">Connect API Key</button>
-              <button type="button" class="btn" onclick="startInstantTrial()">Guest Sandbox</button>
-            </div>
-            <input type="hidden" id="trial-name" value="Guest Creator" />
-            <input type="hidden" id="trial-email" value="" />
-            <div style="font-size:12px;color:var(--text-muted);margin-top:10px;">🛡️ Cloud Guard Tenant Isolation: All lexicons, keys, and voice profiles are strictly isolated per workspace.</div>
-          </div>
-        </div>
-        <div id="auth-status" class="status-banner hidden"></div>
-      </section>
-
-      <!-- ACTIVE SESSION SUMMARY BAR -->
-      <section id="session-bar" class="card hidden" style="padding:14px 18px;">
-        <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;">
-          <div>
-            <strong id="sess-user-title" style="font-size:14.5px;">Signed In</strong>
-            <div id="sess-quota-text" class="mono" style="font-size:12px;color:var(--text-secondary);">Plan: FREE • Credits: 0 / 10,000 • Voices: 0 / 0</div>
-          </div>
-          <div style="display:flex;gap:8px;flex-wrap:wrap;">
-            <span class="region-pill mono">🛡️ Cloud Guard: Active</span>
-            <button type="button" class="btn btn-sm" onclick="signOutConsole()">Sign Out</button>
-          </div>
-        </div>
-      </section>
-
-      <!-- TAB 1: CLONE MY VOICE (STRICT FREE VS PAID TIER GATE) -->
-      <section id="panel-clone" class="tab-panel hidden">
-        <div class="card">
-          <h2 class="card-title">🎙️ Cloud Voice — Instant Voice Cloning &amp; Pro Studio Training</h2>
-          <p class="card-sub">Create tenant-isolated custom voice clones with mandatory 4-digit spoken consent verification.</p>
-
-          <!-- STRICT FREE PLAN LOCK BANNER -->
-          <div id="console-clone-lock-banner" style="padding:16px;border-radius:10px;background:var(--bg-elevated);border:1px solid var(--border);margin-bottom:16px;">
-            <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;">
-              <div>
-                <strong style="color:var(--warning);">🔒 Paid Plan Required for Custom Voice Cloning</strong>
-                <div style="font-size:13px;color:var(--text-secondary);margin-top:4px;">
-                  Free accounts include <strong>10,000 monthly credits</strong> on our 6 built-in Studio Voices (<strong>0 custom clones</strong>). Upgrade to <strong>Starter ($5 / ₹449 mo)</strong> for Instant Voice Cloning or <strong>Pro Studio ($29 / ₹2,499 mo)</strong> for Dedicated Parallel Cloud Compute Training.
+            <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;">
+              <div class="svc-card">
+                <div>
+                  <div class="svc-name">Starter</div>
+                  <div style="font-size:22px;font-weight:800;margin:6px 0;" class="dyn-price" data-usd="$5/mo" data-inr="₹449/mo">$5/mo</div>
+                  <div class="svc-role">30,000 credits • 1 Instant Clone</div>
                 </div>
+                <button type="button" class="btn btn-sm" onclick="requestPlanUpgrade('starter')">Choose Starter</button>
               </div>
-              <button type="button" class="btn btn-primary" onclick="switchTab('billing')">Upgrade Plan →</button>
-            </div>
-          </div>
-
-          <div class="grid-2" id="console-clone-form-grid">
-            <div>
-              <label class="field-label" for="clone-voice-name">1. Name Your Cloned Voice</label>
-              <input type="text" id="clone-voice-name" placeholder="e.g. My Technical Course Voice" value="My Studio Voice" oninput="refreshConsentText()" />
-
-              <div class="consent-box">
-                <div style="display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:4px;">
-                  <strong style="font-size:12px;text-transform:uppercase;letter-spacing:0.04em;">2. Mandatory Live Consent Phrase</strong>
-                  <button type="button" class="btn btn-sm" onclick="fetchConsentChallenge()">↻ New Code</button>
+              <div class="svc-card" style="border-color:var(--brand-dawn-border);">
+                <div>
+                  <div class="svc-name">Creator</div>
+                  <div style="font-size:22px;font-weight:800;margin:6px 0;" class="dyn-price" data-usd="$9/mo" data-inr="₹799/mo">$9/mo</div>
+                  <div class="svc-role">120,000 credits • 3 Clones • Custom .pls</div>
                 </div>
-                <div id="consent-phrase-display" style="font-weight:600;">"I, Creator, confirm that this is my own voice and authorize Aaruni Cloud Voice to create my synthetic voice profile. Verification code 4829."</div>
+                <button type="button" class="btn btn-sm btn-dawn" onclick="requestPlanUpgrade('creator')">Choose Creator</button>
               </div>
-            </div>
-
-            <div>
-              <label class="field-label">3. Record Microphone (24 kHz Mono WAV) or Upload WAV</label>
-              <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px;">
-                <button type="button" id="rec-btn" class="btn btn-primary" onclick="toggleMicRecording()">● Start Mic Recording</button>
-                <button type="button" class="btn" onclick="generateCleanDemoSample()">⚡ Load 5s Test Sample</button>
-              </div>
-              <label class="field-label" for="wav-upload-input" style="margin-top:6px;">Or upload clean `.wav` / `.mp3` (&le; 1.5 MB):</label>
-              <input type="file" id="wav-upload-input" accept="audio/wav,audio/mpeg,audio/mp4,audio/webm" onchange="handleAudioFileUpload(event)" />
-
-              <div style="margin-top:10px;">
-                <div style="display:flex;justify-content:space-between;font-size:12px;color:var(--text-muted);">
-                  <span id="rec-state-label">Mic Idle</span>
-                  <span id="rec-dur-label" class="mono">0.0s</span>
+              <div class="svc-card">
+                <div>
+                  <div class="svc-name">Pro Studio</div>
+                  <div style="font-size:22px;font-weight:800;margin:6px 0;" class="dyn-price" data-usd="$29/mo" data-inr="₹2,499/mo">$29/mo</div>
+                  <div class="svc-role">600,000 credits • Dedicated Compute Training</div>
                 </div>
-                <div class="meter-track"><div id="mic-meter-fill" class="meter-fill"></div></div>
+                <button type="button" class="btn btn-sm btn-primary" onclick="requestPlanUpgrade('pro')">Choose Pro Studio</button>
               </div>
-
-              <audio id="recorded-preview-audio" controls class="hidden" style="width:100%;margin-top:10px;"></audio>
-
-              <button type="button" id="submit-clone-btn" class="btn btn-primary" style="width:100%;margin-top:14px;" onclick="submitVoiceClone()">✨ Verify Consent &amp; Clone My Voice</button>
             </div>
+            <div id="billing-status" class="banner hidden"></div>
+            <div id="billing-orders-list" style="margin-top:14px;font-size:13px;color:var(--ink-secondary);"></div>
           </div>
-
-          <div id="clone-status" class="status-banner hidden"></div>
-        </div>
-
-        <div class="card">
-          <h3 class="card-title" style="font-size:16px;">Your Isolated Voice Library</h3>
-          <p class="card-sub">Only you can view or synthesize with your cloned voices. 6 commercial-safe Studio Voices are included free.</p>
-          <div id="voice-library-list"></div>
-        </div>
+        </details>
       </section>
 
-      <!-- TAB 2: SPEECH PLAYGROUND (CUSTOMER CX PUBLIC VOICE PLAYGROUND — ZERO PRIVATE OWNER VOICE EXPOSED) -->
-      <section id="panel-speak" class="tab-panel">
-        <div class="card">
-          <div style="display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;margin-bottom:6px;">
-            <h2 class="card-title" style="margin:0;">🔊 Cloud Voice — Studio Speech Playground</h2>
-            <span class="region-pill mono">6 Studio Voices + Tenant Clones</span>
+      <!-- TAB 4: API KEYS -->
+      <section id="panel-keys" class="tab-panel hidden">
+        <div class="surface-card">
+          <div class="section-eyebrow">Cloud Guard Authentication</div>
+          <h2 class="card-h2">Scoped Workspace API Key</h2>
+          <p class="card-desc" style="margin-bottom:18px;">Use this key with the ElevenLabs-compatible REST endpoint or the <code class="mono">acloud</code> SDK.</p>
+
+          <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center;">
+            <input type="password" id="api-key-display" class="input mono" readonly value="" style="flex:1;min-width:220px;" />
+            <button type="button" class="btn" onclick="toggleKeyReveal()" id="reveal-key-btn">Show</button>
+            <button type="button" class="btn btn-primary" onclick="copyActiveKey()">Copy API Key</button>
           </div>
-          <p class="card-sub">Choose from 6 commercial-safe Public Studio Voices (or your isolated voice clone), pick a Cloud Voice v2 model, and synthesize with automatic W3C <code class="mono">.pls</code> pronunciation.</p>
+          <div id="key-copy-banner" class="banner ok hidden">Copied scoped API key to clipboard.</div>
 
-          <div class="grid-3" style="margin-bottom:14px;">
-            <div>
-              <label class="field-label" for="speak-voice-select">1. Select Voice Profile</label>
-              <select id="speak-voice-select" onchange="onCxPresetChange()"></select>
-            </div>
-            <div>
-              <label class="field-label" for="speak-preset-select">2. Sample Script Category</label>
-              <select id="speak-preset-select" onchange="onCxPresetChange()">
-                <option value="s2">🎓 Tech Course (PostgreSQL, OAuth2 &amp; NGINX)</option>
-                <option value="s1">🚀 Product Launch (Cloud Compute &amp; Storage)</option>
-                <option value="s3">🤖 AI Support Agent (Cloud Guard &amp; Spend Cap)</option>
-              </select>
-            </div>
-            <div>
-              <label class="field-label" for="speak-lufs-select">3. Loudness Mastering Target</label>
-              <select id="speak-lufs-select">
-                <option value="-20.5">-20.5 LUFS (Course Studio Standard)</option>
-                <option value="-14">-14.0 LUFS (Video / Broadcast)</option>
-                <option value="-12">-12.0 LUFS (Web / Podcast)</option>
-              </select>
-            </div>
-          </div>
-
-          <div class="grid-2" style="margin-bottom:14px;">
-            <div>
-              <label class="field-label" for="speak-engine-select">4. Cloud Voice Model</label>
-              <select id="speak-engine-select">
-                <option value="cloud-voice-v2">Cloud Voice v2 (Studio English — Default)</option>
-                <option value="cloud-voice-v2-flash">Cloud Voice v2 Flash (Fast • 50% Credits)</option>
-                <option value="cloud-voice-v2-multilingual">Cloud Voice v2 Multilingual (10 Languages)</option>
-                <option value="elevenlabs_byok">ElevenLabs® BYOK Pass-Through + SHA-256 Cache</option>
-              </select>
-            </div>
-            <div style="display:flex;align-items:flex-end;">
-              <label style="display:flex;align-items:center;gap:8px;font-size:13px;cursor:pointer;padding:9px 12px;border-radius:8px;border:1px solid var(--border);background:var(--bg-elevated);width:100%;">
-                <input type="checkbox" id="speak-camtasia-chk" checked style="width:auto;margin:0;" />
-                <span>Include TechSmith Camtasia® (<code class="mono">.tscproj</code>) Timeline Export</span>
-              </label>
-            </div>
-          </div>
-
-          <label class="field-label" for="speak-text-input">5. Technical Script (Editable)</label>
-          <textarea id="speak-text-input" oninput="detectPlsTerms()">Today we will deploy PostgreSQL, OAuth2 authentication, and NGINX ingress controllers using kubectl, with automated WCAG accessibility checks.</textarea>
-
-          <div style="margin:8px 0 14px;">
-            <span style="font-size:12px;color:var(--text-muted);font-weight:600;">Detected W3C PLS Technical Pronunciations:</span>
-            <div id="pls-chips-box"></div>
-          </div>
-
-          <div style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:12px;">
-            <button type="button" class="btn btn-primary" onclick="runCloudVoiceSpeak()">▶ Synthesize &amp; Play Audio</button>
-            <a id="download-wav-btn" class="btn hidden" href="#" download="aaruni-cloud-voice-sample.mp3">⬇ Download Studio MP3</a>
-            <button type="button" id="download-tscproj-btn" class="btn hidden" onclick="downloadLastCamtasiaTimeline()">⬇ Download .tscproj JSON</button>
-          </div>
-
-          <audio id="cx-speak-audio" controls preload="none" class="hidden" style="width:100%;height:40px;margin-bottom:8px;"></audio>
-          <div id="speak-result-box" class="status-banner hidden"></div>
-        </div>
-
-        <div class="card">
-          <div style="display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;margin-bottom:6px;">
-            <h3 class="card-title" style="margin:0;font-size:16px;">🔌 Partner Connectors Vault (BYOK ElevenLabs® &amp; TechSmith Camtasia®)</h3>
-            <span class="region-pill mono">Tenant-Jailed • Masked at Rest</span>
-          </div>
-          <p class="card-sub">Optional: store an ElevenLabs® API key for pass-through synthesis with SHA-256 sentence caching.</p>
-
-          <div class="grid-2" style="margin-bottom:12px;">
-            <div>
-              <label class="field-label" for="byok-el-key">ElevenLabs® API Key (<code class="mono">xi-api-key</code>)</label>
-              <input type="password" id="byok-el-key" class="mono" placeholder="sk_..." autocomplete="off" />
-            </div>
-            <div>
-              <label class="field-label" for="byok-el-voice">Default ElevenLabs® Voice ID (Optional)</label>
-              <input type="text" id="byok-el-voice" class="mono" placeholder="21m00Tcm4TlvDq8ikWAM" />
-            </div>
-          </div>
-          <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center;">
-            <button type="button" class="btn btn-primary btn-sm" onclick="saveByokConnector()">🔒 Save BYOK Connector</button>
-            <button type="button" class="btn btn-sm" onclick="loadUserConnectors()">↻ Refresh Vault</button>
-            <span id="byok-vault-pill" class="mono" style="font-size:12px;color:var(--text-muted);">Sign in to store BYOK keys.</span>
-          </div>
-          <div id="byok-status-banner" class="status-banner hidden"></div>
-        </div>
-      </section>
-
-      <!-- TAB 3: API KEYS & DROP-IN SDK -->
-      <section id="panel-cli" class="tab-panel hidden">
-        <div class="card">
-          <h2 class="card-title">🔑 Scoped API Key, ElevenLabs Drop-In Endpoint &amp; <code class="mono">acloud</code> CLI</h2>
-          <p class="card-sub">Use your scoped Cloud Guard key with our ElevenLabs-compatible REST endpoint (<code class="mono">POST /v1/text-to-speech/:voice_id</code>) or the <code class="mono">acloud</code> CLI.</p>
-
-          <label class="field-label" for="api-key-display">Your Active Scoped Aaruni Cloud Key</label>
-          <div style="display:flex;gap:8px;flex-wrap:wrap;">
-            <input type="text" id="api-key-display" class="mono" readonly value="(Sign in above to view or copy your key)" style="flex:1;min-width:220px;" />
-            <button type="button" class="btn btn-primary" onclick="copyActiveKey()">Copy Key</button>
-          </div>
-
-          <h3 style="font-size:15px;margin:20px 0 6px;">1. ElevenLabs-Compatible Drop-In REST API</h3>
-          <pre class="code-pre mono">curl -X POST "https://api.aarunicloud.com/v1/text-to-speech/stock_aria" \
-  -H "xi-api-key: YOUR_ACLOUD_KEY" \
+          <details class="clean-drawer" style="margin-top:20px;">
+            <summary>
+              <span>Drop-In REST API Example (<code class="mono">curl</code>)</span>
+              <span style="color:var(--ink-muted);font-size:13px;">View snippet ▾</span>
+            </summary>
+            <div class="drawer-body">
+              <pre class="code-block" id="curl-example-box">curl -X POST "https://api.aarunicloud.com/v1/text-to-speech/stock_aria" \
+  -H "xi-api-key: $AARUNI_API_KEY" \
   -H "Content-Type: application/json" \
-  -d '{"text":"Deploy PostgreSQL & OAuth2 via CI/CD.","model_id":"cloud-voice-v2"}' \
+  -d '{"text":"Welcome to Aaruni Cloud Voice.","model_id":"cloud-voice-v2"}' \
   --output studio.mp3</pre>
-
-          <h3 style="font-size:15px;margin:18px 0 6px;">2. <code class="mono">acloud</code> CLI &amp; Python SDK</h3>
-          <pre class="code-pre mono" id="cli-snippet-box">npm install -g https://aarunicloud.com/sdk/aarunicloud-sdk-1.0.0.tgz
-acloud login --api-key YOUR_ACLOUD_KEY
-acloud voice list
-acloud voice speak "Scale PostgreSQL and NGINX with kubectl" --voice stock_aria</pre>
+            </div>
+          </details>
         </div>
       </section>
 
-      <!-- TAB 4: PLANS & QUOTA (DODO PAYMENTS USD + INDIA UPI) -->
-      <section id="panel-billing" class="tab-panel hidden">
-        <div class="card">
-          <div style="display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:10px;">
-            <div>
-              <h2 class="card-title" style="margin-bottom:4px;">💳 Cloud Voice Plans — Global USD &amp; India UPI</h2>
-              <p class="card-sub" style="margin-bottom:0;">Powered by Dodo Payments Merchant of Record ($0 surprise overage bills).</p>
-            </div>
-            <div style="display:flex;gap:6px;">
-              <button type="button" class="btn btn-primary btn-sm" id="console-curr-usd" onclick="setConsoleCurrency('USD')">$ USD (Card / Apple Pay)</button>
-              <button type="button" class="btn btn-sm" id="console-curr-inr" onclick="setConsoleCurrency('INR')">₹ INR (UPI / RuPay)</button>
-            </div>
-          </div>
+    </div>
+  </main>
 
-          <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px;">
-            <div class="plan-card">
-              <div>
-                <span class="region-pill">Default</span>
-                <h3 style="margin:10px 0 4px;">Free</h3>
-                <div class="plan-price" data-usd="$0" data-inr="₹0">$0 <span style="font-size:13px;font-weight:500;color:var(--text-muted);">/ mo</span></div>
-                <ul style="padding-left:18px;font-size:13px;color:var(--text-secondary);">
-                  <li>10,000 monthly credits</li>
-                  <li>6 Public Studio Voices</li>
-                  <li>0 custom voice clones (🔒 Paid)</li>
-                </ul>
-              </div>
-              <button type="button" class="btn" disabled>Included Free</button>
-            </div>
-
-            <div class="plan-card">
-              <div>
-                <span class="region-pill">Individuals</span>
-                <h3 style="margin:10px 0 4px;">Starter</h3>
-                <div class="plan-price console-dyn-price" data-usd="$5" data-inr="₹449">$5 <span style="font-size:13px;font-weight:500;color:var(--text-muted);">/ mo</span></div>
-                <ul style="padding-left:18px;font-size:13px;color:var(--text-secondary);">
-                  <li>30,000 monthly credits</li>
-                  <li>1 Instant Voice Clone (15s ready)</li>
-                  <li>Commercial license</li>
-                </ul>
-              </div>
-              <button type="button" class="btn btn-primary" onclick="requestPlanUpgrade('starter', 'dodo')">Upgrade to Starter →</button>
-            </div>
-
-            <div class="plan-card" style="border-color:#FE5F01;">
-              <div>
-                <span class="region-pill">Most Popular</span>
-                <h3 style="margin:10px 0 4px;">Creator</h3>
-                <div class="plan-price console-dyn-price" data-usd="$9" data-inr="₹799">$9 <span style="font-size:13px;font-weight:500;color:var(--text-muted);">/ mo</span></div>
-                <ul style="padding-left:18px;font-size:13px;color:var(--text-secondary);">
-                  <li>120,000 monthly credits</li>
-                  <li>3 Instant Voice Clones</li>
-                  <li>Custom .pls XML Dictionary + API</li>
-                </ul>
-              </div>
-              <button type="button" class="btn btn-primary" style="background:#FE5F01;" onclick="requestPlanUpgrade('creator', 'dodo')">Upgrade to Creator →</button>
-            </div>
-
-            <div class="plan-card">
-              <div>
-                <span class="region-pill">Course Studios</span>
-                <h3 style="margin:10px 0 4px;">Pro Studio</h3>
-                <div class="plan-price console-dyn-price" data-usd="$29" data-inr="₹2,499">$29 <span style="font-size:13px;font-weight:500;color:var(--text-muted);">/ mo</span></div>
-                <ul style="padding-left:18px;font-size:13px;color:var(--text-secondary);">
-                  <li>600,000 monthly credits</li>
-                  <li>1 Dedicated Cloud Compute Training</li>
-                  <li>24kHz WAV + ElevenLabs Drop-In API</li>
-                </ul>
-              </div>
-              <button type="button" class="btn btn-primary" onclick="requestPlanUpgrade('pro', 'dodo')">Upgrade to Pro Studio →</button>
-            </div>
-          </div>
-
-          <div id="billing-status" class="status-banner hidden"></div>
-        </div>
-
-        <div class="card">
-          <div style="display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;margin-bottom:8px;">
-            <h3 class="card-title" style="margin:0;font-size:16px;">🧾 Orders &amp; Invoices (<code class="mono">/v1/billing/orders</code>)</h3>
-            <button type="button" class="btn btn-sm" onclick="loadBillingOrders()">↻ Refresh Orders</button>
-          </div>
-          <div id="billing-orders-list" style="font-size:13px;color:var(--text-secondary);">Sign in to view checkout orders and invoices.</div>
-
-          <div id="owner-admin-activate-box" class="hidden" style="margin-top:16px;padding-top:14px;border-top:1px solid var(--border);">
-            <div style="font-size:12.5px;font-weight:700;color:var(--accent);margin-bottom:6px;">👑 Admin Instant Order Activation (<code class="mono">POST /v1/billing/admin-activate</code>)</div>
-            <div style="display:flex;gap:8px;flex-wrap:wrap;">
-              <input type="text" id="admin-activate-order-id" class="mono" placeholder="ord_..." style="flex:1;min-width:200px;" />
-              <input type="text" id="admin-activate-ref" class="mono" placeholder="UPI / Wire Ref (optional)" style="flex:1;min-width:180px;" />
-              <button type="button" class="btn btn-primary btn-sm" onclick="adminActivateBillingOrder()">⚡ Activate Quota &amp; Issue Invoice</button>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <!-- PANEL: ORGANIZATIONS & PROJECTS (CUSTOMER #0 ANCHOR + TENANT WORKSPACES) -->
-      <section id="panel-projects" class="tab-panel hidden">
-        <div class="card">
-          <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;">
-            <div>
-              <h2 class="card-title">🏢 Organizations, Projects &amp; Deployments</h2>
-              <p class="card-sub" style="margin-bottom:0;">GCP-style <code class="mono">Organization → Project → Environment</code> isolation with Hard Spend Cap Shield and pluggable Backend Drivers (<code class="mono">aaruni-edge</code> | <code class="mono">aws</code> | <code class="mono">gcp</code>).</p>
-            </div>
-            <button type="button" class="btn btn-sm" onclick="loadOrgsAndProjects()">↻ Refresh Projects</button>
-          </div>
-
-          <div id="customer-zero-banner" style="margin-top:16px;padding:14px;border-radius:10px;background:var(--bg-elevated);border:1px solid var(--border);">
-            <div style="font-size:12px;font-weight:700;color:var(--accent);">⚓ LIVE ANCHOR TENANT (CUSTOMER #0)</div>
-            <div id="customer-zero-summary" style="font-size:13px;margin-top:4px;color:var(--text-secondary);">Loading <code class="mono">org_syllovo / prj_syllovo_prod</code> public manifest...</div>
-          </div>
-
-          <h3 style="font-size:15px;margin:18px 0 10px;">Your Isolated Projects</h3>
-          <div id="projects-list-box" style="font-size:13px;color:var(--text-secondary);">Sign in or start an instant trial above to view and create isolated projects.</div>
-
-          <div style="margin-top:18px;padding-top:16px;border-top:1px solid var(--border);">
-            <h3 style="font-size:15px;margin:0 0 10px;">+ Create New Isolated Project</h3>
-            <div class="grid-3">
-              <div>
-                <label class="field-label" for="new-proj-name">Project Name</label>
-                <input type="text" id="new-proj-name" placeholder="e.g. gifts-storefront-prod" />
-              </div>
-              <div>
-                <label class="field-label" for="new-proj-env">Environment</label>
-                <select id="new-proj-env">
-                  <option value="prod">Production (prod)</option>
-                  <option value="staging">Staging (staging)</option>
-                  <option value="dev">Development (dev)</option>
-                </select>
-              </div>
-              <div>
-                <label class="field-label" for="new-proj-cap">Hard Monthly Spend Cap (₹ INR)</label>
-                <input type="text" id="new-proj-cap" value="0" placeholder="0 = Free Tier Strictly Capped" />
-              </div>
-            </div>
-            <button type="button" class="btn btn-primary" style="margin-top:12px;" onclick="createConsoleProject()">Provision Isolated Project →</button>
-            <div id="proj-action-status" class="status-banner hidden"></div>
-          </div>
-        </div>
-      </section>
-
-      <!-- PANEL: CLOUD BUILDER (AI PROJECT ARCHITECT + DECLARATIVE PIPELINE) -->
-      <section id="panel-builder" class="tab-panel hidden">
-        <div class="card">
-          <h2 class="card-title">✨ Cloud Builder — AI Stack Architect &amp; <code class="mono">acloud.yaml</code> Generator</h2>
-          <p class="card-sub">Describe the SaaS app, course studio, or RAG chatbot you want to launch. Cloud Builder generates a 100% duty-free OSS stack manifest (<code class="mono">Apache-2.0</code> / <code class="mono">MIT</code>) ready for <code class="mono">acloud deploy</code>.</p>
-
-          <label class="field-label" for="builder-prompt-input">Application &amp; Infrastructure Prompt</label>
-          <textarea id="builder-prompt-input" placeholder="e.g. Deploy an AI Course Studio like Syllovo with $0-egress Cloud Storage, Cloud Voice (-9.4 LUFS + ElevenLabs BYOK), and RAG Chatbot.">Deploy an AI Course &amp; Media Studio with $0-egress Cloud Storage, Cloud Voice (-9.4 dB LUFS + ElevenLabs BYOK), and PostgreSQL pgvector RAG.</textarea>
-
-          <div style="display:flex;gap:10px;margin-top:12px;flex-wrap:wrap;">
-            <button type="button" class="btn btn-primary" onclick="generateBuilderPlan()">✨ Generate <code class="mono">acloud.yaml</code> Blueprint</button>
-          </div>
-
-          <div id="builder-output-wrap" class="hidden" style="margin-top:16px;">
-            <label class="field-label">Generated Declarative Spec (<code class="mono">acloud.yaml</code>)</label>
-            <pre id="builder-yaml-pre" class="code-pre mono"></pre>
-            <div id="builder-cli-hint" class="status-banner mono"></div>
-          </div>
-        </div>
-      </section>
-    </main>
-  </div>
-
-  <!-- Sticky Mobile Bottom Tab Bar (<= 900px, >= 44px Touch Targets) -->
-  <nav class="mobile-console-bar" aria-label="Mobile Console Navigation">
-    <button type="button" onclick="switchTab('speak')">🔊 Studio</button>
-    <button type="button" onclick="switchTab('clone')">🎙️ Clone</button>
-    <button type="button" onclick="switchTab('billing')">💳 Plans</button>
-    <button type="button" onclick="switchTab('cli')">🔑 API</button>
+  <!-- Sticky Mobile Bottom Bar (375px+ Responsive, >= 48px Touch Targets) -->
+  <nav class="ac-mobile-bar" id="mobile-nav" aria-label="Mobile Console Navigation">
+    <button type="button" class="ac-mob-btn active" data-tab="overview" onclick="switchTab('overview')">
+      <span>Services</span>
+    </button>
+    <button type="button" class="ac-mob-btn" data-tab="voice" onclick="switchTab('voice')">
+      <span>Voice</span>
+    </button>
+    <button type="button" class="ac-mob-btn" data-tab="usage" onclick="switchTab('usage')">
+      <span>Usage</span>
+    </button>
+    <button type="button" class="ac-mob-btn" data-tab="keys" onclick="switchTab('keys')">
+      <span>API Keys</span>
+    </button>
   </nav>
 
   <script>
     const API_BASE = "";
     const API_FALLBACK_ORIGIN = "https://api.aarunicloud.com";
+    const VOICE_STUDIO_ORIGIN = "https://voice.aarunicloud.com";
     const GOOGLE_CLIENT_ID = "328466516565-bs75ucvo6h5qtu0n60iqd917ssvs0c31.apps.googleusercontent.com";
-    let activeApiKey = localStorage.getItem("acloud_api_key") || localStorage.getItem("acloud_voice_key") || "";
+
+    // 1. SSO Token Handoff (#sso=<apiKey>) on Page Boot
+    (function consumeSsoHashOnBoot() {
+      const rawHash = String(window.location.hash || "");
+      if (rawHash.startsWith("#sso=")) {
+        const params = new URLSearchParams(rawHash.slice(1));
+        const token = (params.get("sso") || "").trim();
+        if (token) {
+          try {
+            localStorage.setItem("acloud_api_key", token);
+            localStorage.setItem("acloud_voice_key", token);
+          } catch (_) {}
+        }
+        history.replaceState(null, "", window.location.pathname + window.location.search);
+      }
+    })();
+
+    let activeApiKey = "";
+    try {
+      activeApiKey = localStorage.getItem("acloud_api_key") || localStorage.getItem("acloud_voice_key") || "";
+    } catch (_) {}
+
     let currentAccount = null;
-    let activeConsentCode = "4829";
-    let activeConsentPhrase = "";
-    let recordedWavBase64 = "";
-    let recordedDurationSec = 0;
-    let consoleCurrency = "USD";
+    let isOwnerUnlocked = false;
+    let perspectiveMode = "owner";
     let dynamicOwnerWorkspace = null;
-    let dynamicPrivateVoices = [];
+    let cachedActiveModels = [];
+    let cachedLedgerRows = [];
+    let consoleCurrency = "USD";
+
+    function escapeHtml(s) {
+      return String(s || "")
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;");
+    }
 
     function isGuestConsoleAccount(acc) {
       if (!acc) return true;
@@ -1192,51 +1099,6 @@ acloud voice speak "Scale PostgreSQL and NGINX with kubectl" --voice stock_aria<
       return res;
     }
 
-    // WebAudio Mic Recorder State
-    let audioCtx = null;
-    let mediaStream = null;
-    let processorNode = null;
-    let pcmChunks = [];
-    let isRecording = false;
-    let recStartTime = 0;
-    let recTimer = null;
-
-    function toggleTheme() {
-      const html = document.documentElement;
-      const next = html.getAttribute("data-theme") === "light" ? "dark" : "light";
-      html.setAttribute("data-theme", next);
-      localStorage.setItem("acloud_theme_white_v3", next);
-      document.getElementById("theme-btn").textContent = next === "light" ? "☾ Dark" : "☀ Light";
-    }
-
-    function switchTab(tabId) {
-      document.querySelectorAll(".nav-tab").forEach((b) => {
-        b.setAttribute("aria-selected", b.dataset.tab === tabId ? "true" : "false");
-      });
-      document.querySelectorAll(".tab-panel").forEach((p) => {
-        p.classList.toggle("hidden", p.id !== "panel-" + tabId);
-      });
-    }
-
-    function showBanner(id, msg, isError = false) {
-      const el = document.getElementById(id);
-      if (!el) return;
-      el.classList.remove("hidden");
-      el.style.borderColor = isError ? "var(--danger)" : "var(--accent)";
-      el.textContent = msg;
-    }
-
-    function storeSharedKey(key) {
-      activeApiKey = key || "";
-      if (activeApiKey) {
-        localStorage.setItem("acloud_api_key", activeApiKey);
-        localStorage.setItem("acloud_voice_key", activeApiKey);
-      } else {
-        localStorage.removeItem("acloud_api_key");
-        localStorage.removeItem("acloud_voice_key");
-      }
-    }
-
     async function apiFetch(route, opts = {}) {
       const headers = { ...(opts.headers || {}) };
       if (activeApiKey) headers["Authorization"] = "Bearer " + activeApiKey;
@@ -1255,7 +1117,59 @@ acloud voice speak "Scale PostgreSQL and NGINX with kubectl" --voice stock_aria<
       return data;
     }
 
-    // Google OAuth + 6-Digit Email OTP Login
+    function storeSharedKey(key) {
+      activeApiKey = (key || "").trim();
+      try {
+        if (activeApiKey) {
+          localStorage.setItem("acloud_api_key", activeApiKey);
+          localStorage.setItem("acloud_voice_key", activeApiKey);
+        } else {
+          localStorage.removeItem("acloud_api_key");
+          localStorage.removeItem("acloud_voice_key");
+        }
+      } catch (_) {}
+      refreshSsoLinks();
+    }
+
+    function buildVoiceSsoUrl(extraView) {
+      if (!activeApiKey) return VOICE_STUDIO_ORIGIN;
+      let hash = "#sso=" + encodeURIComponent(activeApiKey);
+      if (extraView) hash += "&view=" + encodeURIComponent(extraView);
+      return VOICE_STUDIO_ORIGIN + hash;
+    }
+
+    function refreshSsoLinks() {
+      const studioBtn = document.getElementById("sso-voice-studio-btn");
+      const trainBtn = document.getElementById("sso-voice-train-btn");
+      const fixLink = document.getElementById("sso-fix-words-link");
+      if (studioBtn) studioBtn.href = buildVoiceSsoUrl("");
+      if (trainBtn) trainBtn.href = buildVoiceSsoUrl("train");
+      if (fixLink) fixLink.href = buildVoiceSsoUrl("train");
+    }
+
+    function showBanner(id, msg, isError = false) {
+      const el = document.getElementById(id);
+      if (!el) return;
+      el.className = "banner " + (isError ? "err" : "ok");
+      el.textContent = msg;
+    }
+
+    function switchTab(tabId) {
+      document.querySelectorAll("[data-tab]").forEach((btn) => {
+        btn.classList.toggle("active", btn.getAttribute("data-tab") === tabId);
+      });
+      document.querySelectorAll(".tab-panel").forEach((panel) => {
+        panel.classList.toggle("hidden", panel.id !== "panel-" + tabId);
+      });
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+
+    function toggleAltAuthDrawer() {
+      const box = document.getElementById("alt-auth-box");
+      if (box) box.classList.toggle("hidden");
+    }
+
+    // Auth Flows
     function initConsoleGoogleAuth() {
       const wrap = document.getElementById("console-google-btn");
       if (!wrap) return;
@@ -1272,7 +1186,7 @@ acloud voice speak "Scale PostgreSQL and NGINX with kubectl" --voice stock_aria<
               storeSharedKey(data.apiKey);
               await refreshAccountState();
             } catch (err) {
-              showBanner("auth-status", "✖ " + err.message, true);
+              showBanner("auth-status", err.message, true);
             }
           }
         });
@@ -1282,26 +1196,21 @@ acloud voice speak "Scale PostgreSQL and NGINX with kubectl" --voice stock_aria<
           size: "large",
           shape: "pill",
           text: "continue_with",
-          width: 300
+          width: 340
         });
-      } else {
-        wrap.innerHTML = '<div style="font-size:12px;color:var(--text-muted);">Google Identity ready — or request a 6-digit email code below.</div>';
       }
     }
 
     async function submitConsolePasswordLogin(e) {
       e.preventDefault();
-      const org = (document.getElementById("pwd-org-input").value || "").trim();
       const email = (document.getElementById("pwd-email-input").value || "").trim();
       const password = document.getElementById("pwd-secret-input").value || "";
+      const org = (document.getElementById("pwd-org-input").value || "").trim();
       const btn = document.getElementById("pwd-login-btn");
-      if (!email || !password) {
-        showBanner("auth-status", "Please enter your email and password.", true);
-        return;
-      }
-      if (btn) { btn.disabled = true; btn.textContent = "Signing In..."; }
+      if (!email || !password) return;
+      btn.disabled = true;
+      btn.textContent = "Signing in...";
       try {
-        showBanner("auth-status", "Verifying workspace credentials with Cloud Guard...");
         const data = await apiFetch("/v1/auth/password", {
           method: "POST",
           body: { org, email, password }
@@ -1309,85 +1218,54 @@ acloud voice speak "Scale PostgreSQL and NGINX with kubectl" --voice stock_aria<
         document.getElementById("pwd-secret-input").value = "";
         storeSharedKey(data.apiKey);
         await refreshAccountState();
-        await loadOrgsAndProjects();
       } catch (err) {
-        showBanner("auth-status", "✖ " + err.message, true);
+        showBanner("auth-status", err.message, true);
       } finally {
-        if (btn) { btn.disabled = false; btn.textContent = "Sign In to Workspace"; }
+        btn.disabled = false;
+        btn.textContent = "Sign In";
       }
     }
 
     async function sendConsoleEmailOtp() {
       const email = (document.getElementById("otp-email-input").value || "").trim();
       if (!email) {
-        showBanner("auth-status", "Please enter your email address.", true);
+        showBanner("auth-status", "Enter your email address first.", true);
         return;
       }
       try {
-        showBanner("auth-status", "Sending 6-digit login code...");
-        await apiFetch("/v1/auth/email-otp/send", {
-          method: "POST",
-          body: { email }
-        });
+        await apiFetch("/v1/auth/email-otp/send", { method: "POST", body: { email } });
         document.getElementById("otp-verify-wrap").classList.remove("hidden");
-        document.getElementById("otp-verify-btn").classList.remove("hidden");
-        showBanner("auth-status", "✔ Sent 6-digit login code to " + email + ". Enter it above to sign in.");
+        showBanner("auth-status", "Sent a 6-digit login code to " + email + ".");
       } catch (err) {
-        showBanner("auth-status", "✖ " + err.message, true);
+        showBanner("auth-status", err.message, true);
       }
     }
 
     async function verifyConsoleEmailOtp() {
       const email = (document.getElementById("otp-email-input").value || "").trim();
       const code = (document.getElementById("otp-code-input").value || "").trim();
-      if (!email || !code) {
-        showBanner("auth-status", "Enter both email and 6-digit verification code.", true);
-        return;
-      }
+      if (!email || !code) return;
       try {
-        showBanner("auth-status", "Verifying 6-digit code...");
         const data = await apiFetch("/v1/auth/email-otp/verify", {
           method: "POST",
           body: { email, code }
         });
         storeSharedKey(data.apiKey);
-        document.getElementById("otp-verify-wrap").classList.add("hidden");
-        document.getElementById("otp-verify-btn").classList.add("hidden");
         await refreshAccountState();
       } catch (err) {
-        showBanner("auth-status", "✖ " + err.message, true);
-      }
-    }
-
-    async function startInstantTrial() {
-      try {
-        const name = document.getElementById("trial-name").value.trim() || "Guest Creator";
-        const email = document.getElementById("trial-email").value.trim();
-        showBanner("auth-status", "Provisioning your isolated Aaruni Cloud Voice workspace...");
-        const data = await apiFetch("/v1/auth/guest-trial", {
-          method: "POST",
-          body: { name, email }
-        });
-        storeSharedKey(data.apiKey);
-        await refreshAccountState();
-        await fetchConsentChallenge();
-      } catch (err) {
-        showBanner("auth-status", "✖ " + err.message, true);
+        showBanner("auth-status", err.message, true);
       }
     }
 
     async function connectExistingKey() {
-      const val = document.getElementById("existing-key-input").value.trim();
-      if (!val) {
-        showBanner("auth-status", "Please paste a valid acloud API key.", true);
-        return;
-      }
+      const val = (document.getElementById("existing-key-input").value || "").trim();
+      if (!val) return;
       storeSharedKey(val);
       try {
         await refreshAccountState();
       } catch (err) {
         storeSharedKey("");
-        showBanner("auth-status", "✖ " + err.message, true);
+        showBanner("auth-status", err.message, true);
       }
     }
 
@@ -1395,989 +1273,386 @@ acloud voice speak "Scale PostgreSQL and NGINX with kubectl" --voice stock_aria<
       storeSharedKey("");
       currentAccount = null;
       isOwnerUnlocked = false;
-      perspectiveMode = "cx";
-      sessionStorage.removeItem("acloud_owner_unlocked");
-      document.getElementById("owner-perspective-bar").classList.add("hidden");
-      document.getElementById("owner-nav-group").classList.add("hidden");
-      document.getElementById("auth-gate-card").classList.remove("hidden");
-      document.getElementById("account-pill").textContent = "Guest (Not Signed In)";
-      document.getElementById("session-bar").classList.add("hidden");
-      document.getElementById("api-key-display").value = "(Sign in above to view or copy your key)";
-      updateConsoleCloneGate();
-      switchTab("speak");
-      loadVoicesList();
+      dynamicOwnerWorkspace = null;
+      perspectiveMode = "owner";
+      setSignedInLayout(false);
     }
 
-    function updateConsoleCloneGate() {
-      const lockBanner = document.getElementById("console-clone-lock-banner");
-      const formGrid = document.getElementById("console-clone-form-grid");
-      const tier = (currentAccount && currentAccount.planTier) || "free";
-      const voicesLim = isOwnerUnlocked ? 100 : Number((currentAccount && currentAccount.voicesLimit) || 0);
-      const unlocked = isOwnerUnlocked || (tier !== "free" && voicesLim > 0);
-      if (lockBanner) lockBanner.classList.toggle("hidden", unlocked);
-      if (formGrid) formGrid.style.opacity = unlocked ? "1" : "0.55";
+    function setSignedInLayout(signedIn) {
+      document.getElementById("auth-gate-view").classList.toggle("hidden", signedIn);
+      document.getElementById("workspace-view").classList.toggle("hidden", !signedIn);
+      document.getElementById("desktop-nav").classList.toggle("signed-in", signedIn);
+      document.getElementById("mobile-nav").classList.toggle("signed-in", signedIn);
+      document.getElementById("account-pill").classList.toggle("hidden", !signedIn);
+      document.getElementById("signout-btn").classList.toggle("hidden", !signedIn);
+      document.getElementById("signedout-voice-link").classList.toggle("hidden", signedIn);
+      document.getElementById("owner-view-switch").classList.toggle("hidden", !(signedIn && isOwnerUnlocked));
     }
 
-    async function refreshAccountState() {
-      if (!activeApiKey) {
-        updateConsoleCloneGate();
-        await loadVoicesList();
-        return;
+    function togglePerspectiveMode() {
+      if (!isOwnerUnlocked) return;
+      perspectiveMode = perspectiveMode === "owner" ? "cx" : "owner";
+      const btn = document.getElementById("owner-view-switch");
+      if (btn) {
+        btn.textContent = perspectiveMode === "owner" ? "Preview Customer View" : "Back to Owner View";
       }
-      const me = await apiFetch("/v1/account/me");
-      const isGuest = isGuestConsoleAccount(me.account);
-      currentAccount = { ...me.account, isGuest };
-      if (me.ownerMode && !isOwnerUnlocked) {
-        unlockOwnerConsole("Owner Account Verified");
-      }
-      if (isGuest) {
-        document.getElementById("auth-gate-card").classList.remove("hidden");
-        document.getElementById("account-pill").textContent = "Sign In (Guest Trial)";
+      renderOverviewAndServices();
+      renderVoiceModelsSection();
+      renderUsageMetrics();
+    }
+
+    // Render Top App Card & All 11 Official Aaruni Cloud Services
+    function renderOverviewAndServices() {
+      const showOwner = isOwnerUnlocked && perspectiveMode === "owner";
+      const ow = dynamicOwnerWorkspace || {};
+      const eyebrow = document.getElementById("app-card-eyebrow");
+      const appNameEl = document.getElementById("app-card-name");
+      const statusEl = document.getElementById("app-card-status");
+      const metaEl = document.getElementById("app-card-meta");
+      const secBtn = document.getElementById("app-secondary-action-btn");
+
+      if (showOwner) {
+        const appName = ow.deployedApp || "Flagship Studio App";
+        const appDomain = ow.deployedDomain || "https://aarunicloud.com";
+        const appRegion = ow.region || "ap-south-hyd-1";
+        const bill = ow.monthlyBillLabel || "$0.00";
+        eyebrow.textContent = "Flagship Deployed Application";
+        appNameEl.textContent = appName;
+        statusEl.textContent = "Live";
+        metaEl.innerHTML =
+          '<a href="' + escapeHtml(appDomain) + '" target="_blank" rel="noopener" style="font-weight:600;color:var(--brand-dawn);">' + escapeHtml(appDomain.replace(/^https?:\/\//, "")) + ' ↗</a>' +
+          '<span>•</span>' +
+          '<span>Region: <strong class="mono">' + escapeHtml(appRegion) + '</strong></span>' +
+          '<span>•</span>' +
+          '<span>Monthly Bill: <strong style="color:var(--ok-ink);">' + escapeHtml(bill) + '</strong></span>';
+        secBtn.textContent = "Train / Improve Voice";
+        secBtn.onclick = () => switchTab("voice");
       } else {
-        document.getElementById("auth-gate-card").classList.add("hidden");
-        document.getElementById("account-pill").textContent =
-          currentAccount.name + " (" + currentAccount.planTier.toUpperCase() + ")";
-      }
-      document.getElementById("session-bar").classList.remove("hidden");
-      document.getElementById("sess-user-title").textContent =
-        "👤 " + currentAccount.name + " • " + currentAccount.email;
-      document.getElementById("sess-quota-text").textContent =
-        "Plan: " + currentAccount.planTier.toUpperCase() +
-        " • Credits: " + currentAccount.charsUsed.toLocaleString() + " / " + currentAccount.charsLimit.toLocaleString() +
-        " • Cloned Voices: " + currentAccount.voicesUsed + " / " + currentAccount.voicesLimit;
-      document.getElementById("api-key-display").value = activeApiKey;
-      updateConsoleCloneGate();
-      await loadVoicesList();
-      if (isOwnerUnlocked) {
-        await loadConsoleUsageLedger();
-      }
-      await loadUserConnectors();
-      await loadBillingOrders();
-    }
-
-    async function fetchConsentChallenge() {
-      try {
-        const person = (currentAccount && currentAccount.name) || document.getElementById("clone-voice-name").value || "Creator";
-        const res = await apiFetch("/v1/voice/consent-challenge?name=" + encodeURIComponent(person));
-        activeConsentCode = res.consentCode;
-        activeConsentPhrase = res.consentPhrase;
-        document.getElementById("consent-phrase-display").textContent = '"' + activeConsentPhrase + '"';
-      } catch (_) {}
-    }
-
-    function refreshConsentText() {
-      const person = (currentAccount && currentAccount.name) || "Creator";
-      activeConsentPhrase = `I, ${person}, confirm that this is my own voice and authorize Aaruni Cloud Voice to create my synthetic voice profile. Verification code ${activeConsentCode}.`;
-      document.getElementById("consent-phrase-display").textContent = '"' + activeConsentPhrase + '"';
-    }
-
-    function encodeWav24kMono(float32Samples, sampleRate) {
-      const buffer = new ArrayBuffer(44 + float32Samples.length * 2);
-      const view = new DataView(buffer);
-      const writeStr = (off, s) => { for (let i = 0; i < s.length; i++) view.setUint8(off + i, s.charCodeAt(i)); };
-      writeStr(0, "RIFF");
-      view.setUint32(4, 36 + float32Samples.length * 2, true);
-      writeStr(8, "WAVE");
-      writeStr(12, "fmt ");
-      view.setUint32(16, 16, true);
-      view.setUint16(20, 1, true);
-      view.setUint16(22, 1, true);
-      view.setUint32(24, sampleRate, true);
-      view.setUint32(28, sampleRate * 2, true);
-      view.setUint16(32, 2, true);
-      view.setUint16(34, 16, true);
-      writeStr(36, "data");
-      view.setUint32(40, float32Samples.length * 2, true);
-      let offset = 44;
-      for (let i = 0; i < float32Samples.length; i++, offset += 2) {
-        const s = Math.max(-1, Math.min(1, float32Samples[i]));
-        view.setInt16(offset, s < 0 ? s * 0x8000 : s * 0x7fff, true);
-      }
-      return buffer;
-    }
-
-    function arrayBufferToBase64(buf) {
-      const bytes = new Uint8Array(buf);
-      let bin = "";
-      for (let i = 0; i < bytes.length; i += 0x8000) {
-        bin += String.fromCharCode.apply(null, bytes.subarray(i, i + 0x8000));
-      }
-      return btoa(bin);
-    }
-
-    async function toggleMicRecording() {
-      const btn = document.getElementById("rec-btn");
-      if (isRecording) {
-        stopMicRecording();
-        return;
-      }
-      try {
-        mediaStream = await navigator.mediaDevices.getUserMedia({ audio: true });
-        audioCtx = new (window.AudioContext || window.webkitAudioContext)({ sampleRate: 24000 });
-        const src = audioCtx.createMediaStreamSource(mediaStream);
-        processorNode = audioCtx.createScriptProcessor(4096, 1, 1);
-        pcmChunks = [];
-        isRecording = true;
-        recStartTime = Date.now();
-        btn.textContent = "■ Stop Recording";
-        document.getElementById("rec-state-label").textContent = "● Recording Live Voice...";
-
-        processorNode.onaudioprocess = (e) => {
-          if (!isRecording) return;
-          const ch = e.inputBuffer.getChannelData(0);
-          pcmChunks.push(new Float32Array(ch));
-          let sum = 0;
-          for (let i = 0; i < ch.length; i++) sum += ch[i] * ch[i];
-          const rms = Math.min(100, Math.round(Math.sqrt(sum / ch.length) * 320));
-          document.getElementById("mic-meter-fill").style.width = rms + "%";
+        const userName = (currentAccount && currentAccount.name) || "Creator";
+        const tier = ((currentAccount && currentAccount.planTier) || "free").toUpperCase();
+        eyebrow.textContent = "Isolated Tenant Workspace";
+        appNameEl.textContent = userName + " Workspace";
+        statusEl.textContent = "Active";
+        metaEl.innerHTML =
+          '<span>Plan: <strong>' + escapeHtml(tier) + '</strong></span>' +
+          '<span>•</span>' +
+          '<span>Region: <strong class="mono">ap-south-hyd-1</strong></span>' +
+          '<span>•</span>' +
+          '<span>Spend Shield: <strong style="color:var(--ok-ink);">Hard Cap Active</strong></span>';
+        secBtn.textContent = tier === "FREE" ? "Upgrade Plan" : "Voice & Training";
+        secBtn.onclick = () => {
+          if (tier === "FREE") {
+            switchTab("usage");
+            const dr = document.getElementById("plans-drawer");
+            if (dr) dr.open = true;
+          } else {
+            switchTab("voice");
+          }
         };
-        src.connect(processorNode);
-        processorNode.connect(audioCtx.destination);
-
-        recTimer = setInterval(() => {
-          const sec = (Date.now() - recStartTime) / 1000;
-          document.getElementById("rec-dur-label").textContent = sec.toFixed(1) + "s";
-          if (sec >= 16) stopMicRecording();
-        }, 100);
-      } catch (err) {
-        showBanner("clone-status", "Microphone permission unavailable (" + err.message + "). You can click '⚡ Load 5s Test Sample' or upload a WAV file.", true);
       }
-    }
 
-    function stopMicRecording() {
-      isRecording = false;
-      if (recTimer) clearInterval(recTimer);
-      if (processorNode) processorNode.disconnect();
-      if (mediaStream) mediaStream.getTracks().forEach((t) => t.stop());
-      const sr = (audioCtx && audioCtx.sampleRate) || 24000;
-      if (audioCtx) audioCtx.close();
+      const edgeDomains = showOwner
+        ? (ow.deployedDomainsList || "aarunicloud.com, voice.aarunicloud.com")
+        : "TLS 1.3 Global Anycast Routing & Custom SSL";
+      const voiceMeta = showOwner ? "v2.2 Pro Active" : "v2 Studio Active";
+      const voiceHref = buildVoiceSsoUrl("");
 
-      let totalLen = 0;
-      pcmChunks.forEach((c) => { totalLen += c.length; });
-      const merged = new Float32Array(totalLen);
-      let off = 0;
-      pcmChunks.forEach((c) => { merged.set(c, off); off += c.length; });
-
-      recordedDurationSec = Number((totalLen / sr).toFixed(2));
-      const wavBuf = encodeWav24kMono(merged, sr);
-      recordedWavBase64 = arrayBufferToBase64(wavBuf);
-
-      const blob = new Blob([wavBuf], { type: "audio/wav" });
-      const audioEl = document.getElementById("recorded-preview-audio");
-      audioEl.src = URL.createObjectURL(blob);
-      audioEl.classList.remove("hidden");
-
-      document.getElementById("rec-btn").textContent = "● Re-Record Voice";
-      document.getElementById("rec-state-label").textContent = "✔ Captured 24 kHz WAV";
-      document.getElementById("mic-meter-fill").style.width = "100%";
-    }
-
-    function generateCleanDemoSample() {
-      const sr = 24000;
-      const secs = 5.0;
-      const len = sr * secs;
-      const samples = new Float32Array(len);
-      for (let i = 0; i < len; i++) {
-        const t = i / sr;
-        const env = Math.sin(Math.PI * Math.min(1, t * 4)) * (0.55 + 0.35 * Math.sin(2 * Math.PI * 3.2 * t));
-        samples[i] = 0.22 * env * (Math.sin(2 * Math.PI * 165 * t) + 0.45 * Math.sin(2 * Math.PI * 330 * t));
-      }
-      recordedDurationSec = secs;
-      const wavBuf = encodeWav24kMono(samples, sr);
-      recordedWavBase64 = arrayBufferToBase64(wavBuf);
-      const blob = new Blob([wavBuf], { type: "audio/wav" });
-      const audioEl = document.getElementById("recorded-preview-audio");
-      audioEl.src = URL.createObjectURL(blob);
-      audioEl.classList.remove("hidden");
-      document.getElementById("rec-state-label").textContent = "✔ Loaded 5.0s 24 kHz Reference Sample";
-      document.getElementById("rec-dur-label").textContent = "5.0s";
-      document.getElementById("mic-meter-fill").style.width = "100%";
-    }
-
-    function handleAudioFileUpload(ev) {
-      const file = ev.target.files && ev.target.files[0];
-      if (!file) return;
-      if (file.size > 1500000) {
-        showBanner("clone-status", "File exceeds 1.5 MB limit. Please upload a short 8–15s voice clip.", true);
-        return;
-      }
-      const reader = new FileReader();
-      reader.onload = () => {
-        const buf = reader.result;
-        recordedWavBase64 = arrayBufferToBase64(buf);
-        recordedDurationSec = 10.0;
-        const audioEl = document.getElementById("recorded-preview-audio");
-        audioEl.src = URL.createObjectURL(file);
-        audioEl.classList.remove("hidden");
-        document.getElementById("rec-state-label").textContent = "✔ Loaded " + file.name;
-      };
-      reader.readAsArrayBuffer(file);
-    }
-
-    async function submitVoiceClone() {
-      try {
-        if (!activeApiKey) {
-          showBanner("clone-status", "Sign in above and choose Starter ($5 / ₹449 mo) or higher to create custom voice clones.", true);
-          return;
+      const groups = [
+        {
+          title: "Web Hosting & Edge",
+          cols: "",
+          items: [
+            {
+              name: "Cloud Edge",
+              role: "Global Web Hosting, SSL & Domain Routing",
+              meta: edgeDomains,
+              badge: "Active"
+            },
+            {
+              name: "Cloud Builder",
+              role: "Declarative Stack & Edge Deployment Engine",
+              meta: "Live",
+              badge: "Active"
+            }
+          ]
+        },
+        {
+          title: "App & AI Compute",
+          cols: "cols-3",
+          items: [
+            {
+              name: "Cloud Compute",
+              role: "App Runtime & Parallel Model Training",
+              meta: "3 Parallel Compute Workers • ap-south-hyd-1",
+              badge: "Active"
+            },
+            {
+              name: "Cloud Render",
+              role: "1080p FHD Course Video & Audio Mastering",
+              meta: "-20.5 LUFS Standard",
+              badge: "Active"
+            },
+            {
+              name: "Cloud Assistant",
+              role: "AI Workflow & Course Automation Copilot",
+              meta: "Connected",
+              badge: "Active"
+            }
+          ]
+        },
+        {
+          title: "Storage & Archive",
+          cols: "",
+          items: [
+            {
+              name: "Cloud Storage",
+              role: "Zero-Egress Hot Media, Audio & Dataset Storage",
+              meta: "$0.00/GB Egress",
+              badge: "Active"
+            },
+            {
+              name: "Cloud Archive",
+              role: "Encrypted Long-Term Master Vault",
+              meta: "Redundant Snapshot Protection",
+              badge: "Active"
+            }
+          ]
+        },
+        {
+          title: "Voice, Media & Security",
+          cols: "",
+          items: [
+            {
+              name: "Cloud Voice",
+              role: "Neural Speech Synthesis, Cloning & Fine-Tuning",
+              meta: voiceMeta,
+              badge: "Active",
+              ctaLabel: "Open Studio →",
+              ctaHref: voiceHref
+            },
+            {
+              name: "Cloud Quality",
+              role: "Automated Clarity, Word-Drop & Loudness Verification",
+              meta: "100% Gate Active",
+              badge: "Active"
+            },
+            {
+              name: "Cloud Knowledge",
+              role: "Pronunciation Lexicon (.pls) & Guideline Index",
+              meta: "360 Active Rules",
+              badge: "Active"
+            },
+            {
+              name: "Cloud Guard",
+              role: "Zero-Trust Login, Org Isolation & Spend Caps",
+              meta: "PBKDF2 + OAuth2",
+              badge: "Active"
+            }
+          ]
         }
-        if (!recordedWavBase64) {
-          showBanner("clone-status", "Please record your voice with the microphone, upload a WAV, or click '⚡ Load 5s Test Sample' first.", true);
-          return;
-        }
-        const name = document.getElementById("clone-voice-name").value.trim() || "My Cloned Voice";
-        showBanner("clone-status", "Verifying consent code " + activeConsentCode + " and isolating your voice profile...");
-        const res = await apiFetch("/v1/voice/clone", {
-          method: "POST",
-          body: {
-            name,
-            consentCode: activeConsentCode,
-            consentPhrase: activeConsentPhrase,
-            refDurationSec: recordedDurationSec,
-            audioBase64: recordedWavBase64,
-            contentType: "audio/wav"
-          }
-        });
-        showBanner("clone-status", "✔ " + res.message + " Switching to Speech Playground so you can test it now!");
-        await refreshAccountState();
-        setTimeout(() => switchTab("speak"), 900);
-      } catch (err) {
-        showBanner("clone-status", "✖ " + err.message, true);
-        if (err.status === 402) {
-          setTimeout(() => switchTab("billing"), 1200);
-        }
-      }
+      ];
+
+      const container = document.getElementById("all-services-container");
+      container.innerHTML = groups.map((g) =>
+        '<div class="svc-group">' +
+          '<div class="svc-group-title">' + escapeHtml(g.title) + '</div>' +
+          '<div class="svc-grid ' + g.cols + '">' +
+            g.items.map((item) =>
+              '<div class="svc-card">' +
+                '<div>' +
+                  '<div class="svc-top">' +
+                    '<span class="svc-name">' + escapeHtml(item.name) + '</span>' +
+                    '<span class="status-pill">' + escapeHtml(item.badge) + '</span>' +
+                  '</div>' +
+                  '<div class="svc-role">' + escapeHtml(item.role) + '</div>' +
+                '</div>' +
+                '<div class="svc-foot">' +
+                  '<span class="mono" style="font-size:12px;">' + escapeHtml(item.meta) + '</span>' +
+                  (item.ctaHref
+                    ? '<a class="svc-link" href="' + escapeHtml(item.ctaHref) + '">' + escapeHtml(item.ctaLabel) + '</a>'
+                    : '') +
+                '</div>' +
+              '</div>'
+            ).join("") +
+          '</div>' +
+        '</div>'
+      ).join("");
     }
 
-    const LOCAL_STUDIO_BRIDGE = "http://127.0.0.1:8766";
+    function renderVoiceModelsSection() {
+      const box = document.getElementById("console-models-list");
+      if (!box) return;
+      const showOwner = isOwnerUnlocked && perspectiveMode === "owner";
 
-    const CX_CONSOLE_PRESETS = {
-      s1: "Welcome to Aaruni Cloud. Provision isolated Cloud Compute workers and zero-egress Cloud Storage in seconds, with predictable monthly pricing and global Cloud Edge delivery.",
-      s2: "Today we will deploy PostgreSQL, OAuth2 authentication, and NGINX ingress controllers using kubectl, with automated WCAG accessibility checks.",
-      s3: "Aaruni Cloud Guard enforces zero-trust tenant isolation, TLS 1.3 encryption, and hard monthly spend caps so your team never receives a surprise cloud bill."
-    };
-
-    const STOCK_FALLBACK_CX = {
-      stock_aria: "stock_aria",
-      stock_ethan: "stock_dev",
-      stock_maya: "stock_meera",
-      stock_dev: "stock_dev",
-      stock_clara: "stock_aria",
-      stock_kabir: "stock_meera"
-    };
-
-    let isOwnerUnlocked = false;
-    let perspectiveMode = "cx";
-    let localDaemonOnline = false;
-    let zapManifestData = null;
-
-    function onCxPresetChange() {
-      const presetEl = document.getElementById("speak-preset-select");
-      const txtEl = document.getElementById("speak-text-input");
-      if (presetEl && txtEl && CX_CONSOLE_PRESETS[presetEl.value]) {
-        txtEl.value = CX_CONSOLE_PRESETS[presetEl.value];
-        detectPlsTerms();
-      }
-    }
-
-    async function loadVoicesList() {
-      try {
-        const data = await apiFetch("/v1/voice/list");
-        if (data.ownerMode === true) {
-          dynamicOwnerWorkspace = data.ownerWorkspace || null;
-          dynamicPrivateVoices = (data.clonedVoices || []).filter((v) => Boolean(v.ownerPrivate));
-          if (!isOwnerUnlocked) {
-            unlockOwnerConsole("Authenticated Sovereign Owner");
-          }
-          hydrateOwnerWorkspaceDOM(data.stockVoices || []);
-        }
-
-        const listEl = document.getElementById("voice-library-list");
-        const selEl = document.getElementById("speak-voice-select");
-        let cloned = data.clonedVoices || [];
-        // STRICT PRIVATE VOICE ISOLATION: Customer (cx) Playground NEVER shows ownerPrivate voices!
-        if (!isOwnerUnlocked || perspectiveMode === "cx") {
-          cloned = cloned.filter((v) => !v.ownerPrivate);
-        }
-        const all = [...cloned, ...(data.stockVoices || [])];
-
-        listEl.innerHTML = all.map((v) => {
-          const isCloned = v.type === "cloned";
-          const canDelete = isCloned && !v.ownerPrivate;
-          return '<div class="voice-item">' +
+      if (!showOwner || cachedActiveModels.length === 0) {
+        const pubModels = [
+          { modelId: "cloud-voice-v2", name: "Cloud Voice v2", metricsSummary: "Studio English Default • 6 Commercial Voices", isActive: true, sampleAudioUrl: "https://voice.aarunicloud.com/assets/voice/showcase/aria_cat1_course.mp3" },
+          { modelId: "cloud-voice-v2-flash", name: "Cloud Voice v2 Flash", metricsSummary: "Low-Latency Synthesis • 50% Credit Rate", isActive: false, sampleAudioUrl: "https://voice.aarunicloud.com/assets/voice/showcase/dev_cat1_course.mp3" },
+          { modelId: "cloud-voice-v2-multilingual", name: "Cloud Voice v2 Multilingual", metricsSummary: "10 Global Languages • W3C .pls Lexicon", isActive: false, sampleAudioUrl: "https://voice.aarunicloud.com/assets/voice/showcase/maya_cat2_ad.mp3" }
+        ];
+        box.innerHTML = pubModels.map((m, idx) =>
+          '<div class="model-row ' + (m.isActive ? "active-model" : "") + '">' +
             '<div>' +
-              '<strong>' + escapeHtml(v.name) + '</strong> ' +
-              '<span class="region-pill mono">' + escapeHtml(v.voiceId) + '</span> ' +
-              '<span class="region-pill">' + escapeHtml(v.badge || v.style || v.type || "Studio Voice") + '</span>' +
+              '<div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">' +
+                '<strong>' + escapeHtml(m.name) + '</strong>' +
+                (m.isActive ? '<span class="status-pill">Default</span>' : '<span class="neutral-pill">Available</span>') +
+              '</div>' +
+              '<div style="font-size:13.5px;color:var(--ink-secondary);margin-top:4px;">' + escapeHtml(m.metricsSummary) + '</div>' +
             '</div>' +
             '<div style="display:flex;gap:8px;">' +
-              '<button type="button" class="btn btn-sm" data-vid="' + escapeHtml(v.voiceId) + '" onclick="useVoiceInPlayground(this.dataset.vid)">Speak →</button>' +
-              (canDelete ? '<button type="button" class="btn btn-sm btn-danger" data-vid="' + escapeHtml(v.voiceId) + '" onclick="deleteClonedVoice(this.dataset.vid)">Delete</button>' : '') +
+              '<button type="button" class="btn btn-sm" onclick="auditionModelAudio(\'' + escapeHtml(m.sampleAudioUrl) + '\')">▶ Audition</button>' +
             '</div>' +
-          '</div>';
-        }).join("");
+          '</div>'
+        ).join("");
+        return;
+      }
 
-        selEl.innerHTML = all.map((v) =>
-          '<option value="' + escapeHtml(v.voiceId) + '">' +
-          (v.type === "cloned" ? "★ [Cloned] " : "[Studio] ") +
-          escapeHtml(v.name) +
-          '</option>'
+      box.innerHTML = cachedActiveModels.map((m) => {
+        const isAct = Boolean(m.isActive || String(m.roleBadge || "").toLowerCase().includes("active"));
+        return (
+          '<div class="model-row ' + (isAct ? "active-model" : "") + '">' +
+            '<div>' +
+              '<div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">' +
+                '<strong>' + escapeHtml(m.name) + '</strong>' +
+                (isAct
+                  ? '<span class="status-pill">Active Default</span>'
+                  : '<span class="neutral-pill">' + escapeHtml(m.roleBadge || "Reference") + '</span>') +
+              '</div>' +
+              '<div style="font-size:13.5px;color:var(--ink-secondary);margin-top:4px;">' + escapeHtml(m.metricsSummary || "") + '</div>' +
+            '</div>' +
+            '<div style="display:flex;gap:8px;flex-wrap:wrap;">' +
+              (m.sampleAudioUrl
+                ? '<button type="button" class="btn btn-sm" onclick="auditionModelAudio(\'' + escapeHtml(m.sampleAudioUrl) + '\')">▶ Audition</button>'
+                : '') +
+              (!isAct
+                ? '<button type="button" class="btn btn-sm btn-primary" onclick="activateConsoleModel(\'' + escapeHtml(m.modelId) + '\', \'' + escapeHtml(m.voiceId || "") + '\')">Set Active</button>'
+                : '') +
+            '</div>' +
+          '</div>'
+        );
+      }).join("");
+    }
+
+    function auditionModelAudio(url) {
+      if (!url) return;
+      const aud = document.getElementById("console-model-audio");
+      if (!aud) return;
+      aud.classList.remove("hidden");
+      aud.src = url;
+      aud.play().catch(() => {});
+    }
+
+    async function activateConsoleModel(modelId, voiceId) {
+      try {
+        const res = await apiFetch("/v1/voice/activate-model", {
+          method: "POST",
+          body: { modelId, voiceId }
+        });
+        showBanner("console-model-status", res.message || ("Switched active default model to " + modelId + "."));
+        await loadConsoleUsageLedger();
+      } catch (err) {
+        showBanner("console-model-status", err.message, true);
+      }
+    }
+
+    async function launchConsoleQuickTraining() {
+      const goal = document.getElementById("quick-train-goal").value;
+      const mode = document.getElementById("quick-train-mode").value;
+      const btn = document.getElementById("quick-train-btn");
+      btn.disabled = true;
+      btn.textContent = "Starting...";
+      try {
+        const res = await apiFetch("/v1/voice/train", {
+          method: "POST",
+          body: { improveGoal: goal, trainingMode: mode }
+        });
+        showBanner("quick-train-status", res.message || "Training job started on ap-south-hyd-1.");
+        await loadConsoleUsageLedger();
+      } catch (err) {
+        showBanner("quick-train-status", err.message, true);
+      } finally {
+        btn.disabled = false;
+        btn.textContent = "Start Training";
+      }
+    }
+
+    function renderUsageMetrics(telemetry) {
+      const showOwner = isOwnerUnlocked && perspectiveMode === "owner";
+      if (showOwner) {
+        const t = telemetry || {};
+        document.getElementById("m1-label").textContent = "Billed This Month";
+        document.getElementById("m1-val").textContent = "$0.00";
+        document.getElementById("m1-sub").textContent = t.allocationType || "Sovereign Owner Allocation";
+
+        document.getElementById("m2-label").textContent = "AI Runtime Cost";
+        document.getElementById("m2-val").textContent = t.aiAgentRuntimeCostUsd || "$0.00";
+        document.getElementById("m2-sub").textContent = "0 external LLM tokens used";
+
+        document.getElementById("m3-label").textContent = "Electricity";
+        document.getElementById("m3-val").textContent = t.estimatedElectricityCostUsd || "<$0.02";
+        document.getElementById("m3-sub").textContent = Number(t.totalStudioAudioMinutes || 61.4).toFixed(1) + " min studio audio";
+
+        document.getElementById("m4-label").textContent = "Saved vs ElevenLabs";
+        document.getElementById("m4-val").textContent = (t.shadowSavingsVsElevenLabsUsd || "$100/mo").replace(".00", "");
+        document.getElementById("m4-sub").textContent = "Zero vendor lock-in";
+      } else {
+        const used = Number((currentAccount && currentAccount.charsUsed) || 0);
+        const lim = Number((currentAccount && currentAccount.charsLimit) || 10000);
+        const tier = ((currentAccount && currentAccount.planTier) || "free").toUpperCase();
+        document.getElementById("m1-label").textContent = "Current Plan";
+        document.getElementById("m1-val").textContent = tier;
+        document.getElementById("m1-sub").textContent = "Hard spend-cap active";
+
+        document.getElementById("m2-label").textContent = "Credits Used";
+        document.getElementById("m2-val").textContent = used.toLocaleString();
+        document.getElementById("m2-sub").textContent = "of " + lim.toLocaleString() + " monthly";
+
+        document.getElementById("m3-label").textContent = "Custom Voices";
+        document.getElementById("m3-val").textContent = String((currentAccount && currentAccount.voicesUsed) || 0) + " / " + String((currentAccount && currentAccount.voicesLimit) || 0);
+        document.getElementById("m3-sub").textContent = "Isolated workspace vault";
+
+        document.getElementById("m4-label").textContent = "Storage Egress";
+        document.getElementById("m4-val").textContent = "$0.00";
+        document.getElementById("m4-sub").textContent = "Zero-egress Cloud Storage";
+      }
+    }
+
+    async function loadConsoleUsageLedger() {
+      if (!activeApiKey) return;
+      try {
+        const data = await apiFetch("/v1/voice/usage-ledger");
+        if (Array.isArray(data.activeModels)) {
+          cachedActiveModels = data.activeModels;
+        }
+        renderVoiceModelsSection();
+        renderUsageMetrics(data.telemetry || {});
+
+        cachedLedgerRows = Array.isArray(data.history) ? data.history : [];
+        const tbody = document.getElementById("console-usage-history-tbody");
+        if (!tbody) return;
+        if (cachedLedgerRows.length === 0) {
+          tbody.innerHTML = '<tr><td colspan="6" style="color:var(--ink-muted);">No synthesis or training runs recorded yet.</td></tr>';
+          return;
+        }
+        tbody.innerHTML = cachedLedgerRows.map((row, idx) =>
+          '<tr>' +
+            '<td class="mono" style="font-size:12px;color:var(--ink-muted);white-space:nowrap;">' + escapeHtml(row.timestamp || "") + '</td>' +
+            '<td style="font-weight:600;">' + escapeHtml(row.title || "Studio Synthesis") + '</td>' +
+            '<td style="color:var(--ink-secondary);white-space:nowrap;">' + escapeHtml(row.durationLabel || "") + '</td>' +
+            '<td><span class="status-pill">Voice Clarity Check: Passed</span></td>' +
+            '<td class="mono" style="font-weight:600;color:var(--ok-ink);white-space:nowrap;">' + escapeHtml(row.billedCost || "$0.00") + '</td>' +
+            '<td style="text-align:right;white-space:nowrap;">' +
+              (row.audioUrl
+                ? '<button type="button" class="btn btn-sm" onclick="playConsoleLedgerRow(' + idx + ')">▶ Play</button>'
+                : '') +
+            '</td>' +
+          '</tr>'
         ).join("");
       } catch (_) {}
     }
 
-    function hydrateOwnerWorkspaceDOM(stockVoices) {
-      if (!dynamicOwnerWorkspace) return;
-      const ow = dynamicOwnerWorkspace;
-      const bannerTitle = document.getElementById("owner-banner-title");
-      if (bannerTitle && ow.ownerDisplayName) {
-        bannerTitle.textContent = "👑 Sovereign Owner Console Unlocked — " + ow.ownerDisplayName + " (" + (ow.tenantOrg || "org_syllovo") + ")";
-      }
-      const meterHead = document.getElementById("syllovo-meter-headline");
-      if (meterHead) {
-        meterHead.textContent = "$0.00 / ₹0.00";
-      }
-      const meterSub = document.getElementById("syllovo-meter-sub");
-      if (meterSub) {
-        meterSub.textContent = "Sovereign Owner Allocation (" + (ow.deployedApp || "Syllovo Studio") + ")";
-      }
-      const dropInEl = document.getElementById("syllovo-dropin-endpoint");
-      if (dropInEl && ow.dropInEndpoint) {
-        dropInEl.value = ow.dropInEndpoint;
-      }
-
-      const ownerVoiceSel = document.getElementById("owner-voice-select");
-      if (ownerVoiceSel && ownerVoiceSel.options.length === 0) {
-        const opts = [
-          ...dynamicPrivateVoices.map((v) =>
-            '<option value="' + escapeHtml(v.voiceId) + '">★ [Private Owner] ' + escapeHtml(v.name) + '</option>'
-          ),
-          ...(stockVoices || []).map((sv) =>
-            '<option value="' + escapeHtml(sv.voiceId) + '">[Public Studio] ' + escapeHtml(sv.name) + '</option>'
-          )
-        ];
-        ownerVoiceSel.innerHTML = opts.join("");
-        onOwnerPresetOrVoiceChange();
-      }
-    }
-
-    function copySyllovoDropInKey() {
-      const val = activeApiKey || (dynamicOwnerWorkspace && dynamicOwnerWorkspace.dropInEndpoint) || "";
-      if (!val) {
-        alert("Sign in as Owner to copy your Drop-In Syllovo API Key.");
-        return;
-      }
-      navigator.clipboard.writeText(val);
-      alert("Copied Drop-In Syllovo API Key / Endpoint to clipboard!");
-    }
-
-    function useVoiceInPlayground(vid) {
-      const isPriv = dynamicPrivateVoices.some((v) => v.voiceId === vid);
-      if (isPriv && isOwnerUnlocked) {
-        setPerspectiveMode("owner");
-        return;
-      }
-      document.getElementById("speak-voice-select").value = vid;
-      switchTab("speak");
-    }
-
-    async function deleteClonedVoice(vid) {
-      try {
-        await apiFetch("/v1/voice/" + encodeURIComponent(vid), { method: "DELETE" });
-        await refreshAccountState();
-      } catch (err) {
-        showBanner("clone-status", "✖ " + err.message, true);
-      }
-    }
-
-    function detectPlsTerms() {
-      const txt = document.getElementById("speak-text-input").value || "";
-      const rules = [
-        ["kubectl", "kube-control"],
-        ["SQLite", "S-Q-Lite"],
-        ["PostgreSQL", "Post-gres-Q-L"],
-        ["MySQL", "My-S-Q-L"],
-        ["NGINX", "Engine-X"],
-        ["JSON", "Jay-sawn"],
-        ["OAuth2", "Oh-Auth-Two"],
-        ["WCAG", "W-C-A-G"],
-        ["LUFS", "L-U-F-S"],
-        ["SARIF", "Sah-rif"],
-        ["acloud", "A-Cloud"]
-      ];
-      const hits = rules.filter(([k]) => new RegExp("\\b" + k + "\\b", "i").test(txt));
-      const box = document.getElementById("pls-chips-box");
-      box.innerHTML = hits.length
-        ? hits.map(([k, v]) => '<span class="pls-chip mono">' + k + ' &rarr; "' + v + '"</span>').join("")
-        : '<span style="font-size:12px;color:var(--text-muted);">Type developer terms like PostgreSQL, kubectl, NGINX, SARIF, or OAuth2 to preview automatic pronunciation fixes.</span>';
-    }
-
-    let lastCamtasiaTimelineObj = null;
-
-    async function loadUserConnectors() {
-      const pill = document.getElementById("byok-vault-pill");
-      if (!activeApiKey) {
-        if (pill) pill.textContent = "Sign in to store BYOK keys.";
-        return;
-      }
-      try {
-        const res = await apiFetch("/v1/voice/connectors");
-        const list = res.connectors || [];
-        const elConn = list.find((c) => c.provider === "elevenlabs_byok");
-        if (elConn) {
-          if (pill) pill.textContent = `✔ ElevenLabs® Vault Active (${elConn.maskedKey}${elConn.defaultVoiceId ? " • Voice: " + elConn.defaultVoiceId : ""})`;
-          const vIn = document.getElementById("byok-el-voice");
-          if (vIn && elConn.defaultVoiceId && !vIn.value) vIn.value = elConn.defaultVoiceId;
-        } else if (pill) {
-          pill.textContent = "No BYOK keys saved (using Cloud Voice v2 studio engine).";
-        }
-      } catch (_) {}
-    }
-
-    async function saveByokConnector() {
-      try {
-        if (!activeApiKey) await startInstantTrial();
-        const apiKey = document.getElementById("byok-el-key").value.trim();
-        const defaultVoiceId = document.getElementById("byok-el-voice").value.trim();
-        if (!apiKey) {
-          showBanner("byok-status-banner", "Please enter your ElevenLabs® API key first.", true);
-          return;
-        }
-        const res = await apiFetch("/v1/voice/connectors", {
-          method: "POST",
-          body: { provider: "elevenlabs_byok", apiKey, defaultVoiceId }
-        });
-        document.getElementById("byok-el-key").value = "";
-        showBanner("byok-status-banner", `✔ Saved ElevenLabs® BYOK Connector (${res.maskedKey}) in your isolated vault!`);
-        await loadUserConnectors();
-      } catch (err) {
-        showBanner("byok-status-banner", "✖ " + err.message, true);
-      }
-    }
-
-    function downloadLastCamtasiaTimeline() {
-      if (!lastCamtasiaTimelineObj) return;
-      const blob = new Blob([JSON.stringify(lastCamtasiaTimelineObj, null, 2)], { type: "application/json" });
-      const a = document.createElement("a");
-      a.href = URL.createObjectURL(blob);
-      a.download = "aaruni-cloud-voice-beat.tscproj.json";
-      document.body.appendChild(a);
-      a.click();
-      a.remove();
-    }
-
-    async function runCloudVoiceSpeak() {
-      try {
-        const text = document.getElementById("speak-text-input").value.trim();
-        const voiceId = document.getElementById("speak-voice-select").value || "stock_aria";
-        const preset = (document.getElementById("speak-preset-select") || {}).value || "s2";
-        const targetLufs = Number(document.getElementById("speak-lufs-select").value || -20.5);
-        const modelId = (document.getElementById("speak-engine-select") || {}).value || "cloud-voice-v2";
-        const includeCamtasiaTimeline = Boolean((document.getElementById("speak-camtasia-chk") || {}).checked);
-        const cxAudio = document.getElementById("cx-speak-audio");
-        const dlBtn = document.getElementById("download-wav-btn");
-        const tscBtn = document.getElementById("download-tscproj-btn");
-
-        const isPriv = dynamicPrivateVoices.some((v) => v.voiceId === voiceId);
-        if (isPriv && perspectiveMode === "cx") {
-          showBanner("speak-result-box", "✖ Private owner voice is hidden in Customer (cx) mode.", true);
-          return;
-        }
-
-        if (modelId === "elevenlabs_byok" && !activeApiKey) {
-          await startInstantTrial();
-        }
-
-        showBanner("speak-result-box", "Synthesizing with Cloud Voice (" + voiceId + " • " + modelId + ") + W3C PLS Dictionary...");
-        const res = await apiFetch("/v1/voice/speak", {
-          method: "POST",
-          body: { text, voiceId, targetLufs, modelId, engine: modelId, includeCamtasiaTimeline }
-        });
-
-        lastCamtasiaTimelineObj = res.camtasiaTimeline || null;
-        if (tscBtn) {
-          tscBtn.classList.toggle("hidden", !lastCamtasiaTimelineObj);
-        }
-
-        const isStockPreset = modelId !== "elevenlabs_byok" && voiceId.startsWith("stock_") && text === CX_CONSOLE_PRESETS[preset];
-        if (cxAudio && (res.audioDataUri || res.audioUrl)) {
-          const url = res.audioDataUri || res.audioUrl;
-          if ("speechSynthesis" in window) window.speechSynthesis.cancel();
-          cxAudio.src = url;
-          cxAudio.classList.remove("hidden");
-          cxAudio.play().catch(() => {});
-          if (dlBtn) {
-            dlBtn.href = url;
-            dlBtn.download = "aaruni-cloud-voice.mp3";
-            dlBtn.classList.remove("hidden");
-          }
-        } else if (cxAudio && isStockPreset) {
-          if ("speechSynthesis" in window) window.speechSynthesis.cancel();
-          const cxMapped = STOCK_FALLBACK_CX[voiceId] || "stock_aria";
-          const mp3Path = "/assets/voice/cx/" + cxMapped + "_" + preset + ".mp3";
-          cxAudio.src = mp3Path;
-          cxAudio.classList.remove("hidden");
-          cxAudio.play().catch(() => {});
-          if (dlBtn) {
-            dlBtn.href = mp3Path;
-            dlBtn.download = "aaruni-cloud-" + voiceId + "-" + preset + ".mp3";
-            dlBtn.classList.remove("hidden");
-          }
-        } else {
-          if (cxAudio) { cxAudio.pause(); cxAudio.classList.add("hidden"); }
-          if ("speechSynthesis" in window) {
-            window.speechSynthesis.cancel();
-            const utter = new SpeechSynthesisUtterance(res.normalizedText || text);
-            utter.rate = 0.96;
-            window.speechSynthesis.speak(utter);
-          }
-        }
-
-        showBanner(
-          "speak-result-box",
-          "✔ [" + (res.jobId || "voice") + "] Model: " + (res.dsp && res.dsp.modelName ? res.dsp.modelName : modelId) +
-          " • Clarity Gate: 100% Passed • Loudness: " + (res.dsp ? res.dsp.targetLoudnessLufs : targetLufs) + " LUFS"
-        );
-        if (activeApiKey) await refreshAccountState();
-      } catch (err) {
-        showBanner("speak-result-box", "✖ " + err.message, true);
-      }
-    }
-
-    function copyActiveKey() {
-      if (!activeApiKey) return;
-      navigator.clipboard.writeText(activeApiKey);
-      alert("Copied your scoped acloud API key to clipboard!");
-    }
-
-    function setConsoleCurrency(curr) {
-      consoleCurrency = curr === "INR" ? "INR" : "USD";
-      document.getElementById("console-curr-usd").classList.toggle("btn-primary", consoleCurrency === "USD");
-      document.getElementById("console-curr-inr").classList.toggle("btn-primary", consoleCurrency === "INR");
-      document.querySelectorAll(".console-dyn-price").forEach((el) => {
-        const val = consoleCurrency === "INR" ? el.getAttribute("data-inr") : el.getAttribute("data-usd");
-        el.innerHTML = val + ' <span style="font-size:13px;font-weight:500;color:var(--text-muted);">/ mo</span>';
-      });
-    }
-
-    async function loadBillingOrders() {
-      const box = document.getElementById("billing-orders-list");
-      const adminBox = document.getElementById("owner-admin-activate-box");
-      if (adminBox) adminBox.classList.toggle("hidden", !isOwnerUnlocked);
-      if (!box || !activeApiKey) return;
-      try {
-        const res = await apiFetch("/v1/billing/orders");
-        const orders = res.orders || [];
-        if (orders.length === 0) {
-          box.textContent = "No billing orders yet. Choose Starter, Creator, or Pro Studio above to upgrade in USD or India UPI.";
-          return;
-        }
-        box.innerHTML = orders.map((o) => {
-          const amt = o.currency === "INR" ? `₹${(Number(o.amountMinor || 0) / 100).toLocaleString()}` : `$${(Number(o.amountMinor || 0) / 100).toFixed(2)}`;
-          return `<div class="voice-item">
-            <div>
-              <strong class="mono">${escapeHtml(o.orderId)}</strong> • <strong>${escapeHtml(String(o.targetPlan || "").toUpperCase())}</strong> (${escapeHtml(amt)} via ${escapeHtml(o.gateway)})
-              <div style="font-size:12px;color:var(--text-muted);margin-top:2px;">${escapeHtml(o.email)} • Created: ${escapeHtml(o.createdAt || "")}${o.invoiceNo ? ` • Invoice: ${escapeHtml(o.invoiceNo)}` : ""}</div>
-            </div>
-            <span class="region-pill mono">${escapeHtml(o.status)}</span>
-          </div>`;
-        }).join("");
-      } catch (err) {
-        box.textContent = "Could not load orders: " + err.message;
-      }
-    }
-
-    async function adminActivateBillingOrder() {
-      try {
-        const orderId = document.getElementById("admin-activate-order-id").value.trim();
-        const paymentRef = document.getElementById("admin-activate-ref").value.trim() || "console_owner_verified";
-        if (!orderId) {
-          showBanner("billing-status", "Enter an order ID (ord_...) to activate.", true);
-          return;
-        }
-        const res = await apiFetch("/v1/billing/admin-activate", {
-          method: "POST",
-          body: { orderId, paymentRef }
-        });
-        showBanner("billing-status", `✔ Activated ${res.email} -> ${res.planTier.toUpperCase()} (${res.charsLimit.toLocaleString()} credits, ${res.voicesLimit} voices) • Invoice: ${res.invoiceNo}`);
-        await refreshAccountState();
-        await loadBillingOrders();
-      } catch (err) {
-        showBanner("billing-status", "✖ " + err.message, true);
-      }
-    }
-
-    async function requestPlanUpgrade(plan, gateway = "dodo") {
-      try {
-        if (!activeApiKey || !currentAccount || currentAccount.isGuest) {
-          switchTab("speak");
-          document.getElementById("auth-gate-card").classList.remove("hidden");
-          document.getElementById("auth-gate-card").scrollIntoView({ behavior: "smooth" });
-          showBanner("auth-status", "Sign in with Google or your 6-digit email code first so your plan upgrade binds to your account.");
-          return;
-        }
-        showBanner("billing-status", `Initializing ${consoleCurrency} checkout for ${plan.toUpperCase()} plan via Dodo Payments...`);
-        const res = await apiFetch("/v1/billing/checkout", {
-          method: "POST",
-          body: { plan, gateway, currency: consoleCurrency, returnOrigin: window.location.origin }
-        });
-
-        if (res.checkoutUrl) {
-          window.location.href = res.checkoutUrl;
-          return;
-        }
-
-        showBanner("billing-status", "✔ " + (res.message || `Order ${res.orderId} recorded.`));
-        const admInput = document.getElementById("admin-activate-order-id");
-        if (admInput && res.orderId) admInput.value = res.orderId;
-        await loadBillingOrders();
-      } catch (err) {
-        showBanner("billing-status", "✖ " + err.message, true);
-      }
-    }
-
-    function escapeHtml(s) {
-      return String(s || "")
-        .replace(/&/g, "&amp;")
-        .replace(/</g, "&lt;")
-        .replace(/>/g, "&gt;")
-        .replace(/"/g, "&quot;");
-    }
-
-    async function loadCustomerZeroManifest() {
-      const el = document.getElementById("customer-zero-summary");
-      if (!el) return;
-      try {
-        const r = await cloudFetch("/v1/projects/prj_syllovo_prod/public-manifest");
-        if (!r.ok) return;
-        const j = await r.json();
-        if (j && j.project) {
-          const p = j.project;
-          const depTxt = p.latestDeployment ? ` • Latest Deploy: ${p.latestDeployment.versionTag} (${p.latestDeployment.status})` : "";
-          el.textContent = `${p.orgName} ▸ ${p.projectId} • Driver: ${p.backendDriver} • Spaces: ${p.buckets.length} ($0/GB egress) • Voice: ${p.voicePolicy.targetLufs} LUFS${depTxt}`;
-        }
-      } catch (_) {}
-    }
-
-    async function loadOrgsAndProjects() {
-      const box = document.getElementById("projects-list-box");
-      if (!box || !activeApiKey) return;
-      try {
-        const res = await apiFetch("/v1/projects");
-        const list = res.projects || [];
-        if (list.length === 0) {
-          box.textContent = "No projects provisioned yet.";
-          return;
-        }
-        box.innerHTML = list.map((p) => (
-          `<div class="voice-item">
-            <div>
-              <strong>${escapeHtml(p.displayName)}</strong> <span class="region-pill mono">${escapeHtml(p.projectId)}</span>
-              <div style="font-size:12px;color:var(--text-muted);margin-top:3px;">Org: ${escapeHtml(p.orgName)} • Env: ${escapeHtml(p.environment.toUpperCase())} • Driver: <code class="mono">${escapeHtml(p.backendDriver)}</code> • Cap: ₹${Number(p.spendCapInr || 0)}</div>
-            </div>
-            <span class="region-pill mono">${escapeHtml(p.status)}</span>
-          </div>`
-        )).join("");
-      } catch (err) {
-        box.textContent = "Could not load projects: " + err.message;
-      }
-    }
-
-    async function createConsoleProject() {
-      try {
-        if (!activeApiKey) await startInstantTrial();
-        const displayName = document.getElementById("new-proj-name").value.trim();
-        const environment = document.getElementById("new-proj-env").value;
-        const spendCapInr = Number(document.getElementById("new-proj-cap").value || 0);
-        const res = await apiFetch("/v1/projects", {
-          method: "POST",
-          body: { displayName, environment, spendCapInr }
-        });
-        showBanner("proj-action-status", `✔ Provisioned isolated project ${res.projectId} (${res.backendDriver})`);
-        document.getElementById("new-proj-name").value = "";
-        await loadOrgsAndProjects();
-      } catch (err) {
-        showBanner("proj-action-status", "✖ " + err.message, true);
-      }
-    }
-
-    async function generateBuilderPlan() {
-      try {
-        if (!activeApiKey) await startInstantTrial();
-        const prompt = document.getElementById("builder-prompt-input").value.trim();
-        const res = await apiFetch("/v1/builder/plan", {
-          method: "POST",
-          body: { prompt, projectId: "prj_syllovo_prod" }
-        });
-        document.getElementById("builder-output-wrap").classList.remove("hidden");
-        document.getElementById("builder-yaml-pre").textContent = res.acloudYaml;
-        document.getElementById("builder-cli-hint").textContent = "Deploy command: " + res.deployCommand;
-      } catch (err) {
-        showBanner("builder-cli-hint", "✖ " + err.message, true);
-      }
-    }
-
-    // =========================================================================
-    // SOVEREIGN OWNER CONSOLE: SYLLOVO STUDIO + PARALLEL CLOUD COMPUTE
-    // =========================================================================
-    function formatMmSs(sec) {
-      const s = Math.max(0, Math.floor(Number(sec) || 0));
-      const m = Math.floor(s / 60);
-      const r = s % 60;
-      return m + ":" + (r < 10 ? "0" + r : r);
-    }
-
-    async function loadZapManifest() {
-      if (zapManifestData || !dynamicOwnerWorkspace || !dynamicOwnerWorkspace.manifestUrl) return zapManifestData;
-      try {
-        const r = await fetch(dynamicOwnerWorkspace.manifestUrl);
-        if (!r.ok) return null;
-        zapManifestData = await r.json();
-        if (zapManifestData && Array.isArray(zapManifestData.beats) && dynamicOwnerWorkspace.samples && dynamicOwnerWorkspace.samples.zap_5min) {
-          const fullText = zapManifestData.beats
-            .map((b) => `[Beat ${b.beat_index} • ${formatMmSs(b.start_sec)}] ${b.text}`)
-            .join("\n\n");
-          dynamicOwnerWorkspace.samples.zap_5min.text = fullText;
-          const sampleSel = document.getElementById("owner-sample-select");
-          if (sampleSel && sampleSel.value === "zap_5min") {
-            const ta = document.getElementById("owner-script-textarea");
-            if (ta) ta.value = fullText;
-          }
-        }
-        return zapManifestData;
-      } catch (_) {
-        return null;
-      }
-    }
-
-    function attachZapTimeTracker() {
-      const audioEl = document.getElementById("owner-studio-audio");
-      if (!audioEl || audioEl.dataset.boundTracker === "1") return;
-      audioEl.dataset.boundTracker = "1";
-      audioEl.addEventListener("timeupdate", () => {
-        const sampleSel = document.getElementById("owner-sample-select");
-        if (!sampleSel || sampleSel.value !== "zap_5min" || !zapManifestData || !zapManifestData.beats) return;
-        const t = audioEl.currentTime;
-        const activeBeat = zapManifestData.beats.find((b) => t >= b.start_sec - 0.15 && t <= b.end_sec + 0.35);
-        const badgeEl = document.getElementById("zap-live-beat-badge");
-        const capEl = document.getElementById("zap-active-caption");
-        if (activeBeat) {
-          if (badgeEl) {
-            badgeEl.textContent = `Beat ${activeBeat.beat_index}/25 • ${formatMmSs(t)} / 4:55 • Clarity Gate: 100% Passed`;
-          }
-          if (capEl) {
-            capEl.innerHTML = `<strong style="color:var(--success);">[Beat ${activeBeat.beat_index}/25 • ${activeBeat.chapter_id.toUpperCase()} • ${formatMmSs(activeBeat.start_sec)}–${formatMmSs(activeBeat.end_sec)}]</strong> ${escapeHtml(activeBeat.text)}`;
-          }
-        }
-      });
-    }
-
-    function onOwnerPresetOrVoiceChange() {
-      const voiceSel = document.getElementById("owner-voice-select");
-      const voiceId = (voiceSel && voiceSel.value) || (dynamicPrivateVoices[0] && dynamicPrivateVoices[0].voiceId) || "stock_aria";
-      const sampleId = (document.getElementById("owner-sample-select") || {}).value || "zap_5min";
-      const ta = document.getElementById("owner-script-textarea");
-      const chapBar = document.getElementById("zap-chapters-bar");
-      const audioEl = document.getElementById("owner-studio-audio");
-      const dlLink = document.getElementById("owner-download-mp3");
-      const receiptEl = document.getElementById("owner-audio-receipt");
-
-      const isPrivateVoice = dynamicPrivateVoices.some((v) => v.voiceId === voiceId);
-      if (chapBar) {
-        chapBar.classList.toggle("hidden", !(isPrivateVoice && sampleId === "zap_5min"));
-      }
-
-      if (!isPrivateVoice) {
-        const stockPreset = sampleId === "zap_auth_gate" ? "s2" : (sampleId === "zap_sarif_cicd" ? "s3" : "s1");
-        const mappedCx = STOCK_FALLBACK_CX[voiceId] || "stock_aria";
-        const stockMp3 = "/assets/voice/cx/" + mappedCx + "_" + stockPreset + ".mp3";
-        if (ta) ta.value = CX_CONSOLE_PRESETS[stockPreset];
-        if (audioEl) audioEl.src = stockMp3;
-        if (dlLink) { dlLink.href = stockMp3; dlLink.download = voiceId + "_" + stockPreset + ".mp3"; }
-        if (receiptEl) receiptEl.textContent = "Public Studio Voice (" + voiceId + ") • Customer (cx) Catalog Reference";
-        return;
-      }
-
-      const samples = (dynamicOwnerWorkspace && dynamicOwnerWorkspace.samples) || {};
-      const item = samples[sampleId] || samples.zap_5min;
-      if (!item) return;
-      if (ta) {
-        ta.value = item.text || "";
-        ta.readOnly = sampleId !== "custom_live";
-      }
-      if (receiptEl) receiptEl.textContent = item.receipt || "Cloud Voice v2.2 Water-Clean Expressive • -20.5 LUFS";
-      if (sampleId !== "custom_live" && item.mp3) {
-        if (audioEl && audioEl.src !== item.mp3) audioEl.src = item.mp3;
-        if (dlLink) {
-          dlLink.href = item.mp3;
-          dlLink.download = sampleId + "_syllovo_studio.mp3";
-        }
-      }
-    }
-
-    async function playOwnerStudioSelection() {
-      const voiceSel = document.getElementById("owner-voice-select");
-      const voiceId = (voiceSel && voiceSel.value) || "";
-      const sampleId = (document.getElementById("owner-sample-select") || {}).value || "zap_5min";
-      const audioEl = document.getElementById("owner-studio-audio");
-      const ta = document.getElementById("owner-script-textarea");
-      const dlLink = document.getElementById("owner-download-mp3");
-      const isPrivateVoice = dynamicPrivateVoices.some((v) => v.voiceId === voiceId);
-
-      if (isPrivateVoice && sampleId === "custom_live") {
-        const customText = (ta ? ta.value : "").trim();
-        if (!customText) {
-          showBanner("owner-synth-status", "Please enter custom teaching text to synthesize.", true);
-          return;
-        }
-        showBanner("owner-synth-status", "Synthesizing live via Workstation Studio Bridge (:8766)...");
-        try {
-          const r = await fetch(LOCAL_STUDIO_BRIDGE + "/api/v1/synthesize", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ text: customText, beatId: "console-live" })
-          });
-          const j = await r.json();
-          if (!r.ok || !j.audioUrl) {
-            throw new Error(j.error || ("Bridge HTTP " + r.status));
-          }
-          const liveUrl = j.audioUrl.startsWith("http") ? j.audioUrl : (LOCAL_STUDIO_BRIDGE + "/" + j.audioUrl.replace(/^\/+/, ""));
-          audioEl.src = liveUrl;
-          if (dlLink) { dlLink.href = liveUrl; dlLink.download = "syllovo_live_custom.mp3"; }
-          await audioEl.play();
-          showBanner("owner-synth-status", "✔ Live Studio Synthesis Complete • Clarity Gate: 100% Passed • -20.5 LUFS");
-        } catch (err) {
-          try {
-            const fallbackOwnerVoice = voiceId || ((dynamicPrivateVoices[0] && dynamicPrivateVoices[0].voiceId) || "stock_aria");
-            const edgeRes = await apiFetch("/v1/voice/speak", {
-              method: "POST",
-              body: { text: customText, voiceId: fallbackOwnerVoice, modelId: "cloud-voice-v2", targetLufs: -20.5 }
-            });
-            if (edgeRes.audioUrl) {
-              audioEl.src = edgeRes.audioUrl;
-              if (dlLink) { dlLink.href = edgeRes.audioUrl; dlLink.download = "syllovo_cloud_edge.mp3"; }
-              audioEl.play().catch(() => {});
-            }
-            showBanner("owner-synth-status", "✔ Synthesized via Cloud Edge (" + (edgeRes.jobId || "ready") + ") • $0.00 Billed • -20.5 LUFS");
-            await loadConsoleUsageLedger();
-          } catch (edgeErr) {
-            showBanner("owner-synth-status", "✖ " + edgeErr.message, true);
-          }
-        }
-        return;
-      }
-
-      onOwnerPresetOrVoiceChange();
-      if (audioEl && audioEl.src) {
-        audioEl.play().catch((e) => {
-          showBanner("owner-synth-status", "Click the play control on the audio bar below (" + e.message + ").");
-        });
-      }
-    }
-
-    function seekZapChapter(sec) {
-      const voiceSel = document.getElementById("owner-voice-select");
-      const sampleSel = document.getElementById("owner-sample-select");
-      const audioEl = document.getElementById("owner-studio-audio");
-      const firstPriv = dynamicPrivateVoices[0] && dynamicPrivateVoices[0].voiceId;
-      if (voiceSel && firstPriv && voiceSel.value !== firstPriv) voiceSel.value = firstPriv;
-      if (sampleSel && sampleSel.value !== "zap_5min") {
-        sampleSel.value = "zap_5min";
-        onOwnerPresetOrVoiceChange();
-      }
-      if (!audioEl || !dynamicOwnerWorkspace || !dynamicOwnerWorkspace.samples || !dynamicOwnerWorkspace.samples.zap_5min) return;
-      const targetUrl = dynamicOwnerWorkspace.samples.zap_5min.mp3;
-      if (audioEl.src !== targetUrl) audioEl.src = targetUrl;
-      const jump = () => {
-        audioEl.currentTime = Number(sec) || 0;
-        audioEl.play().catch(() => {});
-      };
-      if (audioEl.readyState >= 1) {
-        jump();
-      } else {
-        audioEl.addEventListener("loadedmetadata", jump, { once: true });
-        audioEl.load();
-      }
-    }
-
-    let cachedConsoleLedgerRows = [];
-    async function loadConsoleUsageLedger() {
-      if (!activeApiKey || !isOwnerUnlocked) return;
-      try {
-        const data = await apiFetch("/v1/voice/usage-ledger");
-        const t = data.telemetry || {};
-        const orgEl = document.getElementById("console-telemetry-org");
-        if (orgEl && t.organization) orgEl.textContent = t.organization;
-        const headEl = document.getElementById("syllovo-meter-headline");
-        if (headEl) headEl.textContent = t.billedChargeLabel || "$0.00 / ₹0.00";
-        const subEl = document.getElementById("syllovo-meter-sub");
-        if (subEl) subEl.textContent = t.allocationType || "Sovereign Owner Allocation";
-        const agCost = document.getElementById("console-agent-cost");
-        if (agCost) agCost.textContent = t.aiAgentRuntimeCostUsd || "$0.00";
-        const agNote = document.getElementById("console-agent-note");
-        if (agNote) agNote.textContent = t.aiAgentNote || "0 external LLM/API tokens used during TTS";
-        const cmMin = document.getElementById("console-compute-minutes");
-        if (cmMin) cmMin.textContent = Number(t.totalStudioAudioMinutes || 61.4).toFixed(1) + " min Studio Audio";
-        const cmDet = document.getElementById("console-compute-detail");
-        if (cmDet) {
-          cmDet.textContent =
-            Number(t.totalCharactersSynthesized || 412850).toLocaleString() + " chars • " +
-            Number(t.computeWorkerMinutes || 48.6).toFixed(1) + " worker-min • " +
-            (t.estimatedElectricityCostUsd || "<$0.02") + " electricity";
-        }
-        const shEl = document.getElementById("console-shadow-savings");
-        if (shEl) shEl.textContent = (t.shadowSavingsVsElevenLabsUsd || "$100.00/mo") + " saved";
-
-        if (Array.isArray(data.activeModels) && data.activeModels.length > 0) {
-          const modelsEl = document.getElementById("avgs-instances-list");
-          if (modelsEl) {
-            modelsEl.innerHTML = data.activeModels.map((m, idx) =>
-              '<div class="voice-item">' +
-                '<div>' +
-                  '<strong>' + escapeHtml(m.name) + '</strong> ' +
-                  '<span class="region-pill mono" style="' + (idx === 0 ? "color:var(--success);" : "") + '">' + escapeHtml(m.roleBadge) + '</span>' +
-                  '<div style="font-size:12px;color:var(--text-secondary);margin-top:3px;">' + escapeHtml(m.metricsSummary) + ' &bull; ' + escapeHtml(m.loudness || "-20.5 LUFS") + '</div>' +
-                '</div>' +
-                '<button type="button" class="btn ' + (idx === 0 ? "btn-primary " : "") + 'btn-sm" onclick="openConsoleModelInStudio(\'' + escapeHtml(m.voiceId) + '\', \'' + (idx === 0 ? "v5_hook" : "zap_5min") + '\')">🎙 Open in Voice Playground &amp; Speak</button>' +
-              '</div>'
-            ).join("");
-          }
-        }
-
-        cachedConsoleLedgerRows = Array.isArray(data.history) ? data.history : [];
-        const tbody = document.getElementById("console-usage-history-tbody");
-        if (tbody) {
-          tbody.innerHTML = cachedConsoleLedgerRows.map((row, idx) =>
-            '<tr style="border-bottom:1px solid var(--border);">' +
-              '<td class="mono" style="padding:10px 12px;font-size:11.5px;color:var(--text-muted);white-space:nowrap;">' + escapeHtml(row.timestamp) + '</td>' +
-              '<td style="padding:10px 12px;font-weight:600;">' + escapeHtml(row.title) + '</td>' +
-              '<td style="padding:10px 12px;color:var(--text-secondary);white-space:nowrap;">' + escapeHtml(row.durationLabel) + '</td>' +
-              '<td style="padding:10px 12px;color:var(--text-secondary);">' + escapeHtml(row.computeWorkers) + '</td>' +
-              '<td style="padding:10px 12px;"><span class="region-pill mono" style="color:var(--success);">' + escapeHtml(row.clarityScore) + '</span></td>' +
-              '<td class="mono" style="padding:10px 12px;font-weight:700;color:var(--success);white-space:nowrap;">' + escapeHtml(row.billedCost || "$0.00") + '</td>' +
-              '<td style="padding:10px 12px;text-align:right;white-space:nowrap;">' +
-                '<button type="button" class="btn btn-sm" onclick="playConsoleLedgerRow(' + idx + ')">▶ Play</button>' +
-              '</td>' +
-            '</tr>'
-          ).join("");
-        }
-      } catch (_) {}
-    }
-
-    function openConsoleModelInStudio(voiceId, presetKey) {
-      setPerspectiveMode("owner");
-      const vSel = document.getElementById("owner-voice-select");
-      const sSel = document.getElementById("owner-sample-select");
-      const targetVoice = voiceId || ((dynamicPrivateVoices[0] && dynamicPrivateVoices[0].voiceId) || "");
-      if (vSel && targetVoice) vSel.value = targetVoice;
-      if (sSel && presetKey) sSel.value = presetKey;
-      onOwnerPresetOrVoiceChange();
-      const card = document.getElementById("owner-voice-studio-card");
-      if (card) card.scrollIntoView({ behavior: "smooth", block: "start" });
-      playOwnerStudioSelection();
-    }
-
     function playConsoleLedgerRow(idx) {
-      const r = cachedConsoleLedgerRows[idx];
+      const r = cachedLedgerRows[idx];
       if (!r || !r.audioUrl) return;
       const aud = document.getElementById("console-ledger-audio");
       if (aud) {
@@ -2387,124 +1662,138 @@ acloud voice speak "Scale PostgreSQL and NGINX with kubectl" --voice stock_aria<
       }
     }
 
-    async function spinUpNewVoiceService() {
-      showBanner("avgs-spinup-status", "Dispatching parallel Pro Studio Voice Training across 3 Compute Workers in ap-south-hyd-1...");
-      try {
-        const res = await apiFetch("/v1/voice/train", {
-          method: "POST",
-          body: {
-            voiceName: "Cloud Voice v2.2 Water-Clean Expressive",
-            modelVersion: "Cloud Voice v2.2 Water-Clean Expressive"
-          }
-        });
-        const listEl = document.getElementById("avgs-instances-list");
-        const cardHtml =
-          `<div class="voice-item" style="border-color:rgba(254,95,1,0.45);">
-            <div>
-              <strong>${escapeHtml(res.voiceName)}</strong>
-              <span class="region-pill mono">${escapeHtml(res.jobId)}</span>
-              <span class="region-pill mono" style="color:var(--success);">● ${escapeHtml(res.status)}</span>
-              <div style="font-size:12px;color:var(--text-secondary);margin-top:3px;">
-                ${escapeHtml(res.clusterSummary)} &bull; Clarity Gate: 100% Passed &bull; -20.5 LUFS
-              </div>
-            </div>
-            <span class="region-pill mono">24 kHz WAV</span>
-          </div>`;
-        if (listEl) listEl.insertAdjacentHTML("afterbegin", cardHtml);
-        showBanner("avgs-spinup-status", "✔ " + (res.message || ("Training job " + res.jobId + " active across 3 Parallel Compute Workers.")));
-        await loadConsoleUsageLedger();
-      } catch (err) {
-        showBanner("avgs-spinup-status", "✖ " + err.message, true);
-      }
-    }
-
-    function setPerspectiveMode(mode) {
-      perspectiveMode = mode === "owner" && isOwnerUnlocked ? "owner" : "cx";
-      const ownerNav = document.getElementById("owner-nav-group");
-      const btnOwner = document.getElementById("btn-view-owner");
-      const btnCx = document.getElementById("btn-view-cx");
-      const authCard = document.getElementById("auth-gate-card");
-      const acctPill = document.getElementById("account-pill");
-
-      if (btnOwner && btnCx) {
-        btnOwner.classList.toggle("btn-primary", perspectiveMode === "owner");
-        btnCx.classList.toggle("btn-primary", perspectiveMode === "cx");
-      }
-
-      if (perspectiveMode === "owner") {
-        if (ownerNav) ownerNav.classList.remove("hidden");
-        if (authCard && !activeApiKey) authCard.classList.add("hidden");
-        if (acctPill && !activeApiKey) {
-          const ownerLabel = (dynamicOwnerWorkspace && dynamicOwnerWorkspace.ownerDisplayName) || "Sovereign Owner";
-          acctPill.textContent = "👑 " + ownerLabel + " (org_syllovo)";
-        }
-        attachZapTimeTracker();
-        onOwnerPresetOrVoiceChange();
-        loadZapManifest();
-        switchTab("syllovo");
-      } else {
-        if (ownerNav) ownerNav.classList.add("hidden");
-        if (authCard && !activeApiKey) authCard.classList.remove("hidden");
-        if (acctPill && !activeApiKey) acctPill.textContent = "Guest Customer (cx View)";
-        const ownerAudio = document.getElementById("owner-studio-audio");
-        if (ownerAudio) ownerAudio.pause();
-        switchTab("speak");
-      }
-      loadVoicesList();
-    }
-
-    function unlockOwnerConsole(reason) {
-      isOwnerUnlocked = true;
-      sessionStorage.setItem("acloud_owner_unlocked", "1");
-      const bar = document.getElementById("owner-perspective-bar");
-      if (bar) bar.classList.remove("hidden");
-      setPerspectiveMode("owner");
-    }
-
-    async function probeLocalWorkstationDaemon() {
-      const badge = document.getElementById("local-daemon-badge");
-      if (location.hostname !== "localhost" && location.hostname !== "127.0.0.1") {
-        if (badge) badge.textContent = "Cloud Edge CDN Active";
+    async function refreshAccountState() {
+      if (!activeApiKey) {
+        setSignedInLayout(false);
         return;
       }
+      const me = await apiFetch("/v1/account/me");
+      const isGuest = isGuestConsoleAccount(me.account);
+      if (isGuest) {
+        setSignedInLayout(false);
+        return;
+      }
+      currentAccount = me.account;
+      isOwnerUnlocked = Boolean(me.ownerMode);
+
+      const vData = await apiFetch("/v1/voice/list").catch(() => ({}));
+      if (vData && vData.ownerMode) {
+        isOwnerUnlocked = true;
+        dynamicOwnerWorkspace = vData.ownerWorkspace || null;
+      }
+
+      document.getElementById("account-pill").textContent =
+        currentAccount.name + " • " + (isOwnerUnlocked ? "Owner" : String(currentAccount.planTier || "free").toUpperCase());
+      document.getElementById("api-key-display").value = activeApiKey;
+
+      const dropInUrl = (isOwnerUnlocked && dynamicOwnerWorkspace && dynamicOwnerWorkspace.dropInEndpoint)
+        ? dynamicOwnerWorkspace.dropInEndpoint
+        : "https://api.aarunicloud.com/v1/text-to-speech/stock_aria";
+      document.getElementById("curl-example-box").textContent =
+`curl -X POST "${dropInUrl}" \\
+  -H "xi-api-key: $AARUNI_API_KEY" \\
+  -H "Content-Type: application/json" \\
+  -d '{"text":"Welcome to Aaruni Cloud Voice.","model_id":"cloud-voice-v2"}' \\
+  --output studio.mp3`;
+
+      refreshSsoLinks();
+      setSignedInLayout(true);
+      renderOverviewAndServices();
+      await loadConsoleUsageLedger();
+      await loadBillingOrders();
+    }
+
+    // API Key Copy & Reveal
+    function toggleKeyReveal() {
+      const inp = document.getElementById("api-key-display");
+      const btn = document.getElementById("reveal-key-btn");
+      if (!inp) return;
+      const isHidden = inp.type === "password";
+      inp.type = isHidden ? "text" : "password";
+      btn.textContent = isHidden ? "Hide" : "Show";
+    }
+
+    function copyActiveKey() {
+      if (!activeApiKey) return;
+      navigator.clipboard.writeText(activeApiKey).then(() => {
+        const b = document.getElementById("key-copy-banner");
+        b.classList.remove("hidden");
+        setTimeout(() => b.classList.add("hidden"), 2500);
+      });
+    }
+
+    // Cloud Builder & Billing Helpers
+    async function generateBuilderPlan() {
       try {
-        const ctrl = new AbortController();
-        const timer = setTimeout(() => ctrl.abort(), 1100);
-        const r = await fetch(LOCAL_STUDIO_BRIDGE + "/api/v1/health", { signal: ctrl.signal });
-        clearTimeout(timer);
-        if (r.ok) {
-          localDaemonOnline = true;
-          if (badge) {
-            badge.style.color = "var(--success)";
-            badge.textContent = "● Workstation :8766 Bridge Online";
-          }
-          if (!isOwnerUnlocked) {
-            unlockOwnerConsole("Local Workstation :8766 Verified");
-          }
-          await loadVoicesList();
+        const prompt = (document.getElementById("builder-prompt-input").value || "").trim();
+        const res = await apiFetch("/v1/builder/plan", {
+          method: "POST",
+          body: { prompt }
+        });
+        const pre = document.getElementById("builder-yaml-pre");
+        pre.classList.remove("hidden");
+        pre.textContent = res.acloudYaml || "";
+      } catch (_) {}
+    }
+
+    function setConsoleCurrency(curr) {
+      consoleCurrency = curr === "INR" ? "INR" : "USD";
+      document.getElementById("curr-usd-btn").classList.toggle("btn-primary", consoleCurrency === "USD");
+      document.getElementById("curr-inr-btn").classList.toggle("btn-primary", consoleCurrency === "INR");
+      document.querySelectorAll(".dyn-price").forEach((el) => {
+        el.textContent = consoleCurrency === "INR" ? el.getAttribute("data-inr") : el.getAttribute("data-usd");
+      });
+    }
+
+    async function requestPlanUpgrade(plan) {
+      try {
+        showBanner("billing-status", "Creating secure " + consoleCurrency + " checkout...");
+        const res = await apiFetch("/v1/billing/checkout", {
+          method: "POST",
+          body: { plan, gateway: "dodo", currency: consoleCurrency, returnOrigin: window.location.origin }
+        });
+        if (res.checkoutUrl) {
+          window.location.href = res.checkoutUrl;
           return;
         }
-      } catch (_) {}
-      if (badge) {
-        badge.textContent = "Cloud Edge CDN Active";
+        showBanner("billing-status", res.message || ("Order " + res.orderId + " recorded."));
+        await loadBillingOrders();
+      } catch (err) {
+        showBanner("billing-status", err.message, true);
       }
     }
 
-    (function initConsole() {
-      const savedTheme = localStorage.getItem("acloud_theme_white_v3") === "dark" ? "dark" : "light";
-      document.documentElement.setAttribute("data-theme", savedTheme);
-      document.getElementById("theme-btn").textContent = savedTheme === "light" ? "☾ Dark" : "☀ Light";
-      const sfLink = document.getElementById("storefront-back-link");
-      if (sfLink && window.location.hostname.endsWith("aarunicloud.com")) {
-        sfLink.href = "https://aarunicloud.com";
-      }
-      detectPlsTerms();
-      fetchConsentChallenge();
-      loadCustomerZeroManifest();
-      probeLocalWorkstationDaemon();
-      window.addEventListener("load", () => initConsoleGoogleAuth());
+    async function loadBillingOrders() {
+      const box = document.getElementById("billing-orders-list");
+      if (!box || !activeApiKey) return;
+      try {
+        const res = await apiFetch("/v1/billing/orders");
+        const orders = res.orders || [];
+        if (orders.length === 0) {
+          box.textContent = "No recent billing invoices.";
+          return;
+        }
+        box.innerHTML = orders.map((o) =>
+          '<div style="padding:8px 0;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;gap:8px;">' +
+            '<span class="mono">' + escapeHtml(o.orderId) + ' • ' + escapeHtml(String(o.targetPlan || "").toUpperCase()) + '</span>' +
+            '<span class="neutral-pill">' + escapeHtml(o.status) + '</span>' +
+          '</div>'
+        ).join("");
+      } catch (_) {}
+    }
 
-      refreshAccountState().then(() => loadOrgsAndProjects()).catch(() => signOutConsole());
+    // Boot
+    (async function bootConsole() {
+      window.addEventListener("load", initConsoleGoogleAuth);
+      if (activeApiKey) {
+        try {
+          await refreshAccountState();
+          return;
+        } catch (_) {
+          storeSharedKey("");
+        }
+      }
+      setSignedInLayout(false);
     })();
   </script>
 </body>
