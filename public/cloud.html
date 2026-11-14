@@ -6,7 +6,7 @@
   <title>Aaruni Cloud (aarunicloud.com) — Cloud Compute, Cloud Storage, Cloud Voice &amp; Cloud Assistant</title>
   <meta name="description" content="Aaruni Cloud (aarunicloud.com) makes enterprise cloud easy and accessible for everyone: Cloud Compute, Cloud Storage, Cloud Voice, Cloud Assistant, and Cloud Render." />
   <meta property="og:title" content="Aaruni Cloud — Compute, Cloud Storage, Voice &amp; AI Assistant Services" />
-  <meta property="og:description" content="Simple, accessible sovereign cloud infrastructure: Cloud Compute, zero-egress Cloud Storage, neural Cloud Voice, Cloud Assistant, and Cloud Render." />
+  <meta property="og:description" content="Cloud infrastructure and AI tools: Cloud Compute, zero-egress Cloud Storage, neural Cloud Voice, Cloud Assistant, and Cloud Render." />
   <meta property="og:type" content="website" />
   <meta property="og:url" content="https://aarunicloud.com/" />
   <meta name="theme-color" content="#ffffff" />
@@ -1830,8 +1830,10 @@
       }
     }
   </style>
+  <link rel="canonical" href="https://aarunicloud.com/" />
 </head>
 <body>
+<aside class="container" style="padding:16px 22px" aria-label="Service availability"><strong>A product of Aaruni Tech.</strong> This catalog describes interfaces and access requirements. Compute, Containers, and Render are internal administrator services. Other release availability is awaiting verification. <a href="/services">View all 12 services</a> · <a href="/docs">Developer docs</a> · <a href="/trust">Hosting, data residency, and service terms</a>.</aside>
   <!-- =======================================================================
        1. AWS/GCP CLOUD COCKPIT GLOBAL HEADER
        ======================================================================= -->
@@ -1843,7 +1845,7 @@
           <span>
             <span class="brand-title">
               <span>Aaruni Cloud</span>
-              <span class="brand-badge">Sovereign</span>
+              <span class="brand-badge">Aaruni Tech product</span>
             </span>
             <span class="brand-domain mono">aarunicloud.com</span>
           </span>
@@ -1898,7 +1900,7 @@
           <a href="#customer-syllovo" class="subnav-item">Customer: Syllovo</a>
           <a href="#tco-section" class="subnav-item">Pricing &amp; Sizing</a>
         </div>
-        <a href="https://aarunitech.com" target="_blank" rel="noopener" class="subnav-item subnav-parent-link mono">Parent: aarunitech.com &nearr;</a>
+        <a href="https://aarunitech.com" target="_blank" rel="noopener" class="subnav-item subnav-parent-link mono">A product of Aaruni Tech &nearr;</a>
       </div>
     </nav>
 
@@ -1975,27 +1977,27 @@
             <span>⚡ CLOUD MADE EASY &amp; ACCESSIBLE FOR EVERYONE</span>
           </div>
           <h1 class="hero-h1">
-            Simple, Sovereign <span class="gradient-text">Cloud Infrastructure &amp; AI</span>
+            Practical <span class="gradient-text">Cloud Infrastructure &amp; AI</span>
           </h1>
           <p class="hero-lead">
-            Store media &amp; datasets with zero egress fees in <strong>Cloud Storage</strong>, launch dedicated unified-memory machines on <strong>Cloud Compute</strong>, synthesize natural narration with <strong>Cloud Voice</strong>, and automate workflows with <strong>Cloud Assistant</strong> &amp; <strong>Cloud Render</strong>.
+            Store media &amp; datasets in <strong>Cloud Storage</strong>, request administrator-managed workloads on <strong>Cloud Compute</strong>, synthesize natural narration with <strong>Cloud Voice</strong>, and automate workflows with <strong>Cloud Assistant</strong> &amp; <strong>Cloud Render</strong>.
           </p>
 
           <div class="hero-metrics-strip">
             <div class="hero-metric-item">
-              <span class="metric-val mono">99.99%</span>
-              <span class="metric-lbl">Sovereign SLA</span>
+              <span class="metric-val mono">Scoped</span>
+              <span class="metric-lbl">Pilot Agreements</span>
             </div>
             <div class="hero-metric-item">
-              <span class="metric-val mono">$0.00</span>
-              <span class="metric-lbl">Egress (ACS Storage)</span>
+              <span class="metric-val mono">Plan-based</span>
+              <span class="metric-lbl">Storage Pricing</span>
             </div>
             <div class="hero-metric-item">
-              <span class="metric-val mono">4.2×</span>
-              <span class="metric-lbl">Render Speed (ARN)</span>
+              <span class="metric-val mono">Internal</span>
+              <span class="metric-lbl">Render Access</span>
             </div>
             <div class="hero-metric-item">
-              <span class="metric-val mono">11</span>
+              <span class="metric-val mono" id="service-total">12</span>
               <span class="metric-lbl">Cloud Services</span>
             </div>
           </div>
@@ -2031,12 +2033,12 @@
           <div class="terminal-body mono" id="terminal-content">
             <div><span class="t-prompt">$</span> <span class="t-cmd">npm install -g https://aarunicloud.com/sdk/aarunicloud-sdk-1.0.0.tgz</span></div>
             <div><span class="t-prompt">$</span> <span class="t-cmd">acloud status</span></div>
-            <div class="t-success">🟢 Aaruni Cloud (OPERATIONAL) • Control Plane: ap-south-hyd-1</div>
+            <div class="t-success">Example response: consult live gateway status • Control Plane: ap-south-hyd-1</div>
             <div><span class="t-prompt">$</span> <span class="t-cmd">acloud storage upload ./demo.txt --space sandbox</span></div>
             <div class="t-success">✔ Uploaded to storage://my-space/demo.txt (SHA-256 verified • $0.00 Egress)</div>
             <div><span class="t-prompt">$</span> <span class="t-cmd">acloud voice speak --text "Deploy via kubectl &amp; PostgreSQL" --lufs -12</span></div>
             <div class="t-success">✔ W3C PLS Normalized ("kube-control", "Post-gres-Q-L") • -12.0 dB LUFS</div>
-            <div class="t-info">🚀 Live Gateway: https://api.aarunicloud.com/v1/status (🟢 LIVE)</div>
+            <div class="t-info">🚀 Live Gateway: https://api.aarunicloud.com/v1/status (Check response)</div>
           </div>
 
           <div class="terminal-footer mono" style="gap:8px;flex-wrap:wrap;">
@@ -2080,7 +2082,7 @@
             <p class="card-desc">Dedicated unified-memory parallel compute workers running 24/7 in ap-south-hyd-1 with zero per-minute GPU surcharges.</p>
           </div>
           <button type="button" class="card-action-link" onclick="openServiceSpec('acc')">
-            <span>Launch Compute Node</span>
+            <span>Request Compute Access</span>
             <span aria-hidden="true">&rarr;</span>
           </button>
         </div>
@@ -2127,7 +2129,7 @@
             <span class="eyebrow-tag">SOLUTIONS ARCHITECTURE BLUEPRINT</span>
             <h3 style="margin:4px 0 0;font-size:20px;font-weight:800;">How Aaruni Cloud Services Work Together</h3>
           </div>
-          <div class="mono" style="font-size:12px;font-weight:700;color:var(--ac-green-fg);">● 100% Zero-Trust Encrypted Ingress &bull; ap-south-hyd-1</div>
+          <div class="mono" style="font-size:12px;font-weight:700;color:var(--ac-green-fg);">● Authenticated service access &bull; ap-south-hyd-1</div>
         </div>
 
         <div class="arch-flow-wrap" role="region" aria-label="Aaruni Cloud Architecture Pipeline" tabindex="0">
@@ -2208,7 +2210,7 @@
             </button>
             <button type="button" role="tab" class="rail-btn" data-cat="all" aria-selected="false" onclick="selectCategory('all')">
               <span>&#8862; All Cloud Services</span>
-              <span class="rail-count">11</span>
+              <span class="rail-count">12</span>
             </button>
             <button type="button" role="tab" class="rail-btn" data-cat="storage" aria-selected="false" onclick="selectCategory('storage')">
               <span>📦 Cloud Storage &amp; Archive</span>
@@ -2220,7 +2222,7 @@
             </button>
             <button type="button" role="tab" class="rail-btn" data-cat="ai" aria-selected="false" onclick="selectCategory('ai')">
               <span>🎙️ Voice &amp; AI Services</span>
-              <span class="rail-count">3</span>
+              <span class="rail-count">4</span>
             </button>
             <button type="button" role="tab" class="rail-btn" data-cat="tools" aria-selected="false" onclick="selectCategory('tools')">
               <span>🎬 Cloud Render &amp; QA</span>
@@ -2328,7 +2330,7 @@
                 </button>
                 <a href="/voice" class="btn-tile-secondary" style="text-decoration:none;min-height:42px;padding:0 14px;">Clone Voice &amp; Pricing &rarr;</a>
               </div>
-              <span style="font-size:11.5px;color:var(--ac-text-muted);">6 Commercial-Safe Voices &bull; Free 10k Credits</span>
+              <span style="font-size:11.5px;color:var(--ac-text-muted);">6 Commercial-Safe Voices &bull; Trial quota: see current account plan</span>
             </div>
           </div>
 
@@ -2400,7 +2402,7 @@
 
               <div class="kpi-grid-2">
                 <div class="kpi-card">
-                  <strong class="mono" style="font-size:22px;color:var(--ac-link);display:block;">4.2&times; Faster</strong>
+                  <strong class="mono" style="font-size:22px;color:var(--ac-link);display:block;">Workload-dependent</strong>
                   <span style="font-size:12px;color:var(--ac-text-secondary);font-weight:600;">1080p Hardware Encoding on ACC Nodes</span>
                 </div>
                 <div class="kpi-card">
@@ -2548,7 +2550,7 @@
                   <span>Read &rarr;</span>
                 </button>
                 <button type="button" class="btn-tile-secondary" style="justify-content:space-between;padding:12px 14px;" onclick="openLegalModal('PRIVACY')">
-                  <span>🛡️ Global Privacy, DPDP Compliance &amp; Voice/IP Isolation</span>
+                  <span>🛡️ Privacy, Data Handling &amp; Voice Consent</span>
                   <span>Read &rarr;</span>
                 </button>
                 <button type="button" class="btn-tile-secondary" style="justify-content:space-between;padding:12px 14px;" onclick="openLegalModal('TERMS')">
@@ -2622,10 +2624,10 @@
         <div>
           <h3 class="footer-h">Aaruni Group</h3>
           <ul class="footer-ul">
-            <li><a href="https://aarunitech.com" target="_blank" rel="noopener">Parent: aarunitech.com &nearr;</a></li>
+            <li><a href="https://aarunitech.com" target="_blank" rel="noopener">A product of Aaruni Tech &nearr;</a></li>
             <li><a href="https://syllovo.com" target="_blank" rel="noopener">Customer: syllovo.com &nearr;</a></li>
             <li><a href="https://my.aarunitech.com" target="_blank" rel="noopener">Staff Portal (my.aarunitech.com) &nearr;</a></li>
-            <li><a href="mailto:info@syllovo.com?subject=%5Baarunicloud%5D%20Aaruni%20Cloud%20Sales%20%26%20Support">Contact: info@syllovo.com</a></li>
+            <li><a href="mailto:sales@aarunitech.com?subject=%5Baarunicloud%5D%20Aaruni%20Cloud%20Sales%20%26%20Support">Contact: sales@aarunitech.com</a></li>
           </ul>
         </div>
       </div>
@@ -2675,195 +2677,274 @@
       return res;
     }
 
+    /* SERVICE_CATALOG_START */
     const CLOUD_SERVICES = [
-      {
-        id: "acs",
-        code: "STORAGE",
-        name: "Cloud Storage",
-        pillar: "Cloud Storage",
-        category: "storage",
-        featured: true,
-        glyphClass: "glyph-storage",
-        endpoint: "api.aarunicloud.com/v1/storage",
-        desc: "Simple, fast, S3-compatible cloud storage for videos, media, datasets, and application files—combining NVMe cache, 8 TB RAID-1 NAS, and global $0-egress CDN delivery.",
-        bullets: [
-          "Zero egress fees ($0/GB) with instant global HTTP 206 streaming",
-          "Real-time Gigabit RAID-1 mirroring with SHA-256 checksums",
-          "Read-only finalization lock prevents accidental file overwrites"
-        ],
-        cli: "acloud storage upload ./demo.txt --space sandbox"
-      },
-      {
-        id: "arc",
-        code: "ARCHIVE",
-        name: "Cloud Archive",
-        pillar: "Cold Backup",
-        category: "storage",
-        featured: false,
-        glyphClass: "glyph-storage",
-        endpoint: "api.aarunicloud.com/v1/archive/seal",
-        desc: "30 TB AES-256 encrypted offsite cold backup storage engineered for long-term media preservation, disaster recovery, and statutory audit retention.",
-        bullets: [
-          "Offsite geo-isolated cold storage immune to local power events",
-          "AES-256 encryption at rest with strict role-gated access",
-          "Immutable SHA-256 verification receipts on every backup bundle"
-        ],
-        cli: "acloud archive seal --space sandbox --key demo.txt"
-      },
-      {
-        id: "acc",
-        code: "COMPUTE",
-        name: "Cloud Compute",
-        pillar: "Cloud Compute",
-        category: "compute",
-        featured: true,
-        glyphClass: "glyph-compute",
-        endpoint: "api.aarunicloud.com/v1/compute/nodes",
-        desc: "Dedicated unified-memory parallel compute workers running 24/7 in ap-south-hyd-1 for fast AI inference, voice training, builds, and hardware video encoding.",
-        bullets: [
-          "Hardware-accelerated H.264/HEVC 1080p/4K media encoding",
-          "Auto-reboot power recovery & Wake-on-LAN high availability",
-          "Predictable flat monthly pricing with zero per-minute GPU surcharges"
-        ],
-        cli: "acloud compute nodes"
-      },
-      {
-        id: "acn",
-        code: "CONTAINERS",
-        name: "Cloud Containers",
-        pillar: "Containers",
-        category: "compute",
-        featured: false,
-        glyphClass: "glyph-compute",
-        endpoint: "api.aarunicloud.com/v1/containers/run",
-        desc: "Isolated Docker/OCI container sandboxes and serverless Linux Xvfb (1920x1080) headless workers for clean app testing, browser capture, and cloud failover.",
-        bullets: [
-          "Automatic cloud runner failover if local LAN connectivity drops",
-          "Clean, ephemeral microservice & code execution sandboxes",
-          "Parallel multi-viewport headless Chromium execution"
-        ],
-        cli: "acloud containers run --image xvfb-1080p-worker"
-      },
-      {
-        id: "ava",
-        code: "VOICE",
-        name: "Cloud Voice",
-        pillar: "Voice AI",
-        category: "ai",
-        featured: true,
-        glyphClass: "glyph-ai",
-        endpoint: "api.aarunicloud.com/v1/voice/synthesize",
-        desc: "Natural neural speech synthesis and broadcast audio mastering combining unlimited free local draft iterations with 1-click premium studio voice APIs.",
-        bullets: [
-          "W3C PLS technical pronunciation lexicon for developer terms",
-          "35ms/45ms raised-cosine valley slicing for zero audio clicks",
-          "Automatic broadcast -12 dB to -6 dB loudness mastering"
-        ],
-        cli: "acloud voice speak --lexicon w3c-pls --target-lufs -12"
-      },
-      {
-        id: "aai",
-        code: "ASSISTANT",
-        name: "Cloud Assistant",
-        pillar: "AI Copilot",
-        category: "ai",
-        featured: true,
-        glyphClass: "glyph-ai",
-        endpoint: "api.aarunicloud.com/v1/assistant/ask",
-        desc: "Multi-intent enterprise AI chatbot and cloud copilot that turns plain-English instructions into verified storage, compute, rendering, and audio actions.",
-        bullets: [
-          "Simultaneous multi-intent execution across cloud services",
-          "Honest step-by-step progress streaming with audit receipts",
-          "Grounded in Cloud Knowledge with zero hallucinations"
-        ],
-        cli: "acloud assistant ask 'Check Cloud Storage and clone voice on Cloud Voice'"
-      },
-      {
-        id: "akb",
-        code: "KNOWLEDGE",
-        name: "Cloud Knowledge",
-        pillar: "Knowledge Base",
-        category: "ai",
-        featured: false,
-        glyphClass: "glyph-ai",
-        endpoint: "api.aarunicloud.com/v1/knowledge/search",
-        desc: "Managed SQLite FTS5 full-text and semantic RAG knowledge base with weighted source authority scoring and automated pre-flight compliance checks.",
-        bullets: [
-          "Weighted source ledger across docs, RFCs, and verified code",
-          "Sub-50ms indexed rule lookup and citation verification",
-          "Catches policy & quality issues before compute jobs run"
-        ],
-        cli: "acloud knowledge search --query 'zero egress'"
-      },
-      {
-        id: "arn",
-        code: "RENDER",
-        name: "Cloud Render",
-        pillar: "Cloud Render",
-        category: "tools",
-        featured: true,
-        glyphClass: "glyph-tools",
-        endpoint: "api.aarunicloud.com/v1/render/build",
-        desc: "Cloud background rendering engine that compiles slide decks (.key/.pdf), multi-track timelines (.cmproj), and synchronized 1080p MP4 videos.",
-        bullets: [
-          "Exact 1:1 narration, caption, and visual transition alignment",
-          "Clean adapters for Camtasia®, Keynote®, and FFmpeg®",
-          "Decoupled cloud render backend powering authoring editors"
-        ],
-        cli: "acloud render build --timeline lesson-01.cmproj --format mp4"
-      },
-      {
-        id: "aqa",
-        code: "QUALITY",
-        name: "Cloud Quality",
-        pillar: "Automated QA",
-        category: "tools",
-        featured: false,
-        glyphClass: "glyph-tools",
-        endpoint: "api.aarunicloud.com/v1/qa/audit",
-        desc: "Automated 7-device responsive layout, HTML5 Canvas visual inspection, and axe-core WCAG 2.1 Level AA accessibility testing service.",
-        bullets: [
-          "Tests 360px Android through 1440px Desktop in Light & Dark",
-          "SHA-256 bug fingerprinting & root-cause deduplication",
-          "Blocks horizontal overflow and contrast regressions pre-deploy"
-        ],
-        cli: "acloud qa audit --url https://aarunicloud.com"
-      },
-      {
-        id: "agd",
-        code: "GUARD",
-        name: "Cloud Guard",
-        pillar: "Security & Auth",
-        category: "security",
-        featured: true,
-        glyphClass: "glyph-sec",
-        endpoint: "api.aarunicloud.com/v1/guard/whoami",
-        desc: "Zero-Trust identity, encrypted API secret management, and Zero-OTP remote browser session handoff so teams work safely without sharing passwords.",
-        bullets: [
-          "Zero password or 2FA OTP exposure to staff operators",
-          "Encrypted session state handoff with 1-tap mobile revoke",
-          "Full audit trail across every cloud API action"
-        ],
-        cli: "acloud guard whoami"
-      },
-      {
-        id: "aed",
-        code: "EDGE",
-        name: "Cloud Edge",
-        pillar: "Edge & CDN",
-        category: "security",
-        featured: false,
-        glyphClass: "glyph-sec",
-        endpoint: "api.aarunicloud.com/v1/edge/status",
-        desc: "Global TLS 1.3 Anycast CDN, DNS routing, and outbound-only encrypted worker tunnels connecting private compute nodes with zero open firewall ports.",
-        bullets: [
-          "Zero public static IP exposure on private compute hardware",
-          "Host-aware global edge routing & DDoS protection",
-          "Sub-20ms asset & review delivery worldwide"
-        ],
-        cli: "acloud edge status"
-      }
-    ];
+  {
+    "code": "VOICE",
+    "id": "ava",
+    "name": "Cloud Voice",
+    "fullName": "Aaruni Cloud Voice",
+    "category": "ai",
+    "access": "subscriber-or-admin",
+    "endpoint": "https://api.aarunicloud.com/v1/voice/speak",
+    "cli": "acloud voice speak \"Hello from Aaruni Cloud\" --out intro.mp3",
+    "uiId": "ava",
+    "pillar": "Cloud Voice",
+    "featured": true,
+    "glyphClass": "glyph-ai",
+    "desc": "Speech synthesis and consent-based voice cloning through an authenticated API.",
+    "bullets": [
+      "Voice consent challenge",
+      "Subscriber quotas apply",
+      "Provider availability varies by configuration"
+    ],
+    "availability": "unverified",
+    "availabilityLabel": "Release availability not yet verified"
+  },
+  {
+    "code": "STORAGE",
+    "id": "acs",
+    "name": "Cloud Storage",
+    "fullName": "Aaruni Cloud Storage",
+    "category": "storage",
+    "access": "private-key-required",
+    "endpoint": "https://api.aarunicloud.com/v1/storage",
+    "cli": "acloud storage ls --space production-media",
+    "uiId": "acs",
+    "pillar": "Cloud Storage",
+    "featured": true,
+    "glyphClass": "glyph-storage",
+    "desc": "Authenticated object storage for application files and media.",
+    "bullets": [
+      "Object upload and download API",
+      "HTTP byte-range streaming",
+      "Access requires an authorized storage scope"
+    ],
+    "availability": "unverified",
+    "availabilityLabel": "Release availability not yet verified"
+  },
+  {
+    "code": "ARCHIVE",
+    "id": "arc",
+    "name": "Cloud Archive",
+    "fullName": "Aaruni Cloud Archive",
+    "category": "storage",
+    "access": "private-key-required",
+    "endpoint": "https://api.aarunicloud.com/v1/archive/seal",
+    "cli": "acloud archive seal --space production-media --key master.zip",
+    "uiId": "arc",
+    "pillar": "Cloud Archive",
+    "featured": false,
+    "glyphClass": "glyph-storage",
+    "desc": "Archive seal requests and SHA-256 receipts for stored objects.",
+    "bullets": [
+      "Authenticated archive requests",
+      "Object checksum receipts",
+      "Retention and backup terms require agreement"
+    ],
+    "availability": "unverified",
+    "availabilityLabel": "Release availability not yet verified"
+  },
+  {
+    "code": "COMPUTE",
+    "id": "acc",
+    "name": "Cloud Compute",
+    "fullName": "Aaruni Cloud Compute",
+    "category": "compute",
+    "access": "admin-only",
+    "endpoint": "https://api.aarunicloud.com/v1/compute/nodes",
+    "cli": "acloud compute nodes",
+    "uiId": "acc",
+    "pillar": "Cloud Compute",
+    "featured": true,
+    "glyphClass": "glyph-compute",
+    "desc": "Administrator-managed worker orchestration for approved workloads.",
+    "bullets": [
+      "Administrator access required",
+      "Outbound-pull worker model",
+      "Capacity subject to operator approval"
+    ],
+    "availability": "internal",
+    "availabilityLabel": "Internal — administrator only"
+  },
+  {
+    "code": "CONTAINERS",
+    "id": "acn",
+    "name": "Cloud Containers",
+    "fullName": "Aaruni Cloud Containers",
+    "category": "compute",
+    "access": "admin-only",
+    "endpoint": "https://api.aarunicloud.com/v1/containers/run",
+    "cli": "acloud containers run --image xvfb-1080p-worker",
+    "uiId": "acn",
+    "pillar": "Cloud Containers",
+    "featured": false,
+    "glyphClass": "glyph-compute",
+    "desc": "Administrator-managed container job requests.",
+    "bullets": [
+      "Administrator access required",
+      "Structured workload requests",
+      "Runtime capacity subject to operator approval"
+    ],
+    "availability": "internal",
+    "availabilityLabel": "Internal — administrator only"
+  },
+  {
+    "code": "ASSISTANT",
+    "id": "aai",
+    "name": "Cloud Assistant",
+    "fullName": "Aaruni Cloud Assistant",
+    "category": "ai",
+    "access": "public-or-authenticated",
+    "endpoint": "https://api.aarunicloud.com/v1/assistant/ask",
+    "cli": "acloud assistant ask \"Verify Cloud Storage and Cloud Voice\"",
+    "uiId": "aai",
+    "pillar": "Cloud Assistant",
+    "featured": true,
+    "glyphClass": "glyph-ai",
+    "desc": "Assistant API for cloud workflow requests.",
+    "bullets": [
+      "Access depends on configured routes",
+      "Provider integrations require configuration",
+      "Review proposed actions before execution"
+    ],
+    "availability": "unverified",
+    "availabilityLabel": "Release availability not yet verified"
+  },
+  {
+    "code": "KNOWLEDGE",
+    "id": "akb",
+    "name": "Cloud Knowledge",
+    "fullName": "Aaruni Cloud Knowledge",
+    "category": "ai",
+    "access": "public-docs-readonly",
+    "endpoint": "https://api.aarunicloud.com/v1/knowledge/search",
+    "cli": "acloud knowledge search \"zero egress\"",
+    "uiId": "akb",
+    "pillar": "Cloud Knowledge",
+    "featured": false,
+    "glyphClass": "glyph-ai",
+    "desc": "Search the configured technical knowledge index.",
+    "bullets": [
+      "Read-only search API",
+      "Results depend on indexed sources",
+      "No general accuracy guarantee"
+    ],
+    "availability": "unverified",
+    "availabilityLabel": "Release availability not yet verified"
+  },
+  {
+    "code": "RENDER",
+    "id": "arn",
+    "name": "Cloud Render",
+    "fullName": "Aaruni Cloud Render",
+    "category": "tools",
+    "access": "admin-only",
+    "endpoint": "https://api.aarunicloud.com/v1/render/build",
+    "cli": "acloud render build --project lesson-01 --resolution 1080p",
+    "uiId": "arn",
+    "pillar": "Cloud Render",
+    "featured": true,
+    "glyphClass": "glyph-tools",
+    "desc": "Administrator-managed media rendering jobs.",
+    "bullets": [
+      "Administrator access required",
+      "Job status API",
+      "Supported formats depend on worker configuration"
+    ],
+    "availability": "internal",
+    "availabilityLabel": "Internal — administrator only"
+  },
+  {
+    "code": "QUALITY",
+    "id": "aqa",
+    "name": "Cloud Quality",
+    "fullName": "Aaruni Cloud Quality",
+    "category": "tools",
+    "access": "public-or-authenticated",
+    "endpoint": "https://api.aarunicloud.com/v1/qa/audit",
+    "cli": "acloud qa audit --url https://aarunicloud.com",
+    "uiId": "aqa",
+    "pillar": "Cloud Quality",
+    "featured": false,
+    "glyphClass": "glyph-tools",
+    "desc": "Automated quality checks for supported web workloads.",
+    "bullets": [
+      "Audit request API",
+      "Results describe checks performed",
+      "An automated check is not a compliance certification"
+    ],
+    "availability": "unverified",
+    "availabilityLabel": "Release availability not yet verified"
+  },
+  {
+    "code": "GUARD",
+    "id": "agd",
+    "name": "Cloud Guard",
+    "fullName": "Aaruni Cloud Guard",
+    "category": "security",
+    "access": "private-key-required",
+    "endpoint": "https://api.aarunicloud.com/v1/guard/whoami",
+    "cli": "acloud guard whoami",
+    "uiId": "agd",
+    "pillar": "Cloud Guard",
+    "featured": false,
+    "glyphClass": "glyph-sec",
+    "desc": "Identity and API access controls for Aaruni Cloud.",
+    "bullets": [
+      "Bearer API key authentication",
+      "Role and scope checks",
+      "Authenticated audit endpoints"
+    ],
+    "availability": "unverified",
+    "availabilityLabel": "Release availability not yet verified"
+  },
+  {
+    "code": "EDGE",
+    "id": "aed",
+    "name": "Cloud Edge",
+    "fullName": "Aaruni Cloud Edge",
+    "category": "security",
+    "access": "public-health-readonly",
+    "endpoint": "https://api.aarunicloud.com/v1/edge/status",
+    "cli": "acloud status",
+    "uiId": "aed",
+    "pillar": "Cloud Edge",
+    "featured": false,
+    "glyphClass": "glyph-sec",
+    "desc": "Edge routing and gateway metadata.",
+    "bullets": [
+      "Read-only gateway metadata",
+      "Provider-managed edge delivery",
+      "A response is not proof of end-to-end service health"
+    ],
+    "availability": "unverified",
+    "availabilityLabel": "Release availability not yet verified"
+  },
+  {
+    "code": "BUILDER",
+    "id": "builder",
+    "name": "Cloud Builder",
+    "fullName": "Aaruni Cloud Builder",
+    "category": "ai",
+    "access": "subscriber-or-admin",
+    "endpoint": "https://api.aarunicloud.com/v1/builder/plan",
+    "cli": "acloud deploy --file acloud.yaml",
+    "uiId": "builder",
+    "pillar": "Cloud Builder",
+    "featured": true,
+    "glyphClass": "glyph-ai",
+    "desc": "Application planning and deployment request interfaces.",
+    "bullets": [
+      "Subscriber or administrator access",
+      "Project-scoped requests",
+      "Execution requires configured infrastructure"
+    ],
+    "availability": "unverified",
+    "availabilityLabel": "Release availability not yet verified"
+  }
+];
+    /* SERVICE_CATALOG_END */
 
     const ECOSYSTEM_LIST = [
       { badge: "Timeline Format Adapter", cls: "glyph-ai", name: "TechSmith Camtasia®", desc: "Interoperable .cmproj multi-track timeline generation and .libzip callouts via Cloud Render." },
@@ -2896,7 +2977,7 @@ acloud services
 acloud compute nodes
 acloud voice speak --text "Deploy via kubectl and PostgreSQL" --lufs -12
 acloud assistant ask "Check Cloud Storage and clone voice on Cloud Voice"`,
-      curl: `# 1. Public Edge Status (0 inbound ports exposed, air-gapped worker pool):
+      curl: `# 1. Public gateway metadata (does not verify workload readiness):
 curl -s https://api.aarunicloud.com/v1/status
 
 # 2. Private Authenticated Storage & Compute (requires your ACLOUD_API_KEY):
@@ -2942,13 +3023,13 @@ console.log("Verified Receipt:", plan.receiptId, plan.actions);`
       SECURITY: {
         title: "Cloud Guard Security & Zero-OTP Session Isolation",
         html: `
-          <p style="font-size:13.5px;color:var(--ac-text-secondary);">Aaruni Cloud enforces TLS 1.3 in transit via Cloud Edge, AES-256 encrypted storage at rest across Cloud Storage &amp; Cloud Archive, outbound-only encrypted worker tunnels, and Cloud Guard Zero-OTP session isolation.</p>
+          <p style="font-size:13.5px;color:var(--ac-text-secondary);">The source includes bearer-key role checks and an outbound-pull worker model. Deployment configuration, storage encryption, key management, and isolation must be verified for the contracted workload. See <a href="/trust">service disclosures</a>.</p>
         `
       },
       PRIVACY: {
-        title: "Global Privacy, DPDP Compliance & Tenant/Voice Isolation",
+        title: "Privacy, Data Handling & Voice Consent",
         html: `
-          <p style="font-size:13.5px;color:var(--ac-text-secondary);">Engineered in alignment with India’s DPDP Act and global privacy standards. Public pages strictly isolate tenant curricula, confidential publisher materials, and private voice models—using exclusively stock public voices for unauthenticated demos.</p>
+          <p style="font-size:13.5px;color:var(--ac-text-secondary);">Review hosting locations, subprocessors, retention, deletion, and voice consent requirements before uploading personal or confidential data. This page does not establish a regulatory certification. See <a href="/trust">service disclosures</a>.</p>
         `
       },
       TERMS: {
@@ -3023,8 +3104,8 @@ console.log("Verified Receipt:", plan.receiptId, plan.actions);`
       if (matches.length === 0) {
         container.innerHTML = '<div class="service-tile" style="grid-column:1/-1;text-align:center;padding:32px;">' +
           '<strong>No matching Aaruni Cloud services found</strong>' +
-          '<p style="font-size:13px;color:var(--ac-text-muted);margin:8px 0 14px;">Clear the filter to view all 11 Cloud Storage, Compute, Voice, Assistant, and Render services.</p>' +
-          '<button type="button" class="btn-tile-primary" style="margin:0 auto;" onclick="resetCatalog()">Show All 11 Services</button>' +
+          '<p style="font-size:13px;color:var(--ac-text-muted);margin:8px 0 14px;">Clear the filter to view the complete service catalog.</p>' +
+          '<button type="button" class="btn-tile-primary" style="margin:0 auto;" onclick="resetCatalog()">Show All Services</button>' +
         '</div>';
         return;
       }
@@ -3040,13 +3121,15 @@ console.log("Verified Receipt:", plan.receiptId, plan.actions);`
               '<span class="pill-badge ' + s.glyphClass + '">' + esc(s.pillar) + '</span>' +
             '</div>' +
             '<h3 class="svc-title">' + esc(s.name) + '</h3>' +
+            '<p class="svc-availability">' + esc(s.availabilityLabel) + '</p>' +
+            '<p>Access: ' + esc(s.access) + '</p>' +
             '<span class="svc-endpoint mono">' + esc(s.endpoint) + '</span>' +
             '<p class="svc-desc">' + esc(s.desc) + '</p>' +
             '<ul class="svc-bullets">' + bullets + '</ul>' +
           '</div>' +
           '<div class="tile-action-row">' +
             '<button type="button" class="btn-tile-primary" data-svc="' + esc(s.name + ' (' + s.code + ')') + '" onclick="openPilotModal(this.dataset.svc)">' +
-              '<span>⚡ Provision</span>' +
+              '<span>Request access</span>' +
             '</button>' +
             '<button type="button" class="btn-tile-secondary" data-id="' + esc(s.id) + '" onclick="openServiceSpec(this.dataset.id)">' +
               '<span>API Spec &rarr;</span>' +
@@ -3358,21 +3441,6 @@ console.log("Verified Receipt:", plan.receiptId, plan.actions);`
       log.appendChild(agentBubble);
       log.scrollTop = log.scrollHeight;
 
-      const lower = query.toLowerCase();
-      let planLines = [];
-      if (lower.includes("acc") || lower.includes("compute") || lower.includes("acs") || lower.includes("storage")) {
-        planLines.push("• [Cloud Compute • ACC] Launched 2 unified-memory worker nodes in ap-south-hyd-1.");
-        planLines.push("• [Cloud Storage • ACS] Attached 8 TB RAID-1 + $0-egress CDN storage space.");
-      }
-      if (lower.includes("render") || lower.includes("video") || lower.includes("slide") || lower.includes("audio") || lower.includes("ava") || lower.includes("voice")) {
-        planLines.push("• [Cloud Render • ARN] Compiled 1920x1080 timeline & verified stage contrast.");
-        planLines.push("• [Cloud Voice • AVA] Synthesized W3C PLS narration with cosine de-clicking at -12.0 dB.");
-      }
-      if (lower.includes("security") || lower.includes("guard") || lower.includes("agd") || lower.includes("zero-otp") || planLines.length === 0) {
-        planLines.push("• [Cloud Guard • AGD] Verified TLS 1.3 edge transport, AES-256 storage encryption, and Zero-OTP session safety.");
-      }
-
-      const fallbackReceipt = "AAI-RCPT-" + Math.floor(100000 + Math.random() * 899999);
       cloudFetch("/v1/assistant/ask", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -3384,14 +3452,13 @@ console.log("Verified Receipt:", plan.receiptId, plan.actions);`
             return "• [" + a.service + "] " + a.summary;
           });
           agentBubble.innerHTML =
-            '<strong class="mono chat-agent-verified">✓ Live Verified Plan (' + esc(data.receiptId || fallbackReceipt) + ')</strong>' +
+            '<strong class="mono chat-agent-verified">Assistant response (' + esc(data.receiptId || "No execution receipt") + ')</strong>' +
             lines.map(function (l) { return '<div style="margin-bottom:3px;">' + esc(l) + '</div>'; }).join("");
           log.scrollTop = log.scrollHeight;
         })
         .catch(function () {
           agentBubble.innerHTML =
-            '<strong class="mono chat-agent-verified">✓ Verified Multi-Service Plan (' + fallbackReceipt + ')</strong>' +
-            planLines.map(function (l) { return '<div style="margin-bottom:3px;">' + esc(l) + '</div>'; }).join("");
+            '<strong>Assistant unavailable.</strong> No actions were confirmed. Please try again or sign in to the console.';
           log.scrollTop = log.scrollHeight;
         });
     }
@@ -3497,7 +3564,7 @@ console.log("Verified Receipt:", plan.receiptId, plan.actions);`
       const org = document.getElementById("p-org").value.trim();
       const mail = document.getElementById("p-mail").value.trim();
       const svc = document.getElementById("p-svc").value.trim();
-      const ref = "AC-" + Math.floor(100000 + Math.random() * 899999);
+      let ref = "AC-" + Math.floor(100000 + Math.random() * 899999);
       const box = document.getElementById("p-receipt");
       const subj = encodeURIComponent("[aarunicloud] [" + ref + "] Aaruni Cloud Pilot — " + org);
       const body = encodeURIComponent(
@@ -3507,29 +3574,31 @@ console.log("Verified Receipt:", plan.receiptId, plan.actions);`
         "Work Email: " + mail + "\n" +
         "Selected Services: " + svc + "\n"
       );
-      const mailtoHref = "mailto:info@syllovo.com?subject=" + subj + "&body=" + body;
+      const mailtoHref = "mailto:sales@aarunitech.com?subject=" + subj + "&body=" + body;
 
       box.style.display = "block";
-      box.innerHTML = "Dispatching pilot request <code>" + ref + "</code> to <code>info@syllovo.com</code>...";
+      box.innerHTML = "Saving pilot request <code>" + ref + "</code> to <code>sales@aarunitech.com</code>...";
 
       cloudFetch("/api/inquiries", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ ref: ref, label: "aarunicloud", org: org, email: mail, services: svc })
+        body: JSON.stringify({ ref: ref, label: "aarunicloud", org: org, email: mail, services: svc, message: "Pilot request: " + svc })
       })
         .then(function (r) { return r.json(); })
         .then(function (data) {
+          if (!data.success) throw new Error("Inquiry not saved");
+          ref = data.ref || ref;
           const sentServer = data && data.emailDelivery && data.emailDelivery.sent;
           box.innerHTML =
             (sentServer
-              ? "✓ Auto-emailed to <code>info@syllovo.com</code> (labeled <code>[aarunicloud]</code>, Ref <code>" + ref + "</code>). "
+              ? "✓ Auto-emailed to <code>sales@aarunitech.com</code> (labeled <code>[aarunicloud]</code>, Ref <code>" + ref + "</code>). "
               : "✓ Pilot Reference <code>" + ref + "</code> logged with label <code>[aarunicloud]</code>. ") +
             "<a href=\"" + mailtoHref + "\" style=\"text-decoration:underline;color:var(--ac-link);margin-left:6px;\">Open in Mail App &rarr;</a>";
         })
         .catch(function () {
           box.innerHTML =
-            "Pilot Reference <code>" + ref + "</code> logged with label <code>[aarunicloud]</code>. " +
-            "<a href=\"" + mailtoHref + "\" style=\"text-decoration:underline;color:var(--ac-link);margin-left:6px;\">Send to info@syllovo.com &rarr;</a>";
+            "Your request could not be saved. Please send it using your email app. " +
+            "<a href=\"" + mailtoHref + "\" style=\"text-decoration:underline;color:var(--ac-link);margin-left:6px;\">Send to sales@aarunitech.com &rarr;</a>";
         });
     }
 
