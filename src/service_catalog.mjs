@@ -1,0 +1,267 @@
+// Canonical service names and access metadata. Availability is not a health assertion.
+export const SERVICE_CATALOG = [
+  {
+    "code": "VOICE",
+    "id": "voice",
+    "name": "Cloud Voice",
+    "fullName": "Aaruni Cloud Voice",
+    "category": "ai",
+    "access": "subscriber-or-admin",
+    "endpoint": "https://api.aarunicloud.com/v1/voice/speak",
+    "cli": "acloud voice speak \"Hello from Aaruni Cloud\" --out intro.mp3",
+    "uiId": "ava",
+    "pillar": "Cloud Voice",
+    "featured": true,
+    "glyphClass": "glyph-ai",
+    "desc": "Speech synthesis and consent-based voice cloning through an authenticated API.",
+    "bullets": [
+      "Voice consent challenge",
+      "Subscriber quotas apply",
+      "Provider availability varies by configuration"
+    ],
+    "availability": "unverified",
+    "availabilityLabel": "Release availability not yet verified"
+  },
+  {
+    "code": "STORAGE",
+    "id": "storage",
+    "name": "Cloud Storage",
+    "fullName": "Aaruni Cloud Storage",
+    "category": "storage",
+    "access": "private-key-required",
+    "endpoint": "https://api.aarunicloud.com/v1/storage",
+    "cli": "acloud storage ls --space production-media",
+    "uiId": "acs",
+    "pillar": "Cloud Storage",
+    "featured": true,
+    "glyphClass": "glyph-storage",
+    "desc": "Authenticated object storage for application files and media.",
+    "bullets": [
+      "Object upload and download API",
+      "HTTP byte-range streaming",
+      "Access requires an authorized storage scope"
+    ],
+    "availability": "unverified",
+    "availabilityLabel": "Release availability not yet verified"
+  },
+  {
+    "code": "ARCHIVE",
+    "id": "archive",
+    "name": "Cloud Archive",
+    "fullName": "Aaruni Cloud Archive",
+    "category": "storage",
+    "access": "private-key-required",
+    "endpoint": "https://api.aarunicloud.com/v1/archive/seal",
+    "cli": "acloud archive seal --space production-media --key master.zip",
+    "uiId": "arc",
+    "pillar": "Cloud Archive",
+    "featured": false,
+    "glyphClass": "glyph-storage",
+    "desc": "Archive seal requests and SHA-256 receipts for stored objects.",
+    "bullets": [
+      "Authenticated archive requests",
+      "Object checksum receipts",
+      "Retention and backup terms require agreement"
+    ],
+    "availability": "unverified",
+    "availabilityLabel": "Release availability not yet verified"
+  },
+  {
+    "code": "COMPUTE",
+    "id": "compute",
+    "name": "Cloud Compute",
+    "fullName": "Aaruni Cloud Compute",
+    "category": "compute",
+    "access": "admin-only",
+    "endpoint": "https://api.aarunicloud.com/v1/compute/nodes",
+    "cli": "acloud compute nodes",
+    "uiId": "acc",
+    "pillar": "Cloud Compute",
+    "featured": true,
+    "glyphClass": "glyph-compute",
+    "desc": "Administrator-managed worker orchestration for approved workloads.",
+    "bullets": [
+      "Administrator access required",
+      "Outbound-pull worker model",
+      "Capacity subject to operator approval"
+    ],
+    "availability": "internal",
+    "availabilityLabel": "Internal \u2014 administrator only"
+  },
+  {
+    "code": "CONTAINERS",
+    "id": "containers",
+    "name": "Cloud Containers",
+    "fullName": "Aaruni Cloud Containers",
+    "category": "compute",
+    "access": "admin-only",
+    "endpoint": "https://api.aarunicloud.com/v1/containers/run",
+    "cli": "acloud containers run --image xvfb-1080p-worker",
+    "uiId": "acn",
+    "pillar": "Cloud Containers",
+    "featured": false,
+    "glyphClass": "glyph-compute",
+    "desc": "Administrator-managed container job requests.",
+    "bullets": [
+      "Administrator access required",
+      "Structured workload requests",
+      "Runtime capacity subject to operator approval"
+    ],
+    "availability": "internal",
+    "availabilityLabel": "Internal \u2014 administrator only"
+  },
+  {
+    "code": "ASSISTANT",
+    "id": "assistant",
+    "name": "Cloud Assistant",
+    "fullName": "Aaruni Cloud Assistant",
+    "category": "ai",
+    "access": "public-or-authenticated",
+    "endpoint": "https://api.aarunicloud.com/v1/assistant/ask",
+    "cli": "acloud assistant ask \"Verify Cloud Storage and Cloud Voice\"",
+    "uiId": "aai",
+    "pillar": "Cloud Assistant",
+    "featured": true,
+    "glyphClass": "glyph-ai",
+    "desc": "Assistant API for cloud workflow requests.",
+    "bullets": [
+      "Access depends on configured routes",
+      "Provider integrations require configuration",
+      "Review proposed actions before execution"
+    ],
+    "availability": "unverified",
+    "availabilityLabel": "Release availability not yet verified"
+  },
+  {
+    "code": "KNOWLEDGE",
+    "id": "knowledge",
+    "name": "Cloud Knowledge",
+    "fullName": "Aaruni Cloud Knowledge",
+    "category": "ai",
+    "access": "public-docs-readonly",
+    "endpoint": "https://api.aarunicloud.com/v1/knowledge/search",
+    "cli": "acloud knowledge search \"zero egress\"",
+    "uiId": "akb",
+    "pillar": "Cloud Knowledge",
+    "featured": false,
+    "glyphClass": "glyph-ai",
+    "desc": "Search the configured technical knowledge index.",
+    "bullets": [
+      "Read-only search API",
+      "Results depend on indexed sources",
+      "No general accuracy guarantee"
+    ],
+    "availability": "unverified",
+    "availabilityLabel": "Release availability not yet verified"
+  },
+  {
+    "code": "RENDER",
+    "id": "render",
+    "name": "Cloud Render",
+    "fullName": "Aaruni Cloud Render",
+    "category": "tools",
+    "access": "admin-only",
+    "endpoint": "https://api.aarunicloud.com/v1/render/build",
+    "cli": "acloud render build --project lesson-01 --resolution 1080p",
+    "uiId": "arn",
+    "pillar": "Cloud Render",
+    "featured": true,
+    "glyphClass": "glyph-tools",
+    "desc": "Administrator-managed media rendering jobs.",
+    "bullets": [
+      "Administrator access required",
+      "Job status API",
+      "Supported formats depend on worker configuration"
+    ],
+    "availability": "internal",
+    "availabilityLabel": "Internal \u2014 administrator only"
+  },
+  {
+    "code": "QUALITY",
+    "id": "qa",
+    "name": "Cloud Quality",
+    "fullName": "Aaruni Cloud Quality",
+    "category": "tools",
+    "access": "public-or-authenticated",
+    "endpoint": "https://api.aarunicloud.com/v1/qa/audit",
+    "cli": "acloud qa audit --url https://aarunicloud.com",
+    "uiId": "aqa",
+    "pillar": "Cloud Quality",
+    "featured": false,
+    "glyphClass": "glyph-tools",
+    "desc": "Automated quality checks for supported web workloads.",
+    "bullets": [
+      "Audit request API",
+      "Results describe checks performed",
+      "An automated check is not a compliance certification"
+    ],
+    "availability": "unverified",
+    "availabilityLabel": "Release availability not yet verified"
+  },
+  {
+    "code": "GUARD",
+    "id": "guard",
+    "name": "Cloud Guard",
+    "fullName": "Aaruni Cloud Guard",
+    "category": "security",
+    "access": "private-key-required",
+    "endpoint": "https://api.aarunicloud.com/v1/guard/whoami",
+    "cli": "acloud guard whoami",
+    "uiId": "agd",
+    "pillar": "Cloud Guard",
+    "featured": false,
+    "glyphClass": "glyph-sec",
+    "desc": "Identity and API access controls for Aaruni Cloud.",
+    "bullets": [
+      "Bearer API key authentication",
+      "Role and scope checks",
+      "Authenticated audit endpoints"
+    ],
+    "availability": "unverified",
+    "availabilityLabel": "Release availability not yet verified"
+  },
+  {
+    "code": "EDGE",
+    "id": "edge",
+    "name": "Cloud Edge",
+    "fullName": "Aaruni Cloud Edge",
+    "category": "security",
+    "access": "public-health-readonly",
+    "endpoint": "https://api.aarunicloud.com/v1/edge/status",
+    "cli": "acloud status",
+    "uiId": "aed",
+    "pillar": "Cloud Edge",
+    "featured": false,
+    "glyphClass": "glyph-sec",
+    "desc": "Edge routing and gateway metadata.",
+    "bullets": [
+      "Read-only gateway metadata",
+      "Provider-managed edge delivery",
+      "A response is not proof of end-to-end service health"
+    ],
+    "availability": "unverified",
+    "availabilityLabel": "Release availability not yet verified"
+  },
+  {
+    "code": "BUILDER",
+    "id": "builder",
+    "name": "Cloud Builder",
+    "fullName": "Aaruni Cloud Builder",
+    "category": "ai",
+    "access": "subscriber-or-admin",
+    "endpoint": "https://api.aarunicloud.com/v1/builder/plan",
+    "cli": "acloud deploy --file acloud.yaml",
+    "uiId": "builder",
+    "pillar": "Cloud Builder",
+    "featured": true,
+    "glyphClass": "glyph-ai",
+    "desc": "Application planning and deployment request interfaces.",
+    "bullets": [
+      "Subscriber or administrator access",
+      "Project-scoped requests",
+      "Execution requires configured infrastructure"
+    ],
+    "availability": "unverified",
+    "availabilityLabel": "Release availability not yet verified"
+  }
+];

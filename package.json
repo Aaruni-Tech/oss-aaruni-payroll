@@ -1,0 +1,12 @@
+{
+  "name": "aaruni-portfolio-transition",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "node src/build_worker.mjs",
+    "build:corporate": "node scripts/build-target.mjs corporate",
+    "build:cloud": "node scripts/build-target.mjs cloud",
+    "build:payroll": "node scripts/build-target.mjs payroll",
+    "test": "node --test tests/deployment-boundaries.test.mjs"
+  }
+}

@@ -1,0 +1,36 @@
+name: Portfolio boundaries
+on:
+  pull_request:
+  push:
+    branches: [master]
+permissions:
+  contents: read
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - run: npm run build
+      - run: npm test
+      - run: git diff --exit-code -- public/_worker.js public/cloud.html public/services.html public/service-catalog.json
+      - name: Export standalone staging repositories
+        run: node scripts/export-repositories.mjs "$RUNNER_TEMP/aaruni-portfolio"
+      - name: Verify standalone exports
+        run: |
+          npm --prefix "$RUNNER_TEMP/aaruni-portfolio/aarunitech-web" run build
+          npm --prefix "$RUNNER_TEMP/aaruni-portfolio/aarunitech-web" test
+          npm --prefix "$RUNNER_TEMP/aaruni-portfolio/aarunicloud-platform" run build
+          npm --prefix "$RUNNER_TEMP/aaruni-portfolio/aarunicloud-platform" test
+      - name: Remove generated build outputs from source archive
+        run: |
+          rm -rf "$RUNNER_TEMP/aaruni-portfolio/aarunitech-web/dist"
+          rm -rf "$RUNNER_TEMP/aaruni-portfolio/aarunicloud-platform/dist"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: aaruni-portfolio-staging-exports
+          path: ${{ runner.temp }}/aaruni-portfolio
+          include-hidden-files: true
+          retention-days: 30
