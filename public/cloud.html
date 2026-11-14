@@ -2482,9 +2482,9 @@
         <div class="section-header">
           <div>
             <span class="eyebrow-tag">TRANSPARENT CLOUD ECONOMICS</span>
-            <h2 class="section-h2">Workload Sizing &amp; TCO Cost Estimator</h2>
+            <h2 class="section-h2">Illustrative Workload Cost Estimator</h2>
             <p class="section-sub">
-              Estimate infrastructure savings across Cloud Compute, zero-egress Cloud Storage, and Cloud Voice compared to conventional on-demand cloud billing.
+              Illustrative estimates, not a quote or benchmark. Compare assumptions across Cloud Compute, zero-egress Cloud Storage, and Cloud Voice compared to conventional on-demand cloud billing.
             </p>
           </div>
         </div>
@@ -3202,7 +3202,7 @@ console.log("Verified Receipt:", plan.receiptId, plan.actions);`
       ad: {
         label: "Product Launch Ad",
         cxPreset: "s1",
-        script: "Meet Aaruni Cloud Voice v2. Turn technical scripts, product launches, and global courses into broadcast-ready studio audio in seconds—starting free with ten thousand credits."
+        script: "Meet Aaruni Cloud Voice v2. Turn technical scripts, product launches, and global courses into broadcast-ready studio audio in seconds—with trial availability and quotas shown in your account."
       },
       agent: {
         label: "AI Support Agent",
@@ -3491,13 +3491,13 @@ console.log("Verified Receipt:", plan.receiptId, plan.actions);`
         s.name + " (" + s.code + ")",
         '<p style="font-size:14px;color:var(--ac-text-secondary);margin-top:0;">' + esc(s.desc) + '</p>' +
         '<div style="background:#090e1a;border:1px solid rgba(56,189,248,0.25);color:#e2e8f0;padding:12px 14px;border-radius:10px;margin:14px 0;font-size:12px;" class="mono">' +
-          '<div style="color:#7dd3fc;margin-bottom:4px;"># Live Endpoint: https://' + esc(s.endpoint) + '</div>' +
+          '<div style="color:#7dd3fc;margin-bottom:4px;"># Endpoint: ' + esc(s.endpoint) + '</div>' +
           '<div>$ ' + esc(s.cli) + '</div>' +
         '</div>' +
         '<ul style="padding-left:18px;font-size:13.5px;color:var(--ac-text-secondary);">' + list + '</ul>' +
         '<div style="display:flex;justify-content:flex-end;gap:10px;margin-top:18px;">' +
           '<button type="button" class="btn-tile-secondary" onclick="closeCloudModal()">Close</button>' +
-          '<button type="button" class="btn-dawn" style="min-height:40px;" data-svc="' + esc(s.name + ' (' + s.code + ')') + '" onclick="openPilotModal(this.dataset.svc)">⚡ Provision ' + esc(s.code) + '</button>' +
+          '<button type="button" class="btn-dawn" style="min-height:40px;" data-svc="' + esc(s.name + ' (' + s.code + ')') + '" onclick="openPilotModal(this.dataset.svc)">Request access: ' + esc(s.code) + '</button>' +
         '</div>'
       );
     }
