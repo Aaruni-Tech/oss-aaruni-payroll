@@ -1538,8 +1538,20 @@
     }
     .toast-pill.show { display: inline-flex; }
   </style>
+  <link rel="stylesheet" href="/voice-studio.css" />
 </head>
 <body>
+  <aside class="studio-nav" aria-label="Workspace">
+    <a class="studio-logo" href="/voice"><img src="/voice-logo.svg" alt="" width="34" height="34"><span>Aaruni Cloud<small>VOICE PLATFORM</small></span></a>
+    <div class="workspace-label">CREATIVE WORKSPACE</div>
+    <nav aria-label="Studio navigation">
+      <button class="active" data-view-btn="studio"><span aria-hidden="true">◉</span> Text to Speech</button>
+      <button data-view-btn="clone"><span aria-hidden="true">◎</span> Voices &amp; cloning</button>
+      <button data-view-btn="train"><span aria-hidden="true">≋</span> Voice training</button>
+      <button data-view-btn="api"><span aria-hidden="true">⌘</span> Developers &amp; plans</button>
+    </nav>
+    <div class="studio-nav-bottom"><div class="studio-tip"><strong>Make every word yours.</strong><p>Fine-tune the delivery. Keep your pronunciation consistent.</p><button data-view-btn="train">Explore voice tools ↗</button></div><a href="https://console.aarunicloud.com">↗ Aaruni Cloud console</a></div>
+  </aside>
 
   <!-- ===================================================================== -->
   <!-- CLEAN PURE-WHITE TOP NAVIGATION                                       -->
@@ -1548,7 +1560,7 @@
     <div class="vc-topbar-inner">
       <div class="vc-topbar-left">
         <a href="/voice" class="vc-brand" aria-label="Aaruni Cloud Voice Home">
-          <span class="vc-brand-mark">A</span>
+          <img src="/voice-logo.svg" alt="Aaruni" width="28" height="28">
           <span>Cloud Voice</span>
           <span class="vc-brand-badge" id="vcTopVersionBadge">v3.0</span>
         </a>
@@ -1575,6 +1587,7 @@
   </header>
 
   <main class="vc-shell">
+    <div class="studio-page-heading"><div><div class="studio-eyebrow">AARUNI CLOUD / VOICE STUDIO</div><h1 id="studioPageTitle">Text to Speech</h1><p id="studioPageDescription">Bring your words to life. Your voice, your delivery.</p></div><span class="studio-heading-tag">✦ Create with voice</span></div>
 
     <!-- ===================================================================== -->
     <!-- 1. TEXT TO SPEECH STUDIO (100% PURE WHITE, ELEVENLABS + .PLS)         -->
@@ -1597,7 +1610,7 @@
         <!-- ================================================================= -->
         <div class="tts-editor-col">
           <div>
-            <div class="smp-top-row">
+            <div class="editor-heading"><span>YOUR SCRIPT</span><span id="draftStatus" role="status">Ready to create</span></div><div class="smp-top-row">
               <div class="smp-chips" id="vcPresetChipsBar" role="group" aria-label="Sample script presets"></div>
               <button type="button" class="pls-status-pill" id="vcPlsActivePill" onclick="openPlsPanel()">
                 ✓ .pls Active (0 terms matched)
@@ -1650,7 +1663,7 @@
                 </button>
               </div>
             </div>
-            <div class="vc-status-msg" id="vcSpeakHelperStatus"></div>
+            <div class="vc-status-msg" id="vcSpeakHelperStatus" role="status" aria-live="polite"></div>
           </div>
 
           <audio id="vcAudioPlayer" preload="none" crossorigin="anonymous"></audio>
@@ -2814,6 +2827,10 @@
 
     function switchView(viewName) {
       state.view = viewName;
+      const pageCopy = {studio: ["Text to Speech", "Bring your words to life. Your voice, your delivery."], clone: ["Voices & cloning", "Create a voice that sounds like you."], train: ["Voice training", "Refine your voice and pronunciation."], api: ["Developers & plans", "Build voice into your next product."]};
+      const copy = pageCopy[viewName] || pageCopy.studio;
+      document.getElementById("studioPageTitle").textContent = copy[0];
+      document.getElementById("studioPageDescription").textContent = copy[1];
       document.querySelectorAll(".vc-view").forEach((el) => {
         el.classList.toggle("active", el.id === "view-" + viewName);
       });
@@ -3690,6 +3707,12 @@
 
     document.getElementById("vcScriptInput").addEventListener("input", () => {
       state.scriptDirty = true;
+      try {
+        localStorage.setItem("aaruni_voice_draft_v1", document.getElementById("vcScriptInput").value);
+        document.getElementById("draftStatus").textContent = "Draft saved on this device";
+      } catch (_) {
+        document.getElementById("draftStatus").textContent = "Draft not saved — device storage unavailable";
+      }
       refreshPlsHighlights();
     });
 
@@ -3786,7 +3809,11 @@
       }
 
       const text = (document.getElementById("vcScriptInput").value || "").trim();
-      if (!text) return;
+      if (!text) {
+        showStatus("vcSpeakHelperStatus", "Add a script before generating speech.", true);
+        document.getElementById("vcScriptInput").focus();
+        return;
+      }
 
       const isPublicVoice = PUBLIC_STUDIO_VOICES.some((v) => v.id === state.selectedVoice);
       if (!state.scriptDirty && isPublicVoice && (state.selectedCategory === "tech" || state.selectedCategory === "course")) {
@@ -3932,7 +3959,11 @@
           state.scriptDirty = false;
           setAudioSourceAndPlay(data.audioUrl, null, "");
           refreshAccountAndVoices();
+        } else {
+          throw new Error(data.error || data.message || "Speech could not be generated. Please try again.");
         }
+      } catch (err) {
+        showStatus("vcSpeakHelperStatus", err.message || "Connection failed. Please try again.", true);
       } finally {
         btn.disabled = false;
         btn.textContent = "Generate speech";
@@ -6044,6 +6075,14 @@ x-voice-speed: ${p.vs.speed}
     // Boot
     (async function initApp() {
       document.getElementById("vcScriptInput").value = SHOWCASE_SCRIPTS.tech.text;
+      try {
+        const draft = localStorage.getItem("aaruni_voice_draft_v1");
+        if (draft !== null) {
+          document.getElementById("vcScriptInput").value = draft.slice(0, 5000);
+          state.scriptDirty = true;
+          document.getElementById("draftStatus").textContent = "Draft restored from this device";
+        }
+      } catch (_) {}
       applyStudioVoicePreset("best_teaching", { fromInit: true, silent: true });
       renderDomainPacks();
       renderVoiceSelectors();
